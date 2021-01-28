@@ -1,2 +1,0 @@
-class Juice < ApplicationRecord
-end

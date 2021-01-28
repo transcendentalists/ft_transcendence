@@ -69,3 +69,4 @@ gem 'sidekiq-scheduler'
 gem 'rspec-rails'
 gem 'faker'
 gem 'factory_bot'
+

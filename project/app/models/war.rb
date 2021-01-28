@@ -1,4 +1,4 @@
 class War < ApplicationRecord
-  belongs_to :war_request
-  has_many :match, as: :eventable
+  belongs_to :request, class_name: "WarRequest", :foreign_key => "war_request_id"
+  has_many :matches, as: :eventable
 end

@@ -1,0 +1,2 @@
+class Juice < ApplicationRecord
+end

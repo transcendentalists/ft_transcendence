@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_124332) do
+ActiveRecord::Schema.define(version: 2021_01_28_125725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,7 +202,7 @@ ActiveRecord::Schema.define(version: 2021_01_28_124332) do
     t.bigint "war_request_id", null: false
     t.string "position", null: false
     t.integer "no_reply_count", default: 0, null: false
-    t.integer "point", default: 0
+    t.integer "point", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["guild_id"], name: "index_war_statuses_on_guild_id"

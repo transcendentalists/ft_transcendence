@@ -183,15 +183,15 @@ ActiveRecord::Schema.define(version: 2021_01_28_125725) do
 
   create_table "war_requests", force: :cascade do |t|
     t.bigint "rule_id", null: false
-    t.integer "bet_point", default: 200
+    t.integer "bet_point", default: 200, null: false
     t.datetime "start_date", null: false
     t.datetime "end_date", null: false
     t.time "war_time", null: false
-    t.integer "max_no_reply_count", default: 5
-    t.boolean "include_ladder", default: false
-    t.boolean "include_tournament", default: false
+    t.integer "max_no_reply_count", default: 5, null: false
+    t.boolean "include_ladder", default: false, null: false
+    t.boolean "include_tournament", default: false, null: false
     t.integer "target_match_score", null: false
-    t.string "status", default: "pending"
+    t.string "status", default: "pending", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["rule_id"], name: "index_war_requests_on_rule_id"

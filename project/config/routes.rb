@@ -32,14 +32,14 @@ Rails.application.routes.draw do
     end
 
     resources :guilds, only: %i[index create update show] do
-      resources :guild_memberships, only: %i[index create update destroy]
+      resources :guild_memberships, path: 'memberships', only: %i[index create update destroy]
       resources :wars, only: [:index]
       resources :war_requests, only: %i[index create destroy]
     end
 
     resources :group_chat_rooms, only: %i[index create update show destroy] do
       resources :chat_messages, only: %i[index create]
-      resources :group_chat_memberships, only: %i[index create update destroy]
+      resources :group_chat_memberships, path: 'memberships', only: %i[index create update destroy]
     end
 
     resources :direct_chat_rooms, only: [] do

@@ -1,0 +1,31 @@
+<div id="sidebar-view" class="three wide tablet only three wide computer only column"
+  style="right: 0px; z-index: 102; max-width: 220px; min-width: 220px">
+
+  <div class="ui container" style="margin-top: 30%">
+    <h3 class="ui center aligned teal header">Friends</h3>
+    <div id="sidebar-freind-user-list-view">
+      <%= render partial: 'spa/appearance/sidebar_user_list' %>
+    </div>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <div class="ui container" style="margin-top: 20%">
+    <h3 class="ui center aligned teal header">Log-on</h3>
+    <div id="sidebar-online-user-list-view">
+      <%= render partial: 'spa/appearance/sidebar_user_list' %>
+    </div>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <div class="ui container" style="margin-top: 20%">
+
+    <div onclick="location.href='https://naver.com'" style="cursor:pointer;">
+      <div class="ui center aligned teal header">
+        Logout
+      </div>
+    </div>
+  </div>
+
+</div>

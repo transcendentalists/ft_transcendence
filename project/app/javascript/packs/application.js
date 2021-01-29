@@ -11,9 +11,3 @@ import { app } from "./app";
 
 Rails.start();
 ActiveStorage.start();
-
-console.log("HELLO");
-console.log(app);
-console.log("sadad");
-
-def helper

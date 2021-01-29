@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'spa/index'
+  root 'spa#index'
+
   namespace :api do
     resources :users, only: %i[index show create update] do
       member do

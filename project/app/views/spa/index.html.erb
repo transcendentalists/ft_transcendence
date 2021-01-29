@@ -1,0 +1,25 @@
+<%= stylesheet_link_tag 'index', media: 'all' %>
+
+<body id="root">
+  <!-- 내비게이션 -->
+
+  <%= render partial: 'spa/navbar' %>
+
+    <div class="ui padded grid">
+      <%= render partial: 'spa/sidebar' %>
+      <%= render partial: 'spa/main' %>
+      <%# <%= render partial: 'spa/footer' %>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".ui.toggle.button").click(function () {
+          $(".mobile.only.grid .ui.vertical.menu").toggle(100);
+        });
+      });
+    </script>
+
+    <%= render partial: "spa/ladder/ladder_index_view" %>
+</body>
+
+<%= javascript_pack_tag 'app' %>

@@ -1,0 +1,55 @@
+<div id="sidebar-view" class="three wide tablet only three wide computer only column"
+  style="right: 0px; z-index: 102; max-width: 220px; min-width: 220px">
+
+  <div class="ui container" style="margin-top: 30%">
+    <h3 class="ui center aligned teal header">Friends</h3>
+    <div class="ui middle aligned selection list">
+      <%= render partial: 'sidebar_user_card' %>
+
+      <div class="item">
+        <div class="content header">
+          <a class="ui grey mini empty circular label"></a>
+          iwoo
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <div class="ui container" style="margin-top: 20%">
+    <h3 class="ui center aligned teal header">Log-on</h3>
+    <div class="ui middle aligned selection list" style= "height: 70vh">
+
+      <!-- <script src="logon_list_element.html"></script> -->
+      <div class="item">
+        <div class="content header">
+          <!-- green or yellow or grey -->
+          <a class="ui green mini empty circular label"></a>
+          eunhkim
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="content header">
+          <!-- green or yellow or grey -->
+          <a class="ui yellow mini empty circular label"></a>
+          jujeong
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ui divider"></div>
+
+  <div class="ui container" style="margin-top: 20%">
+
+    <div onclick="location.href='https://naver.com'" style="cursor:pointer;">
+      <div class="ui center aligned teal header">
+        Logout
+      </div>
+    </div>
+  </div>
+
+</div>

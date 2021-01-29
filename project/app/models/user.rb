@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_many :messages, class_name: "ChatMessage"
   has_many :direct_chat_memberships
   has_many :direct_chat_rooms, through: :direct_chat_memberships, source: :room
-  has_many :direct_chat_bans
+  has_many :chat_bans
   has_many :group_chat_memberships
   has_many :in_group_chat_rooms, through: :group_chat_memberships, source: :room
   has_many :own_group_chat_rooms, foreign_key: "owner_id", class_name: "GroupChatRoom"

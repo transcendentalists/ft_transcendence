@@ -1,6 +1,6 @@
 <%= stylesheet_link_tag 'index', media: 'all' %>
 
-<body id="root">
+<div id="root">
   <!-- 내비게이션 -->
 
   <%= render partial: 'spa/navbar' %>
@@ -11,15 +11,11 @@
       <%# <%= render partial: 'spa/footer' %>
     </div>
 
-    <script>
-      $(document).ready(function () {
-        $(".ui.toggle.button").click(function () {
-          $(".mobile.only.grid .ui.vertical.menu").toggle(100);
-        });
-      });
-    </script>
 
+
+    <%= render partial: "spa/share/user_profile_card_view" %>
     <%= render partial: "spa/ladder/ladder_index_view" %>
-</body>
-
-<%= javascript_pack_tag 'app' %>
+    <%= render partial: "spa/ladder/my_rating_view" %>
+    <%= render partial: "spa/ladder/user_ranking_view" %>
+  <%= javascript_pack_tag 'app' %>
+</div>

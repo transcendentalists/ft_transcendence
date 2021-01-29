@@ -1,7 +1,8 @@
-<div class="ui segment">
+<script type="text/template" id="user-profile-card-template">
+  <div class="ui segment">
   <div class="ui grid">
     <div class="four wide column">
-      <img class="ui circular small image" src="kristy.png">
+      <%# <img class="ui circular small image" src="kristy.png"> %>
     </div>
 
     <div class="twelve wide column">
@@ -9,7 +10,7 @@
       <div class="ui grid">
         <div class="six column row">
           <div class="column">
-            <h2 class="ui header fluid">Sanam</h2>
+            <h2 class="ui header fluid"><%%= name %></h2>
           </div>
           <div class="column">
             Beginner
@@ -26,7 +27,7 @@
           토너먼트(Achievement) 골드컵 N개, 실버컵 N개, 브론즈컵 N개
         </div>
       </div>
-
     </div>
   </div>
-</div>
+  </div>
+</script>

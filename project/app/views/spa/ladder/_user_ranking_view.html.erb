@@ -1,5 +1,4 @@
-<div class="ui text container">
-
+<script type="text/template" id="user-ranking-view-template">
   <div class="ui grid">
     <div class="row">
         <h2>
@@ -8,15 +7,14 @@
     </div>
       
     <div class="row">
-      <div class="column">
+      <div class="column"></div>
         <button class="ui left floated button tiny teal">before</button>
         <button class="ui right floated button tiny teal">next</button>
       </div>
     </div>
   </div>
 
-    <%= render partial: 'spa/share/user_profile_card' %>
-    <%= render partial: 'spa/share/user_profile_card' %>
-    <%= render partial: 'spa/share/user_profile_card' %>
-    <%= render partial: 'spa/share/user_profile_card' %>
-</div>
+    <div id="user-profile-card-list">
+      
+    </div>
+</script>

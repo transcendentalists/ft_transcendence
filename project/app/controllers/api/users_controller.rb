@@ -1,6 +1,8 @@
 class Api::UsersController < ApplicationController
   def index
-    render plain: "/api/users#index"
+    users = User.all
+    render :json => { users: users }
+    # render :json => users
   end
 
   def create
@@ -8,7 +10,9 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    render plain: "get /api/users/" + params[:id]
+    user = User.find(params[:id])
+    render :json => { user: user }
+    # render :json => user
   end
 
   def update

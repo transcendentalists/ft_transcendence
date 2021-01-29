@@ -15,3 +15,5 @@ ActiveStorage.start();
 console.log("HELLO");
 console.log(app);
 console.log("sadad");
+
+def helper

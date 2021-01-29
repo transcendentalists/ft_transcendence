@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_28_125725) do
+ActiveRecord::Schema.define(version: 2021_01_29_131500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "chat_bans", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "banned_user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["banned_user_id"], name: "index_chat_bans_on_banned_user_id"
+    t.index ["user_id"], name: "index_chat_bans_on_user_id"
+  end
 
   create_table "chat_messages", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -24,15 +33,6 @@ ActiveRecord::Schema.define(version: 2021_01_28_125725) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["room_type", "room_id"], name: "index_chat_messages_on_room"
     t.index ["user_id"], name: "index_chat_messages_on_user_id"
-  end
-
-  create_table "direct_chat_bans", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "banned_user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["banned_user_id"], name: "index_direct_chat_bans_on_banned_user_id"
-    t.index ["user_id"], name: "index_direct_chat_bans_on_user_id"
   end
 
   create_table "direct_chat_memberships", force: :cascade do |t|
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(version: 2021_01_28_125725) do
     t.boolean "banned", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "point", default: 0, null: false
   end
 
   create_table "war_requests", force: :cascade do |t|
@@ -217,9 +218,9 @@ ActiveRecord::Schema.define(version: 2021_01_28_125725) do
     t.index ["war_request_id"], name: "index_wars_on_war_request_id"
   end
 
+  add_foreign_key "chat_bans", "users"
+  add_foreign_key "chat_bans", "users", column: "banned_user_id"
   add_foreign_key "chat_messages", "users"
-  add_foreign_key "direct_chat_bans", "users"
-  add_foreign_key "direct_chat_bans", "users", column: "banned_user_id"
   add_foreign_key "direct_chat_memberships", "direct_chat_rooms"
   add_foreign_key "direct_chat_memberships", "users"
   add_foreign_key "friendships", "users"

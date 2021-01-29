@@ -1,6 +1,6 @@
-class Api::DirectChatBansController < ApplicationController
+class Api::ChatBansController < ApplicationController
   def index
-    render plain: params[:user_id] + "'s direct chat ban list"
+    render plain: params[:user_id] + "'s chat ban list"
   end
 
   def create

@@ -7,16 +7,16 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 User.create([
-  {name: 'sanam', password: '123123', intra_id: 'sanam', image_url: ''},
-  {name: 'yohlee', password: '123123', intra_id: 'yohlee', image_url: ''},
-  {name: 'eunhkim', password: '123123', intra_id: 'eunhkim', image_url: ''},
-  {name: 'iwoo', password: '123123', intra_id: 'iwoo', image_url: ''},
-  {name: 'jujeong', password: '123123', intra_id: 'jujeong', image_url: ''},
-  {name: 'test', password: '123123', intra_id: 'test', image_url: ''},
-  {name: 'test1', password: '123123', intra_id: 'test1', image_url: ''},
-  {name: 'test2', password: '123123', intra_id: 'test2', image_url: ''},
-  {name: 'test3', password: '123123', intra_id: 'test3', image_url: ''},
-  {name: 'test4', password: '123123', intra_id: 'test4', image_url: ''},
+  {name: 'sanam', password: '123123', intra_id: 'sanam', image_url: '', point: 1},
+  {name: 'yohlee', password: '123123', intra_id: 'yohlee', image_url: '', point: 2},
+  {name: 'eunhkim', password: '123123', intra_id: 'eunhkim', image_url: '', point: 3},
+  {name: 'iwoo', password: '123123', intra_id: 'iwoo', image_url: '', point: 4},
+  {name: 'jujeong', password: '123123', intra_id: 'jujeong', image_url: '', point: 5},
+  {name: 'test', password: '123123', intra_id: 'test', image_url: '', point: 6},
+  {name: 'test1', password: '123123', intra_id: 'test1', image_url: '', point: 7},
+  {name: 'test2', password: '123123', intra_id: 'test2', image_url: '', point: 8},
+  {name: 'test3', password: '123123', intra_id: 'test3', image_url: '', point: 9},
+  {name: 'test4', password: '123123', intra_id: 'test4', image_url: '', point: 10},
 ])
 
 Friendship.create([
@@ -39,8 +39,8 @@ Guild.create([
 ])
 
 WarRequest.create([
-  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, inclued_tournament: true, target_match_score: 10, status: "pending"},
-  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, inclued_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
 ])
 
 War.create([
@@ -77,9 +77,10 @@ ChatMessage.create([
   {user_id: 6, room_type: "GroupChatRoom", room_id: 1, message: "6"},
 ])
 
-DirectChatBan.create([
+ChatBan.create([
   {user_id: 1, banned_user_id: 2},
-  {user_id: 1, banned_user_id: 3},
+  {user_id: 2, banned_user_id: 3},
+  {user_id: 3, banned_user_id: 4},
 ])
 
 DirectChatMembership.create([

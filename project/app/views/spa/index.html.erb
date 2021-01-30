@@ -7,11 +7,12 @@
 
     <div class="ui padded grid">
       <%= render partial: 'spa/sidebar' %>
-      <%= render partial: 'spa/main' %>
-      <%# <%= render partial: 'spa/footer' %>
+      <div id="main-view" class="sixteen wide mobile thirteen wide tablet thirteen wide computer right floated column"
+  style="margin-left: 0px">
+        <%= render partial: 'spa/main' %>
+      </div>
+      <%= render partial: 'spa/footer' %>
     </div>
-
-
 
     <%= render partial: "spa/share/user_profile_card_view" %>
     <%= render partial: "spa/ladder/ladder_index_view" %>

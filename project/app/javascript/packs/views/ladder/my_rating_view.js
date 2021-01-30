@@ -1,4 +1,4 @@
-import { App } from "../internal";
+import { App } from "../../internal";
 
 //ladder index 안에  my_rating, user_ranking 가 있고 이 각각에 user_profile 카드가 존재한다.
 

@@ -1,4 +1,4 @@
-import { App } from "../internal";
+import { App } from "../../internal";
 
 export let UserRankingView = Backbone.View.extend({
   template: _.template($("#user-ranking-view-template").html()),

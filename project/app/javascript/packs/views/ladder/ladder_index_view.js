@@ -1,6 +1,6 @@
-import { App } from "../internal";
+import { App } from "../../internal";
 
-export let HomeView = Backbone.View.extend({
+export let LadderIndexView = Backbone.View.extend({
   template: _.template($("#ladder-index-view-template").html()),
   id: "ladder-index-view",
 

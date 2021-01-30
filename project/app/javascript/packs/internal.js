@@ -1,8 +1,11 @@
 import { User } from "./models/user";
 import { Users } from "./collections/users";
+import { AppView } from "./views/app_view";
 import { MyRatingView } from "./views/my_rating_view";
 import { UserRankingView } from "./views/user_ranking_view";
 import { UserProfileCardView } from "./views/user_profile_card_view";
+import { LadderIndexView } from "./views/ladder_index_view";
+import { MainView } from "./views/main_view";
 
 export let App = {
   Model: {
@@ -12,6 +15,9 @@ export let App = {
     Users,
   },
   View: {
+    AppView,
+    MainView,
+    LadderIndexView,
     UserRankingView,
     UserProfileCardView,
     MyRatingView,

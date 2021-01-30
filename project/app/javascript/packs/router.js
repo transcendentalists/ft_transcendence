@@ -6,64 +6,84 @@ import { App } from "./internal";
 
 export let Router = Backbone.Router.extend({
   routes: {
-    "users(/:param1)(/:param2)": "usersController",
-    home: "homeController",
+    "sessions/new": "sessionsController",
+    "users(/:param)": "usersController",
     "chatrooms(/:param)": "chatRoomsController",
-    "guilds(/:param1)(/:param2)": "guildsController",
+    "guilds(/:param)": "guildsController",
     "ladder(/:page)": "ladderController",
     "lives(/:matchtype)": "livesController",
     war: "warController",
     "matches/:id": "matchesController",
     "tournaments(/:param)": "tournamenstController",
-    "admin(/:param)": "adminController",
+    "admin(/:param1)(/:param2": "adminController",
     "errors/:id": "errorsController",
   },
 
-  // usersController(params) {
-  //   App.entry_view.render(params);
-  // },
-
-  // homeController() {
-  //   App.main_view.renderHome();
-  // },
-
-  // chatRoomsController(params) {
-  //   App.main_view.renderChatRooms(params);
-  // },
-
-  guildsController(param1, param2) {
-    console.log("PARAM 1");
-    console.log(param1);
-    console.log("PARAM 2");
-    console.log(param2);
-    // App.main_view.renderGuilds(params);
+  redirect_to: function (viewPrototype, params) {
+    if (!App.user.signed_in) return App.entryView.renderSignIn();
+    App.mainView.render(viewPrototype, params);
   },
 
-  // ladderController(params) {
-  //   App.main_view.renderladder(params);
-  // },
+  sessionsController: function () {
+    App.entryView.renderSignIn();
+  },
 
-  // livesController(params) {
-  //   App.main_view.renderLives(params);
-  // },
+  usersController: function (param) {
+    if (param === "new") return App.entryView.renderSignUp();
+    redirect_to(App.View.UserIndexView, param);
+  },
 
-  // warController() {
-  //   App.main_view.renderWar();
-  // },
+  chatRoomsController: function (param) {
+    if (param === null) redirect_to(App.View.ChatIndexView);
+    else if (param === "new") redirect_to(App.View.ChatRoomCreateView, params);
+    else redirect_to(App.View.ChatRoomView, param);
+  },
 
-  // matchesController(id) {
-  //   App.main_view.renderMatches(id);
-  // },
+  guildsController: function (param) {
+    if (param === null) redirect_to(App.View.GuildIndexView);
+    else if (param === "new") redirect_to(App.View.GuildCreateView, param);
+    else redirect_to(App.View.GuildDetailView, param);
+  },
 
-  // tournamentsController(params) {
-  //   App.main_view.renderTournaments(params);
-  // },
+  ladderController: function (page = 1) {
+    redirect_to(App.view.LadderIndexView, page);
+  },
 
-  // adminController(params) {
-  //   App.main_view.renderAdmin(params);
-  // },
+  livesController(matchType = "dual") {
+    redirect_to(App.View.LiveIndexView, matchType);
+  },
 
-  // errorsController(params) {
-  //   App.main_view.renderError(params);
-  // },
+  warController(param) {
+    if (param === null) redirect_to(App.View.WarIndexView);
+    else if (param === "new") redirect_to(App.View.WarCreateView, param);
+    else this.navigate("errors/1");
+  },
+
+  matchesController(id) {
+    redirect_to(App.View.GameIndexView, id);
+  },
+
+  tournamentsController(param) {
+    if (param === null) redirect_to(App.View.TournamentIndexView);
+    else if (param === "new") redirect_to(App.View.TournamentCreateView, param);
+    else this.navigate("errors/2");
+  },
+
+  adminController(param1, param2) {
+    if (!App.user.signed_in || !App.user.is_admin)
+      return this.navigate("errors/3");
+
+    if (param == null) redirect_to(App.View.AdminIndexView);
+    else if (param1 === "chatrooms") {
+      if (param2 === null) redirect_to(App.View.AdminChatIndexView);
+      else redirect_to(App.View.AdminChatRoomView, param2);
+    } else if (param1 === "guilds") {
+      if (param2 === null) redirect_to(App.View.AdminGuildIndexView);
+      else redirect_to(App.View.AdminGuildDetailView, param2);
+    } else return this.navigate("errors/4");
+  },
+
+  errorsController(id) {
+    App.error_view.render(id);
+  },
 });

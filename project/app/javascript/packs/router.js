@@ -4,43 +4,62 @@
 // import { SideBarView } from './views/side-bar-view';
 import { App } from "./internal";
 
-let Router = Backbone.Router.extend({
+export let Router = Backbone.Router.extend({
   routes: {
-    "": "callHomeView",
-    home: "callHomeView",
-    ladder: "callLadderView",
+    "users(/*param)": "usersController",
+    home: "homeController",
+    "chatrooms(/*param)": "chatRoomsController",
+    "guilds(/*param)": "guildsController",
+    "ladder(/*param)": "ladderController",
+    "lives(/*param)": "livesController",
+    war: "warController",
+    "matches/:id": "matchesController",
+    "tournaments(/*param)": "tournamenstController",
+    "admin(/*param)": "adminController",
+    "errors/:id": "errorsController",
   },
 
-  callHomeView: function () {
-    this.renderMainView(new HomeView());
+  usersController(param) {
+    App.entry_view.render(param);
   },
 
-  callLadderView: function () {
-    if (isLoggedIn()) {
-      this.renderMainView(new ChatView());
-    } else this.renderModalView(app.signin_view);
+  homeController() {
+    App.main_view.renderHome();
   },
 
-  renderMainView: function (view) {
-    if (this.currentMainView) {
-      this.currentMainView.remove();
-    }
-    view.render();
-    this.currentMainView = view;
-    return this;
+  chatRoomsController(param) {
+    App.main_view.renderChatRooms(param);
   },
 
-  renderSideBarView: function (view) {
-    view.render();
-    this.currentSideBarView = view;
-    return this;
+  guildsController(param) {
+    App.main_view.renderGuilds(param);
+  },
+
+  ladderController(param) {
+    App.main_view.renderladder(param);
+  },
+
+  livesController(param) {
+    App.main_view.renderLives(param);
+  },
+
+  warController() {
+    App.main_view.renderWar();
+  },
+
+  matchesController(id) {
+    App.main_view.renderMatches(id);
+  },
+
+  tournamentsController(param) {
+    App.main_view.renderTournaments(param);
+  },
+
+  adminController(param) {
+    App.main_view.renderAdmin(param);
+  },
+
+  errorsController(param) {
+    App.main_view.renderError(param);
   },
 });
-
-// function resetSignButton() {
-//   $("a[data-sign-value=signin]").removeClass("invisible");
-//   $("a[data-sign-value=signup]").removeClass("invisible");
-//   $("a[data-sign-value=logout]").addClass("invisible");
-// }
-
-export let router = new Router();

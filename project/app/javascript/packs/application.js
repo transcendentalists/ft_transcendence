@@ -5,7 +5,6 @@
 
 import Rails from "@rails/ujs";
 import * as ActiveStorage from "@rails/activestorage";
-import * as semantic from "./semantic-min";
 import "channels";
 
 Rails.start();

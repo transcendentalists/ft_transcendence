@@ -5,7 +5,7 @@ import { SignUpView } from "./views/registration/sign_up_view";
 import { UserIndexView } from "./views/user/user_index_view";
 import { ChatIndexView } from "./views/chat/chat_index_view";
 import { ChatRoomView } from "./views/chat/chat_room_view";
-import { ChatRoomCreatView } from "./views/chat/chat_room_create_view";
+import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
 import { GuildIndexView } from "./views/guild/guild_index_view";
 import { GuildDetailView } from "./views/guild/guild_detail_view";
 import { GuildCreateView } from "./views/guild/guild_create_view";
@@ -38,7 +38,7 @@ export let App = {
     UserIndexView,
     ChatIndexView,
     ChatRoomView,
-    ChatRoomCreatView,
+    ChatRoomCreateView,
     GuildIndexView,
     GuildDetailView,
     GuildCreateView,

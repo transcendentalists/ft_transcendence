@@ -12,4 +12,16 @@ export let AppView = Backbone.View.extend({
     this.invite_view = new InviteView();
     this.direct_chat_view = new DirectChatView();
   },
+
+  render: function () {
+    this.appearence_view.render();
+    this.navbar_view.render();
+    return this;
+  },
+
+  restart: function () {
+    this.navbar_view.close();
+    this.invite_view.close();
+    this.direct_chat_view.close();
+  },
 });

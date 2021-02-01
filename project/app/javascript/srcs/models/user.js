@@ -6,6 +6,11 @@ export let User = Backbone.Model.extend({
     signed_in: false,
   },
 
+  reset: function (isWebOwner = false) {
+    this.clear();
+    this.set({ isWebOwner: false, signed_in: false });
+  },
+
   parse: function (response, options) {
     if (options.collection) {
       return response;

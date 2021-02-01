@@ -36,8 +36,8 @@ import { ErrorView } from "./views/aside/error_view";
 export let App = {
   initialize: function () {
     Helper.fetchContainer("session", { method: "DELETE" });
-    this.router = new Router();
     this.appView = new AppView();
+    this.router = new Router();
     this.mainView = App.appView.main_view;
     this.alertModalView = new AlertModalView();
     this.infoModalView = new InfoModalView();
@@ -46,7 +46,11 @@ export let App = {
     this.me = new App.Model.User({ isWebOwner: true });
   },
 
-  start: function () {},
+  restart: function () {
+    App.appView.restart();
+    App.me.reset(true);
+    App.router.navigate("#/sessions/new");
+  },
 
   Model: {
     User,
@@ -82,3 +86,4 @@ export let App = {
   },
   Channel: {},
 };
+window.app = App;

@@ -30,11 +30,34 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  # config.action_mailer.delivery_method = :mailgun
+  # config.action_mailer.mailgun_settings = {
+  #   api_key: "942e3b08f34bd88fd983f26142866201-77751bfc-f8c4bce6",
+  #   domain: "sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org"
+  # }
+
+  # SMTP hostname: smtp.mailgun.org
+  # Port: 587 (recommended)
+  # Username: postmaster@sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org
+  # Default password: 3fcf23824ae75a5b36500ae7b7d73b57-77751bfc-fa3a3b5f
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  :authentication => :plain,
+  :address => "smtp.mailgun.org",
+  :port => 587,
+  :domain => "sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org",
+  :user_name => "postmaster@sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org",
+  :password => "3fcf23824ae75a5b36500ae7b7d73b57-77751bfc-fa3a3b5f"
+}
+
+  config.action_mailer.perform_deliveries = true
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
+  # config.action_mailer.perform_deliveries = true
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   config.action_mailer.perform_caching = false
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_29_131500) do
+ActiveRecord::Schema.define(version: 2021_02_01_123842) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,7 +171,6 @@ ActiveRecord::Schema.define(version: 2021_01_29_131500) do
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "password", null: false
-    t.string "intra_id", null: false
     t.string "image_url", default: "default_image_url", null: false
     t.string "title", default: "beginner", null: false
     t.string "status", default: "offline", null: false
@@ -180,6 +179,8 @@ ActiveRecord::Schema.define(version: 2021_01_29_131500) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "point", default: 0, null: false
+    t.string "email", default: "marvin@ecole42.fr", null: false
+    t.string "verification_code"
   end
 
   create_table "war_requests", force: :cascade do |t|

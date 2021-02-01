@@ -23,7 +23,9 @@ export let Router = Backbone.Router.extend({
   },
 
   redirect_to: function (viewPrototype, param) {
-    if (!App.me.signed_in) return this.navigate("#/sessions/new");
+    if (!App.me.get("signed_in")) {
+      return this.navigate("#/sessions/new");
+    }
     App.mainView.render(viewPrototype, param);
   },
 
@@ -33,42 +35,44 @@ export let Router = Backbone.Router.extend({
 
   usersController: function (param) {
     if (param === "new") return App.mainView.render(App.View.signUpView);
-    redirect_to(App.View.UserIndexView, param);
+    this.redirect_to(App.View.UserIndexView, param);
   },
 
   chatRoomsController: function (param) {
-    if (param === null) redirect_to(App.View.ChatIndexView);
-    else if (param === "new") redirect_to(App.View.ChatRoomCreateView, params);
-    else redirect_to(App.View.ChatRoomView, param);
+    if (param === null) this.redirect_to(App.View.ChatIndexView);
+    else if (param === "new")
+      this.redirect_to(App.View.ChatRoomCreateView, params);
+    else this.redirect_to(App.View.ChatRoomView, param);
   },
 
   guildsController: function (param) {
-    if (param === null) redirect_to(App.View.GuildIndexView);
-    else if (param === "new") redirect_to(App.View.GuildCreateView, param);
-    else redirect_to(App.View.GuildDetailView, param);
+    if (param === null) this.redirect_to(App.View.GuildIndexView);
+    else if (param === "new") this.redirect_to(App.View.GuildCreateView, param);
+    else this.redirect_to(App.View.GuildDetailView, param);
   },
 
   ladderController: function (page = 1) {
-    redirect_to(App.view.LadderIndexView, page);
+    this.redirect_to(App.view.LadderIndexView, page);
   },
 
   livesController(matchType = "dual") {
-    redirect_to(App.View.LiveIndexView, matchType);
+    this.redirect_to(App.View.LiveIndexView, matchType);
   },
 
   warController(param) {
-    if (param === null) redirect_to(App.View.WarIndexView);
-    else if (param === "new") redirect_to(App.View.WarCreateView, param);
+    if (param === null) this.redirect_to(App.View.WarIndexView);
+    else if (param === "new") this.redirect_to(App.View.WarCreateView, param);
     else this.navigate("#/errors/101");
   },
 
   matchesController(id) {
-    redirect_to(App.View.GameIndexView, id);
+    this.redirect_to(App.View.GameIndexView, id);
   },
 
   tournamentsController(param) {
-    if (param === null) redirect_to(App.View.TournamentIndexView);
-    else if (param === "new") redirect_to(App.View.TournamentCreateView, param);
+    if (param === null) this.redirect_to(App.View.TournamentIndexView);
+    else if (param === "new")
+      this.redirect_to(App.View.TournamentCreateView, param);
     else this.navigate("#/errors/102");
   },
 
@@ -76,13 +80,13 @@ export let Router = Backbone.Router.extend({
     if (!App.user.signed_in || !App.user.is_admin)
       return this.navigate("#/errors/103");
 
-    if (param == null) redirect_to(App.View.AdminUserIndexView);
+    if (param == null) this.redirect_to(App.View.AdminUserIndexView);
     else if (param1 === "chatrooms") {
-      if (param2 === null) redirect_to(App.View.AdminChatIndexView);
-      else redirect_to(App.View.AdminChatRoomView, param2);
+      if (param2 === null) this.redirect_to(App.View.AdminChatIndexView);
+      else this.redirect_to(App.View.AdminChatRoomView, param2);
     } else if (param1 === "guilds") {
-      if (param2 === null) redirect_to(App.View.AdminGuildIndexView);
-      else redirect_to(App.View.AdminGuildDetailView, param2);
+      if (param2 === null) this.redirect_to(App.View.AdminGuildIndexView);
+      else this.redirect_to(App.View.AdminGuildDetailView, param2);
     } else return this.navigate("#/errors/104");
   },
 

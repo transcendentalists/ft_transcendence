@@ -11,4 +11,8 @@ export let DirectChatView = Backbone.View.extend({
     this.$el.html(this.template());
     $("#footer").append(this.$el);
   },
+
+  close: function () {
+    $("#footer").empty();
+  },
 });

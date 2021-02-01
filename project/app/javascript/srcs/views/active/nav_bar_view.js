@@ -4,5 +4,12 @@ export let NavBarView = Backbone.View.extend({
     this.$el.hide();
   },
 
-  render: function () {},
+  render: function () {
+    this.$el.show();
+    return this;
+  },
+
+  close: function () {
+    this.$el.hide();
+  },
 });

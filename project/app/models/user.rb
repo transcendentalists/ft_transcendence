@@ -17,13 +17,8 @@ class User < ApplicationRecord
 
   def self.session_login(login_params)
     user = find_by_name(login_params[:name]);
-    user.login
-    return {
-      me: {
-        id: user.id,
-        twoFactorAuth: user.two_factor_auth  
-      }
-    }
+    user.login if not user.two_factor_auth
+    return user
   end
 
   def self.session_logout(id)
@@ -42,7 +37,7 @@ class User < ApplicationRecord
   end
 
   def to_backbone_simple
-    permitted = ["id", "name", "status"]
+    permitted = ["id", "name", "status", "two_factor_auth"]
     data = self.attributes.filter { |k, v| permitted.include?(k) }
   end
 end

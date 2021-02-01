@@ -7,16 +7,16 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 User.create([
-  {name: 'sanam', password: '123123', intra_id: 'sanam', image_url: '', point: 1},
-  {name: 'yohlee', password: '123123', intra_id: 'yohlee', image_url: '', point: 2},
-  {name: 'eunhkim', password: '123123', intra_id: 'eunhkim', image_url: '', point: 3},
-  {name: 'iwoo', password: '123123', intra_id: 'iwoo', image_url: '', point: 4},
-  {name: 'jujeong', password: '123123', intra_id: 'jujeong', image_url: '', point: 5},
-  {name: 'test', password: '123123', intra_id: 'test', image_url: '', point: 6},
-  {name: 'test1', password: '123123', intra_id: 'test1', image_url: '', point: 7},
-  {name: 'test2', password: '123123', intra_id: 'test2', image_url: '', point: 8},
-  {name: 'test3', password: '123123', intra_id: 'test3', image_url: '', point: 9},
-  {name: 'test4', password: '123123', intra_id: 'test4', image_url: '', point: 10},
+  {name: 'sanam1', password: '123123', email: 'simian114@gmail.com', image_url: '', point: 1, two_factor_auth: false},
+  {name: 'yohlee1', password: '123123', email: 'yohan9612@naver.com', image_url: '', point: 2, two_factor_auth: false},
+  {name: 'eunhkim1', password: '123123', email: 'valhalla.host@gmail.com', image_url: '', point: 3, two_factor_auth: false},
+  {name: 'iwoo1', password: '123123', email: 'injun.woo30000@gmail.com', image_url: '', point: 4, two_factor_auth: true},
+  {name: 'jujeong', password: '123123', email: 'juhyeonjeong92@gmail.com', image_url: '', point: 5, two_factor_auth: false},
+  {name: 'iwoo2', password: '123123',  email: 'injun.woo30000@gmail.com', image_url: '', point: 7, two_factor_auth: false},
+  {name: 'yohlee2', password: '123123',  email: 'yohan9612@yonsei.ac.kr', image_url: '', point: 8},
+  {name: 'sanam2', password: '123123',  email: 'simian114@gmail.com', image_url: '', point: 9},
+  {name: 'eunhkim2', password: '123123',  email: 'valhalla.host@gmail.com', image_url: '', point: 10},
+  {name: 'test', password: '123123',  email: 'juhyeonjeong92@gmail.com', image_url: '', point: 11},
 ])
 
 Friendship.create([

@@ -1,3 +1,4 @@
+# Mainly performs login and logout related tasks.
 class User < ApplicationRecord
   has_many :messages, class_name: "ChatMessage"
   has_many :direct_chat_memberships
@@ -38,6 +39,6 @@ class User < ApplicationRecord
 
   def to_backbone_simple
     permitted = ["id", "name", "status", "two_factor_auth"]
-    data = self.attributes.filter { |k, v| permitted.include?(k) }
+    data = self.attributes.filter { |field, value| permitted.include?(field) }
   end
 end

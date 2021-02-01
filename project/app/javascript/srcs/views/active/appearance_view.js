@@ -1,5 +1,14 @@
 export let AppearenceView = Backbone.View.extend({
-  // template: _.template($("#direct-chat-view-template").html()),
+  el: "#appearance-view",
+  template: _.template($("#appearance-view-template").html()),
 
-  render: function () {},
+  initialize: function () {
+    // this.$el.hide();
+    // this.render();
+  },
+
+  render: function () {
+    this.$el.empty();
+    this.$el.html(this.template());
+  },
 });

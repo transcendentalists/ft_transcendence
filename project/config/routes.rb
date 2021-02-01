@@ -1,8 +1,12 @@
 Rails.application.routes.draw do
-  get 'spa/index'
   root 'spa#index'
-
+  # root 'spa#ft_auth'
+  delete 'api/session', to: 'spa#destroy'
+  get 'auth/42/callback', to: 'spa#index'
+  get 'auth/github/callback', to: 'spa#index'
+  
   namespace :api do
+    
     resources :users, only: %i[index show create update] do
       member do
         patch :ban

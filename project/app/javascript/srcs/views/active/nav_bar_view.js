@@ -1,5 +1,8 @@
 export let NavBarView = Backbone.View.extend({
-  // template: _.template($("#nav-bar-view-template").html()),
+  el: "#nav-bar-view",
+  initialize: function () {
+    this.$el.hide();
+  },
 
   render: function () {},
 });

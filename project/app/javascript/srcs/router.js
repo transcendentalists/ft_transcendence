@@ -3,6 +3,7 @@ import { App } from "./internal";
 export let Router = Backbone.Router.extend({
   routes: {
     "": "sessionsController",
+    "auth/github/callback": "authController",
     "sessions/new": "sessionsController",
     "users(/:param)": "usersController",
     "chatrooms(/:param)": "chatRoomsController",
@@ -17,8 +18,12 @@ export let Router = Backbone.Router.extend({
     "*exception": "errorsController",
   },
 
+  authController: function () {
+    console.log("github login success!");
+  },
+
   redirect_to: function (viewPrototype, param) {
-    if (!App.user.signed_in) return this.navigate("#/sessions/new");
+    if (!App.me.signed_in) return this.navigate("#/sessions/new");
     App.mainView.render(viewPrototype, param);
   },
 
@@ -82,7 +87,7 @@ export let Router = Backbone.Router.extend({
   },
 
   errorsController(error_code) {
-    if (id === null) App.error_view.render(100);
+    if (error_code === null) App.error_view.render(100);
     else App.error_view.render(error_code);
   },
 });

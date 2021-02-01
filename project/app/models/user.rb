@@ -14,4 +14,35 @@ class User < ApplicationRecord
   has_many :matches, through: :scorecards
   has_many :tournament_memberships
   has_many :tournaments, through: :tournament_memberships
+
+  def self.session_login(login_params)
+    user = find_by_name(login_params[:name]);
+    user.login
+    return {
+      me: {
+        id: user.id,
+        twoFactorAuth: user.two_factor_auth  
+      }
+    }
+  end
+
+  def self.session_logout(id)
+    if (User.exists?(id))
+      user = User.find(id)
+      user.logout
+    end
+  end
+
+  def login
+    self.update(status: "online")
+  end
+
+  def logout
+    self.update(status: "offline")
+  end
+
+  def to_backbone_simple
+    permitted = ["id", "name", "status"]
+    data = self.attributes.filter { |k, v| permitted.include?(k) }
+  end
 end

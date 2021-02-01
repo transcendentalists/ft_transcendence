@@ -24,8 +24,30 @@ import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
 import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
 import { AdminGuildDetailView } from "./views/admin/admin_guild_detail_view";
+import { Helper } from "./helper";
+export { Helper } from "./helper";
+import { Router } from "./router";
+import { AppView } from "./views/app_view";
+import { AlertModalView } from "./views/aside/alert_modal_view";
+import { InfoModalView } from "./views/aside/info_modal_view";
+import { InputModalView } from "./views/aside/input_modal_view";
+import { ErrorView } from "./views/aside/error_view";
 
 export let App = {
+  initialize: function () {
+    Helper.fetchContainer("session", { method: "DELETE" });
+    this.router = new Router();
+    this.appView = new AppView();
+    this.mainView = App.appView.main_view;
+    this.alertModalView = new AlertModalView();
+    this.infoModalView = new InfoModalView();
+    this.inputModalView = new InputModalView();
+    this.errorView = new ErrorView();
+    this.me = new App.Model.User({ isWebOwner: true });
+  },
+
+  start: function () {},
+
   Model: {
     User,
   },
@@ -58,4 +80,5 @@ export let App = {
     AdminGuildIndexView,
     AdminGuildDetailView,
   },
+  Channel: {},
 };

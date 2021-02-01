@@ -3,7 +3,23 @@ body {
   -moz-font-smoothing: grayscale;
 }
 
-#sidebar-view {
+#root {
+  height: 100%;
+}
+
+#main-view-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#sign-in-view {
+  /* display: absolute; */
+  max-width: 400px;
+  /* left: 50%; */
+}
+
+#appearance-view {
   position: fixed;
   height: 100vh;
   /* background-color: #ffffff; */
@@ -15,7 +31,7 @@ body {
   border-width: thin;
 }
 
-#sidebar-view .ui.menu > a.item {
+#appearance-view .ui.menu > a.item {
   padding: 10px 20px;
   line-height: 20px;
   color: #337ab7;
@@ -24,13 +40,13 @@ body {
   margin-bottom: 0;
 }
 
-#sidebar-view .ui.menu > a.item.active {
+#appearance-view .ui.menu > a.item.active {
   background-color: #337ab7;
   color: white;
   border: none !important;
 }
 
-#sidebar-view .ui.menu > a.item:hover {
+#appearance-view .ui.menu > a.item:hover {
   background-color: #eee;
   color: #23527c;
 }

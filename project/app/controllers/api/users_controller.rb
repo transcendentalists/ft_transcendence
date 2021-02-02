@@ -1,8 +1,11 @@
 class Api::UsersController < ApplicationController
   def index
     users = User.all
+    service_params.each do |k,v|
+      users = users.where(k => v)
+    end
+
     render :json => { users: users }
-    # render :json => users
   end
 
   def create
@@ -50,6 +53,10 @@ class Api::UsersController < ApplicationController
   private
   def signin_params
     params.require(:user).permit(:name, :password)
+  end
+
+  def service_params
+    params.permit(:id, :status, :name)
   end
 
 end

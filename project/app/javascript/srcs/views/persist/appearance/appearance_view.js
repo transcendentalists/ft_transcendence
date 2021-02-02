@@ -33,4 +33,9 @@ export let AppearenceView = Backbone.View.extend({
       .setElement(this.$(".appearance.online-user-list-view"))
       .render();
   },
+
+  close: function () {
+    this.online_user_list_view.close();
+    // this.remove();
+  },
 });

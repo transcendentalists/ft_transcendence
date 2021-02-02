@@ -13,21 +13,16 @@ export let OnlineUserListView = Backbone.View.extend({
   render: function () {
     this.$el.html(this.template());
     this.online_users.fetch({
-      data: $.param({ status: "online" }),
+      data: $.param({ status: ["online", "playing"] }),
       reset: true,
     });
-    window.users = this.online_users;
-
-    // this.$(".ui.middle.aligned.selection.list").append(
-    // this.online_user_unit.render().$el);
-
-    // api/users/ + query 로 보내면, 이걸 백에서 알맞게 처리해주는 헬퍼 함수를 만들자.
-    // 특정 상태의 모델을 가져오기 위해서는 query 를 fetch의 인자로 넣어서 가져오자
+    window.aaa = this.online_users;
     return this;
   },
 
   close: function () {
-    this.me_profile_card.remove();
+    this.deleteAll();
+    this.$el.remove();
   },
 
   addOne: function (user) {
@@ -42,6 +37,12 @@ export let OnlineUserListView = Backbone.View.extend({
       this.addOne(online_user);
     }
   },
+
   deleteOne: function () {},
-  deleteAll: function () {},
+
+  deleteAll: function () {
+    _.map(this.online_users, function (user) {
+      user.trigger("clear");
+    });
+  },
 });

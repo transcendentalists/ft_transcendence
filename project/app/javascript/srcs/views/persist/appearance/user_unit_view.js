@@ -3,7 +3,9 @@ export let UserUnitView = Backbone.View.extend({
   className: "item",
   template: _.template($("#appearance-user-list-unit-template").html()),
 
-  initialize: function () {},
+  initialize: function () {
+    this.listenTo(this.model, "clear", this.close);
+  },
 
   render: function () {
     this.$el.html(
@@ -15,5 +17,7 @@ export let UserUnitView = Backbone.View.extend({
     return this;
   },
 
-  close: function () {},
+  close: function () {
+    this.$el.remove();
+  },
 });

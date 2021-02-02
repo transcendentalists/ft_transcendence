@@ -10,8 +10,8 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    user = User.find(params[:id])
-    render :json => { user: user }
+    user = User.includes(:in_guild).find(params[:id])
+    render :json => { user: user.to_simple }
     # render :json => user
   end
 
@@ -20,17 +20,36 @@ class Api::UsersController < ApplicationController
   end
 
   def login
-    # :id 가 아닌 :username 처럼 하는 방법은 없는건가?
-    render plain: params[:id] + " just login"
+    if User.exists?(signin_params)
+      user = User.find_by_name(signin_params[:name]).login
+      create_session user.id
+      ApplicationMailer::sendVerificationCode(user).deliver_now if user.two_factor_auth
+      render :json => { me: user.to_simple }
+    else
+      render :json => { error: {
+        'type': 'login failure', 'msg': "가입된 이름이 없거나 비밀번호가 맞지 않습니다."
+        }
+      }, :status => 401
+    end
   end
 
+  # 유저가 로그아웃 버튼을 클릭했을 때 id를 이용한 로그아웃 프로세스 처리
   def logout
-    # :id 가 아닌 :username 처럼 하는 방법은 없는건가?
-    render plain: params[:id] + " just logout"
+    id = params[:id]
+    if (User.exists?(id))
+      User.find(id).logout
+    end
+    remove_session
+    render body: nil, status: 204
   end
 
   def ban
     render plain: "You banned " + params[:id] + " user"
+  end
+
+  private
+  def signin_params
+    params.require(:user).permit(:name, :password)
   end
 
 end

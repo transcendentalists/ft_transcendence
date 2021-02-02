@@ -6,17 +6,27 @@
   <%= render partial: 'spa/navbar' %>
 
     <div class="ui padded grid">
-      <%= render partial: 'spa/sidebar' %>
-      <div id="main-view" class="sixteen wide mobile thirteen wide tablet thirteen wide computer right floated column"
-  style="margin-left: 0px">
-        <%= render partial: 'spa/main' %>
+
+      <div id="appearance-view" class="three wide tablet only three wide computer only column"
+    style="right: 0px; z-index: 102; max-width: 220px; min-width: 220px">
       </div>
-      <%= render partial: 'spa/footer' %>
+
+      <div id="main-view-container" class="sixteen wide mobile thirteen wide tablet thirteen wide computer right floated column"
+  style="margin-left: 0px">
+        <%#= render partial: 'spa/main' %>
+      </div>
+      <div id="footer" class="ui container">
+      </div>
     </div>
 
-    <%= render partial: "spa/share/user_profile_card_view" %>
-    <%= render partial: "spa/ladder/ladder_index_view" %>
-    <%= render partial: "spa/ladder/my_rating_view" %>
-    <%= render partial: "spa/ladder/user_ranking_view" %>
+  <%= render partial: 'spa/aside/warning_message' %>
+  <%= render partial: 'spa/registration/sign_in_view' %>
+  <%= render partial: 'spa/appearance_view' %>
+  <%= render partial: 'spa/active/direct_chat_view' %>
+  <%= render partial: 'spa/active/invite_view_ver_a' %>
+  <%= render partial: "spa/share/user_profile_card_view" %>
+  <%= render partial: "spa/ladder/ladder_index_view" %>
+  <%= render partial: "spa/ladder/my_rating_view" %>
+  <%= render partial: "spa/ladder/user_ranking_view" %>
   <%= javascript_pack_tag 'app' %>
 </div>

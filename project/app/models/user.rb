@@ -1,3 +1,4 @@
+# Mainly performs login and logout related tasks.
 class User < ApplicationRecord
   has_many :messages, class_name: "ChatMessage"
   has_many :direct_chat_memberships
@@ -14,4 +15,19 @@ class User < ApplicationRecord
   has_many :matches, through: :scorecards
   has_many :tournament_memberships
   has_many :tournaments, through: :tournament_memberships
+
+  def login(verification: false)
+    return self if self.two_factor_auth and not verification
+    self.update(status: "online")
+    self
+  end
+
+  def logout
+    self.update(status: "offline")
+  end
+
+  def to_simple
+    permitted = ["id", "name", "status", "two_factor_auth"]
+    data = self.attributes.filter { |field, value| permitted.include?(field) }
+  end
 end

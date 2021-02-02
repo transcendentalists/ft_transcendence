@@ -24,8 +24,34 @@ import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
 import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
 import { AdminGuildDetailView } from "./views/admin/admin_guild_detail_view";
+import { Helper } from "./helper";
+export { Helper } from "./helper";
+import { Router } from "./router";
+import { AppView } from "./views/app_view";
+import { AlertModalView } from "./views/aside/alert_modal_view";
+import { InfoModalView } from "./views/aside/info_modal_view";
+import { InputModalView } from "./views/aside/input_modal_view";
+import { ErrorView } from "./views/aside/error_view";
 
 export let App = {
+  initialize: function () {
+    Helper.fetchContainer("session", { method: "DELETE" });
+    this.appView = new AppView();
+    this.router = new Router();
+    this.mainView = App.appView.main_view;
+    this.alertModalView = new AlertModalView();
+    this.infoModalView = new InfoModalView();
+    this.inputModalView = new InputModalView();
+    this.errorView = new ErrorView();
+    this.me = new App.Model.User({ isWebOwner: true });
+  },
+
+  restart: function () {
+    App.appView.restart();
+    App.me.reset(true);
+    App.router.navigate("#/sessions/new");
+  },
+
   Model: {
     User,
   },
@@ -58,4 +84,6 @@ export let App = {
     AdminGuildIndexView,
     AdminGuildDetailView,
   },
+  Channel: {},
 };
+window.app = App;

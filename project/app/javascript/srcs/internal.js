@@ -24,7 +24,10 @@ import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
 import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
 import { AdminGuildDetailView } from "./views/admin/admin_guild_detail_view";
+
 import { OnlineUserListView } from "./views/persist/appearance/online_user_list_view";
+import { UserUnitView } from "./views/persist/appearance/user_unit_view";
+
 import { Helper } from "./helper";
 export { Helper } from "./helper";
 import { Router } from "./router";
@@ -85,6 +88,7 @@ export let App = {
     AdminGuildIndexView,
     AdminGuildDetailView,
     OnlineUserListView,
+    UserUnitView,
   },
   Channel: {},
 };

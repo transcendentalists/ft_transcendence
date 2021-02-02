@@ -48,7 +48,7 @@ Rails.application.configure do
   :port => 587,
   :domain => "sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org",
   :user_name => "postmaster@sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org",
-  :password => "3fcf23824ae75a5b36500ae7b7d73b57-77751bfc-fa3a3b5f"
+  :password => "2112b8d84b11ed772053ad4506cceda1-77751bfc-ebbc3ac7"
 }
 
   config.action_mailer.perform_deliveries = true

@@ -6,8 +6,8 @@ class SpaController < ApplicationController
   def mail_auth
     user = User.find(params[:user][:id])
     if user.verification_code == params[:user][:verification_code]
-      user.login
-      render :json => { me: user.to_backbone_simple }
+      user.login(verification: true)
+      render :json => { me: user.to_simple }
     else
       render :json => { error: {
         'type': 'login failure', 'msg': "인증번호가 맞지 않습니다."
@@ -17,14 +17,16 @@ class SpaController < ApplicationController
   end
 
   def index
-    if (params[:error] === "access_denied")
+    if params.key?(:error)
       redirect_to action: "ft_auth"
     end
   end
 
   def destroy
-    User.session_logout(cookies.encrypted[:service_id])
-    cookies.encrypted[:service_id] = 0
+    id = cookies.encrypted[:service_id]
+    return if not User.exists?(id)
+    User.find(id).logout
+    remove_session
     head :no_content
   end
 end

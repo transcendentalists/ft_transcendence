@@ -25,5 +25,12 @@ export let AppearenceView = Backbone.View.extend({
   render: function () {
     this.$el.empty();
     this.$el.html(this.template());
+
+    this.online_user_list_view = new App.View.OnlineUserListView();
+    // this.friend_list_view = new
+
+    this.online_user_list_view
+      .setElement(this.$(".appearance.online-user-list-view"))
+      .render();
   },
 });

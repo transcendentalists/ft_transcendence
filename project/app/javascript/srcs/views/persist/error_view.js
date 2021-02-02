@@ -4,6 +4,6 @@ export let ErrorView = Backbone.View.extend({
   render: function () {},
 
   close: function () {
-    this.remove();
+    this.$el.hide();
   },
 });

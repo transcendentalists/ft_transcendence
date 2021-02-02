@@ -13,6 +13,6 @@ export let MainView = Backbone.View.extend({
   },
 
   close: function () {
-    this.current_view.close();
+    if (this.current_view) this.current_view.close();
   },
 });

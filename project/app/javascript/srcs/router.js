@@ -23,7 +23,7 @@ export let Router = Backbone.Router.extend({
   },
 
   redirect_to: function (viewPrototype, param) {
-    if (!App.me.get("signed_in")) {
+    if (!App.current_user.get("signed_in")) {
       return this.navigate("#/sessions/new");
     }
     App.mainView.render(viewPrototype, param);

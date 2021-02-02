@@ -1,6 +1,7 @@
 class Api::UsersController < ApplicationController
   def index
     users = User.all
+
     service_params.each do |k,v|
       users = users.where(k => v)
     end
@@ -56,7 +57,7 @@ class Api::UsersController < ApplicationController
   end
 
   def service_params
-    params.permit(:id, :status, :name)
+    params.permit(:id, :name, status: [])
   end
 
 end

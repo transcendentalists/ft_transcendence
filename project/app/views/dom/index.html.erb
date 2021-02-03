@@ -1,0 +1,22 @@
+<body id="root">
+  <!-- 내비게이션 -->
+
+  <%= render partial: 'navbar_view' %>
+
+    <div class="ui padded grid">
+      <%= render partial: 'sidebar_view' %>
+      <%= render partial: 'main_view' %>
+
+      <%= render partial: 'footer' %>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".ui.toggle.button").click(function () {
+          $(".mobile.only.grid .ui.vertical.menu").toggle(100);
+        });
+      });
+    </script>
+</body>
+
+<%= javascript_pack_tag 'app' %>

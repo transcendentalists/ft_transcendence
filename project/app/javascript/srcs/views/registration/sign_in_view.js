@@ -9,7 +9,7 @@ export let SignInView = Backbone.View.extend({
   },
 
   initialize: function () {
-    this.me_id = null;
+    this.current_user_id = null;
     this.two_factor_auth = false;
     this.verification_code = null;
   },
@@ -44,8 +44,8 @@ export let SignInView = Backbone.View.extend({
   },
 
   loginSuccessCallback: function (data) {
-    this.me_id = data.me.id;
-    if (data.me.two_factor_auth) {
+    this.current_user_id = data.current_user.id;
+    if (data.current_user.two_factor_auth) {
       this.$(".login.field").hide();
       this.$(".auth.field").show();
       this.two_factor_auth = true;
@@ -53,10 +53,11 @@ export let SignInView = Backbone.View.extend({
   },
 
   authSuccessCallback: function (data) {
-    App.me.set({ signed_in: true, id: data.me.id });
-    App.me.fetch();
+    App.current_user.set("id", data.current_user.id);
+    App.current_user.signed_in = true;
+    App.current_user.fetch();
     App.appView.render();
-    App.router.navigate(`#/users/${data.me.id}`);
+    App.router.navigate(`#/users/${data.current_user.id}`);
   },
 
   failCallback: function (data) {
@@ -71,15 +72,12 @@ export let SignInView = Backbone.View.extend({
     if (!this.two_factor_auth) {
       let name = $("input[name=name]").val();
       let password = $("input[name=password]").val();
-      Helper.fetchContainer(
-        `users/${name}/session`,
-        this.signInParams(name, password)
-      );
+      Helper.fetch(`users/${name}/session`, this.signInParams(name, password));
     } else {
       let verification_code = $("input[name=auth]").val();
       console.log(verification_code);
 
-      Helper.fetchContainer(
+      Helper.fetch(
         "auth/mail/callback",
         this.authParams(this.me_id, verification_code)
       );

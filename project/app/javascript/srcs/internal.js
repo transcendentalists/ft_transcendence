@@ -37,6 +37,8 @@ import { InfoModalView } from "./views/aside/info_modal_view";
 import { InputModalView } from "./views/aside/input_modal_view";
 import { ErrorView } from "./views/aside/error_view";
 
+import { ConnectAppearanceChannel } from "../channels/appearance_channel";
+
 export let App = {
   initialize: function () {
     Helper.fetchContainer("session", { method: "DELETE" });
@@ -90,6 +92,8 @@ export let App = {
     OnlineUserListView,
     UserUnitView,
   },
-  Channel: {},
+  Channel: {
+    ConnectAppearanceChannel,
+  },
 };
 window.app = App;

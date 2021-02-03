@@ -8,10 +8,7 @@ export let AppearenceView = Backbone.View.extend({
     "click .logout.button ": "logout",
   },
 
-  initialize: function () {
-    // this.$el.hide();
-    // this.render();
-  },
+  initialize: function () {},
 
   logout: function () {
     // + undescribe appearance channel
@@ -23,6 +20,8 @@ export let AppearenceView = Backbone.View.extend({
   },
 
   render: function () {
+    this.apperance_channel = new App.Channel.ConnectAppearanceChannel();
+
     this.$el.empty();
     this.$el.html(this.template());
 

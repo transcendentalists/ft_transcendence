@@ -1,7 +1,12 @@
 <script type="text/template" id="appearance-user-list-unit-template">
   <div class="content header">
-  <%# status에 따라서 green -> gray 수정해야한다. %>
-    <a class="ui green mini empty circular label"></a>
-      <%%- name %>
+
+    <%% if ( status == "playing") { %> 
+      <a class="ui yellow mini empty circular label"></a>
+    <%% } else { %>
+        <a class="ui green mini empty circular label"></a>
+    <%% } %>
+    <%%- name %>
+
   </div>
 </script>

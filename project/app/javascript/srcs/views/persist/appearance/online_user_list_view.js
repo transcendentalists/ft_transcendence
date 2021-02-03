@@ -15,7 +15,7 @@ export let OnlineUserListView = Backbone.View.extend({
   render: function () {
     this.$el.html(this.template());
     this.online_users.fetch({
-      data: $.param({ status: ["online", "playing"] }),
+      data: $.param({ status: ["online", "playing"], for: "appearance" }),
       reset: true,
     });
     window.aaa = this.online_users;

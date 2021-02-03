@@ -27,20 +27,33 @@ class User < ApplicationRecord
     update(status: 'offline')
   end
 
+  def self.where_by_query(params)
+    users = all # User == self
+    params.each do |k, v|
+      users = users.where(k => v)
+    end
+    users
+  end
+
+  def self.select_by_query(users, params)
+    if params[:for] == 'appearance'
+      users.select('id, name, status, image_url')
+    else
+      users
+    end
+  end
+
   def to_simple
     permitted = %w[id name status two_factor_auth]
     data = attributes.filter { |field, _value| permitted.include?(field) }
   end
 
   def notice_login
-    p 'Connected!'
-    p 'Connected!'
-    p 'Connected!'
-    p 'Connected!'
     ActionCable.server.broadcast('appearance_channel', {
                                    id: id,
                                    name: name,
-                                   status: status
+                                   status: status,
+                                   iamge_url: image_url
                                  })
   end
 

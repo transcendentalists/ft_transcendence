@@ -1,6 +1,7 @@
 import { App, Helper } from "srcs/internal";
+import consumer from "../../../../channels/consumer";
 
-export let AppearenceView = Backbone.View.extend({
+export let AppearanceView = Backbone.View.extend({
   el: "#appearance-view",
   template: _.template($("#appearance-view-template").html()),
 
@@ -11,8 +12,9 @@ export let AppearenceView = Backbone.View.extend({
   initialize: function () {},
 
   logout: function () {
-    // + undescribe appearance channel
+    this.appearance_channel.unsubscribe();
     this.$el.empty();
+
     Helper.fetchContainer(`users/${App.me.get("id")}/session`, {
       method: "DELETE",
     });
@@ -20,7 +22,7 @@ export let AppearenceView = Backbone.View.extend({
   },
 
   render: function () {
-    this.apperance_channel = new App.Channel.ConnectAppearanceChannel();
+    this.appearance_channel = new App.Channel.ConnectAppearanceChannel();
 
     this.$el.empty();
     this.$el.html(this.template());
@@ -36,5 +38,9 @@ export let AppearenceView = Backbone.View.extend({
   close: function () {
     this.online_user_list_view.close();
     // this.remove();
+  },
+
+  updateUserStatus: function (user_data) {
+    this.online_user_list_view.updateUserStatus(user_data);
   },
 });

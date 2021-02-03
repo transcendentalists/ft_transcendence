@@ -47,11 +47,15 @@ class User < ApplicationRecord
     permitted = ["id", "name", "title", "image_url"]
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
     stat.merge!(self.game_stat)
-    if not self.in_guild.nil?
-      stat[:guild] = self.in_guild.to_simple
-      stat[:guild][:position] = self.guild_membership.position
-    end
     stat[:achievement] = self.achievement
+    
+    if self.in_guild.nil?
+      stat[:guild] = nil
+      return stat
+    end
+    
+    stat[:guild] = self.in_guild.to_simple
+    stat[:guild][:position] = self.guild_membership.position
     stat
   end
 

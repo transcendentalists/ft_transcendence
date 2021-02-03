@@ -6,16 +6,17 @@ export let MyRatingView = Backbone.View.extend({
   id: "my-rating-view",
   template: _.template($("#my-rating-view-template").html()),
 
-  render: function () {
+  render: function (data) {
     this.$el.html(this.template());
     this.current_user_profile_card = new App.View.UserProfileCardView();
     this.current_user_profile_card
-      .setElement(this.$(".current-user-profile-card"))
-      .render();
+      .setElement(this.$(".current-user.profile-card"))
+      .render(data);
     return this;
   },
 
   close: function () {
     this.current_user_profile_card.remove();
+    this.remove();
   },
 });

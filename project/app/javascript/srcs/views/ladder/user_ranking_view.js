@@ -6,35 +6,25 @@ export let UserRankingView = Backbone.View.extend({
   className: "ui text container",
 
   initialize: function () {
+    this.child_views = [];
     this.$el.html(this.template());
-    window.userEl = this.$el;
   },
 
   addOne: function (user) {
-    var view = new App.View.UserProfileCardView(user);
-    $("#user-profile-card-list").append(view.render().$el);
+    let child_view = new App.View.UserProfileCardView();
+    this.child_views.push(child_view);
+    this.$("#user-profile-card-list").append(child_view.render(user).$el);
   },
 
-  addAll: function (data) {
-    this.$("#user-profile-card-list").html(""); // 먼저 있는걸 지운다. the user profile card list
-    data.each(this.addOne);
-  },
-
-  render: function () {
-    console.log("UserRankingView");
-    this.user_collection.fetch({ reset: true });
-
+  render: function (users_data) {
+    console.log(users_data);
+    this.$("#user-profile-card-list").html("");
+    users_data.forEach(this.addOne, this);
     return this;
   },
 
-  // render: function () {
-  //   let obj = this;
-  //   this.data = Helper.fetch("/api/guilds/:id/memberships");
-  //   this.guild = Helper.fetch("/api/guilds/:id")
-  //   this.$el.html(this.template({name: this.data.name, title: this.data.title, guild: {name: this.guild.name, anagram: this.guild.anagram, position: this.guild.position}, tier: this.data.tier, win_count: this.data.win_count, lose_count: this.data.lose_count, achievement: {gold: this.data.achievement.gold, silver: this.data.achievement.silver, bronze: this.data.achievement.bronze}}))
-  // },,
-
   close: function () {
-    this.user_collection.remove();
+    this.child_views = [];
+    this.remove();
   },
 });

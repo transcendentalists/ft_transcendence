@@ -16,7 +16,7 @@ class Api::UsersController < ApplicationController
   def show
     id = params[:id]
     if params[:for] == "profile"
-      user = User.includes(:in_guild, :score_cards, :tournament_memberships).find(id)
+      user = User.includes(:in_guild, :scorecards, :tournament_memberships).find(id)
       render :json => { user: user.profile }
     else
       user = User.includes(:in_guild).find(id)

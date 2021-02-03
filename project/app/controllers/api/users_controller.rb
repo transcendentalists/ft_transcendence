@@ -1,6 +1,10 @@
 class Api::UsersController < ApplicationController
   def index
-    users = User.all
+    if params[:for] == "ladder_index"
+      users = User.order(point: :desc).page(params[:page].to_i)
+    else
+      users = User.all
+    end
     render :json => { users: users }
     # render :json => users
   end
@@ -11,7 +15,7 @@ class Api::UsersController < ApplicationController
 
   def show
     id = params[:id]
-    if (params[:for] == "profile")
+    if params[:for] == "profile"
       user = User.includes(:in_guild, :score_cards, :tournament_memberships).find(id)
       render :json => { user: user.profile }
     else

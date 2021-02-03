@@ -28,9 +28,11 @@ class User < ApplicationRecord
 
   def game_stat
     data = self.scorecards.group(:result).count
+    stat = {}
     stat[:win_count], stat[:lose_count] = data[:win] ? data[:win] : 0, data[:lose] ? data[:lose] : 0
     stat[:tier] = [ "cooper", "bronze", "silver", "gold", "diamond" ][self.point / 100]
     stat[:rank] = User.order(point: :desc).index(self) + 1
+    p stat
     return stat
   end
 
@@ -39,16 +41,16 @@ class User < ApplicationRecord
     { gold: data[:gold].to_i, silver: data[:silver].to_i, bronze: data[:bronze].to_i }
   end
 
-  def to_profile
+  def profile
     permitted = ["id", "name", "title", "image_url"]
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
-    stat.merge(self.game_stat)
+    stat.merge!(self.game_stat)
     if not self.in_guild.nil?
-      data[:guild] = self.guild.to_simple
-      data[:guild][:position] = self.guild_membership.position
+      stat[:guild] = self.in_guild.to_simple
+      stat[:guild][:position] = self.guild_membership.position
     end
-    data[:achievement] = self.achievement
-    data
+    stat[:achievement] = self.achievement
+    stat
   end
 
   def to_simple

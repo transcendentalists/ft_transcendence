@@ -16,6 +16,8 @@ class User < ApplicationRecord
   has_many :tournament_memberships
   has_many :tournaments, through: :tournament_memberships
 
+  scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
+  
   def login(verification: false)
     return self if self.two_factor_auth and not verification
     self.update(status: "online")

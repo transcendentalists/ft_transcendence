@@ -20,17 +20,22 @@ export let LadderIndexView = Backbone.View.extend({
     this.my_rating_view = new App.View.MyRatingView();
     this.user_ranking_view = new App.View.UserRankingView();
 
-    App.current_user.fetch();
-    this.$(".my-rating.ui.container").append(
-      this.my_rating_view.render(App.current_user.to_json).$el
-    );
-
-    Helper.fetch("users", {
+    // App.current_user.fetch();
+    Helper.fetchContainer("users/" + App.me.id, {
       body: {
         for: "profile",
-        success_callback: this.user_ranking_callback.bind(this),
       },
+    }).then(function (data) {
+      this.$(".my-rating.ui.container").append(
+        this.my_rating_view.render(data).$el
+      );
     });
+
+    // this.$(".my-rating.ui.container").append(
+    //   this.my_rating_view.render(App.current_user.to_json).$el
+    // );
+
+    // fetch("users?for=ladder_index");
 
     return this;
   },

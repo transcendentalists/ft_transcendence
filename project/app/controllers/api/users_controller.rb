@@ -1,7 +1,7 @@
 class Api::UsersController < ApplicationController
   def index
     if params[:for] == "ladder_index"
-      users = User.order(point: :desc).page(params[:page].to_i)
+      users = User.for_ladder_index(params[:page])
     else
       users = User.all
     end
@@ -22,6 +22,7 @@ class Api::UsersController < ApplicationController
       user = User.includes(:in_guild).find(id)
       render :json => { user: user.to_simple }
       # render :json => user
+    end
   end
 
   def update

@@ -14,8 +14,8 @@ export let MyRatingView = Backbone.View.extend({
       .render();
     return this;
   },
+
+  close: function () {
+    this.current_user_profile_card.remove();
+  },
 });
-// render: function () {
-//   let obj = this;
-//   this.data = Helper.fetch("/api/guilds/:id/memberships");
-//   this.guild = Helper.fetch("/api/guilds/:id")

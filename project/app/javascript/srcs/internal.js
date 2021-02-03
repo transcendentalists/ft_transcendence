@@ -1,5 +1,6 @@
 import { User } from "./models/user";
 import { Users } from "./collections/users";
+import { CurrentUser } from "./models/current_user";
 import { SignInView } from "./views/registration/sign_in_view";
 import { SignUpView } from "./views/registration/sign_up_view";
 import { UserIndexView } from "./views/user/user_index_view";
@@ -28,10 +29,17 @@ import { Helper } from "./helper";
 export { Helper } from "./helper";
 import { Router } from "./router";
 import { AppView } from "./views/app_view";
-import { AlertModalView } from "./views/aside/alert_modal_view";
-import { InfoModalView } from "./views/aside/info_modal_view";
-import { InputModalView } from "./views/aside/input_modal_view";
-import { ErrorView } from "./views/aside/error_view";
+
+// 영구뷰
+import { MainView } from "./views/persist/main_view";
+import { AppearanceView } from "./views/persist/appearance_view";
+import { AlertModalView } from "./views/persist/alert_modal_view";
+import { DirectChatView } from "./views/persist/direct_chat_view";
+import { ErrorView } from "./views/error/error_view";
+import { InfoModalView } from "./views/persist/info_modal_view";
+import { InputModalView } from "./views/persist/input_modal_view";
+import { InviteView } from "./views/persist/invite_view";
+import { NavBarView } from "./views/persist/nav_bar_view";
 
 import { AppearanceChannel } from "channels/appearance_channel";
 import { DirectChatChannel } from "channels/direct_chat_channel";
@@ -42,25 +50,22 @@ import { NotificationChannel } from "channels/notification_channel";
 
 export let App = {
   initialize: function () {
-    Helper.fetchContainer("session", { method: "DELETE" });
+    Helper.fetch("session", { method: "DELETE" });
     this.appView = new AppView();
     this.router = new Router();
     this.mainView = App.appView.main_view;
-    this.alertModalView = new AlertModalView();
-    this.infoModalView = new InfoModalView();
-    this.inputModalView = new InputModalView();
-    this.errorView = new ErrorView();
-    this.me = new App.Model.User({ isWebOwner: true });
+    this.current_user = new CurrentUser();
   },
 
   restart: function () {
     App.appView.restart();
-    App.me.reset(true);
+    App.current_user.reset(true);
     App.router.navigate("#/sessions/new");
   },
 
   Model: {
     User,
+    CurrentUser,
   },
   Collection: {
     Users,
@@ -68,6 +73,17 @@ export let App = {
   View: {
     SignInView,
     SignUpView,
+    AppearanceView,
+
+    MainView,
+    AlertModalView,
+    DirectChatView,
+    ErrorView,
+    InfoModalView,
+    InputModalView,
+    InviteView,
+    NavBarView,
+
     UserIndexView,
     ChatIndexView,
     ChatRoomView,

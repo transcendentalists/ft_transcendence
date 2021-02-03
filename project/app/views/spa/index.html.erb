@@ -5,7 +5,7 @@
 
   <%= render partial: 'spa/persist/nav_bar' %>
 
-    <div class="ui padded grid">
+    <div id="root-grid" class="ui padded grid">
 
       <div id="appearance-view" class="three wide tablet only three wide computer only column"
     style="right: 0px; z-index: 102; max-width: 220px; min-width: 220px">
@@ -25,6 +25,7 @@
   <%= render partial: 'spa/persist/input_modal_view' %>
   <%= render partial: 'spa/persist/info_modal_view' %>
   <%= render partial: 'spa/persist/alert_modal_view' %>
+  <%= render partial: 'spa/error/error_view' %>
   <%= render partial: 'spa/registration/sign_in_view' %>
   <%= render partial: "spa/ladder/ladder_index_view" %>
   <%= render partial: "spa/ladder/my_rating_view" %>

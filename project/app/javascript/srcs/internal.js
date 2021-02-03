@@ -1,5 +1,6 @@
 import { User } from "./models/user";
 import { Users } from "./collections/users";
+import { CurrentUser } from "./models/current_user";
 import { SignInView } from "./views/registration/sign_in_view";
 import { SignUpView } from "./views/registration/sign_up_view";
 import { UserIndexView } from "./views/user/user_index_view";
@@ -34,7 +35,7 @@ import { MainView } from "./views/persist/main_view";
 import { AppearanceView } from "./views/persist/appearance_view";
 import { AlertModalView } from "./views/persist/alert_modal_view";
 import { DirectChatView } from "./views/persist/direct_chat_view";
-import { ErrorView } from "./views/persist/error_view";
+import { ErrorView } from "./views/error/error_view";
 import { InfoModalView } from "./views/persist/info_modal_view";
 import { InputModalView } from "./views/persist/input_modal_view";
 import { InviteView } from "./views/persist/invite_view";
@@ -46,7 +47,7 @@ export let App = {
     this.appView = new AppView();
     this.router = new Router();
     this.mainView = App.appView.main_view;
-    this.current_user = new App.Model.User({ isWebOwner: true });
+    this.current_user = new CurrentUser();
   },
 
   restart: function () {
@@ -57,6 +58,7 @@ export let App = {
 
   Model: {
     User,
+    CurrentUser,
   },
   Collection: {
     Users,

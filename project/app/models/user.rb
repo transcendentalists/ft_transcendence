@@ -26,6 +26,31 @@ class User < ApplicationRecord
     self.update(status: "offline")
   end
 
+  def game_stat
+    data = self.scorecards.group(:result).count
+    stat[:win_count], stat[:lose_count] = data[:win] ? data[:win] : 0, data[:lose] ? data[:lose] : 0
+    stat[:tier] = [ "cooper", "bronze", "silver", "gold", "diamond" ][self.point / 100]
+    stat[:rank] = User.order(point: :desc).index(self) + 1
+    return stat
+  end
+
+  def achievement
+    data = self.tournament_memberships.group(:result).count
+    { gold: data[:gold].to_i, silver: data[:silver].to_i, bronze: data[:bronze].to_i }
+  end
+
+  def to_profile
+    permitted = ["id", "name", "title", "image_url"]
+    stat = self.attributes.filter { |field, value| permitted.include?(field) }
+    stat.merge(self.game_stat)
+    if not self.in_guild.nil?
+      data[:guild] = self.guild.to_simple
+      data[:guild][:position] = self.guild_membership.position
+    end
+    data[:achievement] = self.achievement
+    data
+  end
+
   def to_simple
     permitted = ["id", "name", "status", "two_factor_auth"]
     data = self.attributes.filter { |field, value| permitted.include?(field) }

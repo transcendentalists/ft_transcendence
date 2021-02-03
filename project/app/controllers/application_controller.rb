@@ -7,4 +7,7 @@ class ApplicationController < ActionController::Base
     cookies.encrypted[:service_id] = 0
   end
 
+  def is_current_user(id)
+    cokkies.encrypted[:service_id] == id
+  end
 end

@@ -65,6 +65,64 @@ body {
   width: 100%;
 }
 
+#ladder-index-view {
+  margin-top: 8rem;
+}
+
+#ladder-index-view .ladder-index-header {
+  display: flex;
+}
+
+#user-ranking-view .ladder-index-header {
+  display: flex;
+  flex-direction: column;
+}
+
+#user-ranking-view .buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-trophy > i {
+  margin-left: 0.5rem;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+}
+
+.profile-card .small.image {
+  margin-bottom: 0;
+  width: 120px;
+}
+
+.profile-card .content {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+  margin-top: -1rem;
+}
+
+.profile-card .row:first-child {
+  display: flex;
+  align-items: baseline;
+}
+
+.profile-card .row:not(:first-child) {
+  margin-top: 0.2rem;
+}
+
+.profile-card .name {
+  font-weight: 900;
+  font-size: 2rem;
+}
+
+.profile-card .rank {
+  margin-left: 1rem;
+}
+
 .ui.centered.small.circular.image {
   margin-top: 14px;
   margin-bottom: 14px;

@@ -31,6 +31,13 @@ export let UserRankingView = Backbone.View.extend({
     return this;
   },
 
+  // render: function () {
+  //   let obj = this;
+  //   this.data = Helper.fetch("/api/guilds/:id/memberships");
+  //   this.guild = Helper.fetch("/api/guilds/:id")
+  //   this.$el.html(this.template({name: this.data.name, title: this.data.title, guild: {name: this.guild.name, anagram: this.guild.anagram, position: this.guild.position}, tier: this.data.tier, win_count: this.data.win_count, lose_count: this.data.lose_count, achievement: {gold: this.data.achievement.gold, silver: this.data.achievement.silver, bronze: this.data.achievement.bronze}}))
+  // },,
+
   close: function () {
     this.user_collection.remove();
   },

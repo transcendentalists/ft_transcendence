@@ -52,7 +52,7 @@ export let Router = Backbone.Router.extend({
   },
 
   ladderController: function (page = 1) {
-    this.redirect_to(App.view.LadderIndexView, page);
+    this.redirect_to(App.View.LadderIndexView, page);
   },
 
   livesController(matchType = "dual") {

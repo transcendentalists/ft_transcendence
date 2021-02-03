@@ -10,9 +10,14 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    user = User.includes(:in_guild).find(params[:id])
-    render :json => { user: user.to_simple }
-    # render :json => user
+    id = params[:id]
+    if (params[:for] == "profile")
+      user = User.includes(:in_guild, :score_cards, :tournament_memberships).find(id)
+      render :json => { user: user.profile }
+    else
+      user = User.includes(:in_guild).find(id)
+      render :json => { user: user.to_simple }
+      # render :json => user
   end
 
   def update

@@ -1,7 +1,7 @@
 import consumer from "./consumer";
 
-export function ConnectWebNotificationChannel() {
-  return consumer.subscriptions.create("WebNotificationChannel", {
+export function ConnectNotificationChannel() {
+  return consumer.subscriptions.create("NotificationChannel", {
     connected() {
       // Called when the subscription is ready for use on the server
     },

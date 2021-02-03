@@ -11,7 +11,10 @@ class Api::MatchesController < ApplicationController
 
   def create
     if params[:user_id]
-      render plain: "user creates " + params[:user_id] + "'s matches"
+      return if not is_current_user(params[:user_id])
+      user = User.find(params[:user_id])
+      match = find_or_create_ladder_match_for user
+      render :json => { match: { id: match.id, match_type: 'ladder', user: { id: user.id } } }
     elsif params[:war_id]
       render plain: "war creates " + params[:war_id] + "'s matches"
     else
@@ -29,5 +32,14 @@ class Api::MatchesController < ApplicationController
 
   def report
     render plain: "You just finished " + params[:id] + " match"
+  end
+
+  private
+  def find_or_create_ladder_match_for(user)
+    match = Match.where(matchtype: "ladder", status: "pending").first_or_create
+    side = match.users.count == 0 ? "left" : "right"
+    card = Scorecard.create(user_id: user.id, match_id: match.id, side: side)
+    match.update(status: "progress") if match.reload.users.count == 2
+    match
   end
 end

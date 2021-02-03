@@ -33,6 +33,13 @@ import { InfoModalView } from "./views/aside/info_modal_view";
 import { InputModalView } from "./views/aside/input_modal_view";
 import { ErrorView } from "./views/aside/error_view";
 
+import { AppearanceChannel } from "channels/appearance_channel";
+import { DirectChatChannel } from "channels/direct_chat_channel";
+import { GameChannel } from "channels/game_channel";
+import { GroupChatChannel } from "channels/group_chat_channel";
+import { WarChannel } from "channels/war_channel";
+import { NotificationChannel } from "channels/notification_channel";
+
 export let App = {
   initialize: function () {
     Helper.fetchContainer("session", { method: "DELETE" });
@@ -84,6 +91,12 @@ export let App = {
     AdminGuildIndexView,
     AdminGuildDetailView,
   },
-  Channel: {},
+  Channel: {
+    AppearanceChannel,
+    DirectChatChannel,
+    GameChannel,
+    GroupChatChannel,
+    NotificationChannel,
+  },
 };
 window.app = App;

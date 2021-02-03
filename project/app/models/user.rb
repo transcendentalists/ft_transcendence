@@ -43,4 +43,13 @@ class User < ApplicationRecord
                                    status: status
                                  })
   end
+
+  def notice_logout
+    p 'logout!'
+    ActionCable.server.broadcast('appearance_channel', {
+                                   id: id,
+                                   name: name,
+                                   status: status
+                                 })
+  end
 end

@@ -10,6 +10,7 @@ export function ConnectAppearanceChannel() {
 
     disconnected() {
       // Called when the subscription has been terminated by the server
+      console.log("AppearanceChannel disconnect!!!");
     },
 
     received(user) {

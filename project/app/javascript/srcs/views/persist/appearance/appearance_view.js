@@ -12,7 +12,10 @@ export let AppearanceView = Backbone.View.extend({
   initialize: function () {},
 
   logout: function () {
+    console.log("logout in appearance_view.js");
     this.appearance_channel.unsubscribe();
+    // App.consumer.disconnect();
+    // this.appearance_channel.remove();
     this.$el.empty();
 
     Helper.fetchContainer(`users/${App.me.get("id")}/session`, {
@@ -22,6 +25,7 @@ export let AppearanceView = Backbone.View.extend({
   },
 
   render: function () {
+    console.log("appearance view render~!!");
     this.appearance_channel = new App.Channel.ConnectAppearanceChannel();
 
     this.$el.empty();

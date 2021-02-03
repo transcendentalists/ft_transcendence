@@ -30,6 +30,8 @@ class User < ApplicationRecord
   def self.where_by_query(params)
     users = all # User == self
     params.each do |k, v|
+      next if k == 'for'
+
       users = users.where(k => v)
     end
     users
@@ -37,7 +39,7 @@ class User < ApplicationRecord
 
   def self.select_by_query(users, params)
     if params[:for] == 'appearance'
-      users.select('id, name, status, image_url')
+      users.left_outer_joins(guild_membership: :guild).select('users.id, users.name, users.status, users.image_url, guilds.anagram')
     else
       users
     end
@@ -49,16 +51,18 @@ class User < ApplicationRecord
   end
 
   def notice_login
-    ActionCable.server.broadcast('appearance_channel', {
-                                   id: id,
-                                   name: name,
-                                   status: status,
-                                   iamge_url: image_url
-                                 })
+    user_data = {
+      id: id,
+      name: name,
+      status: status,
+      image_url: image_url,
+      anagram: guild_membership.nil? ? nil : guild_membership.guild.anagram
+    }
+    ActionCable.server.broadcast('appearance_channel', user_data)
   end
 
   def notice_logout
-    p 'logout!'
+    # cookies.encrypted[:service_id]
     ActionCable.server.broadcast('appearance_channel', {
                                    id: id,
                                    name: name,

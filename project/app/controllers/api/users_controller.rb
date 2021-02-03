@@ -52,6 +52,6 @@ class Api::UsersController < ApplicationController
   end
 
   def service_params
-    params.permit(:id, :name, status: [])
+    params.permit(:id, :name, :for, status: [])
   end
 end

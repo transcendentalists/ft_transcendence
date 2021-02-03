@@ -30,7 +30,9 @@ export let Router = Backbone.Router.extend({
   },
 
   sessionsController: function () {
-    App.mainView.render(App.View.SignInView);
+    if (App.current_user.signed_in)
+      this.redirect_to(App.View.UserIndexView, App.current_user.id);
+    else App.mainView.render(App.View.SignInView);
   },
 
   usersController: function (param) {

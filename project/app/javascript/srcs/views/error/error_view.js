@@ -3,9 +3,18 @@
  * 어디에서든 App.router.navigate(error_code)로 리다이렉트 가능
  */
 
+import { App } from "../../internal";
+
 export let ErrorView = Backbone.View.extend({
   template: _.template($("#error-view-template").html()),
   id: "error-view",
+  events: {
+    "click .button": "redirect_home",
+  },
+
+  redirect_home: function () {
+    App.router.navigate("#/users/" + App.current_user.id);
+  },
 
   initialize: function (error_code) {
     this.error_hash = {

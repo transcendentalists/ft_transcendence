@@ -3,10 +3,6 @@ import { Helper } from "srcs/internal";
 export let InviteView = Backbone.View.extend({
   template: _.template($("#invite-view-template").html()),
   el: "#invite-view",
-  events: {
-    "click .basic.button": "alert",
-    "click .ui.avatar": "imageChange",
-  },
 
   imageChange: function () {
     Helper.input();

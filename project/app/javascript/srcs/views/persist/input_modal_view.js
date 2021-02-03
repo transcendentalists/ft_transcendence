@@ -3,7 +3,7 @@ export let InputModalView = Backbone.View.extend({
   el: "#input-modal-view",
 
   initialize: function () {
-    this.dat = null;
+    this.data = null;
   },
 
   events: {
@@ -12,7 +12,7 @@ export let InputModalView = Backbone.View.extend({
   },
 
   render: function (data) {
-    this.dat = data;
+    this.data = data;
     this.$el.empty();
     this.$el.html(this.template(data));
     $("#input-modal-view.tiny.modal").modal("show");
@@ -25,11 +25,9 @@ export let InputModalView = Backbone.View.extend({
   },
 
   send: function () {
-    window.a1 = this.dat;
-    window.a2 = this.$("textarea").val();
-    let inpu = this.$("textarea").val();
-    if (this.dat.hasOwnProperty("success_callback"))
-      this.dat.success_callback(inpu);
+    let input = this.$("textarea").val();
+    if (this.data.hasOwnProperty("success_callback"))
+      this.data.success_callback(input);
     this.close();
   },
 });

@@ -81,12 +81,7 @@ export let Helper = {
   },
 
   info: function (data) {
-    if (
-      data == undefined ||
-      data == null ||
-      !data.hasOwnProperty("success_callback")
-    )
-      return this.callModalError();
+    if (data == undefined || data == null) return this.callModalError();
 
     if (!data.hasOwnProperty("subject"))
       data.subject = "알려줄 내용의 제목을 설정해주세요";

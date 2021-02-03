@@ -26,5 +26,6 @@ export let AlertModalView = Backbone.View.extend({
 
   approve: function () {
     if (this.data.hasOwnProperty("success_callback")) data.success_callback();
+    this.close();
   },
 });

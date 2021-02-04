@@ -20,6 +20,7 @@ export let AppView = Backbone.View.extend({
   },
 
   restart: function () {
+    this.appearance_view.close();
     this.navbar_view.close();
     this.invite_view.close();
     this.direct_chat_view.close();

@@ -18,7 +18,7 @@ export let UserUnitView = Backbone.View.extend({
   },
 
   close: function () {
-    console.log("close called!!");
+    console.log(this.model.get("name") + " unit view is remove!!!!");
     this.$el.remove();
   },
 });

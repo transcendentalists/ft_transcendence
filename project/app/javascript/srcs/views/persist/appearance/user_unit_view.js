@@ -5,6 +5,7 @@ export let UserUnitView = Backbone.View.extend({
 
   initialize: function () {
     this.listenTo(this.model, "remove", this.close);
+    this.listenTo(this.model, "change:status", this.changeStatus);
   },
 
   render: function () {
@@ -15,6 +16,10 @@ export let UserUnitView = Backbone.View.extend({
       })
     );
     return this;
+  },
+
+  changeStatus: function() {
+    this.render();
   },
 
   close: function () {

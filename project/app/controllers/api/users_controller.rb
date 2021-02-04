@@ -24,8 +24,8 @@ class Api::UsersController < ApplicationController
     if User.exists?(signin_params)
       user = User.find_by_name(signin_params[:name]).login
       create_session user.id
-      ApplicationMailer.sendVerificationCode(user).deliver_now if user.two_factor_auth
-      render json: { me: user.to_simple }
+      ApplicationMailer::sendVerificationCode(user).deliver_now if user.two_factor_auth
+      render :json => { current_user: user.to_simple }
     else
       render json: { error: {
         'type': 'login failure', 'msg': '가입된 이름이 없거나 비밀번호가 맞지 않습니다.'

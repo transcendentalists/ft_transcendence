@@ -28,7 +28,7 @@ export let OnlineUserListView = Backbone.View.extend({
   },
 
   addOne: function (user) {
-    if (App.me.get("id") === user.get("id")) {
+    if (App.current_user.get("id") === user.get("id")) {
       return;
     }
     this.online_user_unit = new App.View.UserUnitView({ model: user });

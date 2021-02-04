@@ -1,5 +1,7 @@
+import { App } from "srcs/internal";
+
 export let Helper = {
-  fetchContainer: async function (url, hash_args) {
+  fetch: async function (url, hash_args) {
     let params = {
       method: hash_args.hasOwnProperty("method") ? hash_args["method"] : "GET",
       credentials: "same-origin",
@@ -42,5 +44,50 @@ export let Helper = {
 
   getToken: function () {
     return $("meta[name=csrf-token]")[0].getAttribute("content");
+  },
+
+  callModalError: function () {
+    this.info({
+      subject: "ERROR",
+      description: "입력 전송에 대한 인자가 충분하지 않습니다.",
+    });
+  },
+
+  alert: function (data) {
+    if (data == undefined || data == null) return this.callModalError();
+
+    if (!data.hasOwnProperty("subject"))
+      data.subject = "경고 창의 제목을 설정해주세요.";
+    if (!data.hasOwnProperty("descriotion"))
+      data.description = "경고 내용을 입력해주세요.";
+
+    App.appView.alert_modal_view.render(data);
+  },
+
+  input: function (data) {
+    if (
+      data == undefined ||
+      data == null ||
+      !data.hasOwnProperty("success_callback")
+    )
+      return this.callModalError();
+
+    if (!data.hasOwnProperty("subject"))
+      data.subject = "입력받을 창의 제목을 설정해주세요";
+    if (!data.hasOwnProperty("description"))
+      data.description = "입력받을 내용에 대해 설명해주세요.";
+
+    App.appView.input_modal_view.render(data);
+  },
+
+  info: function (data) {
+    if (data == undefined || data == null) return this.callModalError();
+
+    if (!data.hasOwnProperty("subject"))
+      data.subject = "알려줄 내용의 제목을 설정해주세요";
+    if (!data.hasOwnProperty("description"))
+      data.description = "알려줄 내용을 설명해주세요.";
+
+    App.appView.info_modal_view.render(data);
   },
 };

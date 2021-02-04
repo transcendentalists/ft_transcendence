@@ -23,14 +23,16 @@ export let Router = Backbone.Router.extend({
   },
 
   redirect_to: function (viewPrototype, param) {
-    if (!App.me.get("signed_in")) {
+    if (!App.current_user.signed_in) {
       return this.navigate("#/sessions/new");
     }
     App.mainView.render(viewPrototype, param);
   },
 
   sessionsController: function () {
-    App.mainView.render(App.View.SignInView);
+    if (App.current_user.signed_in)
+      this.redirect_to(App.View.UserIndexView, App.current_user.id);
+    else App.mainView.render(App.View.SignInView);
   },
 
   usersController: function (param) {
@@ -77,7 +79,7 @@ export let Router = Backbone.Router.extend({
   },
 
   adminController(param1, param2) {
-    if (!App.user.signed_in || !App.user.is_admin)
+    if (!App.user.signed_in || !App.current_user.is_admin)
       return this.navigate("#/errors/103");
 
     if (param == null) this.redirect_to(App.View.AdminUserIndexView);
@@ -91,7 +93,7 @@ export let Router = Backbone.Router.extend({
   },
 
   errorsController(error_code) {
-    if (error_code === null) App.error_view.render(100);
-    else App.error_view.render(error_code);
+    if (error_code === null) this.redirect_to(App.View.ErrorView, 100);
+    else this.redirect_to(App.View.ErrorView, error_code);
   },
 });

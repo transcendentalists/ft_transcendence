@@ -11,7 +11,7 @@ export let Router = Backbone.Router.extend({
     "ladder(/:page)": "ladderController",
     "lives(/:matchtype)": "livesController",
     "war(/:new)": "warController",
-    "matches/:id": "matchesController",
+    "matches(/:id)": "matchesController",
     "tournaments(/:param)": "tournamenstController",
     "admin(/:param1)(/:param2)": "adminController",
     "errors/:id": "errorsController",
@@ -23,7 +23,7 @@ export let Router = Backbone.Router.extend({
   },
 
   redirect_to: function (viewPrototype, param) {
-    if (!App.current_user.signed_in) {
+    if (!App.current_user.sign_in) {
       return this.navigate("#/sessions/new");
     }
     App.mainView.render(viewPrototype, param);

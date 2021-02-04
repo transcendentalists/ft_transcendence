@@ -8,6 +8,6 @@ class ApplicationController < ActionController::Base
   end
 
   def is_current_user(id)
-    cokkies.encrypted[:service_id] == id
+    cookies.encrypted[:service_id] == id
   end
 end

@@ -36,10 +36,11 @@ class Api::MatchesController < ApplicationController
 
   private
   def find_or_create_ladder_match_for(user)
-    match = Match.where(matchtype: "ladder", status: "pending").first_or_create
+    match = Match.where(match_type: "ladder", status: "pending").first_or_create(rule_id: Rule.first.id)
     side = match.users.count == 0 ? "left" : "right"
-    card = Scorecard.create(user_id: user.id, match_id: match.id, side: side)
-    match.update(status: "progress") if match.reload.users.count == 2
-    match
+    p match
+    # card = Scorecard.create(user_id: user.id, match_id: match.id, side: side)
+    # match.update(status: "progress") if match.reload.users.count == 2
+    # match
   end
 end

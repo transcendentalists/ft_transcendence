@@ -54,10 +54,12 @@ export let SignInView = Backbone.View.extend({
 
   authSuccessCallback: function (data) {
     App.current_user.set("id", data.current_user.id);
-    App.current_user.signed_in = true;
+    App.current_user.sign_in = true;
     App.current_user.fetch();
     App.appView.render();
     App.router.navigate(`#/users/${data.current_user.id}`);
+    window.channel1 = App.Channel.ConnectAppearanceChannel();
+    window.channel2 = App.Channel.ConnectGameChannel();
   },
 
   failCallback: function (data) {

@@ -3,6 +3,7 @@ export let CurrentUser = Backbone.Model.extend({
 
   initialize: function () {
     this.is_admin = false;
+    this.sign_in = false;
   },
 
   reset: function () {

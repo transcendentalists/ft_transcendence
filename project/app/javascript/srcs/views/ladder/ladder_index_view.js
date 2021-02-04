@@ -8,6 +8,7 @@ export let LadderIndexView = Backbone.View.extend({
   events: {
     "click #ladder-page-before-button": "before_page",
     "click #ladder-page-next-button": "next_page",
+    "click #ladder-join-button": "game_page",
   },
 
   initialize: function (page) {
@@ -23,6 +24,10 @@ export let LadderIndexView = Backbone.View.extend({
   next_page: function () {
     if (this.is_last_page === true) return;
     App.router.navigate("#/ladder/" + (this.page + 1));
+  },
+
+  game_page: function () {
+    App.router.navigate("#/matches");
   },
 
   my_rating_callback: function (data) {

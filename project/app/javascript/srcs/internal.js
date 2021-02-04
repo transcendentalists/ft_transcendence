@@ -41,12 +41,13 @@ import { InputModalView } from "./views/persist/input_modal_view";
 import { InviteView } from "./views/persist/invite_view";
 import { NavBarView } from "./views/persist/nav_bar_view";
 
-import { AppearanceChannel } from "channels/appearance_channel";
-import { DirectChatChannel } from "channels/direct_chat_channel";
-import { GameChannel } from "channels/game_channel";
-import { GroupChatChannel } from "channels/group_chat_channel";
-import { WarChannel } from "channels/war_channel";
-import { NotificationChannel } from "channels/notification_channel";
+import { ConnectAppearanceChannel } from "channels/appearance_channel";
+import { ConnectDirectChatChannel } from "channels/direct_chat_channel";
+import { ConnectGameChannel } from "channels/game_channel";
+import { ConnectGroupChatChannel } from "channels/group_chat_channel";
+import { ConnectWarChannel } from "channels/war_channel";
+import { ConnectNotificationChannel } from "channels/notification_channel";
+import consumer from "channels/consumer";
 
 export let App = {
   initialize: function () {
@@ -55,12 +56,21 @@ export let App = {
     this.router = new Router();
     this.mainView = App.appView.main_view;
     this.current_user = new CurrentUser();
+    this.consumer = consumer;
   },
 
   restart: function () {
-    App.appView.restart();
-    App.current_user.reset(true);
-    App.router.navigate("#/sessions/new");
+    this.consumer.subscriptions.subscriptions.forEach((subscription) =>
+      subscription.unsubscribe()
+    );
+    this.consumer.close();
+    // this.consumer.disconnect();
+    Helper.fetch(`users/${this.current_user.get("id")}/session`, {
+      method: "DELETE",
+    });
+    this.current_user.reset(true);
+    this.appView.restart();
+    this.router.navigate("#/sessions/new");
   },
 
   Model: {
@@ -108,11 +118,11 @@ export let App = {
     AdminGuildDetailView,
   },
   Channel: {
-    AppearanceChannel,
-    DirectChatChannel,
-    GameChannel,
-    GroupChatChannel,
-    NotificationChannel,
+    ConnectAppearanceChannel,
+    ConnectDirectChatChannel,
+    ConnectGameChannel,
+    ConnectGroupChatChannel,
+    ConnectNotificationChannel,
   },
 };
 window.app = App;

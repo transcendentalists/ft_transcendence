@@ -38,6 +38,7 @@ import { InputModalView } from "./views/aside/input_modal_view";
 import { ErrorView } from "./views/aside/error_view";
 
 import { ConnectAppearanceChannel } from "../channels/appearance_channel";
+import consumer from "../channels/consumer";
 
 export let App = {
   initialize: function () {
@@ -50,9 +51,17 @@ export let App = {
     this.inputModalView = new InputModalView();
     this.errorView = new ErrorView();
     this.me = new App.Model.User({ isWebOwner: true });
+    this.consumer = consumer;
   },
 
   restart: function () {
+    this.consumer.subscriptions.subscriptions.forEach((subscription) =>
+      subscription.unsubscribe()
+    );
+    this.consumer.disconnect();
+    Helper.fetchContainer(`users/${App.me.get("id")}/session`, {
+      method: "DELETE",
+    });
     App.appView.restart();
     App.me.reset(true);
     App.router.navigate("#/sessions/new");

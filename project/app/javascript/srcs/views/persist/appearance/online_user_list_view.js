@@ -23,7 +23,7 @@ export let OnlineUserListView = Backbone.View.extend({
   },
 
   close: function () {
-    this.deleteAll();
+    // this.deleteAll();
     this.$el.remove();
   },
 
@@ -33,7 +33,7 @@ export let OnlineUserListView = Backbone.View.extend({
     }
     this.online_user_unit = new App.View.UserUnitView({ model: user });
     this.$(".ui.middle.aligned.selection.list").append(
-      this.online_user_unit.render().$el
+      this.online_user_unit.render().$el,
     );
   },
 
@@ -56,15 +56,20 @@ export let OnlineUserListView = Backbone.View.extend({
   //   });
   // },
 
-  updateUserStatus: function (user_data) {
-    let user = this.online_users.where({ id: user_data.id });
+  isUserInTheCollection: function (user_data) {
+    if ( this.online_users.where({ id: user_data.id }).length == 0 &&
+      user_data.status != "offline") {
+      return true;
+    } else {
+      return false;
+    }
+  },
 
-    // 컬렉션에 user 넣으면 알아서 model의 url에 id 를 따라서 세팅해준다
-    if (user.length == 0) {
-      user = new App.Model.User(user_data);
-      this.online_users.add(user);
+  updateUserStatus: function (user_data) {
+    if (this.isUserInTheCollection(user_data)) {
+      this.online_users.add(new App.Model.User(user_data));
     } else if (user_data.status == "offline") {
-      this.online_users.remove(user);
+      this.online_users.remove({ id: user_data.id });
     }
   },
 });

@@ -12,7 +12,7 @@ export const GameBall = Backbone.Model.extend({
     this.velocityX = 4;
     this.velocityY = 4;
     this.opacity = 1;
-    this.color = "BLACK";
+    this.color = "WHITE";
     this.event_count = 0;
     this.engine_spec = {
       invisible: rule.invisible,
@@ -29,7 +29,7 @@ export const GameBall = Backbone.Model.extend({
 
   applyAddonBall: function () {
     if (this.engine_spec["invisible"]) {
-      this.opacity = _.max([this.opacity - 0.05, 0.05]);
+      this.opacity = _.max([this.opacity - 0.04, 0.1]);
     }
     if (this.engine_spec["dwindle"] && this.event_count % 4 == 0) {
       this.radius = _.max([this.radius - 1, 1]);

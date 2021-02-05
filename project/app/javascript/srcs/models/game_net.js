@@ -10,7 +10,7 @@ export const GameNet = Backbone.Model.extend({
     this.y = 0;
     this.width = 2;
     this.height = 10;
-    this.color = "BLACK";
+    this.color = "WHITE";
   },
 
   render: function () {

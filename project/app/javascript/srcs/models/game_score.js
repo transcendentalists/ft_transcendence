@@ -10,8 +10,8 @@ export const GameScore = Backbone.Model.extend({
     this.y = cvs.height / 5;
     this.left = 0;
     this.right = 0;
-    this.fillstyle = "BLACK";
-    this.font = "45px fantasy";
+    this.fillstyle = "WHITE";
+    this.font = "60px Brush Script MT";
     this.target_score = spec.target_score;
   },
 

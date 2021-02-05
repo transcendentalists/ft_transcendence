@@ -17,7 +17,6 @@ export let UserRankingView = Backbone.View.extend({
   },
 
   render: function (users_data) {
-    console.log(users_data);
     this.$("#user-profile-card-list").html("");
     users_data.forEach(this.addOne, this);
     return this;

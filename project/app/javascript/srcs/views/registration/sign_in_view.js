@@ -75,7 +75,6 @@ export let SignInView = Backbone.View.extend({
       Helper.fetch(`users/${name}/session`, this.signInParams(name, password));
     } else {
       let verification_code = $("input[name=auth]").val();
-      console.log(verification_code);
 
       Helper.fetch(
         "auth/mail/callback",

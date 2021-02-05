@@ -1,3 +1,4 @@
+import { Helper } from "./helper";
 import { App } from "./internal";
 
 export let Router = Backbone.Router.extend({
@@ -30,8 +31,8 @@ export let Router = Backbone.Router.extend({
   },
 
   sessionsController: function () {
-    if (App.current_user.signed_in)
-      this.redirect_to(App.View.UserIndexView, App.current_user.id);
+    if (App.current_user.sign_in)
+      return this.navigate("#/users/" + App.current_user.id);
     else App.mainView.render(App.View.SignInView);
   },
 
@@ -93,7 +94,7 @@ export let Router = Backbone.Router.extend({
   },
 
   errorsController(error_code) {
-    if (error_code === null) this.redirect_to(App.View.ErrorView, 100);
+    if (error_code === null) this.navigate("errors/" + 100);
     else this.redirect_to(App.View.ErrorView, error_code);
   },
 });

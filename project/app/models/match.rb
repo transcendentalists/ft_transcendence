@@ -5,6 +5,6 @@ class Match < ApplicationRecord
   has_many :users, through: :scorecards
 
   def start
-    self.update(status: "progress")
+    self.update(status: "progress", start_time: Time.now())
   end
 end

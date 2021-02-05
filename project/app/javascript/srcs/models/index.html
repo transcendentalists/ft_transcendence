@@ -1,62 +1,121 @@
 <html>
   <style>
     body {
-      background-color: blue;
-    }
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
+      background-image: url("../../../assets/images/game_index.jpg");
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   </style>
   <body>
-    <p>adasdasdasdbsafbajksbfkjas</p>
-    <p>adasdasdasdbsafbajksbfkjas</p>
-    <p>adasdasdasdbsafbajksbfkjas</p>
     <canvas id="game-canvas" width="900" height="400"> </canvas>
   </body>
+
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
     integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
     crossorigin="anonymous"
   ></script>
   <script>
+    function drawText(ctx, text, x, y, font, color) {
+      ctx.fillStyle = color;
+      ctx.font = font;
+      ctx.fillText(text, x, y);
+    }
+
+    function drawMap(ctx, x, y, w, h, start_color, end_color) {
+      let my_gradient = ctx.createLinearGradient(x, y, w, h);
+      my_gradient.addColorStop(0, start_color);
+      my_gradient.addColorStop(1, end_color);
+      ctx.fillStyle = my_gradient;
+      ctx.fillRect(x, y, w, h);
+    }
+
     function drawRect(ctx, x, y, w, h, color) {
       ctx.fillStyle = color;
       ctx.fillRect(x, y, w, h);
-    };
+    }
 
-    let paddle =
-    function checkKey(e)
-    e = e || window.event;
-    if (e.keyCode == 38) {
-      this.current_paddle.moveUp(this);
-    } else if (e.keyCode == 40) {
-      this.current_paddle.moveDown(this);
-    };
+    function drawCircle(ctx, x, y, r, color, opacity = 1) {
+      if (color == "BLACK") color = "rgba(0,0,0," + opacity;
+      else if (color == "WHITE") color = "rgba(255,255,255," + opacity;
+      else color = "rgba(" + color + "," + opacity + ")";
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2, false);
+      ctx.fill();
+    }
 
-    document.onkeydown = checkKey;
+    window.colorArray = [
+      ["#F8D90F", "#FF7B89"],
+      ["#F8D90F", "#86E3CE"],
+      ["#F8D90F", "#FFCF1B"],
+      ["#F8D90F", "#D0E6A5"],
+      ["#F8D90F", "#FA8978"],
+      ["#F8D90F", "#E2B0FF"],
+      ["#F8D90F", "#90F7EC"],
+      ["#F8D90F", "#F6EA41"],
+      ["#F8D90F", "#E06C78"],
+    ];
+    window.TextArray = [
+      // "45px Arial",
+      // "45px Candara",
+      // "45px Geneva",
+      // "45px Calibri",
+      // "45px Monaco",
+      // "45px Didot",
+      "60px Brush Script MT",
+      "45px Lucida Bright",
+      "45px Copperplate",
+      "45px Dishonorable Mention",
+      "45px Comic Sans",
+    ];
+    window.colorIndex = 0;
+
+    function checkKey(e) {
+      e = e || window.event;
+      if (e.keyCode == 38) {
+        window.colorIndex += 1;
+        if (window.colorIndex == window.TextArray.length) window.colorIndex = 0;
+      } else if (e.keyCode == 40) {
+        window.colorIndex -= 1;
+        if (window.colorIndex == -1)
+          window.colorIndex = window.TextArray.length - 1;
+      }
+      draw();
+    }
+
+    document.onkeydown = this.checkKey.bind(this);
 
     window.cvs = document.getElementById("game-canvas");
     window.ctx = this.cvs.getContext("2d");
 
-    function drawRect(ctx, x, y, w, h, color) {
-      var my_gradient = ctx.createLinearGradient(20, 20, x, y);
-      my_gradient.addColorStop(0, "#7BF2E9");
-      my_gradient.addColorStop(1, "#B65EBA");
-      ctx.fillStyle = my_gradient;
-
-      // ctx.fillStyle = color;
-      ctx.fillRect(x, y, w, h);
+    function draw() {
+      drawMap(ctx, 0, 0, cvs.width, cvs.height, "#F8D90F", "#FF7B89");
+      for (let i = 0; i <= cvs.height; i += 15) {
+        drawRect(ctx, cvs.width / 2 - 1, 0 + i, 2, 10, "WHITE");
+      }
+      drawCircle(ctx, 350, 250, 8, "WHITE", "1"); // draw com paddle
+      drawRect(ctx, cvs.width - 10, cvs.height / 2 - 100 / 2, 10, 100, "WHITE");
+      drawRect(ctx, 0, cvs.height / 2 - 100 / 2, 10, 100, "WHITE");
+      drawText(
+        ctx,
+        1,
+        cvs.width / 4,
+        cvs.height / 5,
+        TextArray[colorIndex],
+        "WHITE"
+      ); // draw left score
+      drawText(
+        this.ctx,
+        2,
+        (3 * cvs.width) / 4,
+        cvs.height / 5,
+        TextArray[colorIndex],
+        "WHITE"
+      ); //
     }
 
-    drawRect(
-      this.ctx,
-      100,
-      100,
-      this.cvs.width,
-      this.cvs.height,
-      "rgba(255, 255, 255)"
-    );
+    draw();
   </script>
 </html>

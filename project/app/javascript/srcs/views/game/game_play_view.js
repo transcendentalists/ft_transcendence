@@ -24,8 +24,8 @@ export let GamePlayView = Backbone.View.extend({
     this.net = new App.Model.GameNet(this);
     this.ball = new App.Model.GameBall(this, spec.rule);
     this.score = new App.Model.GameScore(this.cvs, this.ctx, this.spec);
-    this.left_paddle = new App.Model.GamePaddle("BLACK", "LEFT", this);
-    this.right_paddle = new App.Model.GamePaddle("BisLACK", "RIGHT", this);
+    this.left_paddle = new App.Model.GamePaddle("WHITE", "LEFT", this);
+    this.right_paddle = new App.Model.GamePaddle("WHITE", "RIGHT", this);
 
     if (!self.is_player) return;
 
@@ -38,7 +38,6 @@ export let GamePlayView = Backbone.View.extend({
         ? this.right_paddle
         : this.left_paddle;
     this.clear_key = null;
-    this.turn = 0;
   },
 
   collision(p, b) {
@@ -100,8 +99,8 @@ export let GamePlayView = Backbone.View.extend({
       0,
       this.cvs.width,
       this.cvs.height,
-      "#FFCF1B",
-      "#FF881B"
+      "#F8D90F",
+      "#FF7B89"
     );
     this.net.render();
     this.ball.render();
@@ -144,7 +143,6 @@ export let GamePlayView = Backbone.View.extend({
     if (this.is_player) this.operateEngine();
 
     this.drawCanvas();
-    this.turn++;
   },
 
   render: function () {
@@ -156,8 +154,17 @@ export let GamePlayView = Backbone.View.extend({
     );
   },
 
-  close: function (option) {
+  stopRender: function () {
+    document.onkeydown = null;
+    if (!this.clear_key) return;
+    clearInterval(this.clear_key);
+    this.clear_key = null;
+  },
+
+  close: function () {
     if (this.clear_key) clearInterval(this.clear_key);
+    this.parent_view = null;
+    this.channel = null;
     this.net = null;
     this.ball = null;
     this.score = null;
@@ -166,9 +173,5 @@ export let GamePlayView = Backbone.View.extend({
     this.current_paddle = null;
     this.enemy_paddle = null;
     this.clear_key = null;
-    this.spec = null;
-    this.parent_view = null;
-    this.channel = null;
-    if (option && option["remove"]) this.remove();
   },
 });

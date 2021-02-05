@@ -1,4 +1,5 @@
 import consumer from "./consumer";
+import Helper from "srcs/helper";
 
 export function ConnectGameChannel(recv_callback, self, match_id) {
   return consumer.subscriptions.create(
@@ -12,6 +13,7 @@ export function ConnectGameChannel(recv_callback, self, match_id) {
       },
 
       disconnected() {
+        this.unsubscribe();
         // Called when the subscription has been terminated by the server
       },
 

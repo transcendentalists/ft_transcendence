@@ -2,6 +2,7 @@ class GameChannel < ApplicationCable::Channel
   # 이미 끝난 게임이나 반대로 만들어지지 않은 게임에 접근하려고 할 경우에 대한 예외처리
   # 듀얼, 래더, 토너먼트, 워매치 등 매치 타입에 따라 매치가 먼저 생성되거나, 유저가 먼저 할당되거나, 게임 스타트타임이 할당되어 있는 경우 고려
   def subscribed
+    Rails.logger.info "DEBUG:: subscribed"
     @match = Match.find(params[:match_id])
     reject if current_user.status == "offline"
     stream_from "game_channel_#{params[:match_id].to_s}"

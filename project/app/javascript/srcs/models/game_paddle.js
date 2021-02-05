@@ -10,7 +10,6 @@ export const GamePaddle = Backbone.Model.extend({
     this.width = 10;
     this.height = 100;
     this.side = side;
-    this.count = 0;
   },
 
   near: function (ball) {
@@ -51,13 +50,11 @@ export const GamePaddle = Backbone.Model.extend({
   moveUp: function (self) {
     this.y = Math.max(this.y - 8, 0 - this.height / 2);
     self.sendObjectSpec(this.to_simple());
-    ++this.count;
   },
 
   moveDown: function (self) {
     this.y = Math.min(this.y + 8, this.cvs.height - this.height / 2);
     self.sendObjectSpec(this.to_simple());
-    ++this.count;
   },
 
   to_simple: function () {

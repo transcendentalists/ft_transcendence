@@ -134,4 +134,3 @@ export let App = {
     ConnectNotificationChannel,
   },
 };
-window.app = App;

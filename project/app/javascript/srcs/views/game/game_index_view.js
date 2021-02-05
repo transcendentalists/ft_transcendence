@@ -12,6 +12,7 @@ export let GameIndexView = Backbone.View.extend({
     this.left_player_view = null;
     this.right_player_view = null;
     this.play_view = null;
+    this.clear_id = null;
   },
 
   joinGame: function () {
@@ -33,6 +34,21 @@ export let GameIndexView = Backbone.View.extend({
     );
   },
 
+  sendInformation: function (type) {
+    Helper.info({
+      subject: "게임종료",
+      description:
+        (type == "END"
+          ? "게임이 종료되었습니다. "
+          : "유저가 게임을 기권하였습니다. ") +
+        "잠시후 홈 화면으로 이동합니다.",
+    });
+  },
+
+  redirectHomeCallback: function () {
+    return App.router.navigate("#/");
+  },
+
   recv: function (msg) {
     if (
       msg.type == "START" ||
@@ -42,13 +58,12 @@ export let GameIndexView = Backbone.View.extend({
       this.renderPlayerView(msg);
     } else if (msg.type == "BROADCAST") this.play_view.update(msg);
     else if (msg.type == "END" || msg.type == "ENEMY_GIVEUP") {
-      this.play_view.close({ remove: false });
-      Helper.info({
-        subject: "게임종료",
-        description: "게임이 종료되었습니다.",
-      });
-      console.log("DEBUG:: Game is end");
-      console.log(msg);
+      if (this.play_view) this.play_view.stopRender();
+      if (this.clear_id) clearInterval(this.clear_id);
+      this.sendInformation(msg.type);
+      setTimeout(this.redirectHomeCallback, 3000);
+      this.channel.unsubscribe();
+      this.channel = null;
     }
   },
 
@@ -73,11 +88,12 @@ export let GameIndexView = Backbone.View.extend({
   countDown: function () {
     let $box = this.$("#count-down-box");
     $box.html(10);
-    let clear_id = setInterval(
+    this.clear_id = setInterval(
       function () {
         $box.text(+$box.text() - 1);
         if ($box.text() == 0) {
-          clearInterval(clear_id);
+          clearInterval(this.clear_id);
+          this.clear_id = null;
           $box.empty();
           this.start();
         }
@@ -103,6 +119,7 @@ export let GameIndexView = Backbone.View.extend({
     if (this.left_player_view) this.left_player_view.close();
     if (this.right_player_view) this.right_player_view.close();
     if (this.play_view) this.play_view.close();
+    if (this.channel) this.channel.unsubscribe();
     this.remove();
   },
 });

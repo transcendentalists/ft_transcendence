@@ -28,6 +28,7 @@ import { AdminGuildDetailView } from "./views/admin/admin_guild_detail_view";
 
 import { OnlineUserListView } from "./views/persist/appearance/online_user_list_view";
 import { UserUnitView } from "./views/persist/appearance/user_unit_view";
+import { UserMenuView } from "./views/persist/appearance/user_menu_view";
 
 import { Helper } from "./helper";
 export { Helper } from "./helper";
@@ -56,11 +57,12 @@ export let App = {
     this.mainView = App.appView.main_view;
     this.current_user = new CurrentUser();
     this.consumer = consumer;
+    window.consumer = consumer;
   },
 
   restart: function () {
-    this.consumer.subscriptions.subscriptions.forEach((subscription) =>
-      subscription.unsubscribe()
+    this.consumer.subscriptions.subscriptions.forEach(subscription =>
+      subscription.unsubscribe(),
     );
     this.consumer.disconnect();
     Helper.fetch(`users/${App.current_user.get("id")}/session`, {
@@ -116,6 +118,7 @@ export let App = {
     AdminGuildDetailView,
     OnlineUserListView,
     UserUnitView,
+    UserMenuView,
   },
   Channel: {
     ConnectAppearanceChannel,

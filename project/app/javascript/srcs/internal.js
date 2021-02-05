@@ -18,6 +18,11 @@ import { LiveIndexView } from "./views/live/live_index_view";
 import { WarIndexView } from "./views/war/war_index_view";
 import { WarCreateView } from "./views/war/war_create_view";
 import { GameIndexView } from "./views/game/game_index_view";
+import { GamePlayView } from "./views/game/game_play_view";
+import { GameNet } from "./models/game_net";
+import { GameBall } from "./models/game_ball";
+import { GameScore } from "./models/game_score";
+import { GamePaddle } from "./models/game_paddle";
 import { TournamentIndexView } from "./views/tournament/tournament_index_view";
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
 import { AdminUserIndexView } from "./views/admin/admin_user_index_view";
@@ -63,8 +68,7 @@ export let App = {
     this.consumer.subscriptions.subscriptions.forEach((subscription) =>
       subscription.unsubscribe()
     );
-    this.consumer.close();
-    // this.consumer.disconnect();
+    this.consumer.disconnect();
     Helper.fetch(`users/${this.current_user.get("id")}/session`, {
       method: "DELETE",
     });
@@ -76,6 +80,10 @@ export let App = {
   Model: {
     User,
     CurrentUser,
+    GameNet,
+    GameBall,
+    GameScore,
+    GamePaddle,
   },
   Collection: {
     Users,
@@ -109,6 +117,7 @@ export let App = {
     WarIndexView,
     WarCreateView,
     GameIndexView,
+    GamePlayView,
     TournamentIndexView,
     TournamentCreateView,
     AdminUserIndexView,

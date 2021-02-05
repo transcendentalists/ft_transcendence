@@ -28,13 +28,29 @@ class User < ApplicationRecord
     self.update(status: "offline")
   end
 
+  def playing?
+    self.status == "playing"
+  end
+
+  # instance methods for game
+  def playing_game
+    self.matches.find_by_status(:progress)
+  end
+
+  def enemy
+    self.playing_game&.users&.where&.not(id: self.id)
+  end
+
+  def tier
+    [ "cooper", "bronze", "silver", "gold", "diamond" ][self.point / 100]
+  end
+
   def game_stat
     data = self.scorecards.group(:result).count
     stat = {}
-    stat[:win_count], stat[:lose_count] = data[:win] ? data[:win] : 0, data[:lose] ? data[:lose] : 0
-    stat[:tier] = [ "cooper", "bronze", "silver", "gold", "diamond" ][self.point / 100]
+    stat[:win_count], stat[:lose_count] = data['win'] ? data['win'] : 0, data['lose'] ? data['lose'] : 0
+    stat[:tier] = self.tier
     stat[:rank] = User.order(point: :desc).index(self) + 1
-    p stat
     return stat
   end
 

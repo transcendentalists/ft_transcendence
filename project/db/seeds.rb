@@ -27,9 +27,13 @@ Friendship.create([
 ])
 
 Rule.create([
-  {name: "test"},
-  {name: "rulllle"},
-  {name: "gg"},
+  {name: "classic"},
+  {name: "invisible", invisible: true},
+  {name: "dwindle", dwindle: true},
+  {name: "accel_wall", accel_wall: true},
+  {name: "accel_paddle", accel_paddle: true},
+  {name: "bound_wall", bound_wall: true},
+  {name: "bound_paddle", bound_paddle: true},
 ])
 
 Guild.create([

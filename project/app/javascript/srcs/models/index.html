@@ -1,0 +1,62 @@
+<html>
+  <style>
+    body {
+      background-color: blue;
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+  </style>
+  <body>
+    <p>adasdasdasdbsafbajksbfkjas</p>
+    <p>adasdasdasdbsafbajksbfkjas</p>
+    <p>adasdasdasdbsafbajksbfkjas</p>
+    <canvas id="game-canvas" width="900" height="400"> </canvas>
+  </body>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
+    crossorigin="anonymous"
+  ></script>
+  <script>
+    function drawRect(ctx, x, y, w, h, color) {
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
+    };
+
+    let paddle =
+    function checkKey(e)
+    e = e || window.event;
+    if (e.keyCode == 38) {
+      this.current_paddle.moveUp(this);
+    } else if (e.keyCode == 40) {
+      this.current_paddle.moveDown(this);
+    };
+
+    document.onkeydown = checkKey;
+
+    window.cvs = document.getElementById("game-canvas");
+    window.ctx = this.cvs.getContext("2d");
+
+    function drawRect(ctx, x, y, w, h, color) {
+      var my_gradient = ctx.createLinearGradient(20, 20, x, y);
+      my_gradient.addColorStop(0, "#7BF2E9");
+      my_gradient.addColorStop(1, "#B65EBA");
+      ctx.fillStyle = my_gradient;
+
+      // ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
+    }
+
+    drawRect(
+      this.ctx,
+      100,
+      100,
+      this.cvs.width,
+      this.cvs.height,
+      "rgba(255, 255, 255)"
+    );
+  </script>
+</html>

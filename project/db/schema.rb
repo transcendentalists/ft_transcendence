@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_03_142544) do
+ActiveRecord::Schema.define(version: 2021_02_04_012328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,8 +105,8 @@ ActiveRecord::Schema.define(version: 2021_02_03_142544) do
 
   create_table "matches", force: :cascade do |t|
     t.bigint "rule_id", null: false
-    t.string "eventable_type", null: false
-    t.bigint "eventable_id", null: false
+    t.string "eventable_type"
+    t.bigint "eventable_id"
     t.string "match_type", null: false
     t.string "status", default: "pending"
     t.datetime "start_time"

@@ -1,4 +1,4 @@
-import { App } from "../../../internal";
+import { App, Helper } from "../../../internal";
 
 export let UserMenuView = Backbone.View.extend({
   template: _.template($("#user-menu-view-template").html()),
@@ -12,28 +12,48 @@ export let UserMenuView = Backbone.View.extend({
     "click [data-event-name=user-ban]": "userBan",
   },
 
-  directChat: function() {
+  directChat: function () {
     // this.model
     App.appView.direct_chat_view.render();
     console.log("directChat!!");
   },
 
-  chatBan: function() {
+  chatBanParams: function () {
+    return {
+      method: "POST",
+      body: {
+        banned_user: {
+          id: this.model.get("id"),
+        },
+      },
+    };
+  },
+
+  chatBan: function () {
     // this.model
+    // http://localhost:3000/rails/info/routes
+    // user_id: 이건 아마 내 아이디. body: { user: {id: ~, name:  }}
+    // callBack도 함수로 밖에 다가 구현한 다음에 fetch에 넣기로 했다.
+    console.log(`users/${App.current_user.id}/chat_bans`);
+    Helper.fetch(
+      // http://localhost:3000/rails/info/routes
+      `users/${App.current_user.id}/chat_bans`,
+      this.chatBanParams(),
+    );
     console.log("chatBan!!");
   },
 
-  newFriend: function() {
+  newFriend: function () {
     // this.model
     console.log("newFriend!!");
   },
 
-  battle: function() {
+  battle: function () {
     // this.model
     console.log("battle!!");
   },
 
-  userBan: function() {
+  userBan: function () {
     // this.model
     console.log("userBan!!");
   },

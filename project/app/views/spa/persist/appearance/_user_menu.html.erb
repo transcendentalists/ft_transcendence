@@ -1,27 +1,23 @@
 <script type="text/template" id="user-menu-view-template">
-  <div class="ui center aligned container">
-    <%# <div style="position:absolute; top:100px; left:170px; z-index:103" class="ui mini pointing vertical menu">  %>
-    <div class="ui mini pointing vertical menu"> 
-      <%# user 를 인자로 받아서 처리하게 수정하자 %>
-      <a href="#/users/" class="item center aligned">
-        유저정보
-      </a>
-      <%# 이벤트를 걸자. %>
-      <a class="item" data-event-name="direct-chat">
-        대화하기
-      </a>
-      <a class="item">
-        대화차단
-      </a>
-      <a class="item">
-        친구추가
-      </a>
-      <a class="item"></a>
-        대전신청
-      </a>
-      <a class="item">
-        User ban
-      </a>
-    </div>
+ <div class="ui mini pointing vertical menu" style="text-align: center;">  
+    <%# user 를 인자로 받아서 처리하게 수정하자 %>
+    <a class="item" href="#/users/<%%- id %>" >
+      유저정보 
+    </a>
+    <a class="item" data-event-name="direct-chat">
+      대화하기
+    </a>
+    <a class="item" data-event-name="chat-ban">
+      대화차단
+    </a>
+    <a class="item" data-event-name="new-friend">
+      친구추가
+    </a>
+    <a class="item" data-event-name="battle">
+      대전신청
+    </a>
+    <a class="item" data-event-name="user-ban">
+      User ban
+    </a>
   </div>
 </script>

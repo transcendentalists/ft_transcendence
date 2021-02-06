@@ -16,11 +16,7 @@ export let UserMenuView = Backbone.View.extend({
   initialize: function (options) {
     this.parent = options.parent;
     this.online_users = options.parent.online_users;
-    this.listenTo(
-      this.parent.parent.online_users,
-      "hide_user_menu_all",
-      this.close
-    );
+    this.listenTo(this.online_users, "destroy_user_menu_all", this.close);
   },
 
   directChat: function () {

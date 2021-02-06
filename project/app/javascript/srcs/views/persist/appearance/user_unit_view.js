@@ -7,7 +7,7 @@ export let UserUnitView = Backbone.View.extend({
   template: _.template($("#appearance-user-list-unit-template").html()),
 
   events: {
-    "click ": "hideAndShowUserMenu",
+    "click ": "destroyAndCreateUserMenu",
   },
 
   initialize: function (options) {
@@ -15,15 +15,15 @@ export let UserUnitView = Backbone.View.extend({
     this.online_users = options.parent.online_users;
     this.listenTo(this.model, "remove", this.close);
     this.listenTo(this.model, "change:status", this.changeStatus);
-    this.listenTo(this.model, "show_user_menu", this.showUserMenu);
+    this.listenTo(this.model, "create_user_menu", this.createUserMenu);
   },
 
-  hideAndShowUserMenu: function () {
-    this.parent.online_users.trigger("hide_user_menu_all");
-    this.model.trigger("show_user_menu");
+  destroyAndCreateUserMenu: function () {
+    this.parent.online_users.trigger("destroy_user_menu_all");
+    this.model.trigger("create_user_menu");
   },
 
-  showUserMenu: function () {
+  createUserMenu: function () {
     let position = this.$el.offset();
 
     this.user_menu_view = new App.View.UserMenuView({

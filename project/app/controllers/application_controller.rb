@@ -6,8 +6,4 @@ class ApplicationController < ActionController::Base
   def remove_session
     cookies.encrypted[:service_id] = 0
   end
-
-  def is_current_user(id)
-    cookies.encrypted[:service_id] == id
-  end
 end

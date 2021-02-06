@@ -7,20 +7,29 @@ export let UserUnitView = Backbone.View.extend({
   template: _.template($("#appearance-user-list-unit-template").html()),
 
   events: {
-    "click ": "showUserMenu",
+    "click ": "hideAndShowUserMenu",
   },
 
-  initialize: function () {
+  initialize: function (options) {
+    this.parent = options.parent;
+    this.online_users = options.parent.online_users;
     this.listenTo(this.model, "remove", this.close);
     this.listenTo(this.model, "change:status", this.changeStatus);
+    this.listenTo(this.model, "show_user_menu", this.showUserMenu);
+  },
+
+  hideAndShowUserMenu: function () {
+    this.parent.online_users.trigger("hide_user_menu_all");
+    this.model.trigger("show_user_menu");
   },
 
   showUserMenu: function () {
-    if ($("#user-menu-view").length) {
-      $("#user-menu-view").remove();
-    }
     let position = this.$el.offset();
-    this.user_menu_view = new App.View.UserMenuView({ model: this.model });
+
+    this.user_menu_view = new App.View.UserMenuView({
+      parent: this,
+      model: this.model,
+    });
     $("#root").append(this.user_menu_view.render(position).$el);
   },
 
@@ -29,7 +38,7 @@ export let UserUnitView = Backbone.View.extend({
       this.template({
         name: this.model.get("name"),
         status: this.model.get("status"),
-      }),
+      })
     );
     return this;
   },

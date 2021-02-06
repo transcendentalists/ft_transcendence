@@ -31,9 +31,12 @@ export let OnlineUserListView = Backbone.View.extend({
     if (App.current_user.get("id") === user.get("id")) {
       return;
     }
-    this.online_user_unit = new App.View.UserUnitView({ model: user });
+    this.online_user_unit = new App.View.UserUnitView({
+      parent: this,
+      model: user,
+    });
     this.$(".ui.middle.aligned.selection.list").append(
-      this.online_user_unit.render().$el,
+      this.online_user_unit.render().$el
     );
   },
 
@@ -67,7 +70,7 @@ export let OnlineUserListView = Backbone.View.extend({
   updateUserStatus: function (user_data) {
     if (user_data.status == "online") {
       if (this.isUserInTheCollection(user_data)) {
-        let user = this.online_users.where({ id: user_data.id })[0]
+        let user = this.online_users.where({ id: user_data.id })[0];
         user.set({ status: "online" });
       } else {
         this.online_users.add(new App.Model.User(user_data));

@@ -13,6 +13,16 @@ export let UserMenuView = Backbone.View.extend({
     "click [data-event-name=user-ban]": "userBan",
   },
 
+  initialize: function (options) {
+    this.parent = options.parent;
+    this.online_users = options.parent.online_users;
+    this.listenTo(
+      this.parent.parent.online_users,
+      "hide_user_menu_all",
+      this.close
+    );
+  },
+
   directChat: function () {
     // this.model
     App.appView.direct_chat_view.render();
@@ -34,7 +44,7 @@ export let UserMenuView = Backbone.View.extend({
     console.log(`users/${App.current_user.id}/chat_bans`);
     Helper.fetch(
       `users/${App.current_user.id}/chat_bans`,
-      this.chatBanParams(),
+      this.chatBanParams()
     );
     console.log("chatBan!!");
   },

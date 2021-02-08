@@ -1,6 +1,13 @@
-import { User } from "./models/user";
-import { Users } from "./collections/users";
+// models
 import { CurrentUser } from "./models/current_user";
+import { User } from "./models/user";
+import { ChatBan } from "./models/chat_ban";
+
+// collections
+import { Users } from "./collections/users";
+import { ChatBans } from "./collections/chat_bans";
+
+// views
 import { SignInView } from "./views/registration/sign_in_view";
 import { SignUpView } from "./views/registration/sign_up_view";
 import { UserIndexView } from "./views/user/user_index_view";
@@ -61,8 +68,8 @@ export let App = {
   },
 
   restart: function () {
-    this.consumer.subscriptions.subscriptions.forEach(subscription =>
-      subscription.unsubscribe(),
+    this.consumer.subscriptions.subscriptions.forEach((subscription) =>
+      subscription.unsubscribe()
     );
     this.consumer.disconnect();
     Helper.fetch(`users/${App.current_user.get("id")}/session`, {
@@ -76,9 +83,11 @@ export let App = {
   Model: {
     User,
     CurrentUser,
+    ChatBan,
   },
   Collection: {
     Users,
+    ChatBans,
   },
   View: {
     SignInView,

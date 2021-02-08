@@ -79,7 +79,7 @@ export let SignInView = Backbone.View.extend({
 
       Helper.fetch(
         "auth/mail/callback",
-        this.authParams(this.me_id, verification_code)
+        this.authParams(this.current_user_id, verification_code)
       );
     }
   },

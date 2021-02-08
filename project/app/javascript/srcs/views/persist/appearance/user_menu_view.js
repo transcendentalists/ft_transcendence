@@ -17,7 +17,7 @@ export let UserMenuView = Backbone.View.extend({
     this.parent = options.parent;
     this.online_users = options.parent.online_users;
     this.listenTo(this.online_users, "destroy_user_menu_all", this.close);
-    $(window).bind("resize", _.bind(this.close, this));
+    this.listenTo(window, "resize", this.close);
   },
 
   directChat: function () {
@@ -75,7 +75,6 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   close: function () {
-    $(window).unbind("resize");
     this.remove();
   },
 });

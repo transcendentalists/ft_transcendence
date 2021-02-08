@@ -11,4 +11,10 @@ export let ChatBans = Backbone.Collection.extend({
   parse: function (response) {
     return response.chatBans;
   },
+
+  isUserChatBanned: function (user_id) {
+    if (typeof this.findWhere({ banned_user_id: user_id }) == "undefined")
+      return false;
+    else return true;
+  },
 });

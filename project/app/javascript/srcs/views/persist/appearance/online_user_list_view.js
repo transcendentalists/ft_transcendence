@@ -4,8 +4,11 @@ import { App } from "../../../internal";
 export let OnlineUserListView = Backbone.View.extend({
   template: _.template($("#appearance-online-user-list-view").html()),
 
-  initialize: function () {
-    this.online_users = new App.Collection.Users();
+  initialize: function (options) {
+    this.parent = options.parent;
+    this.chat_bans = this.parent.chat_bans;
+    this.online_users = this.parent.online_users;
+
     this.listenTo(this.online_users, "add", this.addOne);
     // this.listenTo(this.online_users, "change: status", deleteOne);
     this.listenTo(this.online_users, "reset", this.addAll);

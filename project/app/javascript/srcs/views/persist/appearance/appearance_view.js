@@ -9,7 +9,10 @@ export let AppearanceView = Backbone.View.extend({
     "click .logout.button ": "logout",
   },
 
-  initialize: function () {},
+  initialize: function () {
+    this.chat_bans = new App.Collection.ChatBans();
+    this.online_users = new App.Collection.Users();
+  },
 
   logout: function () {
     this.$el.empty();
@@ -18,12 +21,16 @@ export let AppearanceView = Backbone.View.extend({
 
   render: function () {
     console.log("appearance view render~!!");
+    this.chat_bans.fetch();
+
     this.appearance_channel = new App.Channel.ConnectAppearanceChannel();
 
     this.$el.empty();
     this.$el.html(this.template());
 
-    this.online_user_list_view = new App.View.OnlineUserListView();
+    this.online_user_list_view = new App.View.OnlineUserListView({
+      parent: this,
+    });
     // this.friend_list_view = new
 
     this.online_user_list_view

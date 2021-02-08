@@ -17,6 +17,7 @@ export let UserMenuView = Backbone.View.extend({
     this.parent = options.parent;
     this.online_users = options.parent.online_users;
     this.listenTo(this.online_users, "destroy_user_menu_all", this.close);
+    $(window).bind("resize", _.bind(this.close, this));
   },
 
   directChat: function () {
@@ -40,7 +41,7 @@ export let UserMenuView = Backbone.View.extend({
     console.log(`users/${App.current_user.id}/chat_bans`);
     Helper.fetch(
       `users/${App.current_user.id}/chat_bans`,
-      this.chatBanParams()
+      this.chatBanParams(),
     );
     console.log("chatBan!!");
   },
@@ -74,6 +75,7 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   close: function () {
+    $(window).unbind("resize");
     this.remove();
   },
 });

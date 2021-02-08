@@ -13,6 +13,7 @@ export let UserUnitView = Backbone.View.extend({
   initialize: function (options) {
     this.parent = options.parent;
     this.online_users = options.parent.online_users;
+    this.chat_bans = options.parent.chat_bans;
     this.listenTo(this.model, "remove", this.close);
     this.listenTo(this.model, "change:status", this.changeStatus);
     this.listenTo(this.model, "create_user_menu", this.createUserMenu);

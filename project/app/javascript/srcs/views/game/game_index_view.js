@@ -56,8 +56,13 @@ export let GameIndexView = Backbone.View.extend({
     ) {
       this.spec = msg;
       this.renderPlayerView(msg);
-    } else if (msg.type == "BROADCAST") this.play_view.update(msg);
-    else if (msg.type == "END" || msg.type == "ENEMY_GIVEUP") {
+    } else if (msg.type == "BROADCAST") {
+      if (this.play_view == null && !this.is_player) {
+        this.play_view = new App.View.GamePlayView(this, this.spec);
+        this.play_view.update(msg);
+        this.start();
+      } else this.play_view.update(msg);
+    } else if (msg.type == "END" || msg.type == "ENEMY_GIVEUP") {
       if (this.play_view) this.play_view.stopRender();
       if (this.clear_id) clearInterval(this.clear_id);
       this.sendInformation(msg.type);
@@ -81,8 +86,7 @@ export let GameIndexView = Backbone.View.extend({
     // 게임 시작 전부터 들어와있던 플레이어와 게스트들은 카운트다운 후 시작,
     this.$(".ui.active.loader").removeClass("active loader");
     this.$("#count-down-box").empty();
-    if (data["type"] == "START") this.countDown();
-    else this.start();
+    if (this.is_player) this.countDown();
   },
 
   countDown: function () {
@@ -103,7 +107,8 @@ export let GameIndexView = Backbone.View.extend({
   },
 
   start: function () {
-    this.play_view = new App.View.GamePlayView(this, this.spec);
+    if (this.is_player)
+      this.play_view = new App.View.GamePlayView(this, this.spec);
     this.play_view.render();
   },
 

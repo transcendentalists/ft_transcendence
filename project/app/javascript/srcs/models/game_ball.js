@@ -7,10 +7,10 @@ export const GameBall = Backbone.Model.extend({
     this.x = this.cvs.width / 2;
     this.y = this.cvs.height / 2;
     this.radius = 10;
-    this.speed = 4;
+    this.speed = 3;
     this.accel_speed = 0.2;
-    this.velocityX = 4;
-    this.velocityY = 4;
+    this.velocityX = 3;
+    this.velocityY = 3;
     this.opacity = 1;
     this.color = "WHITE";
     this.event_count = 0;
@@ -95,8 +95,8 @@ export const GameBall = Backbone.Model.extend({
       this.y += this.velocityY;
       if (this.accel_time > 0) {
         --this.accel_time;
-        this.x += this.velocityX * (this.event_count / 20);
-        this.y += this.accel_speed * (this.event_count / 20);
+        this.x += this.velocityX * (this.event_count / 30);
+        this.y += this.accel_speed * (this.event_count / 30);
       }
     }
 

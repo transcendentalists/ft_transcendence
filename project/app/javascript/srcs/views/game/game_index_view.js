@@ -144,7 +144,7 @@ export let GameIndexView = Backbone.View.extend({
    ** 플레이 뷰를 recv에서 먼저 생성하고 게임 정보를 업데이트한 후 시작
    */
   start: function () {
-    if (this.is_player == null)
+    if (this.play_view == null)
       this.play_view = new App.View.GamePlayView(this, this.spec);
     this.play_view.render();
   },

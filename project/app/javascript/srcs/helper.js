@@ -1,5 +1,5 @@
 export let Helper = {
-  fetchContainer: async function (url, hash_args) {
+  fetch: async function (url, hash_args) {
     let params = {
       method: hash_args.hasOwnProperty("method") ? hash_args["method"] : "GET",
       credentials: "same-origin",

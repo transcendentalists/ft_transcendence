@@ -6,7 +6,15 @@ class Api::UsersController < ApplicationController
   end
 
   def create
-    render plain: "post /api/users"
+    param = signup_params
+    if param.values.any?("") or User.exists?(name: param[:name]) or User.exists?(email: param[:email])
+      render :json => { error: {
+        'type': 'login failure', 'msg': "형식이 올바르지 않거나 고유하지 않은 값이 있습니다."
+        }
+      }, :status => 401
+    else
+      render :json => { user: User.create(param).to_simple }
+    end
   end
 
   def show
@@ -48,6 +56,10 @@ class Api::UsersController < ApplicationController
   end
 
   private
+  def signup_params
+    params.require(:user).permit(:name, :email, :password)
+  end
+
   def signin_params
     params.require(:user).permit(:name, :password)
   end

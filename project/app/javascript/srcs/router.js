@@ -34,7 +34,7 @@ export let Router = Backbone.Router.extend({
   },
 
   usersController: function (param) {
-    if (param === "new") return App.mainView.render(App.View.signUpView);
+    if (param === "new") return App.mainView.render(App.View.SignUpView);
     this.redirect_to(App.View.UserIndexView, param);
   },
 

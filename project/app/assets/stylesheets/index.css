@@ -19,6 +19,18 @@ body {
   /* left: 50%; */
 }
 
+#sign-up-view {
+  margin-top: 25vh;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  width: 300px;
+}
+
+#sign-up-view button {
+  margin-top: 1.8rem;
+}
+
 #appearance-view {
   position: fixed;
   height: 100vh;
@@ -85,4 +97,24 @@ body {
 .ui.selection.list .list > .item,
 .ui.selection.list > .item {
   padding: 0.5em 5em;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-container.column-direction {
+  flex-direction: column;
+}
+
+.flex-container.space-between {
+  justify-content: space-between;
+}
+
+.flex-container.center-aligned {
+  align-items: center;
+}
+
+.flex-container.baseline {
+  align-items: baseline;
 }

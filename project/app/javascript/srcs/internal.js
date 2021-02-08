@@ -35,7 +35,7 @@ import { ErrorView } from "./views/aside/error_view";
 
 export let App = {
   initialize: function () {
-    Helper.fetchContainer("session", { method: "DELETE" });
+    Helper.fetch("session", { method: "DELETE" });
     this.appView = new AppView();
     this.router = new Router();
     this.mainView = App.appView.main_view;

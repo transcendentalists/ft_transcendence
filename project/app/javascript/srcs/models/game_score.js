@@ -44,6 +44,7 @@ export const GameScore = Backbone.Model.extend({
     this.right = +data.right;
   },
 
+  // draw left score
   render: function () {
     Draw.drawText(
       this.ctx,
@@ -52,7 +53,9 @@ export const GameScore = Backbone.Model.extend({
       this.y,
       this.font,
       this.fillstyle
-    ); // draw left score
+    );
+
+    // draw right score
     Draw.drawText(
       this.ctx,
       this.right,
@@ -60,7 +63,7 @@ export const GameScore = Backbone.Model.extend({
       this.y,
       this.font,
       this.fillstyle
-    ); // draw right score
+    );
     return this;
   },
 });

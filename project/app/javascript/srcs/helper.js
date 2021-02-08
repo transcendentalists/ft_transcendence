@@ -62,7 +62,7 @@ export let Helper = {
 
     if (!data.hasOwnProperty("subject"))
       data.subject = "경고 창의 제목을 설정해주세요.";
-    if (!data.hasOwnProperty("descriotion"))
+    if (!data.hasOwnProperty("description"))
       data.description = "경고 내용을 입력해주세요.";
 
     App.appView.alert_modal_view.render(data);

@@ -26,6 +26,7 @@ export function ConnectGameChannel(recv_callback, self, match_id) {
         this.perform("speak", msg);
       },
 
+      // 실점한 플레이어가 자신의 사이드를 채널에 보고
       losePoint(user_id, side) {
         const msg = {
           match_id: match_id,

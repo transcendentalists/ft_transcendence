@@ -60,6 +60,17 @@ export let GameIndexView = Backbone.View.extend({
     });
   },
 
+  sendAlert: function () {
+    Helper.info({
+      subject: "잘못된 접근",
+      description:
+        (type == "END"
+          ? "게임이 종료되었습니다. "
+          : "유저가 게임을 기권하였습니다. ") +
+        "잠시후 홈 화면으로 이동합니다.",
+    });
+  },
+
   redirectHomeCallback: function () {
     return App.router.navigate("#/");
   },
@@ -93,6 +104,12 @@ export let GameIndexView = Backbone.View.extend({
       setTimeout(this.redirectHomeCallback, 3000);
       this.channel.unsubscribe();
       this.channel = null;
+    } else if (msg.type == "STOP") {
+      Helper.info({
+        subject: "잘못된 접근",
+        description: "취소/종료되었거나 유효하지 않은 게임입니다.",
+      });
+      setTimeout(this.redirectHomeCallback, 3000);
     }
   },
 

@@ -13,6 +13,9 @@ class Api::UsersController < ApplicationController
         }
       }, :status => 401
     else
+      user = User.create(param)
+      user.update(status: "online")
+      #FIXME: user의 상태 온라인으로 변경하는 퍼블릭 인터페이스로 수정 필요
       render :json => { user: User.create(param).to_simple }
     end
   end

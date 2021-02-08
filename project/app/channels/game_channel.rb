@@ -43,13 +43,23 @@ class GameChannel < ApplicationCable::Channel
     complete_by_match_end(card.user.id) if (@match.target_score == card.score)
   end
 
+  def update_game_status
+    @match.users.each do |user|
+      if user == @match.winner
+        user.update(point: user.point + 20)
+      else
+        user.update(point: user.point + 5)
+      end
+    end
+    @match.update(status: "completed")
+  end
+
   def complete_by_match_end(winner_id)
     @match.scorecards.each do |card|
       card.update(result: card.score == @match.target_score ? "win" : "lose")
       card.user.update(status: "online")
     end
-    @match.update(status: "completed")
-    
+    update_game_status
     send_complete_message("END", winner_id)
   end
 
@@ -60,9 +70,10 @@ class GameChannel < ApplicationCable::Channel
     @match.scorecards.each do |card|
       card.update(result: card.user.id == current_user.id ? "lose" : "win")
     end
+    winner_id = current_user.enemy
     @match.update(status: "completed")
 
-    send_complete_message("ENEMY_GIVEUP", current_user.id)
+    send_complete_message("ENEMY_GIVEUP", winner_id)
   end
 
   def send_complete_message(type, winner_id)

@@ -7,4 +7,8 @@ class Match < ApplicationRecord
   def start
     self.update(status: "progress", start_time: Time.now())
   end
+
+  def winner
+    self.scorecards.find_by_result("win")
+  end
 end

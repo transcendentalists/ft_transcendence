@@ -18,8 +18,8 @@ export let AppView = Backbone.View.extend({
     this.appearance_view.render();
     this.nav_bar_view.render();
 
-    // this.invite_view.render();
-    // this.direct_chat_view.render();
+    this.invite_view.render();
+    this.direct_chat_view.render();
 
     return this;
   },

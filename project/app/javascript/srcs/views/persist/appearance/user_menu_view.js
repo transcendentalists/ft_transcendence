@@ -9,7 +9,8 @@ export let UserMenuView = Backbone.View.extend({
     "click [data-event-name=direct-chat]": "directChat",
     "click [data-event-name=create-chat-ban]": "createChatBan",
     "click [data-event-name=destroy-chat-ban]": "destroyChatBan",
-    "click [data-event-name=new-friend]": "newFriend",
+    "click [data-event-name=create-friend]": "createFriend",
+    "click [data-event-name=destroy-friend]": "destroyFriend",
     "click [data-event-name=battle]": "battle",
     "click [data-event-name=user-ban]": "userBan",
   },
@@ -41,9 +42,15 @@ export let UserMenuView = Backbone.View.extend({
     this.close();
   },
 
-  newFriend: function () {
-    // this.model
+  createFriend: function () {
     console.log("newFriend!!");
+    this.friends.createFriendship(this.model.get("id"));
+    this.close();
+  },
+
+  destroyFriend: function () {
+    // this.model
+    console.log("destroyFriend!!");
     // this.close();
   },
 

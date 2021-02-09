@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_many :matches, through: :scorecards
   has_many :tournament_memberships
   has_many :tournaments, through: :tournament_memberships
+  has_one_attached :avatar
 
   scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
   

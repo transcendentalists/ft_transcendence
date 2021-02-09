@@ -26,7 +26,24 @@ class Api::UsersController < ApplicationController
   end
 
   def update
-    render plain: "update"
+    if (params[:user].nil?)
+      return render_error("upload fail", "user key가 없습니다.", 400);
+    end
+    params[:user] = JSON.parse(params[:user]) if params.key?("has_file")
+    if (!User.exists?(params[:id]))
+      return render_error("upload fail", "해당 id를 가진 user가 없습니다.", 400);
+    end
+    user = User.find(params[:id])
+
+    if not params[:user]['two_factor_auth'].nil?
+      user.update(update_params)
+    elsif not params[:file].nil?
+      user.avatar.purge if user.avatar.attached?
+      user.avatar.attach(params[:file])
+      user.image_url = url_for(user.avatar)
+      user.save
+    end
+    head :no_content, status: 204
   end
 
   def login
@@ -60,6 +77,17 @@ class Api::UsersController < ApplicationController
   private
   def signin_params
     params.require(:user).permit(:name, :password)
+  end
+
+  def update_params
+    params.require(:user).permit(:id, :image, :two_factor_auth)
+  end
+
+  def render_error(type, msg, status_code)
+    return render :json => { error: {
+      'type': type, 'msg': msg
+      }
+    }, :status => status_code
   end
 
 end

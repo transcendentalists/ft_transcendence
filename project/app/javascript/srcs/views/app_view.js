@@ -9,6 +9,7 @@ export let AppView = Backbone.View.extend({
     this.input_modal_view = new App.View.InputModalView();
     this.alert_modal_view = new App.View.AlertModalView();
     this.info_modal_view = new App.View.InfoModalView();
+    this.image_upload_modal_view = new App.View.ImageUploadModalView();
 
     this.invite_view = new App.View.InviteView();
     this.direct_chat_view = new App.View.DirectChatView();

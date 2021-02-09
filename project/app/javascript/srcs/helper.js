@@ -19,8 +19,9 @@ export let Helper = {
     if (hash_args.hasOwnProperty("headers")) {
       $.extend(params.headers, hash_args.headers);
     }
-    if (hash_args.hasOwnProperty("body"))
+    if (hash_args.hasOwnProperty("body")) {
       params["body"] = JSON.stringify(hash_args["body"]);
+    }
 
     let prefix = hash_args.hasOwnProperty("prefix")
       ? hash_args["prefix"]
@@ -28,10 +29,11 @@ export let Helper = {
 
     let response = await fetch(prefix + url, params);
     console.log(response); // for response debugging
-    if (response.status == 200 || fail_callback) {
+    const success = [200, 201].includes(response.status);
+    if (success || fail_callback) {
       let data = await response.json();
-      if (response.status == 200 && success_callback) success_callback(data);
-      else if (response.status == 200) return data;
+      if (success && success_callback) success_callback(data);
+      else if (success) return data;
       else fail_callback(data);
     } else
       return {

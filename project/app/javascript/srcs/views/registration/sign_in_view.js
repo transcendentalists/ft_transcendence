@@ -54,8 +54,7 @@ export let SignInView = Backbone.View.extend({
 
   authSuccessCallback: function (data) {
     App.current_user.set("id", data.current_user.id);
-    App.current_user.sign_in = true;
-    App.current_user.fetch();
+    App.current_user.login();
     App.appView.render();
     App.router.navigate(`#/users/${data.current_user.id}`);
   },

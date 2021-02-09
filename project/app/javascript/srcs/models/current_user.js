@@ -13,4 +13,11 @@ export let CurrentUser = Backbone.Model.extend({
   parse: function (response) {
     return response.user;
   },
+
+  login: function () {
+    this.sign_in = true;
+    this.fetch({
+      data: { for: "profile" },
+    });
+  },
 });

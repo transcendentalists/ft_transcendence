@@ -60,6 +60,10 @@ body {
   align-items: baseline;
 }
 
+.top-margin {
+  margin-top: 8rem;
+}
+
 /* ==========================================================================
                                 PERSIST VIEW
    ========================================================================== */
@@ -186,6 +190,27 @@ body {
   width: 100%;
 }
 
+/* IMAGE UPLOAD MODAL VIEW
+   ========================================================================== */
+
+#image-upload-modal-view .grid.container {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+#image-upload-modal-view .image-name.flex-container {
+  justify-content: center;
+}
+
+/* #image-upload-modal-view .inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+} */
+
 /* ==========================================================================
    SHARE VIEW
    ========================================================================== */
@@ -217,6 +242,28 @@ body {
 }
 
 .profile-card .rank {
+  margin-left: 1rem;
+}
+
+/* ==========================================================================
+   USER INDEX VIEW
+   ========================================================================== */
+
+#user-index-view .user-index-header {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+#user-index-view .user-index-buttons {
+  margin-left: auto;
+}
+
+#user-index-view h1 {
+  margin-bottom: 0;
+}
+
+#user-index-view #two-factor-toggle {
+  padding-top: 0.3rem;
   margin-left: 1rem;
 }
 

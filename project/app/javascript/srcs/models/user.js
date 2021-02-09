@@ -3,12 +3,12 @@ export let User = Backbone.Model.extend({
 
   defaults: {
     isWebOwner: false,
-    signed_in: false,
+    sign_in: false,
   },
 
   reset: function (isWebOwner = false) {
     this.clear();
-    this.set({ isWebOwner: false, signed_in: false });
+    this.set({ isWebOwner: false, sign_in: false });
   },
 
   parse: function (response, options) {

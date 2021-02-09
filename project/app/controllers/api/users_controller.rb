@@ -1,9 +1,15 @@
 class Api::UsersController < ApplicationController
   def index
-    users = User.where_by_query service_params
-    users = User.select_by_query users, params unless params[:for].nil?
-
-    render json: { users: users }
+    if params[:for] == 'appearance'
+      users = User.where_by_query service_params
+      users = User.select_by_query users, params unless params[:for].nil?
+    elsif params[:for] == "ladder_index"
+      users = User.for_ladder_index(params[:page])
+    else
+      users = User.all
+    end
+    render :json => { users: users }
+    # render :json => users
   end
 
   def create
@@ -11,9 +17,15 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    user = User.includes(:in_guild).find(params[:id])
-    render json: { user: user.to_simple }
-    # render :json => user
+    id = params[:id]
+    if params[:for] == "profile"
+      user = User.includes(:in_guild, :scorecards, :tournament_memberships).find(id)
+      render :json => { user: user.profile }
+    else
+      user = User.includes(:in_guild).find(id)
+      render :json => { user: user.to_simple }
+      # render :json => user
+    end
   end
 
   def update

@@ -7,6 +7,6 @@ $(document).ready(function () {
     window.trigger("resize");
   };
   App.initialize();
-  window.aaa = App.current_user; // for debug login trace
+  window.app = App;
   Backbone.history.start();
 });

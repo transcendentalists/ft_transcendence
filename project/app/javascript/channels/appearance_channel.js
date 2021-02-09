@@ -5,12 +5,10 @@ export function ConnectAppearanceChannel() {
   return consumer.subscriptions.create("AppearanceChannel", {
     connected() {
       // Called when the subscription is ready for use on the server
-      console.log("AppearanceChannel connect!!!");
     },
 
     disconnected() {
       // Called when the subscription has been terminated by the server
-      console.log("AppearanceChannel disconnect!!!");
     },
 
     received(user) {

@@ -1,31 +1,20 @@
 <script type="text/template" id="user-profile-card-template">
-  <div class="ui grid">
-    <div class="four wide column">
-      <img class="ui circular small image" src="kristy.png">
+  <img class="ui circular small image" src="<%%= image_url %>">
+  <div class="content flex-container column-direction">
+
+    <div class="row flex-container baseline">
+      <div class="name"><%%= name %></div>
+      <div class="rank"> <strong><%%= title %></strong> | <%%= rank %>위</div>
+    </div>
+    <div class="row">
+      <%%= guild ? (guild.name + "(" + guild.anagram + ") " + guild.position) : "소속된 길드가 없습니다." %>
+    </div>
+    <div class="row">
+      <%%= tier + ' ' + win_count + '승 ' + lose_count + '패 '%> <%%=(+win_count + +lose_count > 0) ? ('승률 ' + Math.floor((win_count * 100) / (win_count + lose_count)) + '%') : '' %>
+    </div>
+    <div class="row profile-trophy">
+      토너먼트<i class="trophy icon yellow"></i> <%%= achievement.gold %>개<i class="trophy icon grey"></i> <%%= achievement.silver %> 개   <i class="trophy icon brown"></i> <%%= achievement.bronze %>개
     </div>
 
-    <div class="twelve wide column">
-
-      <div class="ui grid">
-        <div class="six column row">
-          <div class="column">
-            <h2 class="ui header fluid"><%%= name %></h2>
-          </div>
-          <div class="column">
-            Beginner
-          </div>
-          <div class="column">30th</div>
-        </div>
-        <div class="row">
-          소속 길드 없음
-        </div>
-        <div class="row">
-          티어 N승 N패 승률 30%
-        </div>
-        <div class="row">
-          토너먼트(Achievement) 골드컵 N개, 실버컵 N개, 브론즈컵 N개
-        </div>
-      </div>
-    </div>
   </div>
 </script>

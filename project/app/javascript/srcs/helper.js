@@ -1,7 +1,7 @@
 import { App } from "srcs/internal";
 
 export let Helper = {
-  fetch: async function (url, hash_args) {
+  fetch: async function (url, hash_args = {}) {
     let params = {
       method: hash_args.hasOwnProperty("method") ? hash_args["method"] : "GET",
       credentials: "same-origin",
@@ -49,6 +49,10 @@ export let Helper = {
     return $("meta[name=csrf-token]")[0].getAttribute("content");
   },
 
+  isCurrentView: function (view_name) {
+    return $("#main-view-container").has(view_name).length > 0;
+  },
+
   callModalError: function () {
     this.info({
       subject: "ERROR",
@@ -61,7 +65,7 @@ export let Helper = {
 
     if (!data.hasOwnProperty("subject"))
       data.subject = "경고 창의 제목을 설정해주세요.";
-    if (!data.hasOwnProperty("descriotion"))
+    if (!data.hasOwnProperty("description"))
       data.description = "경고 내용을 입력해주세요.";
 
     App.appView.alert_modal_view.render(data);

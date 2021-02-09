@@ -6,10 +6,12 @@ class Api::FriendshipsController < ApplicationController
   end
 
   def create
-    render plain: params[:user_id] + "'s new friends!"
+    friendship = Friendship.find_or_create_by(user_id: params[:user_id], friend_id: params[:friend_id])
+    render json: {friendships: {id: friendship.id}}
   end
 
   def destroy
-    render plain: params[:user_id] + +" destory " + params[:id] +" friends!"
+    friendship = Friendship.where(user_id: params[:user_id], friend_id: params[:friend_id])
+    friendship&.destory
   end
 end

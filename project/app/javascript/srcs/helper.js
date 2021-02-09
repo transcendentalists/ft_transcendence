@@ -46,7 +46,7 @@ export let Helper = {
     return $("meta[name=csrf-token]")[0].getAttribute("content");
   },
 
-  isCuurrentView: function (view_name) {
+  isCurrentView: function (view_name) {
     return $("#main-view-container").has(view_name).length > 0;
   },
 

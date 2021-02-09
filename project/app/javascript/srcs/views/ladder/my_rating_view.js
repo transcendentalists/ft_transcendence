@@ -1,4 +1,3 @@
-import { Helper } from "../../helper";
 import { App } from "../../internal";
 
 export let MyRatingView = Backbone.View.extend({

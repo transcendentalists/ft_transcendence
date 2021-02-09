@@ -49,7 +49,7 @@ export let GameIndexView = Backbone.View.extend({
     );
   },
 
-  sendInformation: function (type) {
+  showInfoModal: function (type) {
     Helper.info({
       subject: "게임종료",
       description:
@@ -100,7 +100,7 @@ export let GameIndexView = Backbone.View.extend({
     } else if (msg.type == "END" || msg.type == "ENEMY_GIVEUP") {
       if (this.play_view) this.play_view.stopRender();
       if (this.clear_id) clearInterval(this.clear_id);
-      this.sendInformation(msg.type);
+      this.showInfoModal(msg.type);
       setTimeout(this.redirectHomeCallback, 3000);
       this.channel.unsubscribe();
       this.channel = null;
@@ -179,6 +179,7 @@ export let GameIndexView = Backbone.View.extend({
     if (this.right_player_view) this.right_player_view.close();
     if (this.play_view) this.play_view.close();
     if (this.channel) this.channel.unsubscribe();
+    if (this.clear_id) clearInterval(this.clear_id);
     this.remove();
   },
 });

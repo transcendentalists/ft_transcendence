@@ -12,7 +12,7 @@ class Api::MatchesController < ApplicationController
   def create
     if params[:user_id]
       user = User.find(params[:user_id])
-      match = find_or_create_ladder_match_for user
+      match = find_or_create_ladder_match_for(user)
       render :json => { match: { id: match.id, match_type: 'ladder', user: { id: user.id } } }
     elsif params[:war_id]
       render plain: "war creates " + params[:war_id] + "'s matches"

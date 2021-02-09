@@ -6,28 +6,30 @@ export let LadderIndexView = Backbone.View.extend({
   id: "ladder-index-view",
 
   events: {
-    "click #ladder-page-before-button": "before_page",
-    "click #ladder-page-next-button": "next_page",
-    "click #ladder-join-button": "game_page",
+    "click #ladder-page-before-button": "beforePage",
+    "click #ladder-page-next-button": "nextPage",
+    "click #ladder-join-button": "gamePage",
   },
 
   initialize: function (page) {
     this.page = page ? +page : 1;
     this.is_last_page = false;
+    this.my_rating_view = null;
+    this.user_ranking_view = null;
   },
 
-  before_page: function () {
+  beforePage: function () {
     if (this.page === 1) return;
     App.router.navigate("#/ladder/" + (this.page - 1));
   },
 
-  next_page: function () {
+  nextPage: function () {
     if (this.is_last_page === true) return;
     App.router.navigate("#/ladder/" + (this.page + 1));
   },
 
   //  승급전 참여 버튼 클릭시 게임 인덱스 뷰로 이동
-  game_page: function () {
+  gamePage: function () {
     App.router.navigate("#/matches");
   },
 
@@ -35,10 +37,11 @@ export let LadderIndexView = Backbone.View.extend({
    ** 서버에 현재 유저의 프로필 페이지를 요청하고
    ** 수신한 데이터를 프로필 템플릿으로 렌더링하는 콜백
    */
-  my_rating_callback: function (data) {
-    this.$(".my-rating.ui.container").append(
-      this.my_rating_view.render(data["user"]).$el
-    );
+  renderMyRatingCallback: function (data) {
+    this.my_rating_view = new App.View.MyRatingView();
+    this.my_rating_view
+      .setElement(this.$("#my-rating-view"))
+      .render(data["user"]);
   },
 
   /**
@@ -46,11 +49,12 @@ export let LadderIndexView = Backbone.View.extend({
    ** 유저들을 랭킹 순으로 템플릿에 추가한 뒤
    ** 수신한 유저랭킹 프로필 정보들을 렌더링하는 콜백
    */
-  user_ranking_callback: function (data) {
+  renderUserRankingCallback: function (data) {
+    this.user_ranking_view = new App.View.UserRankingView();
     if (data.users.length < 10) this.is_last_page = true;
-    this.$(".user-ranking.ui.container").append(
-      this.user_ranking_view.render(data.users).$el
-    );
+    this.user_ranking_view
+      .setElement(this.$("#user-ranking-view"))
+      .render(data.users);
   },
 
   /*
@@ -58,28 +62,24 @@ export let LadderIndexView = Backbone.View.extend({
    ** 현재 유저와 래더 랭킹 페이지에 필요한 url을 만들어 fetch
    ** 각각 렌더링 콜백을 넘겨주어 렌더링 진행
    */
-
   render: function () {
     this.$el.html(this.template());
-    this.my_rating_view = new App.View.MyRatingView();
-    this.user_ranking_view = new App.View.UserRankingView();
-
     const current_user_url = "users/" + App.current_user.id + "?for=profile";
     Helper.fetch(current_user_url, {
-      success_callback: this.my_rating_callback.bind(this),
+      success_callback: this.renderMyRatingCallback.bind(this),
     });
 
     const ladder_users_url = "users/?for=ladder_index&page=" + this.page;
     Helper.fetch(ladder_users_url, {
-      success_callback: this.user_ranking_callback.bind(this),
+      success_callback: this.renderUserRankingCallback.bind(this),
     });
 
     return this;
   },
 
   close: function () {
-    this.my_rating_view.close();
-    this.user_ranking_view.close();
+    if (this.my_rating_view) this.my_rating_view.close();
+    if (this.user_ranking_view) this.user_ranking_view.close();
     this.remove();
   },
 });

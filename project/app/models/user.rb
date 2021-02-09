@@ -32,13 +32,25 @@ class User < ApplicationRecord
     self.status == "playing"
   end
 
+  def ladder_waiting?
+    self.status == "playing"
+  end
+
   # instance methods for game
-  def playing_game
-    self.matches.find_by_status(:progress)
+  def playing_match
+    self.matches&.find_by_status(:progress)
+  end
+
+  def waiting_match?
+    self.matches&.exists?(status: "pending")
+  end
+
+  def waiting_match
+    self.matches&.find_by_status(:pending)
   end
 
   def enemy
-    self.playing_game&.users&.where&.not(id: self.id)
+    self.playing_match&.users&.where&.not(id: self.id)
   end
 
   def tier

@@ -71,7 +71,6 @@ class GameChannel < ApplicationCable::Channel
   def complete_by_match_end(winner_id)
     @match.scorecards.each do |card|
       card.update(result: card.score == @match.target_score ? "win" : "lose")
-      card.user.update(status: "online")
     end
     update_game_status
     send_complete_message("END", winner_id)
@@ -80,7 +79,7 @@ class GameChannel < ApplicationCable::Channel
   # 정상적이지 않은 경로로 게임이 종료되었을 때를 감지하여
   # 게임을 '종료' 상태로 바꾸고 유저의 승패를 업데이트
   def complete_by_giveup
-    @match = current_user.playing_game
+    @match = current_user.playing_match
     return if @match.nil? or @match.status == "completed"
     
     @match.scorecards.each do |card|
@@ -107,7 +106,12 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    complete_by_giveup if current_user.playing?
+    if current_user.waiting_match?
+      current_user.waiting_match.cancel
+    elsif current_user.playing?
+      complete_by_giveup
+    end
+    current_user.update(status: "online")
     # Any cleanup needed when channel is unsubscribed
   end
 end

@@ -11,4 +11,9 @@ class Match < ApplicationRecord
   def winner
     self.scorecards.find_by_result("win")
   end
+
+  def cancel
+    self.update(status: "canceled")
+    self.scorecards.each { |card| card.update(result: "canceled") }
+  end
 end

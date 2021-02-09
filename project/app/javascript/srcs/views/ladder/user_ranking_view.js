@@ -7,7 +7,6 @@ export let UserRankingView = Backbone.View.extend({
 
   initialize: function () {
     this.child_views = [];
-    this.$el.html(this.template());
   },
 
   addOne: function (user) {
@@ -17,6 +16,7 @@ export let UserRankingView = Backbone.View.extend({
   },
 
   render: function (users_data) {
+    this.$el.html(this.template());
     this.$("#user-profile-card-list").html("");
     users_data.forEach(this.addOne, this);
     return this;

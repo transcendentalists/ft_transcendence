@@ -1,5 +1,4 @@
 import consumer from "./consumer";
-import Helper from "srcs/helper";
 
 export function ConnectGameChannel(recv_callback, self, match_id) {
   return consumer.subscriptions.create(

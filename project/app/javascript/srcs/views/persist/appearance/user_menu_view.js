@@ -43,15 +43,15 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   createFriend: function () {
-    console.log("newFriend!!");
     this.friends.createFriendship(this.model.get("id"));
+    this.online_users.remove(this.model);
     this.close();
   },
-
+  
   destroyFriend: function () {
-    // this.model
-    console.log("destroyFriend!!");
-    // this.close();
+    this.friends.destroyFriendship(this.model.get("id"));
+    if (this.model.get("status") != "offline") this.online_users.add(this.model);
+    this.close();
   },
 
   battle: function () {
@@ -72,7 +72,7 @@ export let UserMenuView = Backbone.View.extend({
         model: this.model,
         banned: this.chat_bans.isUserChatBanned(this.model.id),
         is_friend: this.is_friend,
-      })
+      }),
     );
     this.$el.css("position", "absolute");
     this.$el.css("top", position.top);

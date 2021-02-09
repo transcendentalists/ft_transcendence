@@ -11,7 +11,7 @@ class Api::FriendshipsController < ApplicationController
   end
 
   def destroy
-    friendship = Friendship.where(user_id: params[:user_id], friend_id: params[:friend_id])
-    friendship&.destory
+    friendship = Friendship.find_by_user_id_and_friend_id(params[:user_id], params[:id])
+    friendship&.destroy
   end
 end

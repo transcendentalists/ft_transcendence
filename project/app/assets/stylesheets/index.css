@@ -14,6 +14,10 @@ body {
   height: 100%;
 }
 
+#root .ui.mini.pointing.vertical.menu {
+  text-align: center;
+}
+
 #root-grid {
   height: 100%;
 }
@@ -163,6 +167,10 @@ body {
   border-radius: 0 !important;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+#appearance-view .ui.container {
+  margin-top: 20%;
 }
 
 #appearance-view .ui.menu > a.item.active {

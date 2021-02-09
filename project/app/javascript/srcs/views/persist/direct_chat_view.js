@@ -5,11 +5,6 @@ export let DirectChatView = Backbone.View.extend({
   className: "ui text container",
   el: "#direct-chat-view",
 
-  events: {
-    "click .blue.labeled.button": "test1",
-    "click .ui.button": "test2",
-  },
-
   initialize: function () {
     this.$el.hide();
   },

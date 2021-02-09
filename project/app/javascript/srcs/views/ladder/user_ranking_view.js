@@ -6,32 +6,24 @@ export let UserRankingView = Backbone.View.extend({
   className: "ui text container",
 
   initialize: function () {
-    // 뷰 생성시 서브뷰도 같이 생성
-    this.$el.html(this.template());
-    window.userEl = this.$el;
-    this.user_collection = new App.Collection.Users();
-    this.listenTo(this.user_collection, "add", this.addOne);
-    this.listenTo(this.user_collection, "reset", this.addAll);
+    this.child_views = [];
   },
 
   addOne: function (user) {
-    var view = new App.View.UserProfileCardView({ model: user });
-    $("#user-profile-card-list").append(view.render().$el);
+    let child_view = new App.View.UserProfileCardView();
+    this.child_views.push(child_view);
+    this.$("#user-profile-card-list").append(child_view.render(user).$el);
   },
 
-  addAll: function () {
-    this.$("#user-profile-card-list").html(""); // 먼저 있는걸 지운다. the user profile card list
-    this.user_collection.each(this.addOne, this);
-  },
-
-  render: function () {
-    console.log("UserRankingView");
-    this.user_collection.fetch({ reset: true });
-
+  render: function (users_data) {
+    this.$el.html(this.template());
+    this.$("#user-profile-card-list").html("");
+    users_data.forEach(this.addOne, this);
     return this;
   },
 
   close: function () {
-    this.user_collection.remove();
+    this.child_views = [];
+    this.remove();
   },
 });

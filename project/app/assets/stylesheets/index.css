@@ -16,13 +16,12 @@ body {
   height: 100%;
 }
 
-#main-view .ui.dividing.header {
-  width: 100%;
+#main-view-container {
+  margin-left: 30vw;
 }
 
-#main-view-container {
-  display: flex;
-  margin-left: 0;
+#main-view-container .ui.dividing.header {
+  width: 100%;
 }
 
 .ui.centered.small.circular.image {
@@ -67,25 +66,22 @@ body {
   align-items: baseline;
 }
 
+/* ==========================================================================
+                                PERSIST VIEW
+   ========================================================================== */
+
 @media (max-width: 1024px) {
   .hide-tablet {
     display: none;
   }
 }
 
-/* ==========================================================================
-   PERSIST VIEW
-   ========================================================================== */
-
 /* SIGN IN VIEW
    ========================================================================== */
 
 #sign-in-view {
-  max-width: 400px;
-}
-
-#sign-in-view #sign-in-form {
-  margin-top: 80%;
+  width: 300px;
+  margin-top: 20vw;
 }
 
 #sign-in-view .field:nth-child(n + 2) {
@@ -250,6 +246,9 @@ body {
   padding-right: 0;
   border-left: solid;
   border-width: thin;
+  right: 0px;
+  z-index: 102;
+  width: 220px !important;
 }
 
 #appearance-view .ui.menu > a.item {
@@ -270,4 +269,123 @@ body {
 #appearance-view .ui.menu > a.item:hover {
   background-color: #eee;
   color: #23527c;
+}
+
+/* ==========================================================================
+   SHARE VIEW
+   ========================================================================== */
+
+/* PROFILE VIEW
+   ========================================================================== */
+
+.profile-trophy > i {
+  margin-left: 0.5rem;
+}
+
+.profile-card .small.image {
+  margin-bottom: 0;
+  width: 120px;
+}
+
+.profile-card .content {
+  margin-left: 2rem;
+  margin-top: -1rem;
+}
+
+.profile-card .row:not(:first-child) {
+  margin-top: 0.2rem;
+}
+
+.profile-card .name {
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.profile-card .rank {
+  margin-left: 1rem;
+}
+
+/* ==========================================================================
+   LADDER INDEX VIEW
+   ========================================================================== */
+
+#ladder-index-view {
+  margin-top: 8rem;
+}
+
+#user-ranking-view .buttons {
+  margin-top: 1rem;
+}
+
+#ladder-index-view #ladder-join-button {
+  margin-left: 2rem;
+}
+
+#ladder-index-view .user-ranking.ui.container {
+  margin: 5% 0;
+}
+
+#user-ranking-view .ladder-index-header .buttons {
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   GAME INDEX VIEW
+   ========================================================================== */
+
+#game-index-view {
+  background-image: url("/assets/game_index.jpg");
+  min-width: 1024px;
+  width: 100%;
+  height: 100%;
+  padding-top: 4rem;
+}
+
+#game-index-view #game-player-list {
+  margin: 3rem 0;
+  width: 900px;
+}
+
+#game-index-view .profile-card {
+  width: 420px;
+  height: 150px;
+}
+
+#game-index-view .vs-icon {
+  color: white;
+}
+
+#game-index-view #count-down-box {
+  text-align: center;
+  font-size: 3rem;
+  margin-top: 20%;
+}
+
+#game-index-view #game-player-list #left-game-player-view {
+  border-left: 5px solid #db2828;
+  border-radius: 5px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+#game-index-view #game-player-list #right-game-player-view {
+  border-right: 5px solid #2185d0;
+  border-radius: 5px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+#game-index-view #ladder-game-section {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: saturate(180%) blur(10px);
+  width: 900px;
+  height: 400px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
 }

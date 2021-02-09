@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
+
   root 'spa#index'
   # root 'spa#ft_auth'
   delete 'api/session', to: 'spa#destroy'

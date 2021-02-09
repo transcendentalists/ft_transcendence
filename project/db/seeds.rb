@@ -7,16 +7,16 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 User.create([
-  {name: 'sanam1', password: '123123', email: 'simian114@gmail.com', image_url: '', point: 1, two_factor_auth: false},
-  {name: 'yohlee1', password: '123123', email: 'yohan9612@naver.com', image_url: '', point: 2, two_factor_auth: false},
-  {name: 'eunhkim1', password: '123123', email: 'valhalla.host@gmail.com', image_url: '', point: 3, two_factor_auth: false},
-  {name: 'iwoo1', password: '123123', email: 'injun.woo30000@gmail.com', image_url: '', point: 4, two_factor_auth: true},
-  {name: 'jujeong', password: '123123', email: 'juhyeonjeong92@gmail.com', image_url: '', point: 5, two_factor_auth: false},
-  {name: 'iwoo2', password: '123123',  email: 'injun.woo30000@gmail.com', image_url: '', point: 7, two_factor_auth: false},
-  {name: 'yohlee2', password: '123123',  email: 'yohan9612@yonsei.ac.kr', image_url: '', point: 8},
-  {name: 'sanam2', password: '123123',  email: 'simian114@gmail.com', image_url: '', point: 9},
-  {name: 'eunhkim2', password: '123123',  email: 'valhalla.host@gmail.com', image_url: '', point: 10},
-  {name: 'test', password: '123123',  email: 'juhyeonjeong92@gmail.com', image_url: '', point: 11},
+  {name: 'sanam1', password: '123123', email: 'simian114@gmail.com', image_url: 'assets/sanam1.png', point: 1, two_factor_auth: false},
+  {name: 'yohlee1', password: '123123', email: 'yohan9612@naver.com', image_url: 'assets/yohlee1.png', point: 2, two_factor_auth: false},
+  {name: 'eunhkim1', password: '123123', email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim1.png', point: 3, two_factor_auth: false},
+  {name: 'iwoo1', password: '123123', email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo1.png', point: 4, two_factor_auth: true},
+  {name: 'jujeong', password: '123123', email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 5, two_factor_auth: false},
+  {name: 'iwoo2', password: '123123',  email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo2.png', point: 7, two_factor_auth: false},
+  {name: 'yohlee2', password: '123123',  email: 'yohan9612@yonsei.ac.kr', image_url: '/assets/yohlee2.png', point: 8},
+  {name: 'sanam2', password: '123123',  email: 'simian114@gmail.com', image_url: '/assets/sanam2.png', point: 9},
+  {name: 'eunhkim2', password: '123123',  email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 10},
+  {name: 'test', password: '123123',  email: 'juhyeonjeong92@gmail.com', image_url: '/assets/kristy.png', point: 11},
 ])
 
 Friendship.create([
@@ -27,9 +27,13 @@ Friendship.create([
 ])
 
 Rule.create([
-  {name: "test"},
-  {name: "rulllle"},
-  {name: "gg"},
+  {name: "classic"},
+  {name: "invisible", invisible: true},
+  {name: "dwindle", dwindle: true},
+  {name: "accel_wall", accel_wall: true},
+  {name: "accel_paddle", accel_paddle: true},
+  {name: "bound_wall", bound_wall: true},
+  {name: "bound_paddle", bound_paddle: true},
 ])
 
 Guild.create([

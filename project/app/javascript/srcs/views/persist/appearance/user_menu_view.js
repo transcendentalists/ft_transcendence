@@ -1,4 +1,4 @@
-import { App, Helper } from "../../../internal";
+import { App } from "srcs/internal";
 
 export let UserMenuView = Backbone.View.extend({
   template: _.template($("#user-menu-view-template").html()),
@@ -16,14 +16,16 @@ export let UserMenuView = Backbone.View.extend({
 
   initialize: function (options) {
     this.parent = options.parent;
-    this.online_users = options.parent.online_users;
-    this.chat_bans = options.parent.chat_bans;
+    this.chat_bans = this.parent.chat_bans;
+    this.online_users = this.parent.online_users;
+    this.friends = this.parent.friends;
+
     this.listenTo(this.online_users, "destroy_user_menu_all", this.close);
+    this.listenTo(this.friends, "destroy_user_menu_all", this.close);
     this.listenTo(window, "resize", this.close);
   },
 
   directChat: function () {
-    // this.model
     App.appView.direct_chat_view.render();
     console.log("directChat!!");
     this.close();

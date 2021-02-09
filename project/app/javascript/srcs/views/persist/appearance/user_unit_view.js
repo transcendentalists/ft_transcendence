@@ -1,5 +1,4 @@
-import { Helper } from "../../../helper";
-import { App } from "../../../internal";
+import { App } from "srcs/internal";
 
 export let UserUnitView = Backbone.View.extend({
   tagName: "div",
@@ -13,6 +12,7 @@ export let UserUnitView = Backbone.View.extend({
   initialize: function (options) {
     this.parent = options.parent;
     this.online_users = options.parent.online_users;
+    this.friends = options.parent.friends;
     this.chat_bans = options.parent.chat_bans;
     this.listenTo(this.model, "remove", this.close);
     this.listenTo(this.model, "change:status", this.changeStatus);
@@ -20,7 +20,8 @@ export let UserUnitView = Backbone.View.extend({
   },
 
   destroyAndCreateUserMenu: function () {
-    this.parent.online_users.trigger("destroy_user_menu_all");
+    this.online_users.trigger("destroy_user_menu_all");
+    this.friends.trigger("destroy_user_menu_all");
     this.model.trigger("create_user_menu");
   },
 
@@ -46,16 +47,22 @@ export let UserUnitView = Backbone.View.extend({
 
   changeStatus: function () {
     if (this.model.get("status") == "playing") {
+      this.$el.find(".circular").removeClass("gray");
       this.$el.find(".circular").removeClass("green");
       this.$el.find(".circular").addClass("yellow");
     } else if (this.model.get("status") == "online") {
+      this.$el.find(".circular").removeClass("gray");
       this.$el.find(".circular").removeClass("yellow");
       this.$el.find(".circular").addClass("green");
+    } else {
+      this.$el.find(".circular").removeClass("yellow");
+      this.$el.find(".circular").removeClass("green");
+      this.$el.find(".circular").addClass("gray");
     }
   },
 
   close: function () {
-    console.log(this.model.get("name") + " unit view is remove!!!!");
+    if (this.user_menu_view) this.user_menu_view.close();
     this.$el.remove();
   },
 });

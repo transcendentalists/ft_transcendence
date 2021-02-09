@@ -1,5 +1,4 @@
-import { Users } from "../../../collections/users";
-import { App } from "../../../internal";
+import { App } from "srcs/internal";
 
 export let OnlineUserListView = Backbone.View.extend({
   template: _.template($("#appearance-online-user-list-view").html()),
@@ -8,9 +7,11 @@ export let OnlineUserListView = Backbone.View.extend({
     this.parent = options.parent;
     this.chat_bans = this.parent.chat_bans;
     this.online_users = this.parent.online_users;
+    this.friends = this.parent.friends;
+
+    this.child_views = [];
 
     this.listenTo(this.online_users, "add", this.addOne);
-    // this.listenTo(this.online_users, "change: status", deleteOne);
     this.listenTo(this.online_users, "reset", this.addAll);
     // this.listenTo(this.online_users, "remove", this.deleteOne);
   },
@@ -18,15 +19,20 @@ export let OnlineUserListView = Backbone.View.extend({
   render: function () {
     this.$el.html(this.template());
     this.online_users.fetch({
-      data: $.param({ status: ["online", "playing"], for: "appearance" }),
+      data: $.param({
+        user_id: App.current_user.id,
+        status: ["online", "playing"],
+        for: "appearance",
+      }),
       reset: true,
     });
-    window.aaa = this.online_users;
     return this;
   },
 
   close: function () {
-    // this.deleteAll();
+    for (child_view of this.child_views) {
+      child_view.close();
+    }
     this.$el.remove();
   },
 
@@ -38,6 +44,7 @@ export let OnlineUserListView = Backbone.View.extend({
       parent: this,
       model: user,
     });
+    this.child_views.push(this.online_user_unit);
     this.$(".ui.middle.aligned.selection.list").append(
       this.online_user_unit.render().$el
     );
@@ -56,12 +63,6 @@ export let OnlineUserListView = Backbone.View.extend({
   //   console.log(this.online_users);
   // },
 
-  // deleteAll: function () {
-  //   _.map(this.online_users, function (user) {
-  //     user.trigger("clear");
-  //   });
-  // },
-
   isUserInTheCollection: function (user_data) {
     if (this.online_users.where({ id: user_data.id }).length != 0) {
       return true;
@@ -70,7 +71,7 @@ export let OnlineUserListView = Backbone.View.extend({
     }
   },
 
-  updateUserStatus: function (user_data) {
+  updateUserList: function (user_data) {
     if (user_data.status == "online") {
       if (this.isUserInTheCollection(user_data)) {
         let user = this.online_users.where({ id: user_data.id })[0];

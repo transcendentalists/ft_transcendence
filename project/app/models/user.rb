@@ -29,22 +29,10 @@ class User < ApplicationRecord
     update(status: 'offline')
   end
 
-  def self.where_by_query(params)
-    users = all # User == self
-    params.each do |k, v|
-      next if k == 'for'
-
-      users = users.where(k => v)
-    end
-    users
-  end
-
-  def self.select_by_query(users, params)
-    if params[:for] == 'appearance'
-      users.left_outer_joins(guild_membership: :guild).select('users.id, users.name, users.status, users.image_url, guilds.anagram')
-    else
-      users
-    end
+  def self.onlineUsersWithoutFriends(params)
+    users = self.where_by_query(params)
+    users = users.where.not(id: (Friendship.where(user_id: params[:user_id]).select(:friend_id)))
+    users = self.select_by_query(users, params) unless params[:for].nil?
   end
 
   def playing?
@@ -115,7 +103,7 @@ class User < ApplicationRecord
     user_data = {
       id: id,
       name: name,
-      status: status,
+      status: "online",
       image_url: image_url,
       anagram: guild_membership.nil? ? nil : guild_membership.guild.anagram
     }
@@ -127,7 +115,25 @@ class User < ApplicationRecord
     ActionCable.server.broadcast('appearance_channel', {
                                    id: id,
                                    name: name,
-                                   status: status
+                                   status: "offline"
                                  })
   end
+
+  private
+  def self.where_by_query(params)
+    users = self.all
+    params.except(:for, :user_id).each do |k, v|
+      users = users.where(k => v)
+    end
+    users
+  end
+
+  def self.select_by_query(users, params)
+    if params[:for] == 'appearance'
+      users.left_outer_joins(guild_membership: :guild).select('users.id, users.name, users.status, users.image_url, guilds.anagram')
+    else
+      users
+    end
+  end
+
 end

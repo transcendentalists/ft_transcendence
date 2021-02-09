@@ -1,8 +1,12 @@
 class Api::UsersController < ApplicationController
   def index
+
     if params[:for] == 'appearance'
-      users = User.where_by_query service_params
-      users = User.select_by_query users, params unless params[:for].nil?
+      users = User.onlineUsersWithoutFriends(service_params)
+
+      # users = User.where_by_query(service_params)
+      # users = users.where.not(id: (Friendship.where(user_id: params[:user_id]).select(:friend_id)))
+      # users = User.select_by_query users, params unless params[:for].nil?
     elsif params[:for] == "ladder_index"
       users = User.for_ladder_index(params[:page])
     else
@@ -64,6 +68,6 @@ class Api::UsersController < ApplicationController
   end
 
   def service_params
-    params.permit(:id, :name, :for, status: [])
+    params.permit(:id, :name, :for, :user_id, status: [])
   end
 end

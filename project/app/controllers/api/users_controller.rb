@@ -40,7 +40,14 @@ class Api::UsersController < ApplicationController
     if User.exists?(signin_params)
       user = User.find_by_name(signin_params[:name]).login
       create_session user.id
-      ApplicationMailer::sendVerificationCode(user).deliver_now if user.two_factor_auth
+      verification_code = rand(100000..999999).to_s
+      user.update(verification_code: verification_code)
+      ActionMailer::Base.mail(to: user.email,
+        subject: "[Transcendence] 2차 인증 메일입니다.",
+        body: "인증번호는 [#{verification_code}] 입니다.",
+        from: "valhalla.host@gmail.com",
+        content_type: "text/html").deliver_now if user.two_factor_auth
+  
       render :json => { current_user: user.to_simple }
     else
       render json: { error: {

@@ -2,12 +2,10 @@
    GLOBAL AREA
    ========================================================================== */
 
-/* Sub-section comment block
-   ========================================================================== */
-
 body {
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: grayscale;
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 #root {
@@ -20,6 +18,14 @@ body {
 
 #root-grid {
   height: 100%;
+}
+
+#main-view-container {
+  margin-left: 30vw;
+}
+
+#main-view-container .ui.dividing.header {
+  width: 100%;
 }
 
 .ui.centered.small.circular.image {
@@ -69,14 +75,112 @@ body {
    ========================================================================== */
 
 @media (max-width: 1024px) {
-  #invite-view {
-    display: none;
-  }
-
-  #direct-chat-view {
+  .hide-tablet {
     display: none;
   }
 }
+
+/* SIGN IN VIEW
+   ========================================================================== */
+
+#sign-in-view {
+  width: 300px;
+  margin-top: 20vw;
+}
+
+#sign-in-view .field:nth-child(n + 2) {
+  margin-top: 3.5rem;
+}
+
+#sign-in-view .submit.button {
+  margin-top: 7.5rem;
+}
+
+#sign-in-view .sign-up.message {
+  text-align: center;
+}
+
+/* INVITE VIEW
+   ========================================================================== */
+
+#invite-view {
+  position: fixed;
+  bottom: 0;
+  right: 590px;
+}
+
+/* DIRECT CHAT VIEW
+   ========================================================================== */
+
+#direct-chat-view {
+  position: fixed;
+  bottom: 0;
+  right: 230px;
+  width: 350px;
+  height: 600px;
+}
+
+#direct-chat-view > .ui.segment {
+  height: 600px;
+}
+
+#direct-chat-view .direct-chat-member {
+  display: flex;
+  padding-bottom: 0px;
+}
+
+#direct-chat-view .name {
+  margin-left: 1rem;
+  font-weight: 700;
+}
+
+#direct-chat-view .guild-name {
+  margin-left: 1rem;
+}
+
+#direct-chat-view .dual-join.button {
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+#direct-chat-view .ui.minimal.comments {
+  height: 370px;
+  overflow-y: auto;
+}
+
+#direct-chat-view .comment {
+  padding-right: 0.5rem;
+}
+
+#direct-chat-view .ui.reply.form {
+  margin: 0 1rem 1rem 1rem;
+}
+
+#direct-chat-view #reply-field {
+  min-height: 4em;
+  height: 4em;
+}
+
+#direct-chat-view .current-user .avatar {
+  float: right;
+}
+
+.ui.comments .current-user.comment > .avatar ~ .content {
+  margin-left: 0;
+  width: 257px;
+}
+
+.ui.comments .current-user.comment .text {
+  width: 257px;
+  text-align: right;
+}
+
+.ui.comments .current-user.comment .content-header {
+  justify-content: flex-end;
+}
+
+/* ERROR VIEW
+   ========================================================================== */
 
 #error-view {
   height: 100%;
@@ -136,18 +240,6 @@ body {
   cursor: pointer;
 }
 
-#main-view-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-#sign-in-view {
-  /* display: absolute; */
-  max-width: 400px;
-  /* left: 50%; */
-}
-
 #appearance-view {
   position: fixed;
   height: 100vh;
@@ -158,6 +250,9 @@ body {
   padding-right: 0;
   border-left: solid;
   border-width: thin;
+  right: 0px;
+  z-index: 102;
+  width: 220px !important;
 }
 
 #appearance-view .ui.menu > a.item {
@@ -182,16 +277,6 @@ body {
 #appearance-view .ui.menu > a.item:hover {
   background-color: #eee;
   color: #23527c;
-}
-
-#main-view {
-  padding-top: 56px;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-#main-view .ui.dividing.header {
-  width: 100%;
 }
 
 /* ==========================================================================

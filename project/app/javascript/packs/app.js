@@ -3,6 +3,6 @@ import { App } from "srcs/internal";
 
 $(document).ready(function () {
   App.initialize();
-  window.aaa = App.current_user; // for debug login trace
+  window.app = App;
   Backbone.history.start();
 });

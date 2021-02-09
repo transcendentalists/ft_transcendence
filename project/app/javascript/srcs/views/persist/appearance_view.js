@@ -16,9 +16,6 @@ export let AppearanceView = Backbone.View.extend({
   logout: function () {
     // + undescribe appearance channel
     this.$el.empty();
-    Helper.fetch(`users/${App.current_user.get("id")}/session`, {
-      method: "DELETE",
-    });
     App.restart();
   },
 
@@ -26,4 +23,6 @@ export let AppearanceView = Backbone.View.extend({
     this.$el.empty();
     this.$el.html(this.template());
   },
+
+  close: function () {},
 });

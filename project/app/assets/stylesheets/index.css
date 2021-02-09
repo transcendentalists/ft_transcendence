@@ -1,3 +1,10 @@
+/* ==========================================================================
+   GLOBAL AREA
+   ========================================================================== */
+
+/* Sub-section comment block
+   ========================================================================== */
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: grayscale;
@@ -10,6 +17,52 @@ body {
 #root-grid {
   height: 100%;
 }
+
+.ui.centered.small.circular.image {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.ui.borderless.menu {
+  box-shadow: none;
+  flex-wrap: wrap;
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ui.mobile.only.grid .ui.menu .ui.vertical.menu {
+  display: none;
+}
+
+.ui.selection.list .list > .item,
+.ui.selection.list > .item {
+  padding: 0.5em 5em;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-container.column-direction {
+  flex-direction: column;
+}
+
+.flex-container.space-between {
+  justify-content: space-between;
+}
+
+.flex-container.center-aligned {
+  align-items: center;
+}
+
+.flex-container.baseline {
+  align-items: baseline;
+}
+
+/* ==========================================================================
+                                PERSIST VIEW
+   ========================================================================== */
 
 @media (max-width: 1024px) {
   #invite-view {
@@ -129,32 +182,125 @@ body {
   padding-right: 20px;
 }
 
-#main-view h1 {
-  font-size: 36px;
-}
-
 #main-view .ui.dividing.header {
   width: 100%;
 }
 
-.ui.centered.small.circular.image {
-  margin-top: 14px;
-  margin-bottom: 14px;
+/* ==========================================================================
+   SHARE VIEW
+   ========================================================================== */
+
+/* PROFILE VIEW
+   ========================================================================== */
+
+.profile-trophy > i {
+  margin-left: 0.5rem;
 }
 
-.ui.borderless.menu {
-  box-shadow: none;
-  flex-wrap: wrap;
-  border: none;
-  padding-left: 0;
-  padding-right: 0;
+.profile-card .small.image {
+  margin-bottom: 0;
+  width: 120px;
 }
 
-.ui.mobile.only.grid .ui.menu .ui.vertical.menu {
-  display: none;
+.profile-card .content {
+  margin-left: 2rem;
+  margin-top: -1rem;
 }
 
-.ui.selection.list .list > .item,
-.ui.selection.list > .item {
-  padding: 0.5em 5em;
+.profile-card .row:not(:first-child) {
+  margin-top: 0.2rem;
+}
+
+.profile-card .name {
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.profile-card .rank {
+  margin-left: 1rem;
+}
+
+/* ==========================================================================
+   LADDER INDEX VIEW
+   ========================================================================== */
+
+#ladder-index-view {
+  margin-top: 8rem;
+}
+
+#user-ranking-view .buttons {
+  margin-top: 1rem;
+}
+
+#ladder-index-view #ladder-join-button {
+  margin-left: 2rem;
+}
+
+#ladder-index-view .user-ranking.ui.container {
+  margin: 5% 0;
+}
+
+#user-ranking-view .ladder-index-header .buttons {
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   GAME INDEX VIEW
+   ========================================================================== */
+
+#game-index-view {
+  background-image: url("/assets/game_index.jpg");
+  min-width: 1024px;
+  width: 100%;
+  height: 100%;
+  padding-top: 4rem;
+}
+
+#game-index-view #game-player-list {
+  margin: 3rem 0;
+  width: 900px;
+}
+
+#game-index-view .profile-card {
+  width: 420px;
+  height: 150px;
+}
+
+#game-index-view .vs-icon {
+  color: white;
+}
+
+#game-index-view #count-down-box {
+  text-align: center;
+  font-size: 3rem;
+  margin-top: 20%;
+}
+
+#game-index-view #game-player-list #left-game-player-view {
+  border-left: 5px solid #db2828;
+  border-radius: 5px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+#game-index-view #game-player-list #right-game-player-view {
+  border-right: 5px solid #2185d0;
+  border-radius: 5px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+#game-index-view #ladder-game-section {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: saturate(180%) blur(10px);
+  width: 900px;
+  height: 400px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
 }

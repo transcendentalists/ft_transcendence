@@ -10,23 +10,6 @@ export let DirectChatView = Backbone.View.extend({
     "click .ui.button": "test2",
   },
 
-  test2: function () {
-    Helper.input({
-      subject: "인풋모달",
-      description: "인풋테스트 콜백없음",
-    });
-  },
-
-  test1: function () {
-    Helper.input({
-      subject: "인풋모달",
-      description: "인풋테스트 콜백있음",
-      success_callback: function (description) {
-        console.log(description);
-      },
-    });
-  },
-
   initialize: function () {
     this.$el.hide();
   },

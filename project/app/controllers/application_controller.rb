@@ -6,5 +6,4 @@ class ApplicationController < ActionController::Base
   def remove_session
     cookies.encrypted[:service_id] = 0
   end
-
 end

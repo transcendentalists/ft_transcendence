@@ -39,6 +39,7 @@ export let FriendsListView = Backbone.View.extend({
     this.friend_user_unit = new App.View.UserUnitView({
       parent: this,
       model: user,
+      is_friend: true,
     });
     this.child_views.push(this.friend_user_unit);
     this.$(".ui.middle.aligned.selection.list").append(

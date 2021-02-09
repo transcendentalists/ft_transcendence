@@ -14,6 +14,7 @@ export let UserUnitView = Backbone.View.extend({
     this.online_users = options.parent.online_users;
     this.friends = options.parent.friends;
     this.chat_bans = options.parent.chat_bans;
+    this.is_friend = options.is_friend;
     this.listenTo(this.model, "remove", this.close);
     this.listenTo(this.model, "change:status", this.changeStatus);
     this.listenTo(this.model, "create_user_menu", this.createUserMenu);
@@ -31,6 +32,7 @@ export let UserUnitView = Backbone.View.extend({
     this.user_menu_view = new App.View.UserMenuView({
       parent: this,
       model: this.model,
+      is_friend: this.is_friend,
     });
     $("#root").append(this.user_menu_view.render(position).$el);
   },

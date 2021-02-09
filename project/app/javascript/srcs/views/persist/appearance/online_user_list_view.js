@@ -43,6 +43,7 @@ export let OnlineUserListView = Backbone.View.extend({
     this.online_user_unit = new App.View.UserUnitView({
       parent: this,
       model: user,
+      is_friend: false,
     });
     this.child_views.push(this.online_user_unit);
     this.$(".ui.middle.aligned.selection.list").append(

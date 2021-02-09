@@ -19,7 +19,7 @@ export let UserMenuView = Backbone.View.extend({
     this.chat_bans = this.parent.chat_bans;
     this.online_users = this.parent.online_users;
     this.friends = this.parent.friends;
-
+    this.is_friend = options.is_friend;
     this.listenTo(this.online_users, "destroy_user_menu_all", this.close);
     this.listenTo(this.friends, "destroy_user_menu_all", this.close);
     this.listenTo(window, "resize", this.close);
@@ -64,6 +64,7 @@ export let UserMenuView = Backbone.View.extend({
       this.template({
         model: this.model,
         banned: this.chat_bans.isUserChatBanned(this.model.id),
+        is_friend: this.is_friend,
       })
     );
     this.$el.css("position", "absolute");

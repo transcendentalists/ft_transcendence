@@ -99,7 +99,19 @@ class User < ApplicationRecord
     data = attributes.filter { |field, _value| permitted.include?(field) }
   end
 
-  def notice_login
+  # notice_status
+  def notice_status(status)
+    if status == "online"
+      notice_online
+    elsif status == "offline"
+      notice_offline
+    else
+      notice_playing
+    end
+  end
+  
+  private
+  def notice_online
     user_data = {
       id: id,
       name: name,
@@ -110,16 +122,26 @@ class User < ApplicationRecord
     ActionCable.server.broadcast('appearance_channel', user_data)
   end
 
-  def notice_logout
+  def notice_offline
     # cookies.encrypted[:service_id]
     ActionCable.server.broadcast('appearance_channel', {
-                                   id: id,
-                                   name: name,
-                                   status: "offline"
+                                  id: id,
+                                  name: name,
+                                  status: "offline"
                                  })
   end
 
-  private
+  def notice_playing
+    user_data = {
+      id: id,
+      name: name,
+      status: "playing",
+      image_url: image_url,
+      anagram: guild_membership.nil? ? nil : guild_membership.guild.anagram
+    }
+    ActionCable.server.broadcast('appearance_channel', user_data)
+  end
+
   def self.where_by_query(params)
     users = self.all
     params.except(:for, :user_id).each do |k, v|

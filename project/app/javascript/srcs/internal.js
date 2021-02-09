@@ -29,6 +29,14 @@ import { NavBarView } from "./views/persist/nav_bar_view";
 /** error view */
 import { ErrorView } from "./views/error/error_view";
 
+/** user views */
+import { UserIndexView } from "./views/user/user_index_view";
+import { GuildInvitationView } from "./user/guild/guild_invitation_view";
+import { MatchHistoryView } from "./user/game/match_history_view";
+import { MatchHistoryListView } from "./user/game/match_history_list_view";
+import { GuildInvitationListView } from "./user/guild/guild_invitation_list_view";
+import { UserRankingView } from "./user/ladder/user_ranking_view";
+
 /** ladder views */
 import { LadderIndexView } from "./views/ladder/ladder_index_view";
 import { MyRatingView } from "./views/ladder/my_rating_view";
@@ -128,6 +136,8 @@ export let App = {
     GuildIndexView,
     GuildDetailView,
     GuildCreateView,
+    GuildInvitationView,
+    GuildInvitationListView,
     LadderIndexView,
     UserRankingView,
     UserProfileCardView,
@@ -137,6 +147,8 @@ export let App = {
     WarCreateView,
     GameIndexView,
     GamePlayView,
+    MatchHistoryView,
+    MatchHistoryListView,
     TournamentIndexView,
     TournamentCreateView,
     AdminUserIndexView,

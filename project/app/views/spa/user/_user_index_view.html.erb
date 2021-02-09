@@ -1,0 +1,34 @@
+<script type="text/template" id="user-index-view-template">
+  <div class="user-index-header ui text container">
+    <h1 class="ui header">Profile</h1>
+    <%% if(is_current_user) { %>
+      <div id="two-factor-toggle" class="ui toggle checkbox">
+        <input type="checkbox" name="public">
+        <label>2차인증 활성화</label>
+      </div>
+    <%% } %>
+    <div class="user-index-buttons">
+      <%% if(is_current_user) { %>
+        <button id="avatar-change-button" class="ui button mini teal">
+          아바타 변경
+        </button>
+      <%% } %>
+      <%% if(invite_possible) { %>
+        <button id="guild-invite-button" class="ui button mini teal">
+          길드 초대
+        </button>
+      <%% } %>
+    </div>
+  </div>
+
+  <div class="user-profile-view ui text container">
+  </div>
+
+  <div id="guild-invitation-list ui container">
+  
+  </div>
+
+  <div class="match-history-list-view ui container">
+
+  </div>
+</script>

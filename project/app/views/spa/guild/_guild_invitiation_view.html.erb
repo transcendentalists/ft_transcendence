@@ -1,0 +1,20 @@
+<script type="text/template" id="guild-invitation-view-template">
+<div class="content">
+  <img class="right floated mini ui image" src="<%%= guild.image_url %>">
+  <div class="header">
+    <%%= guild.name %>
+  </div>
+  <div class="meta">
+    <%%= guild.anagram %>
+  </div>
+  <div class="description">
+    <%%= sender %>님이 <%%= reciever %>님을 <%%= guild.name %> 길드로 초대하셨습니다.
+  </div>
+</div>
+<div class="extra content">
+  <div class="ui two buttons">
+    <div class="ui basic approve green button">승인</div>
+    <div class="ui basic decline red button">거부</div>
+  </div>
+</div>
+</script>

@@ -77,10 +77,10 @@ export let UserIndexView = Backbone.View.extend({
       .setElement(this.$("#guild-invitation-list-view"))
       .render(data);
 
-    // this.match_history_list = new App.View.matchHistoryListView();
-    // this.match_history_list
-    //   .setElement(this.$(".match-history-list-view"))
-    //   .render(data);
+    this.match_history_list = new App.View.matchHistoryListView();
+    this.match_history_list
+      .setElement(this.$(".match-history-list-view"))
+      .render(data);
 
     return this;
   },

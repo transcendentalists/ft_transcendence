@@ -1,10 +1,12 @@
 <script type="text/template" id="appearance-user-list-unit-template">
   <div class="content header">
 
-    <%% if ( status == "playing") { %> 
+    <%% if ( status == "playing") { %>
       <a class="ui yellow mini empty circular label"></a>
-    <%% } else { %>
+    <%% } else if ( status == "online") { %>
         <a class="ui green mini empty circular label"></a>
+    <%% } else { %>
+        <a class="ui gray mini empty circular label"></a>
     <%% } %>
     <%%- name %>
 

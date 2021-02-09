@@ -17,7 +17,7 @@ class User < ApplicationRecord
   has_many :tournaments, through: :tournament_memberships
 
   scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
-  
+
   def login(verification: false)
     return self if two_factor_auth && !verification
 
@@ -95,12 +95,12 @@ class User < ApplicationRecord
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
     stat.merge!(self.game_stat)
     stat[:achievement] = self.achievement
-    
+
     if self.in_guild.nil?
       stat[:guild] = nil
       return stat
     end
-    
+
     stat[:guild] = self.in_guild.to_simple
     stat[:guild][:position] = self.guild_membership.position
     stat

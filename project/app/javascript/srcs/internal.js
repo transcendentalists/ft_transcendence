@@ -9,6 +9,7 @@ import { ChatBan } from "./models/chat_ban";
 
 /* COLLECTION */
 import { Users } from "./collections/users";
+import { Friends } from "./collections/friends";
 import { ChatBans } from "./collections/chat_bans";
 
 /* VIEW */
@@ -58,6 +59,7 @@ import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
 import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
 import { AdminGuildDetailView } from "./views/admin/admin_guild_detail_view";
 
+import { FriendsListView } from "./views/persist/appearance/friends_list_view";
 import { OnlineUserListView } from "./views/persist/appearance/online_user_list_view";
 import { UserUnitView } from "./views/persist/appearance/user_unit_view";
 import { UserMenuView } from "./views/persist/appearance/user_menu_view";
@@ -75,7 +77,6 @@ import { Helper } from "./helper";
 export { Helper } from "./helper";
 import { Router } from "./router";
 import { AppView } from "./views/app_view";
-
 
 import consumer from "channels/consumer";
 
@@ -114,6 +115,7 @@ export let App = {
   },
   Collection: {
     Users,
+    Friends,
     ChatBans,
   },
   View: {
@@ -153,6 +155,7 @@ export let App = {
     AdminChatRoomView,
     AdminGuildIndexView,
     AdminGuildDetailView,
+    FriendsListView,
     OnlineUserListView,
     UserUnitView,
     UserMenuView,

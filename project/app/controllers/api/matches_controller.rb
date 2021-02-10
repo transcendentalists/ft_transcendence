@@ -38,7 +38,7 @@ class Api::MatchesController < ApplicationController
     match = Match.where(match_type: "ladder", status: "pending").first_or_create(rule_id: 1)
     side = match.users.count == 0 ? "left" : "right"
     card = Scorecard.create(user_id: user.id, match_id: match.id, side: side)
-    user.update(status: "playing")
+    user.update_status("playing")
     match
   end
 end

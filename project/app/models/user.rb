@@ -22,12 +22,12 @@ class User < ApplicationRecord
   def login(verification: false)
     return self if two_factor_auth && !verification
 
-    update(status: 'online')
+    update_status('online')
     self
   end
 
   def logout
-    update(status: 'offline')
+    update_status('offline')
   end
 
   def self.onlineUsersWithoutFriends(params)
@@ -100,49 +100,25 @@ class User < ApplicationRecord
     data = attributes.filter { |field, _value| permitted.include?(field) }
   end
 
-  def notice_status(status)
-    if status == "online"
-      notice_online
-    elsif status == "offline"
-      notice_offline
-    else
-      notice_playing
-    end
-  end
-
   def friends_list(params)
     self.class.select_by_query(self.friends, params)
   end
 
+  def update_status(status)
+    self.update(status: status)
+    ActionCable.server.broadcast('appearance_channel', make_user_data(status))
+  end
+
   private
-  def notice_online
+
+  def make_user_data(status)
     user_data = {
       id: id,
       name: name,
-      status: "online",
+      status: status,
       image_url: image_url,
-      anagram: guild_membership.nil? ? nil : guild_membership.guild.anagram
+      anagram: guild_membership&.guild&.anagram
     }
-    ActionCable.server.broadcast('appearance_channel', user_data)
-  end
-
-  def notice_offline
-    ActionCable.server.broadcast('appearance_channel', {
-                                  id: id,
-                                  name: name,
-                                  status: "offline"
-                                 })
-  end
-
-  def notice_playing
-    user_data = {
-      id: id,
-      name: name,
-      status: "playing",
-      image_url: image_url,
-      anagram: guild_membership.nil? ? nil : guild_membership.guild.anagram
-    }
-    ActionCable.server.broadcast('appearance_channel', user_data)
   end
 
   def self.where_by_query(params)

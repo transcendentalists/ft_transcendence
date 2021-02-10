@@ -1,5 +1,5 @@
 class GameChannel < ApplicationCable::Channel
-  
+
   # match_id를 기준으로 채널 생성
   # 종료/취소된 매치, 경기 인원이 편성되지 않은 매치 접근에 대한 예외처리 진행
   def subscribed
@@ -14,7 +14,7 @@ class GameChannel < ApplicationCable::Channel
     @match.start if not_started
     enter(not_started)
   end
-  
+
   # 유효하지 않은 매치 접근시 예외처리
   def stop(match_id)
     speak({match_id: match_id, type: "STOP", message: "INVALID MATCH", send_id: current_user.id })
@@ -81,7 +81,7 @@ class GameChannel < ApplicationCable::Channel
   def complete_by_giveup
     @match = current_user.playing_match
     return if @match.nil? or @match.status == "completed"
-    
+
     @match.scorecards.each do |card|
       card.update(result: card.user.id == current_user.id ? "lose" : "win")
     end
@@ -111,7 +111,7 @@ class GameChannel < ApplicationCable::Channel
     elsif current_user.playing?
       complete_by_giveup
     end
-    current_user.update(status: "online")
+    current_user.update_status("online")
     # Any cleanup needed when channel is unsubscribed
   end
 end

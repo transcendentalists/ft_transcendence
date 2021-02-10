@@ -72,6 +72,19 @@ export let UserIndexView = Backbone.View.extend({
   render: function () {
     this.$(".user-profile-view").append(this.user_profile_view.$el);
 
+    const guild_invitations_url =
+      "users/" + App.current_user.id + "?for=profile";
+
+    Helper.fetch(current_user_url, {
+      success_callback: this.renderGuildInvitationsCallback.bind(this),
+    });
+
+    const match_history_url = "users/?for=ladder_index&page=" + this.page;
+
+    Helper.fetch(ladder_users_url, {
+      success_callback: this.renderMatchHistoryCallback.bind(this),
+    });
+
     this.guild_invitation_list = new App.View.GuildInvitationListView();
     this.guild_invitation_list
       .setElement(this.$("#guild-invitation-list-view"))

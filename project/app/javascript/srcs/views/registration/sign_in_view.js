@@ -9,6 +9,7 @@ export let SignInView = Backbone.View.extend({
   },
 
   initialize: function () {
+    this.status = null;
     this.prevent = false;
     this.current_user_id = null;
     this.two_factor_auth = false;
@@ -47,6 +48,8 @@ export let SignInView = Backbone.View.extend({
   loginSuccessCallback: function (data) {
     this.current_user_id = data.current_user.id;
     if (data.current_user.two_factor_auth) {
+      this.status = "verification";
+      this.prevent = false;
       this.$(".login.field").hide();
       this.$(".auth.field").show();
       this.two_factor_auth = true;
@@ -72,7 +75,7 @@ export let SignInView = Backbone.View.extend({
   submit: function () {
     if (this.prevent) return;
     this.prevent = true;
-    if (!this.two_factor_auth) {
+    if (this.status == "login") {
       let name = $("input[name=name]").val();
       let password = $("input[name=password]").val();
       Helper.fetch(`users/${name}/session`, this.signInParams(name, password));
@@ -91,7 +94,7 @@ export let SignInView = Backbone.View.extend({
     this.$el.html(this.template());
     this.$(".auth.field").hide();
     this.$(".ui.negative.message").hide();
-    this.status = "LOGIN";
+    this.status = "login";
     return this;
   },
 

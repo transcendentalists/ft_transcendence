@@ -3,6 +3,7 @@ class Api::FriendshipsController < ApplicationController
     friends_list = User.find_by_id(params[:user_id])&.friends_list(params)
     render json: { friendships: friends_list }
   end
+
   def create
     friendship = Friendship.find_or_create_by(user_id: params[:user_id], friend_id: params[:friend_id])
     render json: {friendships: {id: friendship.id}}

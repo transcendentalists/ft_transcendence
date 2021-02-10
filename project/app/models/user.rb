@@ -1,9 +1,5 @@
-require 'bcrypt'
-
 # Mainly performs login and logout related tasks.
 class User < ApplicationRecord
-  include BCrypt
-
   has_many :messages, class_name: 'ChatMessage'
   has_many :direct_chat_memberships
   has_many :direct_chat_rooms, through: :direct_chat_memberships, source: :room
@@ -22,10 +18,6 @@ class User < ApplicationRecord
   has_many :tournaments, through: :tournament_memberships
 
   scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
-
-  # def pass
-
-  # end
 
   def login(verification: false)
     return self if two_factor_auth && !verification

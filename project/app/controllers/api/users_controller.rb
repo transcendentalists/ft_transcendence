@@ -1,3 +1,5 @@
+require 'bcrypt'
+
 class Api::UsersController < ApplicationController
   def index
     if params[:for] == 'appearance'
@@ -18,7 +20,11 @@ class Api::UsersController < ApplicationController
         }
       }, :status => 401
     else
-      user = User.create(param)
+      user = User.create(
+        name: param[:name], 
+        email: param[:email], 
+        password: BCrypt::Password.create(params[:password])
+      )
       create_session user.id
       user.update(status: "online")
       #FIXME: user의 상태 온라인으로 변경하는 퍼블릭 인터페이스로 수정 필요
@@ -42,23 +48,32 @@ class Api::UsersController < ApplicationController
   end
 
   def login
-    if User.exists?(signin_params)
-      user = User.find_by_name(signin_params[:name]).login
-      create_session user.id
-      verification_code = rand(100000..999999).to_s
-      user.update(verification_code: verification_code)
-      ActionMailer::Base.mail(to: user.email,
-        subject: "[Transcendence] 2차 인증 메일입니다.",
-        body: "인증번호는 [#{verification_code}] 입니다.",
-        from: "valhalla.host@gmail.com",
-        content_type: "text/html").deliver_now if user.two_factor_auth
-
-      render :json => { current_user: user.to_simple }
+    user = User.find_by_name(params[:user][:name])
+    if user
+      if BCrypt::Password.new(user.password) == params[:user][:password]
+        if user.two_factor_auth
+          verification_code = rand(100000..999999).to_s
+          user.update(verification_code: verification_code)
+          ActionMailer::Base.mail(to: user.email,
+            subject: "[Transcendence] 2차 인증 메일입니다.",
+            body: "인증번호는 [#{verification_code}] 입니다.",
+            from: "valhalla.host@gmail.com",
+            content_type: "text/html").deliver_now 
+        else
+          user.login
+          create_session user.id 
+        end
+        render :json => { current_user: user.to_simple }
+      else
+        render json: { error: {
+          'type': 'login failure', 'msg': '비밀번호가 맞지 않습니다.'
+        } }, status: 401
+      end
     else
       render json: { error: {
-        'type': 'login failure', 'msg': '가입된 이름이 없거나 비밀번호가 맞지 않습니다.'
+        'type': 'login failure', 'msg': '가입된 이름이 없습니다.'
       } }, status: 401
-    end
+    end 
   end
 
   # 유저가 로그아웃 버튼을 클릭했을 때 id를 이용한 로그아웃 프로세스 처리
@@ -79,7 +94,7 @@ class Api::UsersController < ApplicationController
   end
 
   def signin_params
-    params.require(:user).permit(:name, :password)
+    params.require(:user).permit(:name)
   end
 
   def service_params

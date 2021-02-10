@@ -285,7 +285,7 @@ body {
 }
 
 #appearance-view .item .circular[data-status="playing"] {
-  background-color: yellow;
+  background-color: orange;
 }
 
 #appearance-view .item .circular[data-status="online"] {

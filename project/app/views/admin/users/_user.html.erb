@@ -1,0 +1,55 @@
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
+
+<table class="ui celled table">
+  <thead>
+    <tr><th>Column</th>
+    <th>Value</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td data-label="Column">ID</td>
+      <td data-label="Value"> <%= user.id %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Name</td>
+      <td data-label="Value"> <%= user.name %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Status</td>
+      <td data-label="Value"> <%= user.status %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Guild</td>
+      <td data-label="Value"> <%= user&.in_guild&.name %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Anagram</td>
+      <td data-label="Value"> <%= user&.in_guild&.anagram %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Two_factor_auth</td>
+      <td data-label="Value"> <%= user.two_factor_auth %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Banned</td>
+      <td data-label="Value"> <%= user.banned %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Point</td>
+      <td data-label="Value"> <%= user.point %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Image_url</td>
+      <td data-label="Value"> <%= user.image_url %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Email</td>
+      <td data-label="Value"> <%= user.email %> </td>
+    </tr>
+    <tr>
+      <td data-label="Column">Verification_code</td>
+      <td data-label="Value"> <%= user.verification_code %> </td>
+    </tr>
+  </tbody>
+</table>

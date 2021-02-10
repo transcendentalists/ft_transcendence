@@ -86,7 +86,7 @@ body {
 #sign-in-view {
   width: 300px;
   margin-top: 20vw;
-  margin-left: 30vw;
+  margin-left: calc(50% - 110px);
 }
 
 #sign-in-view .field:nth-child(n + 2) {

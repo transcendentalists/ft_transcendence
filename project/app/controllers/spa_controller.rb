@@ -25,7 +25,6 @@ class SpaController < ApplicationController
   def destroy
     id = cookies.encrypted[:service_id]
     return if not User.exists?(id)
-    User.find(id).logout
     remove_session
     head :no_content
   end

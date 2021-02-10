@@ -22,12 +22,12 @@ class User < ApplicationRecord
   def login(verification: false)
     return self if two_factor_auth && !verification
 
-    update(status: 'online')
+    update_status('online')
     self
   end
 
   def logout
-    update(status: 'offline')
+    update_status('offline')
   end
 
   def self.onlineUsersWithoutFriends(params)
@@ -100,31 +100,26 @@ class User < ApplicationRecord
     data = attributes.filter { |field, _value| permitted.include?(field) }
   end
 
-  def notice_login
-    user_data = {
-      id: id,
-      name: name,
-      status: "online",
-      image_url: image_url,
-      anagram: guild_membership.nil? ? nil : guild_membership.guild.anagram
-    }
-    ActionCable.server.broadcast('appearance_channel', user_data)
-  end
-
-  def notice_logout
-    # cookies.encrypted[:service_id]
-    ActionCable.server.broadcast('appearance_channel', {
-                                   id: id,
-                                   name: name,
-                                   status: "offline"
-                                 })
-  end
-
   def friends_list(params)
     self.class.select_by_query(self.friends, params)
   end
 
+  def update_status(status)
+    self.update(status: status)
+    ActionCable.server.broadcast('appearance_channel', make_user_data(status))
+  end
+
   private
+
+  def make_user_data(status)
+    user_data = {
+      id: id,
+      name: name,
+      status: status,
+      image_url: image_url,
+      anagram: guild_membership&.guild&.anagram
+    }
+  end
 
   def self.where_by_query(params)
     users = self.all
@@ -141,8 +136,5 @@ class User < ApplicationRecord
       users
     end
   end
-
-  # TODO: private 클래스 메소드 처리
-  # private_class_method :where_by_query, :select_by_query
 
 end

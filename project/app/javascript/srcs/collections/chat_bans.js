@@ -36,8 +36,13 @@ export let ChatBans = Backbone.Collection.extend({
   },
 
   destroyChatBan: function (user_id) {
+    let chat_ban_id = this.findWhere({
+      user_id: App.current_user.id,
+      banned_user_id: user_id,
+    }).get("id");
+
     Helper.fetch(
-      `users/${App.current_user.id}/chat_bans/${user_id}`,
+      `users/${App.current_user.id}/chat_bans/${chat_ban_id}`,
       this.destroyChatBanParams()
     );
   },

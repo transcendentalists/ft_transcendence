@@ -1,12 +1,12 @@
 class Api::ChatBansController < ApplicationController
   def index
     chat_bans = ChatBan.where(user_id: params[:user_id])
-    render json: { chatBans: chat_bans }
+    render json: { chat_bans: chat_bans }
   end
 
   def show
     chat_ban = ChatBan.find_by_user_id_and_banned_user_id(params[:user_id], params[:id])
-    render json: { chatBan: chat_ban }
+    render json: { chat_bans: chat_ban }
   end
 
   def create

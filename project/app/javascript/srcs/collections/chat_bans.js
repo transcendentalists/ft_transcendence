@@ -9,7 +9,7 @@ export let ChatBans = Backbone.Collection.extend({
   },
 
   parse: function (response) {
-    return response.chatBans;
+    return response.chat_bans;
   },
 
   isUserChatBanned: function (user_id) {

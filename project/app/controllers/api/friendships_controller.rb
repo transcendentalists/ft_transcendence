@@ -1,10 +1,10 @@
 class Api::FriendshipsController < ApplicationController
   def index
-    friends = User.where(id: Friendship.where(user_id: params[:user_id]).select(:friend_id))
-    friends = User.select_by_query(friends, params)
-    render json: {friendships: friends}
+    # friends = User.select_by_query(friends, params)
+    friends_list = User.find_by_id(params[:user_id])&.friends_list(params)
+    render json: { friendships: friends_list }
   end
-
+  # /api/
   def create
     render plain: params[:user_id] + "'s new friends!"
   end

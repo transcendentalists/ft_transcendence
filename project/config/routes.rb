@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
+
   root 'spa#index'
   # root 'spa#ft_auth'
   delete 'api/session', to: 'spa#destroy'
@@ -6,7 +8,6 @@ Rails.application.routes.draw do
   post 'auth/mail/callback', to: 'spa#mail_auth'
 
   namespace :api do
-
     resources :users, only: %i[index show create update] do
       member do
         patch :ban
@@ -16,7 +17,7 @@ Rails.application.routes.draw do
       resources :matches, only: [:index]
       resources :friendships, only: %i[index create destroy]
       resources :direct_chat_rooms, only: %i[index show create]
-      resources :chat_bans, only: %i[index create destroy]
+      resources :chat_bans, only: %i[index show create destroy]
     end
 
     resources :tournaments, only: %i[index create] do

@@ -1,0 +1,21 @@
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
+<div class="ui card">
+  <div class="content">
+    <div class="header">ChatBan ID #<%= chat_ban.id %> </div>
+  </div>
+  <div class="content">
+    <h4 class="ui sub header">User ID : <%= chat_ban.user.id %></h4>
+    <h4 class="ui sub header">Banned User ID : <%= chat_ban.banned_user.id %></h4>
+    <div class="ui small feed">
+      <div class="event">
+        <div class="content">
+        <div class="summary">
+            <div>user: <%= chat_ban.user.name %></div>
+            <div>banned_user: <%= chat_ban.banned_user.name %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

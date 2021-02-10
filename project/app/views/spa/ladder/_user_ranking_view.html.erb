@@ -1,20 +1,21 @@
 <script type="text/template" id="user-ranking-view-template">
-  <div class="ui grid">
-    <div class="row">
-        <h2>
-          User Ranking
-        </h2>
+
+  <div class="ladder-index-header flex-container column-direction">
+    <div>
+      <h2>
+        User Ranking
+      </h2>
     </div>
-      
-    <div class="row">
-      <div class="column"></div>
-        <button class="ui left floated button tiny teal">before</button>
-        <button class="ui right floated button tiny teal">next</button>
-      </div>
+    <div class="buttons flex-container space-between">
+      <button id="ladder-page-before-button" class="ui button tiny teal">
+        before
+      </button>
+      <button id="ladder-page-next-button" class="ui button tiny teal">
+        next
+      </button>
     </div>
   </div>
 
-    <div id="user-profile-card-list">
-      
-    </div>
+    <div id="user-profile-card-list"></div>
+
 </script>

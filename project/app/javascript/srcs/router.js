@@ -1,3 +1,4 @@
+import { Helper } from "./helper";
 import { App } from "./internal";
 
 export let Router = Backbone.Router.extend({
@@ -11,7 +12,7 @@ export let Router = Backbone.Router.extend({
     "ladder(/:page)": "ladderController",
     "lives(/:matchtype)": "livesController",
     "war(/:new)": "warController",
-    "matches/:id": "matchesController",
+    "matches(/:id)": "matchesController",
     "tournaments(/:param)": "tournamenstController",
     "admin(/:param1)(/:param2)": "adminController",
     "errors/:id": "errorsController",
@@ -23,14 +24,16 @@ export let Router = Backbone.Router.extend({
   },
 
   redirect_to: function (viewPrototype, param) {
-    if (!App.me.get("signed_in")) {
+    if (!App.current_user.sign_in) {
       return this.navigate("#/sessions/new");
     }
     App.mainView.render(viewPrototype, param);
   },
 
   sessionsController: function () {
-    App.mainView.render(App.View.SignInView);
+    if (App.current_user.sign_in)
+      return this.navigate("#/users/" + App.current_user.id);
+    else App.mainView.render(App.View.SignInView);
   },
 
   usersController: function (param) {
@@ -52,7 +55,7 @@ export let Router = Backbone.Router.extend({
   },
 
   ladderController: function (page = 1) {
-    this.redirect_to(App.view.LadderIndexView, page);
+    this.redirect_to(App.View.LadderIndexView, page);
   },
 
   livesController(matchType = "dual") {
@@ -77,7 +80,7 @@ export let Router = Backbone.Router.extend({
   },
 
   adminController(param1, param2) {
-    if (!App.user.signed_in || !App.user.is_admin)
+    if (!App.user.signed_in || !App.current_user.is_admin)
       return this.navigate("#/errors/103");
 
     if (param == null) this.redirect_to(App.View.AdminUserIndexView);
@@ -91,7 +94,7 @@ export let Router = Backbone.Router.extend({
   },
 
   errorsController(error_code) {
-    if (error_code === null) App.error_view.render(100);
-    else App.error_view.render(error_code);
+    if (error_code === null) this.navigate("errors/" + 100);
+    else this.redirect_to(App.View.ErrorView, error_code);
   },
 });

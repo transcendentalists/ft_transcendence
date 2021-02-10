@@ -9,13 +9,15 @@ export let SignUpView = Backbone.View.extend({
   },
 
   signUpSuccessCallback: function (data) {
-    App.current_user.set({ sign_in: true, id: data.current_user.id });
-    App.current_user.fetch();
+    App.current_user.set("id", data.user.id);
+    App.current_user.login();
     App.appView.render();
-    App.router.navigate(`#/users/${data.current_user.id}`);
+    console.log(`#/users/${data.user.id}`);
+    App.router.navigate(`#/users/${data.user.id}`);
   },
 
   failCallback: function (data) {
+    console.log(data);
     this.$(".ui.negative.message").empty();
     this.$(".ui.negative.message").append(
       this.warning_message_template(data.error)

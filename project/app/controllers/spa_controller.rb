@@ -7,7 +7,7 @@ class SpaController < ApplicationController
     user = User.find(params[:user][:id])
     if user.verification_code == params[:user][:verification_code]
       user.login(verification: true)
-      render :json => { me: user.to_simple }
+      render :json => { current_user: user.to_simple }
     else
       render :json => { error: {
         'type': 'login failure', 'msg': "인증번호가 맞지 않습니다."

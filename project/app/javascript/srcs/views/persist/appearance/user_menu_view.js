@@ -30,7 +30,6 @@ export let UserMenuView = Backbone.View.extend({
 
   directChat: function () {
     App.appView.direct_chat_view.render();
-    console.log("directChat!!");
     this.close();
   },
 
@@ -45,21 +44,15 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   newFriend: function () {
-    // this.model
-    console.log("newFriend!!");
-    // this.close();
+    this.close();
   },
 
   battle: function () {
-    // this.model
-    console.log("battle!!");
-    // this.close();
+    this.close();
   },
 
   userBan: function () {
-    // this.model
-    console.log("userBan!!");
-    // this.close();
+    this.close();
   },
 
   render: function (position) {

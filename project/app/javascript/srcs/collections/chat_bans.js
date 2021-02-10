@@ -30,9 +30,7 @@ export let ChatBans = Backbone.Collection.extend({
       method: "POST",
       success_callback: this.fetch.bind(this),
       body: {
-        banned_user: {
-          id: user_id,
-        },
+        banned_user_id: user_id,
       },
     };
   },

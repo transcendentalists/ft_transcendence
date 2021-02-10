@@ -49,7 +49,7 @@ export let FriendsListView = Backbone.View.extend({
   addAll: function () {
     for (let child_view of this.child_views) {
       child_view.close();
-    } // test 용도
+    }
     for (let online_user of this.friends) {
       this.addOne(online_user);
     }

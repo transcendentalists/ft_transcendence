@@ -1,0 +1,2 @@
+class GuildInvitation < ApplicationRecord
+end

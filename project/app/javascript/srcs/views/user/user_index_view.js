@@ -72,15 +72,15 @@ export let UserIndexView = Backbone.View.extend({
   render: function () {
     this.$(".user-profile-view").append(this.user_profile_view.$el);
 
-    this.guild_invitation_list = new App.View.guildInvitationListView();
+    this.guild_invitation_list = new App.View.GuildInvitationListView();
     this.guild_invitation_list
       .setElement(this.$("#guild-invitation-list-view"))
-      .render(data);
+      .render();
 
-    this.match_history_list = new App.View.matchHistoryListView();
+    this.match_history_list = new App.View.MatchHistoryListView();
     this.match_history_list
       .setElement(this.$(".match-history-list-view"))
-      .render(data);
+      .render();
 
     return this;
   },

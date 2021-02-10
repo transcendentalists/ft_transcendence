@@ -7,21 +7,22 @@ import { Helper } from "srcs/internal";
 
 export let GuildInvitationView = Backbone.View.extend({
   template: _.template($("#guild-invitation-view-template").html()),
+  className: "ui card mobile-only",
+  events: {
+    "click .approve.button": "approve",
+    "click .decline.button": "decline",
+  },
 
   initialize: function () {},
 
+  approve: function () {},
+
+  decline: function () {
+    this.close();
+  },
+
   render: function (data) {
-    this.$el.html(
-      this.template({
-        guild: {
-          image_url: "assets/eunhkim1.png",
-          name: "eunhkim",
-          anagram: "anagram",
-        },
-        sender: "sanam",
-        receiver: "receiver",
-      })
-    );
+    this.$el.html(this.template(data));
     return this;
   },
 

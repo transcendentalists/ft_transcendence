@@ -1,9 +1,7 @@
 import { App } from "srcs/internal";
 
 export let MatchHistoryListView = Backbone.View.extend({
-  template: _.template($("#match-history-list-view-template").html()),
-  id: "match-history-list-view",
-  className: "ui container",
+  el: ".match-history-list",
 
   initialize: function () {
     this.child_views = [];
@@ -15,13 +13,32 @@ export let MatchHistoryListView = Backbone.View.extend({
     this.$el.append(child_view.render(user).$el);
   },
 
-  render: function (matches_data) {
-    this.$el.html(this.template());
+  render: function () {
+    this.$el.empty();
+    let matches_data = [
+      {
+        match_type: "듀얼전",
+        is_win: true,
+        score: {
+          player: 3,
+          enemy: 1,
+        },
+      },
+      {
+        match_type: "승급전",
+        is_win: false,
+        score: {
+          player: 1,
+          enemy: 3,
+        },
+      },
+    ];
     matches_data.forEach(this.addOne, this);
     return this;
   },
 
   close: function () {
+    this.child_views.forEach((child_view) => child_view.close());
     this.child_views = [];
     this.remove();
   },

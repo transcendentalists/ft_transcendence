@@ -31,11 +31,10 @@ import { ErrorView } from "./views/error/error_view";
 
 /** user views */
 import { UserIndexView } from "./views/user/user_index_view";
-import { GuildInvitationView } from "./user/guild/guild_invitation_view";
-import { MatchHistoryView } from "./user/game/match_history_view";
-import { MatchHistoryListView } from "./user/game/match_history_list_view";
-import { GuildInvitationListView } from "./user/guild/guild_invitation_list_view";
-import { UserRankingView } from "./user/ladder/user_ranking_view";
+import { GuildInvitationView } from "./views/guild/guild_invitation_view";
+import { GuildInvitationListView } from "./views/guild/guild_invitation_list_view";
+import { MatchHistoryView } from "./views/game/match_history_view";
+import { MatchHistoryListView } from "./views/game/match_history_list_view";
 
 /** ladder views */
 import { LadderIndexView } from "./views/ladder/ladder_index_view";
@@ -46,7 +45,6 @@ import { UserRankingView } from "./views/ladder/user_ranking_view";
 import { GameIndexView } from "./views/game/game_index_view";
 import { GamePlayView } from "./views/game/game_play_view";
 
-import { UserIndexView } from "./views/user/user_index_view";
 import { ChatIndexView } from "./views/chat/chat_index_view";
 import { ChatRoomView } from "./views/chat/chat_room_view";
 import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";

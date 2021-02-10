@@ -22,8 +22,6 @@ export let ImageUploadModalView = Backbone.View.extend({
 
   uploadFile: function () {
     const image = this.$("input[type=file]")[0].files[0];
-    window.kk = image;
-    console.log(image);
     if (image == undefined) {
       this.renderWarning("이미지가 설정되어 있지 않습니다.");
     } else if (image.size >= 1000000) {

@@ -1,6 +1,6 @@
 <script type="text/template" id="guild-invitation-view-template">
 <div class="content">
-  <img class="right floated mini ui image" src="<%%= guild.image_url %>">
+  <img class="right floated mini ui avatar" src="<%%= guild.image_url %>">
   <div class="header">
     <%%= guild.name %>
   </div>
@@ -8,7 +8,7 @@
     <%%= guild.anagram %>
   </div>
   <div class="description">
-    <%%= sender %>님이 <%%= reciever %>님을 <%%= guild.name %> 길드로 초대하셨습니다.
+    <%%= sender %>님이 <%%= receiver %>님을 <%%= guild.name %> 길드로 초대하셨습니다.
   </div>
 </div>
 <div class="extra content">

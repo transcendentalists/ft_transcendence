@@ -20,9 +20,7 @@ export let AppearanceView = Backbone.View.extend({
   },
 
   render: function () {
-    console.log("appearance view render~!!");
     this.chat_bans.fetch();
-
     this.appearance_channel = new App.Channel.ConnectAppearanceChannel();
 
     this.$el.empty();
@@ -51,7 +49,7 @@ export let AppearanceView = Backbone.View.extend({
   },
 
   isFriend: function (id) {
-    return this.friends.where({ id: id }).length;
+    return this.friends.get(id) !== undefined;
   },
 
   updateUserList: function (user_data) {

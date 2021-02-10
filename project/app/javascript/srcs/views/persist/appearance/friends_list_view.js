@@ -13,7 +13,6 @@ export let FriendsListView = Backbone.View.extend({
 
     this.listenTo(this.friends, "add", this.addOne);
     this.listenTo(this.friends, "reset", this.addAll);
-    // this.listenTo(this.friends, "remove", this.deleteOne);
   },
 
   render: function () {
@@ -26,10 +25,10 @@ export let FriendsListView = Backbone.View.extend({
   },
 
   close: function () {
-    for (child_view of this.child_views) {
+    for (let child_view of this.child_views) {
       child_view.close();
     }
-    this.$el.remove();
+    this.remove();
   },
 
   addOne: function (user) {
@@ -42,7 +41,7 @@ export let FriendsListView = Backbone.View.extend({
       is_friend: true,
     });
     this.child_views.push(this.friend_user_unit);
-    this.$(".ui.middle.aligned.selection.list").append(
+    this.$("#appearance-friends-list").append(
       this.friend_user_unit.render().$el
     );
   },
@@ -53,29 +52,7 @@ export let FriendsListView = Backbone.View.extend({
     }
   },
 
-  // deleteOne: function (user) {
-  //   console.log("deleteOne");
-  //   console.log(this.friends);
-  //   user.clear();
-  //   console.log(this.friends);
-  // },
-
-  isUserInTheCollection: function (user_data) {
-    if (this.friends.where({ id: user_data.id }).length != 0) {
-      return true;
-    } else {
-      return false;
-    }
-  },
-
   updateUserList: function (user_data) {
-    let user = this.friends.where({ id: user_data.id })[0];
-    if (user_data.status == "online") {
-      user.set({ status: "online" });
-    } else if (user_data.status == "offline") {
-      user.set({ status: "offline" });
-    } else {
-      user.set({ status: "playing" });
-    }
+    this.friends.get(user_data.id).set({ status: user_data.status });
   },
 });

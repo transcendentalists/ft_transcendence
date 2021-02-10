@@ -20,8 +20,11 @@ export let UserMenuView = Backbone.View.extend({
     this.online_users = this.parent.online_users;
     this.friends = this.parent.friends;
     this.is_friend = options.is_friend;
-    this.listenTo(this.online_users, "destroy_user_menu_all", this.close);
-    this.listenTo(this.friends, "destroy_user_menu_all", this.close);
+    this.listenTo(
+      App.appView.appearance_view,
+      "destroy_user_menu_all",
+      this.close
+    );
     this.listenTo(window, "resize", this.close);
   },
 

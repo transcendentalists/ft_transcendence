@@ -21,7 +21,7 @@ body {
 }
 
 #main-view-container {
-  margin-left: 30vw;
+  margin-left: 0;
 }
 
 #main-view-container .ui.dividing.header {
@@ -86,6 +86,7 @@ body {
 #sign-in-view {
   width: 300px;
   margin-top: 20vw;
+  margin-left: 30vw;
 }
 
 #sign-in-view .field:nth-child(n + 2) {
@@ -240,6 +241,10 @@ body {
   cursor: pointer;
 }
 
+/* ==========================================================================
+   APPEARANCE VIEW
+   ========================================================================== */
+
 #appearance-view {
   position: fixed;
   height: 100vh;
@@ -277,6 +282,18 @@ body {
 #appearance-view .ui.menu > a.item:hover {
   background-color: #eee;
   color: #23527c;
+}
+
+#appearance-view .item .circular[data-status="playing"] {
+  background-color: yellow;
+}
+
+#appearance-view .item .circular[data-status="online"] {
+  background-color: green;
+}
+
+#appearance-view .item .circular[data-status="offline"] {
+  background-color: grey;
 }
 
 /* ==========================================================================

@@ -269,10 +269,6 @@ body {
   margin-bottom: 0;
 }
 
-#appearance-view .ui.container {
-  margin-top: 20%;
-}
-
 #appearance-view .ui.menu > a.item.active {
   background-color: #337ab7;
   color: white;
@@ -294,6 +290,25 @@ body {
 
 #appearance-view .item .circular[data-status="offline"] {
   background-color: grey;
+}
+
+#appearance-view #user-list-area {
+  height: calc(100vh - 12rem);
+  overflow-y: auto;
+  border-bottom: solid;
+  border-bottom-color: gray;
+  border-bottom-width: thin;
+  margin-top: 15%;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+#appearance-view #main-buttons-view {
+  margin-top: 0;
+  position: fixed;
+  bottom: 0;
+  height: 10rem;
+  width: 220px;
 }
 
 /* ==========================================================================

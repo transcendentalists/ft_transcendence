@@ -1,19 +1,13 @@
 class Api::UsersController < ApplicationController
   def index
-
     if params[:for] == 'appearance'
       users = User.onlineUsersWithoutFriends(service_params)
-
-      # users = User.where_by_query(service_params)
-      # users = users.where.not(id: (Friendship.where(user_id: params[:user_id]).select(:friend_id)))
-      # users = User.select_by_query users, params unless params[:for].nil?
     elsif params[:for] == "ladder_index"
       users = User.for_ladder_index(params[:page])
     else
       users = User.all
     end
     render :json => { users: users }
-    # render :json => users
   end
 
   def create
@@ -28,7 +22,6 @@ class Api::UsersController < ApplicationController
     else
       user = User.includes(:in_guild).find(id)
       render :json => { user: user.to_simple }
-      # render :json => user
     end
   end
 
@@ -47,7 +40,7 @@ class Api::UsersController < ApplicationController
         body: "인증번호는 [#{verification_code}] 입니다.",
         from: "valhalla.host@gmail.com",
         content_type: "text/html").deliver_now if user.two_factor_auth
-  
+
       render :json => { current_user: user.to_simple }
     else
       render json: { error: {

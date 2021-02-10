@@ -9,7 +9,7 @@ export let ChatBans = Backbone.Collection.extend({
   },
 
   parse: function (response) {
-    return response.chatBans;
+    return response.chat_bans;
   },
 
   isUserChatBanned: function (user_id) {
@@ -30,16 +30,19 @@ export let ChatBans = Backbone.Collection.extend({
       method: "POST",
       success_callback: this.fetch.bind(this),
       body: {
-        banned_user: {
-          id: user_id,
-        },
+        banned_user_id: user_id,
       },
     };
   },
 
   destroyChatBan: function (user_id) {
+    let chat_ban_id = this.findWhere({
+      user_id: App.current_user.id,
+      banned_user_id: user_id,
+    }).get("id");
+
     Helper.fetch(
-      `users/${App.current_user.id}/chat_bans/${user_id}`,
+      `users/${App.current_user.id}/chat_bans/${chat_ban_id}`,
       this.destroyChatBanParams()
     );
   },

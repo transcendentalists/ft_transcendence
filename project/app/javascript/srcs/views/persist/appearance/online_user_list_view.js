@@ -33,7 +33,7 @@ export let OnlineUserListView = Backbone.View.extend({
     for (let child_view of this.child_views) {
       child_view.close();
     }
-    this.$el.remove();
+    this.remove();
   },
 
   addOne: function (user) {
@@ -46,7 +46,7 @@ export let OnlineUserListView = Backbone.View.extend({
       is_friend: false,
     });
     this.child_views.push(this.online_user_unit);
-    this.$(".ui.middle.aligned.selection.list").append(
+    this.$("#appearance-online-user-list").append(
       this.online_user_unit.render().$el
     );
   },
@@ -57,19 +57,8 @@ export let OnlineUserListView = Backbone.View.extend({
     }
   },
 
-  // deleteOne: function (user) {
-  //   console.log("deleteOne");
-  //   console.log(this.online_users);
-  //   user.clear();
-  //   console.log(this.online_users);
-  // },
-
   isUserInTheCollection: function (user_data) {
-    if (this.online_users.where({ id: user_data.id }).length != 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return this.online_users.get(user_data.id) !== undefined;
   },
 
   updateUserList: function (user_data) {

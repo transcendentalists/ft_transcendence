@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_one  :own_guild, foreign_key: 'owner_id', class_name: 'Guild'
   has_one  :in_guild, through: :guild_membership, source: :guild
   has_many :friendships
+  has_many :friends, through: :friendships, source: :friend
   has_many :scorecards
   has_many :matches, through: :scorecards
   has_many :tournament_memberships
@@ -30,9 +31,9 @@ class User < ApplicationRecord
   end
 
   def self.onlineUsersWithoutFriends(params)
-    users = self.where_by_query(params)
+    users = where_by_query(params)
     users = users.where.not(id: (Friendship.where(user_id: params[:user_id]).select(:friend_id)))
-    users = self.select_by_query(users, params) unless params[:for].nil?
+    users = select_by_query(users, params) unless params[:for].nil?
   end
 
   def playing?
@@ -99,7 +100,6 @@ class User < ApplicationRecord
     data = attributes.filter { |field, _value| permitted.include?(field) }
   end
 
-  # notice_status
   def notice_status(status)
     if status == "online"
       notice_online
@@ -109,7 +109,11 @@ class User < ApplicationRecord
       notice_playing
     end
   end
-  
+
+  def friends_list(params)
+    self.class.select_by_query(self.friends, params)
+  end
+
   private
   def notice_online
     user_data = {
@@ -123,7 +127,6 @@ class User < ApplicationRecord
   end
 
   def notice_offline
-    # cookies.encrypted[:service_id]
     ActionCable.server.broadcast('appearance_channel', {
                                   id: id,
                                   name: name,

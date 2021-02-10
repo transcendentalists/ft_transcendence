@@ -21,8 +21,7 @@ export let UserUnitView = Backbone.View.extend({
   },
 
   destroyAndCreateUserMenu: function () {
-    this.online_users.trigger("destroy_user_menu_all");
-    this.friends.trigger("destroy_user_menu_all");
+    App.appView.appearance_view.trigger("destroy_user_menu_all");
     this.model.trigger("create_user_menu");
   },
 
@@ -48,23 +47,11 @@ export let UserUnitView = Backbone.View.extend({
   },
 
   changeStatus: function () {
-    if (this.model.get("status") == "playing") {
-      this.$el.find(".circular").removeClass("gray");
-      this.$el.find(".circular").removeClass("green");
-      this.$el.find(".circular").addClass("yellow");
-    } else if (this.model.get("status") == "online") {
-      this.$el.find(".circular").removeClass("gray");
-      this.$el.find(".circular").removeClass("yellow");
-      this.$el.find(".circular").addClass("green");
-    } else {
-      this.$el.find(".circular").removeClass("yellow");
-      this.$el.find(".circular").removeClass("green");
-      this.$el.find(".circular").addClass("gray");
-    }
+    this.$el.find(".circular").attr("data-status", this.model.get("status"));
   },
 
   close: function () {
     if (this.user_menu_view) this.user_menu_view.close();
-    this.$el.remove();
+    this.remove();
   },
 });

@@ -12,8 +12,7 @@ export let Friends = Backbone.Collection.extend({
     return response.friendships;
   },
 
-  createFriendship: function(friend_id) {
-    console.log("create Friend!!");
+  createFriendship: function (friend_id) {
     Helper.fetch(
       `users/${App.current_user.id}/friendships`,
       this.createFriendshipParams(friend_id)
@@ -30,8 +29,8 @@ export let Friends = Backbone.Collection.extend({
     };
   },
 
-  fetchFriends: function() {
-    this.fetch({reset: true});
+  fetchFriends: function () {
+    this.fetch({ reset: true });
   },
 
   destroyFriendship: function (friend_id) {

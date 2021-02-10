@@ -21,14 +21,16 @@ export let UserMenuView = Backbone.View.extend({
     this.online_users = this.parent.online_users;
     this.friends = this.parent.friends;
     this.is_friend = options.is_friend;
-    this.listenTo(this.online_users, "destroy_user_menu_all", this.close);
-    this.listenTo(this.friends, "destroy_user_menu_all", this.close);
+    this.listenTo(
+      App.appView.appearance_view,
+      "destroy_user_menu_all",
+      this.close
+    );
     this.listenTo(window, "resize", this.close);
   },
 
   directChat: function () {
     App.appView.direct_chat_view.render();
-    console.log("directChat!!");
     this.close();
   },
 
@@ -47,23 +49,20 @@ export let UserMenuView = Backbone.View.extend({
     this.online_users.remove(this.model);
     this.close();
   },
-  
+
   destroyFriend: function () {
     this.friends.destroyFriendship(this.model.get("id"));
-    if (this.model.get("status") != "offline") this.online_users.add(this.model);
+    if (this.model.get("status") != "offline")
+      this.online_users.add(this.model);
     this.close();
   },
 
   battle: function () {
-    // this.model
-    console.log("battle!!");
-    // this.close();
+    this.close();
   },
 
   userBan: function () {
-    // this.model
-    console.log("userBan!!");
-    // this.close();
+    this.close();
   },
 
   render: function (position) {
@@ -72,7 +71,7 @@ export let UserMenuView = Backbone.View.extend({
         model: this.model,
         banned: this.chat_bans.isUserChatBanned(this.model.id),
         is_friend: this.is_friend,
-      }),
+      })
     );
     this.$el.css("position", "absolute");
     this.$el.css("top", position.top);

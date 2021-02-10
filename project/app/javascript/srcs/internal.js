@@ -40,6 +40,12 @@ import { UserRankingView } from "./views/ladder/user_ranking_view";
 import { GameIndexView } from "./views/game/game_index_view";
 import { GamePlayView } from "./views/game/game_play_view";
 
+/** appearance views */
+import { FriendsListView } from "./views/persist/appearance/friends_list_view";
+import { OnlineUserListView } from "./views/persist/appearance/online_user_list_view";
+import { UserUnitView } from "./views/persist/appearance/user_unit_view";
+import { UserMenuView } from "./views/persist/appearance/user_menu_view";
+
 import { UserIndexView } from "./views/user/user_index_view";
 import { ChatIndexView } from "./views/chat/chat_index_view";
 import { ChatRoomView } from "./views/chat/chat_room_view";
@@ -58,11 +64,6 @@ import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
 import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
 import { AdminGuildDetailView } from "./views/admin/admin_guild_detail_view";
-
-import { FriendsListView } from "./views/persist/appearance/friends_list_view";
-import { OnlineUserListView } from "./views/persist/appearance/online_user_list_view";
-import { UserUnitView } from "./views/persist/appearance/user_unit_view";
-import { UserMenuView } from "./views/persist/appearance/user_menu_view";
 
 /* CHANNEL */
 import { ConnectAppearanceChannel } from "channels/appearance_channel";
@@ -88,7 +89,6 @@ export let App = {
     this.mainView = App.appView.main_view;
     this.current_user = new CurrentUser();
     this.consumer = consumer;
-    window.consumer = consumer;
   },
 
   restart: function () {
@@ -100,7 +100,8 @@ export let App = {
       method: "DELETE",
     });
     this.appView.restart();
-    this.current_user = new CurrentUser(); // this.current_user.reset(true);
+    this.current_user.logout();
+    this.current_user = new CurrentUser();
     this.router.navigate("#/sessions/new");
   },
 

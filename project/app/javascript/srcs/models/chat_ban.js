@@ -11,7 +11,7 @@ export let ChatBan = Backbone.Model.extend({
     if (options.collection) {
       return response;
     } else {
-      return response.chatBan;
+      return response.chat_ban;
     }
   },
 });

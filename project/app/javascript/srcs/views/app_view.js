@@ -25,8 +25,8 @@ export let AppView = Backbone.View.extend({
   },
 
   restart: function () {
-    // this.appearance_view.close();
-    // this.nav_bar_view.close();
+    this.appearance_view.close();
+    this.nav_bar_view.close();
 
     this.input_modal_view.close();
     this.alert_modal_view.close();

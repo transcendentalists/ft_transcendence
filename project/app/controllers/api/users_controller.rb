@@ -26,7 +26,7 @@ class Api::UsersController < ApplicationController
         password: BCrypt::Password.create(params[:password])
       )
       create_session user.id
-      user.update(status: "online")
+      user.update_status("online")
       #FIXME: user의 상태 온라인으로 변경하는 퍼블릭 인터페이스로 수정 필요
       render :json => { user: user.to_simple }
     end

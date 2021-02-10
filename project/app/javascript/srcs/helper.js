@@ -28,18 +28,21 @@ export let Helper = {
 
     let response = await fetch(prefix + url, params);
     console.log(response); // for response debugging
-    if (response.status == 200 || fail_callback) {
-      let data = await response.json();
+    if (response.status == 200 || response.status == 204 || fail_callback) {
+      let data = response.status == 200 ? await response.json() : {};
+
       if (response.status == 200 && success_callback) success_callback(data);
+      else if (response.status == 204 && success_callback) success_callback();
       else if (response.status == 200) return data;
-      else fail_callback(data);
-    } else
+      else if (fail_callback) fail_callback(data);
+    } else {
       return {
         error: {
           type: "Server internal error",
           msg: "잠시 후 다시 시도해주세요.",
         },
       };
+    }
   },
 
   getToken: function () {

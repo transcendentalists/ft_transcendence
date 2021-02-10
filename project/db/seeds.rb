@@ -10,8 +10,8 @@ User.create([
   {name: 'sanam1', password: '123123', email: 'simian114@gmail.com', image_url: 'assets/sanam1.png', point: 1, two_factor_auth: false},
   {name: 'yohlee1', password: '123123', email: 'yohan9612@naver.com', image_url: 'assets/yohlee1.png', point: 2, two_factor_auth: false},
   {name: 'eunhkim1', password: '123123', email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim1.png', point: 3, two_factor_auth: false},
-  {name: 'iwoo1', password: '123123', email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo1.png', point: 4, two_factor_auth: true},
-  {name: 'jujeong', password: '123123', email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 5, two_factor_auth: false},
+  {name: 'iwoo1', password: '123123', email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo1.png', point: 4, two_factor_auth: false},
+  {name: 'jujeong', password: '123123', email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 5, two_factor_auth: false, status: "playing"},
   {name: 'iwoo2', password: '123123',  email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo2.png', point: 7, two_factor_auth: false},
   {name: 'yohlee2', password: '123123',  email: 'yohan9612@yonsei.ac.kr', image_url: '/assets/yohlee2.png', point: 8},
   {name: 'sanam2', password: '123123',  email: 'simian114@gmail.com', image_url: '/assets/sanam2.png', point: 9},
@@ -22,8 +22,18 @@ User.create([
 Friendship.create([
   {user_id: 1, friend_id: 2},
   {user_id: 1, friend_id: 3},
+  {user_id: 1, friend_id: 4},
+  {user_id: 1, friend_id: 10},
   {user_id: 2, friend_id: 3},
   {user_id: 2, friend_id: 4},
+  {user_id: 4, friend_id: 6},
+  {user_id: 4, friend_id: 1},
+  {user_id: 6, friend_id: 1},
+  {user_id: 10, friend_id: 1},
+  {user_id: 10, friend_id: 2},
+  {user_id: 10, friend_id: 3},
+  {user_id: 10, friend_id: 4},
+  {user_id: 10, friend_id: 5},
 ])
 
 Rule.create([

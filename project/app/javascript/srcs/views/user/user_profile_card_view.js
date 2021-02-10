@@ -18,6 +18,6 @@ export let UserProfileCardView = Backbone.View.extend({
 
   close: function () {
     this.$el.empty();
-    this.$el.remove();
+    this.remove();
   },
 });

@@ -3,6 +3,7 @@ class GameChannel < ApplicationCable::Channel
   # match_id를 기준으로 채널 생성
   # 종료/취소된 매치, 경기 인원이 편성되지 않은 매치 접근에 대한 예외처리 진행
   def subscribed
+    current_user.reload
     reject if current_user.status == "offline"
     stream_from "game_channel_#{params[:match_id].to_s}"
     return stop(params[:match_id]) if not Match.exists?(params[:match_id])

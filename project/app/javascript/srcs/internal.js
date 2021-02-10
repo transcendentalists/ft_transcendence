@@ -96,9 +96,6 @@ export let App = {
       subscription.unsubscribe()
     );
     this.consumer.disconnect();
-    Helper.fetch(`users/${this.current_user.get("id")}/session`, {
-      method: "DELETE",
-    });
     this.appView.restart();
     this.current_user.logout();
     this.current_user = new CurrentUser();

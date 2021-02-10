@@ -9,6 +9,7 @@ export let SignInView = Backbone.View.extend({
   },
 
   initialize: function () {
+    this.prevent = false;
     this.current_user_id = null;
     this.two_factor_auth = false;
     this.verification_code = null;
@@ -65,9 +66,12 @@ export let SignInView = Backbone.View.extend({
       this.warning_message_template(data.error)
     );
     this.$(".ui.negative.message").show();
+    this.prevent = false;
   },
 
   submit: function () {
+    if (this.prevent) return;
+    this.prevent = true;
     if (!this.two_factor_auth) {
       let name = $("input[name=name]").val();
       let password = $("input[name=password]").val();

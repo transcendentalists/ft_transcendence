@@ -11,7 +11,7 @@ User.create([
   {name: 'yohlee1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'yohan9612@naver.com', image_url: 'assets/yohlee1.png', point: 2, two_factor_auth: false},
   {name: 'eunhkim1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim1.png', point: 3, two_factor_auth: false},
   {name: 'iwoo1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo1.png', point: 4, two_factor_auth: false},
-  {name: 'jujeong', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 5, two_factor_auth: false, status: "playing"},
+  {name: 'jujeong', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 5, two_factor_auth: false},
   {name: 'iwoo2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo2.png', point: 7, two_factor_auth: false},
   {name: 'yohlee2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'yohan9612@yonsei.ac.kr', image_url: '/assets/yohlee2.png', point: 8},
   {name: 'sanam2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'simian114@gmail.com', image_url: '/assets/sanam2.png', point: 9},
@@ -53,7 +53,6 @@ Guild.create([
 ])
 
 WarRequest.create([
-  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
   {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
 ])
 

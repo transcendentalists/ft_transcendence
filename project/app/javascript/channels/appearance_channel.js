@@ -8,6 +8,7 @@ export function ConnectAppearanceChannel() {
     },
 
     disconnected() {
+      this.unsubscribe();
       // Called when the subscription has been terminated by the server
     },
 

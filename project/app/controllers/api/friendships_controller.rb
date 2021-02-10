@@ -1,15 +1,16 @@
 class Api::FriendshipsController < ApplicationController
   def index
-    # friends = User.select_by_query(friends, params)
     friends_list = User.find_by_id(params[:user_id])&.friends_list(params)
     render json: { friendships: friends_list }
   end
-  # /api/
+
   def create
-    render plain: params[:user_id] + "'s new friends!"
+    friendship = Friendship.find_or_create_by(user_id: params[:user_id], friend_id: params[:friend_id])
+    render json: {friendships: {id: friendship.id}}
   end
 
   def destroy
-    render plain: params[:user_id] + +" destory " + params[:id] +" friends!"
+    friendship = Friendship.find_by_user_id_and_friend_id(params[:user_id], params[:id])
+    friendship&.destroy
   end
 end

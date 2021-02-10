@@ -57,30 +57,14 @@ export let OnlineUserListView = Backbone.View.extend({
     }
   },
 
-  // deleteOne: function (user) {
-  //   console.log("deleteOne");
-  //   console.log(this.online_users);
-  //   user.clear();
-  //   console.log(this.online_users);
-  // },
-
-  isUserInTheCollection: function (user_data) {
-    return this.online_users.get(user_data.id) !== undefined;
-  },
-
   updateUserList: function (user_data) {
-    if (user_data.status == "online") {
-      if (this.isUserInTheCollection(user_data)) {
-        let user = this.online_users.where({ id: user_data.id })[0];
-        user.set({ status: "online" });
-      } else {
-        this.online_users.add(new App.Model.User(user_data));
-      }
-    } else if (user_data.status == "offline") {
-      this.online_users.remove({ id: user_data.id });
-    } else {
-      let user = this.online_users.where({ id: user_data.id })[0];
-      user.set({ status: "playing" });
-    }
+    let user = this.online_users.get(user_data.id);
+    let status = user_data.status;
+
+    if (status == "offline") {
+      this.online_users.remove(user);
+    } else if (status == "online" && user === undefined)
+      this.online_users.add(new App.Model.User(user_data));
+    else user.set({ status: user_data.status });
   },
 });

@@ -30,7 +30,7 @@ export let OnlineUserListView = Backbone.View.extend({
   },
 
   close: function () {
-    for (child_view of this.child_views) {
+    for (let child_view of this.child_views) {
       child_view.close();
     }
     this.remove();

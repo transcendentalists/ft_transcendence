@@ -16,7 +16,7 @@ class Api::UsersController < ApplicationController
     param = signup_params
     if param.values.any?("") || User.exists?(name: param[:name]) || User.exists?(email: param[:email])
       render :json => { error: {
-        'type': 'login failure', 'msg': "형식이 올바르지 않거나 고유하지 않은 값이 있습니다."
+        'type': 'signup failure', 'msg': "형식이 올바르지 않거나 고유하지 않은 값이 있습니다."
         }
       }, :status => 401
     else
@@ -27,7 +27,6 @@ class Api::UsersController < ApplicationController
       )
       create_session user.id
       user.update_status("online")
-      #FIXME: user의 상태 온라인으로 변경하는 퍼블릭 인터페이스로 수정 필요
       render :json => { user: user.to_simple }
     end
   end

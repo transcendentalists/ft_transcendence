@@ -6,6 +6,7 @@ class SpaController < ApplicationController
   def mail_auth
     user = User.find(params[:user][:id])
     if user.verification_code == params[:user][:verification_code]
+      create_session user.id
       user.login(verification: true)
       render :json => { current_user: user.to_simple }
     else

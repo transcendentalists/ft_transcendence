@@ -66,7 +66,11 @@ export let SignInView = Backbone.View.extend({
   failCallback: function (data) {
     this.$(".ui.negative.message").empty();
     this.$(".ui.negative.message").append(
-      this.warning_message_template(data.error)
+      this.warning_message_template(
+        data.hasOwnProperty("error")
+          ? data.error
+          : { type: "서비스 에러", msg: "잠시 후 다시 시도해주세요." }
+      )
     );
     this.$(".ui.negative.message").show();
     this.prevent = false;

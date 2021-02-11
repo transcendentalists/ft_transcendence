@@ -27,21 +27,21 @@ export let Helper = {
       ? hash_args["prefix"]
       : "api/";
 
-    let response = await fetch(prefix + url, params);
-    console.log(response); // for response debugging
-    const success = [200, 201].includes(response.status);
-    if (success || fail_callback) {
-      let data = await response.json();
-      if (success && success_callback) success_callback(data);
-      else if (success) return data;
-      else fail_callback(data);
-    } else
-      return {
-        error: {
-          type: "Server internal error",
-          msg: "잠시 후 다시 시도해주세요.",
-        },
-      };
+    let data = {};
+    let success = false;
+    try {
+      let response = await fetch(prefix + url, params);
+      console.log(response); // for response debugging
+      success = Math.floor(response.status / 100) == 2;
+      data = await response.json();
+    } catch (err) {
+      console.log(err);
+    }
+
+    if (!success && fail_callback) return fail_callback(data);
+    if (success && success_callback) return success_callback(data);
+
+    return data;
   },
 
   getToken: function () {
@@ -50,6 +50,15 @@ export let Helper = {
 
   isCurrentView: function (view_name) {
     return $("#main-view-container").has(view_name).length > 0;
+  },
+
+  isCurrentUser: function (user_id) {
+    return App.current_user.id == user_id;
+    console.log("🚀 ~ file: helper.js ~ line 57 ~ user_id", user_id);
+    console.log(
+      "🚀 ~ file: helper.js ~ line 57 ~ App.current_user.id",
+      App.current_user.id
+    );
   },
 
   callModalError: function () {

@@ -11,11 +11,12 @@ User.create([
   {name: 'yohlee1', password: '123123', email: 'yohan9612@naver.com', image_url: 'assets/yohlee1.png', point: 2, two_factor_auth: false},
   {name: 'eunhkim1', password: '123123', email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim1.png', point: 3, two_factor_auth: false},
   {name: 'iwoo1', password: '123123', email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo1.png', point: 4, two_factor_auth: true},
-  {name: 'jujeong', password: '123123', email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 5, two_factor_auth: false},
-  {name: 'iwoo2', password: '123123',  email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo2.png', point: 7, two_factor_auth: false},
-  {name: 'yohlee2', password: '123123',  email: 'yohan9612@yonsei.ac.kr', image_url: '/assets/yohlee2.png', point: 8},
-  {name: 'sanam2', password: '123123',  email: 'simian114@gmail.com', image_url: '/assets/sanam2.png', point: 9},
-  {name: 'eunhkim2', password: '123123',  email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 10},
+  {name: 'jujeong1', password: '123123', email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 5, two_factor_auth: false},
+  {name: 'sanam2', password: '123123',  email: 'simian115@gmail.com', image_url: '/assets/sanam2.png', point: 9},
+  {name: 'iwoo2', password: '123123',  email: 'injun.woo30001@gmail.com', image_url: '/assets/iwoo2.png', point: 7, two_factor_auth: false},
+  {name: 'eunhkim2', password: '123123',  email: 'valhalla.host2@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 10},
+  {name: 'yohlee2', password: '123123',  email: 'yohan9613@yonsei.ac.kr', image_url: '/assets/yohlee2.png', point: 8},
+  {name: 'jujeong2', password: '123123', email: 'juhyeonjeong93@gmail.com', image_url: '/assets/jujeong1.png', point: 5, two_factor_auth: false},
   {name: 'test', password: '123123',  email: 'juhyeonjeong92@gmail.com', image_url: '/assets/kristy.png', point: 11},
 ])
 
@@ -37,13 +38,13 @@ Rule.create([
 ])
 
 Guild.create([
-  {owner_id: 1, name: "guild", anagram: "GUILD", },
-  {owner_id: 2, name: "sososo", anagram: "SOSOS", },
-  {owner_id: 3, name: "xoxoxo", anagram: "XOXOX", },
+  {owner_id: 1, name: "gun of 42seoul", anagram: "GUN", image_url: "assets/gun.png"},
+  {owner_id: 2, name: "gon of 42seoul", anagram: "GON", image_url: "assets/gon.png"},
+  {owner_id: 3, name: "gam of 42seoul", anagram: "GAM", image_url: "assets/gam.png"},
+  {owner_id: 4, name: "lee of 42seoul", anagram: "LEE", image_url: "assets/lee.png"},
 ])
 
 WarRequest.create([
-  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
   {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
 ])
 
@@ -53,8 +54,43 @@ War.create([
 ])
 
 Match.create([
+  {rule_id: 6, match_type: "Dual"},
+  {rule_id: 1, match_type: "Dual"},
+  {rule_id: 2, match_type: "Ladder"},
+  {rule_id: 4, match_type: "Ladder"},
   {rule_id: 1, eventable_type: "War", eventable_id: 1, match_type: "War"},
-  {rule_id: 1, eventable_type: "War", eventable_id: 1, match_type: "War"},
+  {rule_id: 3, eventable_type: "War", eventable_id: 2, match_type: "War"},
+  {rule_id: 5, eventable_type: "War", eventable_id: 3, match_type: "War"},
+  {rule_id: 1, eventable_type: "War", eventable_id: 4, match_type: "War"},
+  {rule_id: 1, eventable_type: "War", eventable_id: 5, match_type: "War"},
+  {rule_id: 1, eventable_type: "Tournament", eventable_id: 1, match_type: "Tournament"},
+  {rule_id: 1, eventable_type: "Tournament", eventable_id: 1, match_type: "Tournament"},
+])
+
+Scorecard.create([
+  {user_id: 2, score: 3, result: "win", match_id: 1, side: "left"},
+  {user_id: 2, score: 3, result: "win", match_id: 2, side: "left"},
+  {user_id: 2, score: 3, result: "win", match_id: 3, side: "left"},
+  {user_id: 2, score: 3, result: "win", match_id: 4, side: "right"},
+  {user_id: 2, score: 3, result: "win", match_id: 5, side: "left"},
+  {user_id: 2, score: 3, result: "win", match_id: 6, side: "left"},
+  {user_id: 2, score: 2, result: "win", match_id: 7, side: "left"},
+  {user_id: 2, score: 2, result: "win", match_id: 8, side: "right"},
+  {user_id: 2, score: 2, result: "lose", match_id: 9, side: "right"},
+  {user_id: 2, score: 1, result: "lose", match_id: 10, side: "left"},
+  {user_id: 2, score: 0, result: "lose", match_id: 11, side: "right"},
+  
+  {user_id: 1, score: 2, result: "lose", match_id: 1, side: "right"},
+  {user_id: 3, score: 1, result: "lose", match_id: 2, side: "right"},
+  {user_id: 4, score: 0, result: "lose", match_id: 3, side: "right"},
+  {user_id: 5, score: 2, result: "lose", match_id: 4, side: "left"},
+  {user_id: 6, score: 1, result: "lose", match_id: 5, side: "right"},
+  {user_id: 7, score: 0, result: "lose", match_id: 6, side: "right"},
+  {user_id: 8, score: 1, result: "lose", match_id: 7, side: "right"},
+  {user_id: 9, score: 2, result: "lose", match_id: 8, side: "left"},
+  {user_id: 10, score: 1, result: "win",  match_id: 9, side: "left"},
+  {user_id: 8, score: 2, result: "win",  match_id: 10, side: "right"},
+  {user_id: 1, score: 0, result: "win", match_id: 11, side: "left"},
 ])
 
 GroupChatRoom.create([
@@ -109,11 +145,15 @@ GuildMembership.create([
   {user_id: 3, guild_id: 3, position: "owner"},
 ])
 
-Scorecard.create([
-  {user_id: 1, match_id: 1, side: "left"},
-  {user_id: 2, match_id: 1, side: "right"},
-  {user_id: 3, match_id: 2, side: "left"},
-  {user_id: 4, match_id: 2, side: "right"},
+GuildInvitation.create([
+  {user_id: 1, invited_user_id: 2, guild_id: 1},
+  {user_id: 3, invited_user_id: 2, guild_id: 2},
+  {user_id: 4, invited_user_id: 2, guild_id: 3},
+  {user_id: 5, invited_user_id: 2, guild_id: 4},
+  {user_id: 2, invited_user_id: 6, guild_id: 4},
+  {user_id: 2, invited_user_id: 7, guild_id: 4},
+  {user_id: 2, invited_user_id: 8, guild_id: 4},
+  {user_id: 2, invited_user_id: 9, guild_id: 4},
 ])
 
 Tournament.create([

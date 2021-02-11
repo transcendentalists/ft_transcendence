@@ -13,55 +13,10 @@ export let GuildInvitationListView = Backbone.View.extend({
     this.$el.append(child_view.render(user).$el);
   },
 
-  render: function () {
-    let users_data = [
-      {
-        guild: {
-          image_url: "assets/eunhkim1.png",
-          name: "42 gon guild",
-          anagram: "GON",
-        },
-        sender: "sanam",
-        receiver: "eunhkim",
-      },
-      {
-        guild: {
-          image_url: "assets/eunhkim1.png",
-          name: "42 gon guild",
-          anagram: "GON",
-        },
-        sender: "sanam",
-        receiver: "eunhkim",
-      },
-      {
-        guild: {
-          image_url: "assets/eunhkim1.png",
-          name: "42 gon guild",
-          anagram: "GON",
-        },
-        sender: "sanam",
-        receiver: "eunhkim",
-      },
-      {
-        guild: {
-          image_url: "assets/eunhkim1.png",
-          name: "42 gon guild",
-          anagram: "GON",
-        },
-        sender: "sanam",
-        receiver: "eunhkim",
-      },
-      {
-        guild: {
-          image_url: "assets/sanam1.png",
-          name: "42 gan guild",
-          anagram: "GAM",
-        },
-        sender: "jujeong",
-        receiver: "sanam",
-      },
-    ];
-    users_data.forEach(this.addOne, this);
+  render: function (guild_invitations) {
+    if (!guild_invitations.hasOwnProperty("guild_invitations")) return;
+    this.$el.empty();
+    guild_invitations["guild_invitations"].forEach(this.addOne, this);
     return this;
   },
 

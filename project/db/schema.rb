@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_09_065127) do
+ActiveRecord::Schema.define(version: 2021_02_10_110811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,18 @@ ActiveRecord::Schema.define(version: 2021_02_09_065127) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["owner_id"], name: "index_group_chat_rooms_on_owner_id"
+  end
+
+  create_table "guild_invitations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "guild_id", null: false
+    t.bigint "invited_user_id", null: false
+    t.string "result", default: "pending", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["guild_id"], name: "index_guild_invitations_on_guild_id"
+    t.index ["invited_user_id"], name: "index_guild_invitations_on_invited_user_id"
+    t.index ["user_id"], name: "index_guild_invitations_on_user_id"
   end
 
   create_table "guild_memberships", force: :cascade do |t|
@@ -259,6 +271,9 @@ ActiveRecord::Schema.define(version: 2021_02_09_065127) do
   add_foreign_key "group_chat_memberships", "group_chat_rooms"
   add_foreign_key "group_chat_memberships", "users"
   add_foreign_key "group_chat_rooms", "users", column: "owner_id"
+  add_foreign_key "guild_invitations", "guilds"
+  add_foreign_key "guild_invitations", "users"
+  add_foreign_key "guild_invitations", "users", column: "invited_user_id"
   add_foreign_key "guild_memberships", "guilds"
   add_foreign_key "guild_memberships", "users"
   add_foreign_key "guilds", "users", column: "owner_id"

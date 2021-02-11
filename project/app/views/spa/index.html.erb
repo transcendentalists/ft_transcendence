@@ -16,6 +16,7 @@
       </div>
     </div>
 
+  <%= render partial: 'spa/registration/sign_in_view' %>
   <%= render partial: 'spa/share/warning_message' %>
   <%= render partial: "spa/share/user_profile_card_view" %>
   <%= render partial: 'spa/persist/direct_chat_view' %>
@@ -26,8 +27,8 @@
   <%= render partial: 'spa/persist/alert_modal_view' %>
   <%= render partial: 'spa/persist/image_upload_modal_view' %>
   <%= render partial: 'spa/error/error_view' %>
-  <%= render partial: 'spa/registration/sign_in_view' %>
   <%= render partial: 'spa/user/user_index_view' %>
+  <%= render partial: 'spa/user/user_index_buttons_view' %>
   <%= render partial: 'spa/game/match_history_view' %>
   <%= render partial: 'spa/guild/guild_invitation_view' %>
   <%= render partial: "spa/ladder/ladder_index_view" %>
@@ -39,8 +40,8 @@
 
 <div id="invite-view" class="ui raised card" style="position: fixed; bottom: 0; right: 590px;"></div>
 <div id="direct-chat-view" class="ui raised card" style="position: fixed; bottom: 0; right: 230px; width: 350px; height: 600px;"></div>
-<div id="input-modal-view" class="ui tiny modal transition">
-<div id="alert-modal-view" class="ui tiny modal transition">
-<div id="info-modal-view" class="ui tiny modal transition">
-<div id="image-upload-modal-view" class="ui tiny modal transition">
+<div id="input-modal-view" class="ui tiny modal transition"></div>
+<div id="alert-modal-view" class="ui tiny modal transition"></div>
+<div id="info-modal-view" class="ui tiny modal transition"></div>
+<div id="image-upload-modal-view" class="ui tiny modal transition"></div>
 

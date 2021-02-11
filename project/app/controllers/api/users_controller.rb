@@ -27,21 +27,21 @@ class Api::UsersController < ApplicationController
 
   def update
     if (params[:user].nil?)
-      return render_error("upload fail", "user key가 없습니다.", 400);
+      return render_error("upload fail", "API에 user 키가 없습니다.", 400);
     end
     params[:user] = JSON.parse(params[:user]) if params.key?("has_file")
-    if (!User.exists?(params[:id]))
+    if !User.exists?(params[:id])
       return render_error("upload fail", "해당 id를 가진 user가 없습니다.", 400);
     end
     user = User.find(params[:id])
 
-    if not params[:user]['two_factor_auth'].nil?
-      user.update(update_params)
-    elsif not params[:file].nil?
+    if params.has_key?(:file)
       user.avatar.purge if user.avatar.attached?
       user.avatar.attach(params[:file])
       user.image_url = url_for(user.avatar)
       user.save
+    elsif user.update(update_params) == false
+      return render_error("parameter error", "유효하지 읺은 파라미터입니다.", 400);
     end
     head :no_content, status: 204
   end
@@ -80,14 +80,7 @@ class Api::UsersController < ApplicationController
   end
 
   def update_params
-    params.require(:user).permit(:id, :image, :two_factor_auth)
-  end
-
-  def render_error(type, msg, status_code)
-    return render :json => { error: {
-      'type': type, 'msg': msg
-      }
-    }, :status => status_code
+    params.require(:user).permit(:name, :image, :two_factor_auth)
   end
 
 end

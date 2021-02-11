@@ -31,6 +31,7 @@ import { ErrorView } from "./views/error/error_view";
 
 /** user views */
 import { UserIndexView } from "./views/user/user_index_view";
+import { UserIndexButtonsView } from "./views/user/user_index_buttons_view";
 import { GuildInvitationView } from "./views/guild/guild_invitation_view";
 import { GuildInvitationListView } from "./views/guild/guild_invitation_list_view";
 import { MatchHistoryView } from "./views/game/match_history_view";
@@ -128,6 +129,8 @@ export let App = {
     NavBarView,
 
     UserIndexView,
+    UserIndexButtonsView,
+
     ChatIndexView,
     ChatRoomView,
     ChatRoomCreateView,

@@ -25,7 +25,8 @@ export let InputModalView = Backbone.View.extend({
   },
 
   send: function () {
-    let input = this.$("textarea").val();
+    let input = this.$("input").val();
+    this.$("input").val("");
     if (this.data.hasOwnProperty("success_callback"))
       this.data.success_callback(input);
     this.close();

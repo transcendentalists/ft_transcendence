@@ -24,14 +24,14 @@ export let ImageUploadModalView = Backbone.View.extend({
     const image = this.$("input[type=file]")[0].files[0];
     if (image == undefined) {
       this.renderWarning("이미지가 설정되어 있지 않습니다.");
-    } else if (image.size >= 1000000) {
-      this.renderWarning("이미지 사이즈가 큽니다.");
     } else if (!["image/png", "image/jpeg", "image/png"].includes(image.type)) {
       this.renderWarning("지원하지 않는 이미지 포맷입니다.");
+    } else if (image.size >= 1000000) {
+      this.renderWarning("이미지 사이즈가 큽니다.");
     } else {
       const formData = new FormData();
       formData.append("file", image);
-      this.uploadCallback(formData);
+      this.upload_callback(formData);
       this.close();
     }
   },

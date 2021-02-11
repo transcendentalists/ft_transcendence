@@ -7,33 +7,20 @@ export let MatchHistoryListView = Backbone.View.extend({
     this.child_views = [];
   },
 
-  addOne: function (user) {
+  addOne: function (match_history) {
     let child_view = new App.View.MatchHistoryView();
     this.child_views.push(child_view);
-    this.$el.append(child_view.render(user).$el);
+    this.$el.append(child_view.render(match_history).$el);
   },
 
-  render: function () {
+  render: function (match_history_list) {
+    console.log(
+      "🚀 ~ file: match_history_list_view.js ~ line 17 ~ match_history_list",
+      match_history_list
+    );
+    if (!match_history_list.hasOwnProperty("matches")) return;
     this.$el.empty();
-    let matches_data = [
-      {
-        match_type: "듀얼전",
-        is_win: true,
-        score: {
-          player: 3,
-          enemy: 1,
-        },
-      },
-      {
-        match_type: "승급전",
-        is_win: false,
-        score: {
-          player: 1,
-          enemy: 3,
-        },
-      },
-    ];
-    matches_data.forEach(this.addOne, this);
+    match_history_list["matches"].forEach(this.addOne, this);
     return this;
   },
 

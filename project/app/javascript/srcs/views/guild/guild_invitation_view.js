@@ -15,7 +15,9 @@ export let GuildInvitationView = Backbone.View.extend({
 
   initialize: function () {},
 
-  approve: function () {},
+  approve: function () {
+    this.close();
+  },
 
   decline: function () {
     this.close();

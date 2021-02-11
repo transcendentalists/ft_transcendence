@@ -6,8 +6,9 @@ export let CurrentUser = Backbone.Model.extend({
     this.sign_in = false;
   },
 
-  reset: function () {
-    this.initialize();
+  logout: function () {
+    this.is_admin = false;
+    this.sign_in = false;
   },
 
   parse: function (response) {

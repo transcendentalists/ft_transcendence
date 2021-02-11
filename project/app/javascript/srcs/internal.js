@@ -5,9 +5,12 @@ import { GameNet } from "./models/game_net";
 import { GameBall } from "./models/game_ball";
 import { GameScore } from "./models/game_score";
 import { GamePaddle } from "./models/game_paddle";
+import { ChatBan } from "./models/chat_ban";
 
 /* COLLECTION */
 import { Users } from "./collections/users";
+import { Friends } from "./collections/friends";
+import { ChatBans } from "./collections/chat_bans";
 
 /* VIEW */
 
@@ -17,7 +20,7 @@ import { SignUpView } from "./views/registration/sign_up_view";
 
 /** persist views */
 import { MainView } from "./views/persist/main_view";
-import { AppearanceView } from "./views/persist/appearance_view";
+import { AppearanceView } from "./views/persist/appearance/appearance_view";
 import { AlertModalView } from "./views/persist/alert_modal_view";
 import { DirectChatView } from "./views/persist/direct_chat_view";
 import { InfoModalView } from "./views/persist/info_modal_view";
@@ -45,6 +48,12 @@ import { UserRankingView } from "./views/ladder/user_ranking_view";
 /** game views */
 import { GameIndexView } from "./views/game/game_index_view";
 import { GamePlayView } from "./views/game/game_play_view";
+
+/** appearance views */
+import { FriendsListView } from "./views/persist/appearance/friends_list_view";
+import { OnlineUserListView } from "./views/persist/appearance/online_user_list_view";
+import { UserUnitView } from "./views/persist/appearance/user_unit_view";
+import { UserMenuView } from "./views/persist/appearance/user_menu_view";
 
 import { ChatIndexView } from "./views/chat/chat_index_view";
 import { ChatRoomView } from "./views/chat/chat_room_view";
@@ -77,6 +86,7 @@ import { Helper } from "./helper";
 export { Helper } from "./helper";
 import { Router } from "./router";
 import { AppView } from "./views/app_view";
+
 import consumer from "channels/consumer";
 
 export let App = {
@@ -94,17 +104,16 @@ export let App = {
       subscription.unsubscribe()
     );
     this.consumer.disconnect();
-    Helper.fetch(`users/${this.current_user.get("id")}/session`, {
-      method: "DELETE",
-    });
-    this.current_user.reset(true);
     this.appView.restart();
+    this.current_user.logout();
+    this.current_user = new CurrentUser();
     this.router.navigate("#/sessions/new");
   },
 
   Model: {
     User,
     CurrentUser,
+    ChatBan,
     GameNet,
     GameBall,
     GameScore,
@@ -112,6 +121,8 @@ export let App = {
   },
   Collection: {
     Users,
+    Friends,
+    ChatBans,
   },
   View: {
     SignInView,
@@ -157,6 +168,10 @@ export let App = {
     AdminChatRoomView,
     AdminGuildIndexView,
     AdminGuildDetailView,
+    FriendsListView,
+    OnlineUserListView,
+    UserUnitView,
+    UserMenuView,
   },
   Channel: {
     ConnectAppearanceChannel,

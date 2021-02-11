@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  def create_session id
+  def create_session(id)
     cookies.encrypted[:service_id] = id
   end
 

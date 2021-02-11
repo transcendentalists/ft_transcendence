@@ -30,17 +30,7 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # config.action_mailer.delivery_method = :mailgun
-  # config.action_mailer.mailgun_settings = {
-  #   api_key: "942e3b08f34bd88fd983f26142866201-77751bfc-f8c4bce6",
-  #   domain: "sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org"
-  # }
-
-  # SMTP hostname: smtp.mailgun.org
-  # Port: 587 (recommended)
-  # Username: postmaster@sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org
-  # Default password: 3fcf23824ae75a5b36500ae7b7d73b57-77751bfc-fa3a3b5f
-
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
   :authentication => :plain,
@@ -48,8 +38,17 @@ Rails.application.configure do
   :port => 587,
   :domain => "sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org",
   :user_name => "postmaster@sandbox3d40c6191f39418dad8890d5ac1d40e8.mailgun.org",
-  :password => "2112b8d84b11ed772053ad4506cceda1-77751bfc-ebbc3ac7"
+  :password => "8f8361585b21f33ec3cf36d59adb9615-4de08e90-9b0d1667"
 }
+
+#   config.action_mailer.smtp_settings = {
+#   :authentication => :plain,
+#   :address => "smtp.mailgun.org",
+#   :port => 587,
+#   :domain => "sandbox2913738b11dd4553b5dd0b7f04b6f92b.mailgun.org",
+#   :user_name => "postmaster@sandbox2913738b11dd4553b5dd0b7f04b6f92b.mailgun.org",
+#   :password => "65b9a90a26b23cd5a001d217f2b6341f-4de08e90-336bba10"
+# }
 
   config.action_mailer.perform_deliveries = true
   # Store uploaded files on the local file system (see config/storage.yml for options).
@@ -57,7 +56,7 @@ Rails.application.configure do
 
   # config.action_mailer.perform_deliveries = true
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false
 

@@ -8,6 +8,7 @@ module ApplicationCable
     end
 
     def disconnect
+      self.current_user.logout
     end
 
     private

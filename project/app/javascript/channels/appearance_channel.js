@@ -1,4 +1,5 @@
 import consumer from "./consumer";
+import { App } from "srcs/internal";
 
 export function ConnectAppearanceChannel() {
   return consumer.subscriptions.create("AppearanceChannel", {
@@ -7,11 +8,13 @@ export function ConnectAppearanceChannel() {
     },
 
     disconnected() {
+      this.unsubscribe();
       // Called when the subscription has been terminated by the server
     },
 
-    received(data) {
+    received(user) {
       // Called when there's incoming data on the websocket for this channel
+      App.appView.appearance_view.updateUserList(user);
     },
   });
 }

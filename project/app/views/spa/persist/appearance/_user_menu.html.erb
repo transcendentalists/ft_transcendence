@@ -1,0 +1,38 @@
+<script type="text/template" id="user-menu-view-template">
+ <div class="ui mini pointing vertical menu">
+    <%# user 를 인자로 받아서 처리하게 수정하자 %>
+    <a class="item" href="#/users/<%%- model.id %>" >
+      유저정보
+    </a>
+    <a class="item" data-event-name="direct-chat">
+      대화하기
+    </a>
+
+    <%% if (banned) { %>
+    <a class="item" data-event-name="destroy-chat-ban">
+      대화차단 해제
+    </a>
+    <%% } else { %>
+    <a class="item" data-event-name="create-chat-ban">
+      대화차단
+    </a>
+    <%% } %>
+
+    <%% if (is_friend) { %>
+    <a class="item" data-event-name="destroy-friend">
+      친구삭제
+    </a>
+    <%% } else { %>
+    <a class="item" data-event-name="create-friend">
+      친구추가
+    </a>
+    <%% } %>
+
+    <a class="item" data-event-name="battle">
+      대전신청
+    </a>
+    <a class="item" data-event-name="user-ban">
+      User ban
+    </a>
+  </div>
+</script>

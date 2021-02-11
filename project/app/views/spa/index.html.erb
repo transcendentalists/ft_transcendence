@@ -5,22 +5,27 @@
 
   <%= render partial: 'spa/persist/nav_bar' %>
 
-    <div id="root-grid" class="ui padded grid">
+  <div id="root-grid" class="ui padded grid">
 
-      <div id="appearance-view" class="three wide tablet only three wide computer only column"
-    style="right: 0px; z-index: 102; max-width: 220px; min-width: 220px">
-      </div>
-
-      <div id="main-view-container" class="sixteen wide mobile thirteen wide tablet thirteen wide computer right floated column"
-  style="margin-left: 0px">
-      </div>
+    <div id="appearance-view" class="three wide tablet only three wide computer only column">
     </div>
+    <div id="main-view-container" class="sixteen wide mobile thirteen wide tablet thirteen wide computer right floated column flex-container column-direction center-aligned">
+
+    </div>
+  </div>
 
   <%= render partial: 'spa/registration/sign_in_view' %>
   <%= render partial: 'spa/share/warning_message' %>
   <%= render partial: "spa/share/user_profile_card_view" %>
   <%= render partial: 'spa/persist/direct_chat_view' %>
-  <%= render partial: 'spa/persist/appearance_view' %>
+  <%= render partial: 'spa/registration/sign_in_view' %>
+  <%= render partial: 'spa/persist/appearance/appearance_view' %>
+  <%= render partial: 'spa/persist/appearance/friends_list' %>
+  <%= render partial: 'spa/persist/appearance/online_user_list' %>
+  <%= render partial: 'spa/persist/appearance/user_list_unit' %>
+  <%= render partial: 'spa/persist/appearance/user_menu' %>
+  <%= render partial: 'spa/share/chat_message_view' %>
+  <%= render partial: 'spa/share/current_user_chat_message_view' %>
   <%= render partial: 'spa/persist/invite_view' %>
   <%= render partial: 'spa/persist/input_modal_view' %>
   <%= render partial: 'spa/persist/info_modal_view' %>
@@ -38,8 +43,8 @@
   <%= javascript_pack_tag 'app' %>
 </div>
 
-<div id="invite-view" class="ui raised card" style="position: fixed; bottom: 0; right: 590px;"></div>
-<div id="direct-chat-view" class="ui raised card" style="position: fixed; bottom: 0; right: 230px; width: 350px; height: 600px;"></div>
+<div id="invite-view" class="ui raised card hide-tablet"></div>
+<div id="direct-chat-view" class="ui raised card hide-tablet"></div>
 <div id="input-modal-view" class="ui tiny modal transition"></div>
 <div id="alert-modal-view" class="ui tiny modal transition"></div>
 <div id="info-modal-view" class="ui tiny modal transition"></div>

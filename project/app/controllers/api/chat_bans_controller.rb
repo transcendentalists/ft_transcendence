@@ -1,13 +1,25 @@
 class Api::ChatBansController < ApplicationController
   def index
-    render plain: params[:user_id] + "'s chat ban list"
+    chat_bans = ChatBan.where(user_id: params[:user_id])
+    render json: { chat_bans: chat_bans }
+  end
+
+  def show
+    chat_ban = ChatBan.find_by_user_id_and_banned_user_id(params[:user_id], params[:id])
+    render json: { chat_bans: chat_ban }
   end
 
   def create
-    render plain: params[:user_id] + " create new chat ban"
+    ChatBan.find_or_create_by(chatBanParams)
   end
 
   def destroy
-    render plain: params[:user_id] + " destroy chat ban " + params[:id]
+    ChatBan.find_by_id(params[:id])&.destroy
+  end
+
+  private
+
+  def chatBanParams
+    params.permit(:user_id, :banned_user_id)
   end
 end

@@ -3,7 +3,9 @@ import { Helper } from "../../helper";
 
 export let ChatMessageListView = Backbone.View.extend({
   el: "#direct-chat-view .comments",
-  general_user_message_template: _.template($("#chat-message-template").html()),
+  general_user_message_template: _.template(
+    $("#chat-message-view-template").html()
+  ),
   current_user_message_template: _.template(
     $("#current-user-chat-message-view-template").html()
   ),

@@ -1,4 +1,4 @@
-import { Helper } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let DirectChatView = Backbone.View.extend({
   template: _.template($("#direct-chat-view-template").html()),
@@ -39,6 +39,7 @@ export let DirectChatView = Backbone.View.extend({
         parent: this,
         chat_user: chat_user,
       });
+      this.chat_room_list.push(this.chat_room);
     }
 
     this.chat_room.start();

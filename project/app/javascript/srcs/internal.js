@@ -7,11 +7,13 @@ import { GameScore } from "./models/game_score";
 import { GamePaddle } from "./models/game_paddle";
 import { ChatBan } from "./models/chat_ban";
 import { DirectChatRoom } from "./models/direct_chat_room";
+import { ChatMessage } from "./models/chat_message";
 
 /* COLLECTION */
 import { Users } from "./collections/users";
 import { Friends } from "./collections/friends";
 import { ChatBans } from "./collections/chat_bans";
+import { ChatMessages } from "./collections/chat_messages";
 
 /* VIEW */
 
@@ -111,6 +113,7 @@ export let App = {
     User,
     CurrentUser,
     ChatBan,
+    ChatMessage,
     GameNet,
     GameBall,
     GameScore,

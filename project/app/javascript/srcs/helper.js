@@ -33,6 +33,7 @@ export let Helper = {
       console.log(response); // for response debugging
       success = Math.floor(response.status / 100) == 2;
       data = await response.json();
+      console.log(data); // for response debugging
     } catch (err) {
       console.log(err);
     }

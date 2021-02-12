@@ -4,7 +4,14 @@ class Api::DirectChatRoomsController < ApplicationController
   end
 
   def show
-    render plain: params[:user_id] + "'s direct chat room with " + params[:id]
+    room = User.find(params[:user_id]).direct_chat_rooms.joins(:memberships).where(memberships: {user_id: params[:id]}).first
+    if room.nil?
+      room = DirectChatRoom.create()
+      [params[:user_id], params[:id]].each { |user_id| DirectChatMembership.create(direct_chat_room_id: room.id, user_id: user_id) }
+    end
+    render :json => {
+      chat_messages: room ? room.messages : nil
+    }
   end
 
   def create

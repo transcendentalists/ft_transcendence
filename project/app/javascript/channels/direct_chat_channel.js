@@ -20,9 +20,13 @@ export function ConnectDirectChatChannel(add_callback, chat_room, room_id) {
         add_callback.bind(chat_room)(data);
       },
 
-      send(current_user_message) {
+      speak(current_user_message) {
+        console.log(
+          "🚀 ~ file: direct_chat_channel.js ~ line 24 ~ send ~ current_user_message",
+          current_user_message
+        );
         current_user_message["room_id"] = room_id;
-        this.perform("send", current_user_message);
+        this.perform("speak", current_user_message);
       },
     }
   );

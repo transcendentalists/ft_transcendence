@@ -166,6 +166,10 @@ body {
   float: right;
 }
 
+#direct-chat-view .close.icon {
+  cursor: pointer;
+}
+
 .ui.comments .current-user.comment > .avatar ~ .content {
   margin-left: 0;
   width: 257px;

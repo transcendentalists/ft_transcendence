@@ -14,6 +14,7 @@ module ApplicationCable
     private
 
     def find_verified_user
+      Rails.logger.info 'DEBUG:: FIND:: VERIFIED_USER IN CONNECTION'
       if User.exists?(cookies.encrypted[:service_id])
         verified_user = User.find(cookies.encrypted[:service_id])
       else

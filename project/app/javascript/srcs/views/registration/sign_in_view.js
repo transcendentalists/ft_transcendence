@@ -9,6 +9,8 @@ export let SignInView = Backbone.View.extend({
   },
 
   initialize: function () {
+    this.status = null;
+    this.prevent = false;
     this.current_user_id = null;
     this.two_factor_auth = false;
     this.verification_code = null;
@@ -46,6 +48,8 @@ export let SignInView = Backbone.View.extend({
   loginSuccessCallback: function (data) {
     this.current_user_id = data.current_user.id;
     if (data.current_user.two_factor_auth) {
+      this.status = "verification";
+      this.prevent = false;
       this.$(".login.field").hide();
       this.$(".auth.field").show();
       this.two_factor_auth = true;
@@ -54,8 +58,7 @@ export let SignInView = Backbone.View.extend({
 
   authSuccessCallback: function (data) {
     App.current_user.set("id", data.current_user.id);
-    App.current_user.sign_in = true;
-    App.current_user.fetch();
+    App.current_user.login();
     App.appView.render();
     App.router.navigate(`#/users/${data.current_user.id}`);
   },
@@ -63,13 +66,20 @@ export let SignInView = Backbone.View.extend({
   failCallback: function (data) {
     this.$(".ui.negative.message").empty();
     this.$(".ui.negative.message").append(
-      this.warning_message_template(data.error)
+      this.warning_message_template(
+        data.hasOwnProperty("error")
+          ? data.error
+          : { type: "서비스 에러", msg: "잠시 후 다시 시도해주세요." }
+      )
     );
     this.$(".ui.negative.message").show();
+    this.prevent = false;
   },
 
   submit: function () {
-    if (!this.two_factor_auth) {
+    if (this.prevent) return;
+    this.prevent = true;
+    if (this.status == "login") {
       let name = $("input[name=name]").val();
       let password = $("input[name=password]").val();
       Helper.fetch(`users/${name}/session`, this.signInParams(name, password));
@@ -88,7 +98,7 @@ export let SignInView = Backbone.View.extend({
     this.$el.html(this.template());
     this.$(".auth.field").hide();
     this.$(".ui.negative.message").hide();
-    this.status = "LOGIN";
+    this.status = "login";
     return this;
   },
 

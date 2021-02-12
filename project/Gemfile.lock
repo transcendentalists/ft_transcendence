@@ -332,6 +332,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin
+  bcrypt
   bootsnap (>= 1.4.4)
   byebug
   cancancan

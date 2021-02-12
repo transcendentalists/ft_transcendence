@@ -6,12 +6,26 @@ export let DirectChatView = Backbone.View.extend({
   el: "#direct-chat-view",
   events: {
     "click .close.icon": "hide",
+    "click .submit.button": "send",
   },
 
   initialize: function () {
     this.$el.hide();
     this.chat_room_list = [];
     this.chat_room = null;
+  },
+
+  send: function () {
+    let msg = $("#reply-field").val();
+    if (msg == "") return;
+    $("#reply-field").val("");
+    this.chat_room.send({
+      image_url: App.current_user.image_url,
+      name: App.current_user.name,
+      created_at: new Date(),
+      message: msg,
+      user_id: App.current_user.id,
+    });
   },
 
   render: function (chat_user) {

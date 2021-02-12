@@ -19,6 +19,11 @@ export function ConnectDirectChatChannel(add_callback, chat_room, room_id) {
       received(data) {
         add_callback.bind(chat_room)(data);
       },
+
+      send(current_user_message) {
+        current_user_message["room_id"] = room_id;
+        this.perform("send", current_user_message);
+      },
     }
   );
 }

@@ -27,6 +27,10 @@ export let DirectChatRoom = Backbone.Model.extend({
     this.status = "not started";
   },
 
+  send: function (current_user_message) {
+    this.chat_message_list_view.channel.send(current_user_message);
+  },
+
   start: function () {
     if (this.status == "run") return;
 

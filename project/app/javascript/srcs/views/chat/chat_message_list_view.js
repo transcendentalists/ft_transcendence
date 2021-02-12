@@ -16,6 +16,15 @@ export let ChatMessageListView = Backbone.View.extend({
     this.channel = null;
   },
 
+  scrollDown: function () {
+    $("#direct-chat-view").animate(
+      {
+        scrollTop: $("#direct-chat-view").get(0).scrollHeight,
+      },
+      2000
+    );
+  },
+
   addOne: function (message) {
     if (Helper.isUserChatBanned(message.user_id)) return;
     if (message.user_id)
@@ -28,6 +37,7 @@ export let ChatMessageListView = Backbone.View.extend({
       });
     this.child_views.push(this.message_view);
     this.$el.append(this.message_view.render().$el);
+    this.scrollDown();
   },
 
   addAll: function () {

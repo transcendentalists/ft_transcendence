@@ -14,16 +14,16 @@ export let DirectChatView = Backbone.View.extend({
     this.chat_room = null;
   },
 
-  render: function (friend_user) {
-    this.$el.html(this.template(friend_user.attributes));
+  render: function (chat_user) {
+    this.$el.html(this.template(chat_user.attributes));
 
     this.chat_room = this.chat_room_list.find(
-      (room) => room.friend_user.id == friend_user.id
+      (room) => room.chat_user.id == chat_user.id
     );
     if (this.chat_room == undefined) {
       this.chat_room = new App.Model.DirectChatRoom({
         parent: this,
-        friend_user: friend_user,
+        chat_user: chat_user,
       });
     }
 

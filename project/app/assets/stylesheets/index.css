@@ -22,6 +22,7 @@ body {
 
 #main-view-container {
   margin-left: 0;
+  display: flex !important;
 }
 
 #main-view-container .ui.dividing.header {

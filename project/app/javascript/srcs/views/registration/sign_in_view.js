@@ -45,6 +45,7 @@ export let SignInView = Backbone.View.extend({
 
   loginSuccessCallback: function (data) {
     this.current_user_id = data.current_user.id;
+    App.current_user.two_factor_auth = data.current_user.two_factor_auth;
     if (data.current_user.two_factor_auth) {
       this.$(".login.field").hide();
       this.$(".auth.field").show();

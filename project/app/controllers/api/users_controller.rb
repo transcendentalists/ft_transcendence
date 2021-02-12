@@ -23,7 +23,7 @@ class Api::UsersController < ApplicationController
       user = User.create(
         name: param[:name], 
         email: param[:email], 
-        password: BCrypt::Password.create(params[:password])
+        password: BCrypt::Password.create(param[:password])
       )
       create_session user.id
       user.update_status("online")
@@ -47,9 +47,9 @@ class Api::UsersController < ApplicationController
   end
 
   def login
-    user = User.find_by_name(params[:user][:name])
+    user = User.find_by_name(params[:user]['name'])
     if user
-      if BCrypt::Password.new(user.password) == params[:user][:password]
+      if BCrypt::Password.new(user.password) == params[:user]['password']
         if user.two_factor_auth
           verification_code = rand(100000..999999).to_s
           user.update(verification_code: verification_code)

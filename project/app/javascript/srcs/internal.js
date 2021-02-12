@@ -51,7 +51,7 @@ import { UserMenuView } from "./views/persist/appearance/user_menu_view";
 
 /** direct chat views */
 import { ChatMessageListView } from "./views/chat/chat_message_list_view";
-import { ChatMessageView } from "./views/chat/chat_message_list_view";
+import { ChatMessageView } from "./views/chat/chat_message_view";
 
 import { UserIndexView } from "./views/user/user_index_view";
 import { ChatIndexView } from "./views/chat/chat_index_view";

@@ -100,4 +100,14 @@ export let Helper = {
 
     App.appView.info_modal_view.render(data);
   },
+
+  getMessageTime: function (timestamp) {
+    return (
+      timestamp.substr(5, 2) +
+      "월 " +
+      timestamp.substr(8, 2) +
+      "일, " +
+      timestamp.substr(11, 5)
+    );
+  },
 };

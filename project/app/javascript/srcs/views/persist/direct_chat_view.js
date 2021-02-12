@@ -20,19 +20,21 @@ export let DirectChatView = Backbone.View.extend({
     if (msg == "") return;
     $("#reply-field").val("");
     this.chat_room.send({
-      image_url: App.current_user.image_url,
-      name: App.current_user.name,
+      image_url: App.current_user.get("image_url"),
+      name: App.current_user.get("name"),
       created_at: new Date(),
       message: msg,
-      user_id: App.current_user.id,
+      user_id: App.current_user.get("id"),
     });
   },
 
   render: function (chat_user) {
     this.$el.html(this.template(chat_user.attributes));
 
+    if (this.chat_room) this.chat_room.stop();
+
     this.chat_room = this.chat_room_list.find(
-      (room) => room.chat_user.id == chat_user.id
+      (room) => room.chat_user.get("id") == chat_user.get("id")
     );
     if (this.chat_room == undefined) {
       this.chat_room = new App.Model.DirectChatRoom({

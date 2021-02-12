@@ -13,15 +13,16 @@ export let ChatMessageListView = Backbone.View.extend({
   initialize: function (options) {
     this.message_list = options.collection;
     this.room_id = options.room_id;
-    this.chat_user = options.chat_user;
+    this.current_user = App.current_user.attributes;
+    this.chat_user = options.chat_user.attributes;
     this.child_views = [];
     this.channel = null;
   },
 
   scrollDown: function () {
-    $("#direct-chat-view").animate(
+    $("#direct-chat-view .comments").animate(
       {
-        scrollTop: $("#direct-chat-view").get(0).scrollHeight,
+        scrollTop: $("#direct-chat-view .comments").get(0).scrollHeight,
       },
       2000
     );
@@ -29,14 +30,17 @@ export let ChatMessageListView = Backbone.View.extend({
 
   addOne: function (message) {
     if (Helper.isUserChatBanned(message.user_id)) return;
-    if (message.user_id)
-      this.message_view = new App.View.ChatMessageView({
-        model: message,
-        template:
-          message.user_id != App.current_user.id
-            ? this.general_user_message_template
-            : this.current_user_message_template,
-      });
+    this.message_view = new App.View.ChatMessageView({
+      model: message,
+      chat_user:
+        message.user_id == this.chat_user.id
+          ? this.chat_user
+          : this.current_user,
+      template:
+        message.user_id != App.current_user.id
+          ? this.general_user_message_template
+          : this.current_user_message_template,
+    });
     this.child_views.push(this.message_view);
     this.$el.append(this.message_view.render().$el);
     this.scrollDown();
@@ -44,7 +48,7 @@ export let ChatMessageListView = Backbone.View.extend({
 
   addAll: function () {
     this.child_views.forEach((child_view) => child_view.close());
-    this.message_list.forEach((message) => this.addOne(message));
+    this.message_list.forEach((message) => this.addOne(message.attributes));
   },
 
   render: function () {

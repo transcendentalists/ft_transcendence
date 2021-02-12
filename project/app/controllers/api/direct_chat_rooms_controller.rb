@@ -10,7 +10,7 @@ class Api::DirectChatRoomsController < ApplicationController
       [params[:user_id], params[:id]].each { |user_id| DirectChatMembership.create(direct_chat_room_id: room.id, user_id: user_id) }
     end
     render :json => {
-      chat_messages: room ? room.messages : nil
+      chat_messages: room ? room.messages.order(:created_at).limit(20) : nil
     }
   end
 

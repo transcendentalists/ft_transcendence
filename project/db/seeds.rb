@@ -73,13 +73,12 @@ GroupChatRoom.create([
 ])
 
 DirectChatRoom.create([
-  t.bigint "user_id", null: false
-  t.bigint "direct_chat_room_id", null: false
+  {},
 ])
 
 DirectChatMembership.create([
-  {user_id: 1, room_id: "public", title: "Welcome", channel_code: "XXX-XXX-XXX" },
-  {user_id: 1, room_id: "public", title: "Welcome", channel_code: "XXX-XXX-XXX" },
+  {user_id: 1, direct_chat_room_id: 1},
+  {user_id: 3, direct_chat_room_id: 1},
 ])
 
 ChatMessage.create([

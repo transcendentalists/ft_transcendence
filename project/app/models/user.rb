@@ -96,7 +96,7 @@ class User < ApplicationRecord
   end
 
   def to_simple
-    permitted = %w[id name status two_factor_auth]
+    permitted = %w[id name status two_factor_auth image_url]
     data = attributes.filter { |field, _value| permitted.include?(field) }
   end
 

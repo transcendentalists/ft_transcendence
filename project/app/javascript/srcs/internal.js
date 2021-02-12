@@ -6,6 +6,7 @@ import { GameBall } from "./models/game_ball";
 import { GameScore } from "./models/game_score";
 import { GamePaddle } from "./models/game_paddle";
 import { ChatBan } from "./models/chat_ban";
+import { DirectChatRoom } from "./models/direct_chat_room";
 
 /* COLLECTION */
 import { Users } from "./collections/users";
@@ -45,6 +46,9 @@ import { FriendsListView } from "./views/persist/appearance/friends_list_view";
 import { OnlineUserListView } from "./views/persist/appearance/online_user_list_view";
 import { UserUnitView } from "./views/persist/appearance/user_unit_view";
 import { UserMenuView } from "./views/persist/appearance/user_menu_view";
+
+/** direct chat views */
+import { ChatMessageListView } from "./views/chat/chat_message_list_view";
 
 import { UserIndexView } from "./views/user/user_index_view";
 import { ChatIndexView } from "./views/chat/chat_index_view";
@@ -110,11 +114,13 @@ export let App = {
     GameBall,
     GameScore,
     GamePaddle,
+    DirectChatRoom,
   },
   Collection: {
     Users,
     Friends,
     ChatBans,
+    ChatMessages,
   },
   View: {
     SignInView,

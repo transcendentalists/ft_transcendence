@@ -61,7 +61,9 @@ export let UserIndexView = Backbone.View.extend({
   },
 
   render: function () {
-    this.$el.html(this.template());
+    this.$el.html(
+      this.template({ is_current_user: Helper.isCurrentUser(this.user_id) })
+    );
 
     this.renderUserIndexButtons();
     this.renderUserProfile();

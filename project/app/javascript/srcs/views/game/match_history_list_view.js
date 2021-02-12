@@ -15,6 +15,7 @@ export let MatchHistoryListView = Backbone.View.extend({
 
   render: function (match_history_list) {
     if (!match_history_list.hasOwnProperty("matches")) return;
+    if (match_history_list["matches"].length == 0) return;
     this.$el.empty();
     match_history_list["matches"].forEach(this.addOne, this);
     return this;

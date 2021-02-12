@@ -91,7 +91,6 @@ body {
 #sign-in-view {
   width: 300px;
   margin-top: calc(50vh - 200px);
-  margin-left: calc(50% - 110px);
 }
 
 #sign-in-view .ui.stacked.segment {

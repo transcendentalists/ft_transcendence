@@ -7,14 +7,16 @@ export let DirectChatView = Backbone.View.extend({
 
   initialize: function () {
     this.$el.hide();
+    this.chat_room_list = [];
   },
 
-  render: function () {
-    this.$el.html(this.template());
+  render: function (friend_user) {
+    this.$el.html(this.template(friend_user.attributes));
     this.$el.show();
   },
 
   close: function () {
+    this.chat_room_list = [];
     this.$el.empty();
     this.$el.hide();
   },

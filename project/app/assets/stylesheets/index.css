@@ -90,16 +90,25 @@ body {
 
 #sign-in-view {
   width: 300px;
-  margin-top: 20vw;
+  margin-top: calc(50vh - 200px);
   margin-left: calc(50% - 110px);
 }
 
-#sign-in-view .field:nth-child(n + 2) {
-  margin-top: 3.5rem;
+#sign-in-view .ui.stacked.segment {
+  width: 300px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#sign-in-view .field {
+  width: 270px;
 }
 
 #sign-in-view .submit.button {
-  margin-top: 7.5rem;
+  margin-top: 0.5rem;
 }
 
 #sign-in-view .sign-up.message {
@@ -244,6 +253,19 @@ body {
   margin-top: 1.5rem;
   width: 50%;
   cursor: pointer;
+}
+
+#sign-up-view {
+  margin-top: 25vh;
+  margin-left: calc(50% - 150px);
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  width: 300px;
+}
+
+#sign-up-view button {
+  margin-top: 1.8rem;
 }
 
 /* ==========================================================================

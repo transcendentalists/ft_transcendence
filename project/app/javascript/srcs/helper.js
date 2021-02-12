@@ -32,7 +32,11 @@ export let Helper = {
     try {
       let response = await fetch(prefix + url, params);
       console.log(response); // for response debugging
+<<<<<<< HEAD
       success = Math.floor(response.status / 100) == 2;
+=======
+      success = response.status / 100 == 2;
+>>>>>>> 51afec0391271894476701a4dcc7367c1aa02e05
       data = await response.json();
     } catch (err) {
       console.log(err);

@@ -13,7 +13,7 @@ export let Router = Backbone.Router.extend({
     "lives(/:matchtype)": "livesController",
     "war(/:new)": "warController",
     "matches(/:id)": "matchesController",
-    "tournaments(/:param)": "tournamenstController",
+    "tournaments(/:param)": "tournamentsController",
     "admin(/:param1)(/:param2)": "adminController",
     "errors/:id": "errorsController",
     "*exception": "errorsController",

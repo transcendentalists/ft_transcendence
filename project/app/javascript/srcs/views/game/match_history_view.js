@@ -8,8 +8,6 @@ export let MatchHistoryView = Backbone.View.extend({
   initialize: function () {},
 
   render: function (data) {
-    console.log("🚀 ~ file: match_history_view.js ~ line 11 ~ data", data);
-
     const match_type = data["match"]["match_type"];
     const current_user_card = data["scorecards"].find((card) =>
       Helper.isCurrentUser(card.user_id)

@@ -54,11 +54,6 @@ export let Helper = {
 
   isCurrentUser: function (user_id) {
     return App.current_user.id == user_id;
-    console.log("🚀 ~ file: helper.js ~ line 57 ~ user_id", user_id);
-    console.log(
-      "🚀 ~ file: helper.js ~ line 57 ~ App.current_user.id",
-      App.current_user.id
-    );
   },
 
   callModalError: function () {

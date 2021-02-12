@@ -13,7 +13,6 @@ export let UserIndexButtonsView = Backbone.View.extend({
 
   changeTwoFactorAuth: function () {
     const after_value = this.$("#two-factor-toggle input").is(":checked");
-    console.log(after_value);
     Helper.fetch("users/" + this.user_id, {
       method: "PATCH",
       body: {

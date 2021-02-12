@@ -51,6 +51,10 @@ export let Helper = {
     return $("#main-view-container").has(view_name).length > 0;
   },
 
+  isUserChatBanned: function (user_id) {
+    return App.appView.appearance_view.chat_bans.isUserChatBanned(user_id);
+  },
+
   callModalError: function () {
     this.info({
       subject: "ERROR",

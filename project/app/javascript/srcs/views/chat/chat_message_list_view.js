@@ -1,12 +1,11 @@
 import { App } from "srcs/internal";
+import { Helper } from "../../helper";
 
 export let ChatMessageListView = Backbone.View.extend({
   el: "#direct-chat-view .comments",
-  general_user_message_template: _.template(
-    $("#appearance-friends-list-view").html()
-  ),
+  general_user_message_template: _.template($("#chat-message-template").html()),
   current_user_message_template: _.template(
-    $("#appearance-friends-list-view").html()
+    $("#current-user-chat-message-view-template").html()
   ),
 
   initialize: function (options) {
@@ -18,10 +17,14 @@ export let ChatMessageListView = Backbone.View.extend({
   },
 
   addOne: function (message) {
+    if (Helper.isUserChatBanned(message.user_id)) return;
     if (message.user_id)
       this.message_view = new App.View.ChatMessageView({
         model: message,
-        is_current_user: message.user_id == App.current_user.id,
+        template:
+          message.user_id != App.current_user.id
+            ? this.general_user_message_template
+            : this.current_user_message_template,
       });
     this.child_views.push(this.message_view);
     this.$el.append(this.message_view.render().$el);

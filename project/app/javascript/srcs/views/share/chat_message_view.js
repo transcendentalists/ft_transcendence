@@ -1,7 +1,4 @@
-import { App, Helper } from "srcs/internal";
-
 export let ChatMessageView = Backbone.View.extend({
-  template: _.template($("#chat-message-template").html()),
   className: "comment",
 
   initialize: function () {},

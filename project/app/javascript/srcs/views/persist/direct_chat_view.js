@@ -57,7 +57,7 @@ export let DirectChatView = Backbone.View.extend({
   close: function () {
     this.chat_room_list.forEach((chat_room) => chat_room.close());
     this.chat_room_list = [];
-    this.hide();
+    this.$el.hide();
     this.remove();
   },
 });

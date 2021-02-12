@@ -6,8 +6,14 @@ class Api::DirectChatRoomsController < ApplicationController
   def show
     room = User.find(params[:user_id]).direct_chat_rooms.joins(:memberships).where(memberships: {user_id: params[:id]}).first
     if room.nil?
-      room = DirectChatRoom.create()
-      [params[:user_id], params[:id]].each { |user_id| DirectChatMembership.create(direct_chat_room_id: room.id, user_id: user_id) }
+      symbol = [params[:user_id].to_i, params[:id].to_i].sort.join('+')
+      room = DirectChatRoom.create(symbol: symbol)
+      [params[:user_id], params[:id]].each { |user_id|
+        DirectChatMembership.create(
+          direct_chat_room_id: room.id,
+          user_id: user_id,
+        )
+      }
     end
     render :json => {
       chat_messages: room ? room.messages.order(:created_at).limit(20) : nil

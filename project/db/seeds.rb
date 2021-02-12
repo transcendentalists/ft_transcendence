@@ -73,7 +73,7 @@ GroupChatRoom.create([
 ])
 
 DirectChatRoom.create([
-  {},
+  {symbol: '1+3'},
 ])
 
 DirectChatMembership.create([

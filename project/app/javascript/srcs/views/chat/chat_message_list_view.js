@@ -63,7 +63,7 @@ export let ChatMessageListView = Backbone.View.extend({
 
   stop: function () {
     this.stopListening();
-    this.channel.unsubscribe();
+    if (this.channel) this.channel.unsubscribe();
     this.channel = null;
   },
 

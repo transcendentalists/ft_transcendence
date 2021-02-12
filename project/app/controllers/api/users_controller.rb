@@ -43,14 +43,15 @@ class Api::UsersController < ApplicationController
   end
 
   def update
-    if (params[:user].nil?)
+    if (params.has_key?(:user))
       return render_error("upload fail", "API에 user 키가 없습니다.", 400);
     end
-    params[:user] = JSON.parse(params[:user]) if params.key?("has_file")
-    if !User.exists?(params[:id])
-      return render_error("upload fail", "해당 id를 가진 user가 없습니다.", 400);
+    params[:user] = JSON.parse(params[:user]) if params.has_key?("has_file")
+
+    user = User.find_by_id(params[:id])
+    if (user.nil?)
+     return render_error("upload fail", "해당 id를 가진 user가 없습니다.", 400)
     end
-    user = User.find(params[:id])
 
     if params.has_key?(:file)
       user.avatar.purge if user.avatar.attached?

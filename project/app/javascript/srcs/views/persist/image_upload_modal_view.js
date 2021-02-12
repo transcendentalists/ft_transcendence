@@ -7,7 +7,7 @@ export let ImageUploadModalView = Backbone.View.extend({
   events: { "click .upload.button": "uploadFile" },
 
   initialize: function () {
-    this.uploadCallback = null;
+    this.upload_callback = null;
   },
 
   renderWarning: function (msg) {

@@ -14,7 +14,6 @@ export let GuildInvitationListView = Backbone.View.extend({
   },
 
   render: function (guild_invitations) {
-    window.tt = guild_invitations;
     if (!guild_invitations.hasOwnProperty("guild_invitations")) return;
     if (guild_invitations["guild_invitations"].length == 0) return;
     this.$el.empty();

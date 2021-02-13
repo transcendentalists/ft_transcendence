@@ -460,12 +460,16 @@ body {
    ========================================================================== */
 
 #chat-index-view {
-  width: 60vw;
-  min-width: 500px;
+  min-width: 740px;
+  max-width: 1024px;
+  margin-bottom: 8rem;
 }
 
 #chat-index-view #chat-index-header-view {
   width: 100%;
+  margin-bottom: 3rem;
+  align-items: baseline;
+  padding-left: 10rem;
 }
 
 #chat-index-view #chat-index-header-view .create-room-button-container {
@@ -476,15 +480,55 @@ body {
   margin-left: 1.5rem;
 }
 
-#chat-index-view .ui.search {
+#chat-index-view .ui.labeled.input {
   color: grey;
   font-weight: 200;
+  padding-top: 1rem;
+  position: relative;
+  bottom: 0.3rem;
 }
 
-#chat-index-view #my-chat-room-list-view {
+#chat-index-view .chat-room-list {
   flex-wrap: wrap;
+  width: 100%;
+  padding-left: 10rem;
 }
 
-#chat-index-view #public-chat-room-list-view {
-  flex-wrap: wrap;
+#chat-index-view .room-card {
+  max-width: 20rem;
+  min-width: 20rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  border: 1.5px solid #dad8d8;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 7px 5px -6px #777;
+  height: fit-content;
+}
+
+#chat-index-view .room-card .subject {
+  margin: 1.5rem 0;
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+}
+
+#chat-index-view .room-card .position {
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+#chat-index-view .room-card .name {
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+}
+
+#chat-index-view .room-card .join.button {
+  margin-top: 1rem;
+}
+
+#chat-index-view .public-chat-room-list-header {
+  margin: 4rem 0;
+  width: 100%;
+  padding-left: 10rem;
 }

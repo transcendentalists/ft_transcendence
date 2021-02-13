@@ -8,11 +8,18 @@
         채팅룸 만들기
       </div>
     </div>
-    <div class="ui search">
-      <input class="prompt" type="text" placeholder="Chat Room Code...">
-      <div class="results"></div>
+    <div class="ui labeled input">
+      <div class="ui label">
+        code::
+      </div>
+      <input type="text" placeholder="search room">
     </div>
   </div>
-  <div id="my-chatroom-list-view" class="flex-container space-between"></div>
-  <div id="public-chatroom-list-view"></div>
+  <div id="my-chat-room-list-view" class="chat-room-list flex-container"></div>
+  <div class="flex-container public-chat-room-list-header">
+      <h2>
+      Public ChatRoom
+    </h2>
+  </div>
+  <div id="public-chat-room-list-view" class="chat-room-list flex-container"></div>
 </script>

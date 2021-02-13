@@ -95,7 +95,9 @@ Scorecard.create([
 
 GroupChatRoom.create([
   {owner_id: 1, room_type: "public", title: "Welcome", channel_code: "XXX-XXX-XXX" },
-  {owner_id: 2, room_type: "protected", title: "Welcome", channel_code: "ABC-XXX-XXX", password: "123123" }
+  {owner_id: 2, room_type: "public", title: "Welcome2", channel_code: "ABC-XXX-XXX", password: "123123" },
+  {owner_id: 3, room_type: "private", title: "Welcome3", channel_code: "ABC-DEF-XXX", password: "123123" },
+  {owner_id: 4, room_type: "private", title: "Welcome4", channel_code: "ABC-DEF-GHI", password: "123123" }
 ])
 
 DirectChatRoom.create([
@@ -132,9 +134,10 @@ DirectChatMembership.create([
 
 GroupChatMembership.create([
   {user_id: 1, group_chat_room_id: 1, position: "owner"},
-  {user_id: 2, group_chat_room_id: 1},
-  {user_id: 3, group_chat_room_id: 1},
-  {user_id: 4, group_chat_room_id: 1},
+  {user_id: 2, group_chat_room_id: 1, position: "administrator"},
+  {user_id: 2, group_chat_room_id: 2, position: "owner"},
+  {user_id: 3, group_chat_room_id: 3, position: "owner"},
+  {user_id: 4, group_chat_room_id: 4, position: "owner"},
   {user_id: 5, group_chat_room_id: 1},
   {user_id: 6, group_chat_room_id: 1},
 ])

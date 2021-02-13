@@ -43,7 +43,7 @@ class Api::UsersController < ApplicationController
   end
 
   def update
-    if (params.has_key?(:user))
+    if (!params.has_key?(:user))
       return render_error("upload fail", "API에 user 키가 없습니다.", 400);
     end
     params[:user] = JSON.parse(params[:user]) if params.has_key?("has_file")

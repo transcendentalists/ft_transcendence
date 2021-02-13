@@ -58,6 +58,9 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   battle: function () {
+    App.router.navigate(
+      `#/matches?match-type=dual&enemy-id=${this.model.get("id")}`
+    );
     this.close();
   },
 

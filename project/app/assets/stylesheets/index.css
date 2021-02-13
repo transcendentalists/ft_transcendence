@@ -21,7 +21,7 @@ body {
 }
 
 #main-view-container {
-  margin-left: 0;
+  display: flex !important;
 }
 
 #main-view-container .ui.dividing.header {
@@ -70,6 +70,10 @@ body {
   align-items: baseline;
 }
 
+.top-margin {
+  margin-top: 8rem;
+}
+
 /* ==========================================================================
                                 PERSIST VIEW
    ========================================================================== */
@@ -86,7 +90,6 @@ body {
 #sign-in-view {
   width: 300px;
   margin-top: calc(50vh - 200px);
-  margin-left: calc(50% - 110px);
 }
 
 #sign-in-view .ui.stacked.segment {
@@ -450,4 +453,29 @@ body {
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
     0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
     0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+/* ==========================================================================
+   CHAT INDEX VIEW
+   ========================================================================== */
+
+#chat-index-view {
+  width: 60vw;
+}
+
+#chat-index-view #chat-index-header-view {
+  width: 100%;
+}
+
+#chat-index-view #chat-index-header-view .create-room-button-container {
+  align-items: flex-start;
+}
+
+#chat-index-view #chat-index-header-view .button {
+  margin-left: 1.5rem;
+}
+
+#chat-index-view .ui.search {
+  color: grey;
+  font-weight: 200;
 }

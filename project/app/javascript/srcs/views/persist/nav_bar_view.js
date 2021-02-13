@@ -1,7 +1,7 @@
 export let NavBarView = Backbone.View.extend({
   el: "#nav-bar-view",
   events: {
-    "click .ui.top.fixed.menu a": "chaneActiveItem",
+    "click .ui.top.fixed.menu a": "changeActiveItem",
   },
 
   changeActiveItem: function (e) {

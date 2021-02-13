@@ -3,12 +3,13 @@ import { App } from "srcs/internal";
 export let MatchHistoryListView = Backbone.View.extend({
   el: ".match-history-list",
 
-  initialize: function () {
+  initialize: function (user_id) {
+    this.user_id = user_id;
     this.child_views = [];
   },
 
   addOne: function (match_history) {
-    let child_view = new App.View.MatchHistoryView();
+    let child_view = new App.View.MatchHistoryView(this.user_id);
     this.child_views.push(child_view);
     this.$el.append(child_view.render(match_history).$el);
   },

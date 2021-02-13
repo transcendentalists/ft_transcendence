@@ -32,6 +32,7 @@ export let UserIndexView = Backbone.View.extend({
   },
 
   renderGuildInvitations: function () {
+    if (!Helper.isCurrentUser(this.user_id)) return;
     this.guild_invitations_view = new App.View.GuildInvitationListView();
 
     const guild_invitations_url =
@@ -47,9 +48,9 @@ export let UserIndexView = Backbone.View.extend({
   },
 
   renderMatchHistory: function () {
-    this.match_history_view = new App.View.MatchHistoryListView();
+    this.match_history_view = new App.View.MatchHistoryListView(this.user_id);
 
-    const match_history_url = "users/" + App.current_user.id + "/matches";
+    const match_history_url = "users/" + this.user_id + "/matches";
 
     Helper.fetch(match_history_url, {
       success_callback: function (match_history_list) {

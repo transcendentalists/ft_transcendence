@@ -472,6 +472,7 @@ body {
 
 #user-index-view .match-history-view .label {
   width: 15vw;
+  min-width: 100px;
   font-size: 1rem;
   text-align: center;
   margin-right: 2rem;

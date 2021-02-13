@@ -11,6 +11,14 @@ export let UserIndexButtonsView = Backbone.View.extend({
     "click #guild-invite-button": "inviteGuild",
   },
 
+  initialize: function (user_id) {
+    this.user_id = user_id;
+    const guild = App.current_user.get("guild");
+    this.is_current_user = Helper.isCurrentUser(user_id);
+    this.invite_possible =
+      !this.is_current_user && guild != null && guild.position != "member";
+  },
+
   changeTwoFactorAuth: function () {
     const after_value = this.$("#two-factor-toggle input").is(":checked");
     App.current_user.two_factor_auth = after_value;
@@ -70,14 +78,6 @@ export let UserIndexButtonsView = Backbone.View.extend({
   },
 
   inviteGuild: function () {},
-
-  initialize: function (user_id) {
-    this.user_id = user_id;
-    const guild = App.current_user.get("guild");
-    this.is_current_user = Helper.isCurrentUser(user_id);
-    this.invite_possible =
-      !this.is_current_user && guild != null && guild.position != "member";
-  },
 
   render: function () {
     this.$el.html(

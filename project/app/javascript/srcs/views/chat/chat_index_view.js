@@ -10,14 +10,14 @@ export let ChatIndexView = Backbone.View.extend({
   },
 
   renderMyChatRoomCallback: function (data) {
-    console.log("🚀 ~ file: chat_index_view.js ~ line 13 ~ data", data);
+    if (!data["group_chat_rooms"]) return;
     this.my_chat_room_list_view = new App.View.ChatRoomCardListView();
     this.my_chat_room_list_view.setElement(this.$("#my-chat-room-list-view"));
     this.my_chat_room_list_view.render(data.group_chat_rooms);
   },
 
   renderPublicChatRoomCallback: function (data) {
-    console.log("🚀 ~ file: chat_index_view.js ~ line 20 ~ data", data);
+    if (!data["group_chat_rooms"]) return;
     this.public_chat_room_list_view = new App.View.ChatRoomCardListView();
     this.public_chat_room_list_view.setElement(
       this.$("#public-chat-room-list-view")
@@ -41,7 +41,7 @@ export let ChatIndexView = Backbone.View.extend({
 
   close: function () {
     this.my_chat_room_list_view.close();
-    this.group_chat_room_list_view.close();
+    this.public_chat_room_list_view.close();
     this.$el.empty();
     this.remove();
   },

@@ -35,19 +35,6 @@ class GroupChatRoom < ApplicationRecord
       }
     }
   }
-  # scope: :list_all, -> (room_type) {
-  #   all.map { |chatroom|
-  #     {
-  #       id: chatroom.id,
-  #       title: chatroom.title,
-  #       protected: chatroom.password.nil?,
-  #       owner: chatroom.owner.slice(*owner_keys),
-  #       max_member_count: chatroom.max_member_count,
-  #       current_member_count: chatroom.current_member_count,
-  #       current_user_position: nil
-  #     }
-  #   }
-  # }
 
   def current_user_position(current_user_id)
     "normal member"

@@ -663,6 +663,11 @@ body {
   margin-top: 1rem;
 }
 
+#chat-index-view .room-card .disable.button {
+  margin-top: 1rem;
+  background-color: #adadad;
+}
+
 #chat-index-view .public-chat-room-list-header {
   margin: 4rem 0;
   width: 100%;

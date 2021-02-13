@@ -15,7 +15,7 @@ User.create([
   {name: 'iwoo2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'injun.woo30001@gmail.com', image_url: '/assets/iwoo2.png', point: 7, two_factor_auth: false},
   {name: 'yohlee2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'yohan9613@yonsei.ac.kr', image_url: '/assets/yohlee2.png', point: 8},
   {name: 'sanam2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'simian115@gmail.com', image_url: '/assets/sanam2.png', point: 9},
-  {name: 'eunhkim2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 10},
+  {name: 'eunhkim2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'valhalla.host2@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 10},
   {name: 'jujeong2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'juhyeonjeong93@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 10},
   {name: 'test', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'juhyeonjeong94@gmail.com', image_url: '/assets/kristy.png', point: 11},
 ])
@@ -94,10 +94,53 @@ Scorecard.create([
 ])
 
 GroupChatRoom.create([
-  {owner_id: 1, room_type: "public", title: "Welcome", channel_code: "XXX-XXX-XXX" },
-  {owner_id: 2, room_type: "public", title: "Welcome2", channel_code: "ABC-XXX-XXX", password: "123123" },
-  {owner_id: 3, room_type: "private", title: "Welcome3", channel_code: "ABC-DEF-XXX", password: "123123" },
-  {owner_id: 4, room_type: "private", title: "Welcome4", channel_code: "ABC-DEF-GHI", password: "123123" }
+  {owner_id: 1, room_type: "public", title: "public locked owner", channel_code: "XXX-XXX-XX1", password: "123123"},
+  {owner_id: 1, room_type: "public", title: "public unlocked owner", channel_code: "XXX-XXX-XX2" },
+  {owner_id: 2, room_type: "public", title: "public locked admin", channel_code: "XXX-XXX-XX3", password: "123123"},
+  {owner_id: 2, room_type: "public", title: "public unlocked admin", channel_code: "XXX-XXX-XX4" },
+  {owner_id: 3, room_type: "public", title: "public locked member", channel_code: "XXX-XXX-XX5", password: "123123"},
+  {owner_id: 3, room_type: "public", title: "public unlocked member", channel_code: "XXX-XXX-XX6" },
+  
+  {owner_id: 1, room_type: "private", title: "private locked owner", channel_code: "XXX-XXX-XX7", password: "123123"},
+  {owner_id: 1, room_type: "private", title: "private unlocked owner", channel_code: "XXX-XXX-XX8" },
+  {owner_id: 2, room_type: "private", title: "private locked admin", channel_code: "XXX-XXX-XX9", password: "123123"},
+  {owner_id: 2, room_type: "private", title: "private unlocked admin", channel_code: "XXX-XXX-X10" },
+  {owner_id: 3, room_type: "private", title: "private locked member", channel_code: "XXX-XXX-X11", password: "123123"},
+  {owner_id: 3, room_type: "private", title: "private unlocked member", channel_code: "XXX-XXX-X12" },
+])
+
+GroupChatMembership.create([
+  {user_id: 1, group_chat_room_id: 1, position: "owner"},
+  {user_id: 1, group_chat_room_id: 2, position: "owner"},
+  {user_id: 1, group_chat_room_id: 3, position: "admin"},
+  {user_id: 1, group_chat_room_id: 4, position: "admin"},
+  {user_id: 1, group_chat_room_id: 5, position: "member"},
+  {user_id: 1, group_chat_room_id: 6, position: "member"},
+  {user_id: 1, group_chat_room_id: 7, position: "owner"},
+  {user_id: 1, group_chat_room_id: 8, position: "owner"},
+  {user_id: 1, group_chat_room_id: 9, position: "admin"},
+  {user_id: 1, group_chat_room_id: 10, position: "admin"},
+  {user_id: 1, group_chat_room_id: 11, position: "member"},
+  {user_id: 1, group_chat_room_id: 12, position: "member"},
+
+  {user_id: 2, group_chat_room_id: 3, position: "owner"},
+  {user_id: 2, group_chat_room_id: 4, position: "owner"},
+  {user_id: 2, group_chat_room_id: 9, position: "owner"},
+  {user_id: 2, group_chat_room_id: 10, position: "owner"},
+
+  {user_id: 3, group_chat_room_id: 5, position: "owner"},
+  {user_id: 3, group_chat_room_id: 6, position: "owner"},
+  {user_id: 3, group_chat_room_id: 11, position: "owner"},
+  {user_id: 3, group_chat_room_id: 12, position: "owner"},
+
+  {user_id: 4, group_chat_room_id: 1, position: "member"},
+  {user_id: 5, group_chat_room_id: 1, position: "member"},
+  {user_id: 6, group_chat_room_id: 1, position: "member"},
+  {user_id: 7, group_chat_room_id: 1, position: "member"},
+  {user_id: 8, group_chat_room_id: 1, position: "member"},
+  {user_id: 9, group_chat_room_id: 1, position: "member"},
+  {user_id: 10, group_chat_room_id: 1, position: "member"},
+  {user_id: 11, group_chat_room_id: 1, position: "member"},
 ])
 
 DirectChatRoom.create([
@@ -130,16 +173,6 @@ DirectChatMembership.create([
   {user_id: 2, direct_chat_room_id:1},
   {user_id: 3, direct_chat_room_id:2},
   {user_id: 4, direct_chat_room_id:2},
-])
-
-GroupChatMembership.create([
-  {user_id: 1, group_chat_room_id: 1, position: "owner"},
-  {user_id: 2, group_chat_room_id: 1, position: "administrator"},
-  {user_id: 2, group_chat_room_id: 2, position: "owner"},
-  {user_id: 3, group_chat_room_id: 3, position: "owner"},
-  {user_id: 4, group_chat_room_id: 4, position: "owner"},
-  {user_id: 5, group_chat_room_id: 1},
-  {user_id: 6, group_chat_room_id: 1},
 ])
 
 GuildMembership.create([

@@ -19,8 +19,9 @@ export let Helper = {
     if (hash_args.hasOwnProperty("headers")) {
       $.extend(params.headers, hash_args.headers);
     }
-    if (hash_args.hasOwnProperty("body"))
+    if (hash_args.hasOwnProperty("body")) {
       params["body"] = JSON.stringify(hash_args["body"]);
+    }
 
     let prefix = hash_args.hasOwnProperty("prefix")
       ? hash_args["prefix"]
@@ -53,6 +54,10 @@ export let Helper = {
 
   isUserChatBanned: function (user_id) {
     return App.appView.appearance_view.chat_bans.isUserChatBanned(user_id);
+  },
+
+  isCurrentUser: function (user_id) {
+    return App.current_user.id == user_id;
   },
 
   callModalError: function () {

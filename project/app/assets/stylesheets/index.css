@@ -22,6 +22,7 @@ body {
 
 #main-view-container {
   margin-left: 0;
+  display: flex !important;
 }
 
 #main-view-container .ui.dividing.header {
@@ -70,6 +71,10 @@ body {
   align-items: baseline;
 }
 
+.top-margin {
+  margin-top: 8rem;
+}
+
 /* ==========================================================================
                                 PERSIST VIEW
    ========================================================================== */
@@ -85,16 +90,24 @@ body {
 
 #sign-in-view {
   width: 300px;
-  margin-top: 20vw;
-  margin-left: calc(50% - 110px);
+  margin-top: calc(50vh - 200px);
 }
 
-#sign-in-view .field:nth-child(n + 2) {
-  margin-top: 3.5rem;
+#sign-in-view .ui.stacked.segment {
+  width: 300px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#sign-in-view .field {
+  width: 270px;
 }
 
 #sign-in-view .submit.button {
-  margin-top: 7.5rem;
+  margin-top: 0.5rem;
 }
 
 #sign-in-view .sign-up.message {
@@ -247,6 +260,19 @@ body {
   cursor: pointer;
 }
 
+#sign-up-view {
+  margin-top: 25vh;
+  margin-left: calc(50% - 150px);
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  width: 300px;
+}
+
+#sign-up-view button {
+  margin-top: 1.8rem;
+}
+
 /* ==========================================================================
    APPEARANCE VIEW
    ========================================================================== */
@@ -298,6 +324,14 @@ body {
   background-color: grey;
 }
 
+#appearance-friends-list .item {
+  padding-left: 4rem;
+}
+
+#appearance-online-user-list .item {
+  padding-left: 4rem;
+}
+
 #appearance-view #user-list-area {
   height: calc(100vh - 12rem);
   overflow-y: auto;
@@ -315,6 +349,18 @@ body {
   bottom: 0;
   height: 10rem;
   width: 220px;
+}
+
+/* IMAGE UPLOAD MODAL VIEW
+   ========================================================================== */
+
+#image-upload-modal-view .grid.container {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+#image-upload-modal-view .image-name.flex-container {
+  justify-content: center;
 }
 
 /* ==========================================================================
@@ -349,6 +395,121 @@ body {
 
 .profile-card .rank {
   margin-left: 1rem;
+}
+
+/* ==========================================================================
+   USER INDEX VIEW
+   ========================================================================== */
+
+#user-index-view {
+  max-width: 740px;
+  margin-bottom: 4rem;
+}
+
+#user-index-view #user-index-buttons-view {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+#user-index-view #user-index-buttons-view .right-buttons {
+  margin-left: auto;
+}
+
+#user-index-view h1 {
+  margin-bottom: 0;
+}
+
+#user-index-view .user-profile-view {
+  margin-bottom: 4rem;
+}
+
+#user-index-view #two-factor-toggle {
+  padding-top: 0.3rem;
+  margin-left: 1rem;
+}
+
+#user-index-view .ui.card {
+  min-width: 355px;
+}
+
+#user-index-view .ui.card:nth-child(odd) {
+  margin: 1.5rem 1rem 0 0;
+}
+
+#user-index-view .ui.card:nth-child(even) {
+  margin: 1.5rem 0 0 1rem;
+}
+
+#user-index-view #guild-invitation-list-view {
+  flex-wrap: wrap;
+  padding-top: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+#user-index-view #guild-invitation-list-view .ui.card .meta {
+  margin-top: 0.5rem;
+}
+
+#user-index-view #guild-invitation-list-view .ui.card .description {
+  margin-top: 1rem;
+}
+
+#user-index-view .match-history-list-view {
+  padding-top: 1.5rem;
+}
+
+#user-index-view .match-history-view {
+  justify-content: space-between;
+  align-items: stretch;
+  height: 33px;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  #user-index-view #guild-invitation-list-view {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #user-index-view .ui.card.mobile-only {
+    margin: 1.5rem 0 0 0;
+  }
+}
+
+#user-index-view .match-history-view .label {
+  width: 15vw;
+  min-width: 100px;
+  font-size: 1rem;
+  text-align: center;
+  margin-right: 2rem;
+}
+
+#user-index-view .ui.fluid.buttons {
+  width: 40vw;
+}
+
+#user-index-view .match-history-view .button {
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#user-index-view .match-history-view .right.button {
+  margin-right: 1.5rem;
+}
+
+#user-index-view .match-history-view .enemy {
+  width: 20vw;
+}
+
+#user-index-view .match-history-view .enemy div:nth-child(2) {
+  margin-left: 1rem;
+}
+
+#user-index-view .match-history-view div[data-text] {
+  font-size: 1.2rem;
+  margin-top: -0.4rem;
 }
 
 /* ==========================================================================

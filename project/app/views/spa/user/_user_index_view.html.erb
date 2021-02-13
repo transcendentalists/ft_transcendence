@@ -1,0 +1,19 @@
+<script type="text/template" id="user-index-view-template">
+  <div id="user-index-buttons-view" class="ui text container">
+  </div>
+
+  <div class="user-profile-view" class="ui text container">
+  </div>
+
+  <%% if(is_current_user){ %>
+  <h1 class="ui header">길드 초대</h1>
+  <div id="guild-invitation-list-view" class="flex-container space-between">
+    <span>초대장이 도착하기를 기다리고 있습니다.</span>
+  </div>
+  <%% } %>
+
+  <h1 class="ui header">매치 히스토리</h1>
+  <div class="match-history-list-view flex-container column-direction">
+    매치 히스토리가 쌓이기를 기다리고 있습니다.
+  </div>
+</script>

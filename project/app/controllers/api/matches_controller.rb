@@ -1,7 +1,10 @@
 class Api::MatchesController < ApplicationController
   def index
     if params[:user_id]
-      render plain: "This is user " + params[:user_id] + "'s matches"
+      match_history_list = Match.for_user_index(params[:user_id])
+      render :json => {
+        matches: match_history_list
+      }
     elsif params[:war_id]
       render plain: "This is war " + params[:war_id] + "'s matches"
     else

@@ -28,11 +28,20 @@ import { AlertModalView } from "./views/persist/alert_modal_view";
 import { DirectChatView } from "./views/persist/direct_chat_view";
 import { InfoModalView } from "./views/persist/info_modal_view";
 import { InputModalView } from "./views/persist/input_modal_view";
+import { ImageUploadModalView } from "./views/persist/image_upload_modal_view";
 import { InviteView } from "./views/persist/invite_view";
 import { NavBarView } from "./views/persist/nav_bar_view";
 
 /** error view */
 import { ErrorView } from "./views/error/error_view";
+
+/** user views */
+import { UserIndexView } from "./views/user/user_index_view";
+import { UserIndexButtonsView } from "./views/user/user_index_buttons_view";
+import { GuildInvitationView } from "./views/guild/guild_invitation_view";
+import { GuildInvitationListView } from "./views/guild/guild_invitation_list_view";
+import { MatchHistoryView } from "./views/game/match_history_view";
+import { MatchHistoryListView } from "./views/game/match_history_list_view";
 
 /** ladder views */
 import { LadderIndexView } from "./views/ladder/ladder_index_view";
@@ -53,7 +62,6 @@ import { UserMenuView } from "./views/persist/appearance/user_menu_view";
 import { DirectChatMessageListView } from "./views/chat/direct_chat_message_list_view";
 import { ChatMessageView } from "./views/chat/chat_message_view";
 
-import { UserIndexView } from "./views/user/user_index_view";
 import { ChatIndexView } from "./views/chat/chat_index_view";
 import { ChatRoomView } from "./views/chat/chat_room_view";
 import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
@@ -137,12 +145,14 @@ export let App = {
     ErrorView,
     InfoModalView,
     InputModalView,
+    ImageUploadModalView,
     InviteView,
     NavBarView,
 
     UserIndexView,
-    ChatMessageView,
+    UserIndexButtonsView,
     DirectChatMessageListView,
+    ChatMessageView,
 
     ChatIndexView,
     ChatRoomView,
@@ -150,6 +160,8 @@ export let App = {
     GuildIndexView,
     GuildDetailView,
     GuildCreateView,
+    GuildInvitationView,
+    GuildInvitationListView,
     LadderIndexView,
     UserRankingView,
     UserProfileCardView,
@@ -159,6 +171,8 @@ export let App = {
     WarCreateView,
     GameIndexView,
     GamePlayView,
+    MatchHistoryView,
+    MatchHistoryListView,
     TournamentIndexView,
     TournamentCreateView,
     AdminUserIndexView,

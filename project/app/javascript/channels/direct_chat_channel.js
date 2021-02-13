@@ -17,7 +17,7 @@ export function ConnectDirectChatChannel(add_callback, chat_room, room_id) {
       },
 
       received(data) {
-        add_callback.bind(chat_room)(data);
+        add_callback.bind(chat_room)(data, true);
       },
 
       speak(current_user_message) {

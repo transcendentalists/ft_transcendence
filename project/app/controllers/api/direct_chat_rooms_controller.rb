@@ -4,9 +4,9 @@ class Api::DirectChatRoomsController < ApplicationController
   end
 
   def show
-    room = User.find(params[:user_id]).direct_chat_rooms.joins(:memberships).where(memberships: {user_id: params[:id]}).first
+    symbol = [params[:user_id].to_i, params[:id].to_i].sort.join('+')
+    room = DirectChatRoom.find_by_symbol(symbol)
     if room.nil?
-      symbol = [params[:user_id].to_i, params[:id].to_i].sort.join('+')
       room = DirectChatRoom.create(symbol: symbol)
       [params[:user_id], params[:id]].each { |user_id|
         DirectChatMembership.create(

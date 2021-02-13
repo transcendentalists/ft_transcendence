@@ -28,7 +28,7 @@ export let ChatMessageListView = Backbone.View.extend({
     );
   },
 
-  addOne: function (message) {
+  addOne: function (message, scroll_option) {
     if (Helper.isUserChatBanned(message.user_id)) return;
     this.message_view = new App.View.ChatMessageView({
       model: message,
@@ -43,12 +43,14 @@ export let ChatMessageListView = Backbone.View.extend({
     });
     this.child_views.push(this.message_view);
     this.$el.append(this.message_view.render().$el);
-    this.scrollDown();
+    if (scroll_option) this.scrollDown();
   },
 
   addAll: function () {
     this.child_views.forEach((child_view) => child_view.close());
-    this.message_list.forEach((message) => this.addOne(message.attributes));
+    this.message_list.forEach((message) =>
+      this.addOne(message.attributes, false)
+    );
   },
 
   render: function () {
@@ -59,6 +61,7 @@ export let ChatMessageListView = Backbone.View.extend({
       this,
       this.room_id
     );
+    return this;
   },
 
   stop: function () {

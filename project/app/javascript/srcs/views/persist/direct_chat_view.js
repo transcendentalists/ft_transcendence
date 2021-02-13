@@ -46,12 +46,17 @@ export let DirectChatView = Backbone.View.extend({
 
     this.chat_room.start();
     this.$el.show();
+    setTimeout(this.scrollDown.bind(this), 500);
   },
 
   hide: function () {
     if (this.chat_room) this.chat_room.stop();
     this.$el.empty();
     this.$el.hide();
+  },
+
+  scrollDown: function () {
+    this.chat_room.chat_message_list_view.scrollDown();
   },
 
   close: function () {

@@ -38,7 +38,6 @@ export let DirectChatRoom = Backbone.Model.extend({
       .setElement($("#direct-chat-view .comments"))
       .render();
     this.chat_messages.fetch({ reset: true });
-
     this.status = "run";
   },
 

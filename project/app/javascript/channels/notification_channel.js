@@ -10,7 +10,7 @@ export function ConnectNotificationChannel() {
     },
 
     received(data) {
-      if (data.type == "Match" && Helper.isCurrentUser(data.enemy_id)) {
+      if (data.type == "MatchCreate" && Helper.isCurrentUser(data.enemy_id)) {
         App.appView.invite_view.render(data.profile, data.match_id);
       } else if (
         data.type == "MatchCancel" &&

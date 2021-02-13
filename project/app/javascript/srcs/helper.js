@@ -100,4 +100,16 @@ export let Helper = {
 
     App.appView.info_modal_view.render(data);
   },
+
+  parseHashQuery: function () {
+    let hash = window.location.hash.split("?");
+    if (hash.length == 1) return {};
+    let query = hash[1];
+    let result = query.split("&").reduce(function (res, item) {
+      let parts = item.split("=");
+      res[parts[0]] = parts[1];
+      return res;
+    }, {});
+    return result;
+  },
 };

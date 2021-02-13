@@ -15,7 +15,17 @@ export let GameIndexView = Backbone.View.extend({
     this.spec = null;
     this.channel = null;
     this.is_player = id == undefined ? true : false;
-    this.match_id = id;
+    this.params = Helper.parseHashQuery();
+    this.match_type = this.params["match-type"];
+    this.enemy_id = this.params.hasOwnProperty("enemy-id")
+      ? this.params["enemy-id"]
+      : null;
+    this.rule_id = this.params.hasOwnProperty("rule-id")
+      ? this.params["rule-id"]
+      : "1";
+    this.match_id = this.params.hasOwnProperty("match-id")
+      ? this.params["match-id"]
+      : id;
     this.left_player_view = null;
     this.right_player_view = null;
     this.play_view = null;
@@ -26,13 +36,17 @@ export let GameIndexView = Backbone.View.extend({
    ** 새로운 래더 게임에 참여, 게임(match) id 변환
    ** render 메서드 실행시 플레이어일 경우 함께 호출
    */
+
   joinGame: function () {
     Helper.fetch("matches", {
       method: "POST",
       success_callback: this.subscribeChannel.bind(this),
       body: {
-        for: "ladder",
+        for: this.match_type,
         user_id: App.current_user.id,
+        enemy_id: this.enemy_id,
+        rule_id: this.rule_id,
+        match_id: this.match_id,
       },
     });
   },

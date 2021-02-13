@@ -30,7 +30,7 @@ export let LadderIndexView = Backbone.View.extend({
 
   //  승급전 참여 버튼 클릭시 게임 인덱스 뷰로 이동
   gamePage: function () {
-    App.router.navigate("#/matches");
+    App.router.navigate("#/matches?match-type=ladder");
   },
 
   /**

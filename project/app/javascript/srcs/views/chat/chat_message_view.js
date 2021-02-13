@@ -5,9 +5,9 @@ export let ChatMessageView = Backbone.View.extend({
   className: "comment",
 
   initialize: function (option) {
-    this.model = option["model"];
-    this.template = option["template"];
-    this.chat_user = option["chat_user"];
+    this.model = option.model;
+    this.template = option.template;
+    this.chat_user = option.chat_user;
   },
 
   render: function () {

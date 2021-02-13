@@ -15,7 +15,6 @@ class DirectChatChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    p 'debug: direct_chat_channel_unsubscribe'
     # Any cleanup needed when channel is unsubscribed
   end
 end

@@ -33,10 +33,7 @@ export let Helper = {
       let response = await fetch(prefix + url, params);
       success = Math.floor(response.status / 100) == 2;
       data = await response.json();
-      console.log(data); // for response debugging
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
 
     if (!success && fail_callback) return fail_callback(data);
     if (success && success_callback) return success_callback(data);

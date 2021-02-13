@@ -37,7 +37,7 @@ export let DirectChatView = Backbone.View.extend({
       (room) => room.chat_user.get("id") == chat_user.get("id")
     );
     if (this.chat_room == undefined) {
-      this.chat_room = new App.Model.DirectChatRoom({
+      this.chat_room = new App.View.DirectChatRoomView({
         parent: this,
         chat_user: chat_user,
       });
@@ -62,7 +62,7 @@ export let DirectChatView = Backbone.View.extend({
   close: function () {
     this.chat_room_list.forEach((chat_room) => chat_room.close());
     this.chat_room_list = [];
+    this.chat_room = null;
     this.$el.hide();
-    this.remove();
   },
 });

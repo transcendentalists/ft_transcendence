@@ -6,7 +6,6 @@ import { GameBall } from "./models/game_ball";
 import { GameScore } from "./models/game_score";
 import { GamePaddle } from "./models/game_paddle";
 import { ChatBan } from "./models/chat_ban";
-import { DirectChatRoom } from "./models/direct_chat_room";
 import { ChatMessage } from "./models/chat_message";
 
 /* COLLECTION */
@@ -25,7 +24,6 @@ import { SignUpView } from "./views/registration/sign_up_view";
 import { MainView } from "./views/persist/main_view";
 import { AppearanceView } from "./views/persist/appearance/appearance_view";
 import { AlertModalView } from "./views/persist/alert_modal_view";
-import { DirectChatView } from "./views/persist/direct_chat_view";
 import { InfoModalView } from "./views/persist/info_modal_view";
 import { InputModalView } from "./views/persist/input_modal_view";
 import { ImageUploadModalView } from "./views/persist/image_upload_modal_view";
@@ -59,6 +57,8 @@ import { UserUnitView } from "./views/persist/appearance/user_unit_view";
 import { UserMenuView } from "./views/persist/appearance/user_menu_view";
 
 /** direct chat views */
+import { DirectChatView } from "./views/persist/direct_chat_view";
+import { DirectChatRoomView } from "./views/chat/direct_chat_room_view";
 import { DirectChatMessageListView } from "./views/chat/direct_chat_message_list_view";
 import { ChatMessageView } from "./views/chat/chat_message_view";
 
@@ -126,7 +126,6 @@ export let App = {
     GameBall,
     GameScore,
     GamePaddle,
-    DirectChatRoom,
   },
   Collection: {
     Users,
@@ -142,6 +141,7 @@ export let App = {
     MainView,
     AlertModalView,
     DirectChatView,
+    DirectChatRoomView,
     ErrorView,
     InfoModalView,
     InputModalView,

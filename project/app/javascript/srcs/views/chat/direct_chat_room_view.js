@@ -1,6 +1,6 @@
 import { App } from "srcs/internal";
 
-export let DirectChatRoom = Backbone.Model.extend({
+export let DirectChatRoomView = Backbone.View.extend({
   initialize: function (options) {
     this.chat_user = options["chat_user"];
     this.chat_user.fetch();
@@ -43,7 +43,7 @@ export let DirectChatRoom = Backbone.Model.extend({
 
   stop: function () {
     if (this.status != "run") return;
-    this.chat_message_list_view.stop();
+    if (this.chat_message_list_view) this.chat_message_list_view.stop();
     this.status = "stop";
   },
 

@@ -1,17 +1,32 @@
 import consumer from "./consumer";
+import { App, Helper } from "srcs/internal";
 
 export function ConnectNotificationChannel() {
   return consumer.subscriptions.create("NotificationChannel", {
-    connected() {
-      // Called when the subscription is ready for use on the server
-    },
+    connected() {},
 
     disconnected() {
-      // Called when the subscription has been terminated by the server
+      this.unsubscribe();
     },
 
     received(data) {
-      // Called when there's incoming data on the websocket for this channel
+      if (data.type == "Match" && Helper.isCurrentUser(data.enemy_id)) {
+        App.appView.invite_view.render(data.profile, data.match_id);
+      } else if (
+        data.type == "MatchCancel" &&
+        Helper.isCurrentUser(data.user_id)
+      ) {
+        Helper.info({
+          subject: "게임 취소",
+          description:
+            "상대방이 게임 요청을 거절하였습니다. 잠시후 홈 화면으로 이동합니다.",
+        });
+        setTimeout(this.redirectHomeCallback, 3000);
+      }
+    },
+
+    redirectHomeCallback: function () {
+      return App.router.navigate("#/");
     },
   });
 }

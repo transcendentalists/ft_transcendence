@@ -17,7 +17,9 @@ class Api::MatchesController < ApplicationController
       user = User.find(params[:user_id])
       if params[:for] == "ladder"
         match = find_or_create_ladder_match_for(user)
+      # TODO: private 함수로 뺴기
       elsif params[:for] == "dual"
+        # TODO: 삼항연산자로 만들어서 분기 간소화하기
         unless params[:match_id].nil?
           match = join_dual_match_for(user, params[:match_id])
         else
@@ -32,9 +34,10 @@ class Api::MatchesController < ApplicationController
     end
   end
 
+  # TODO: 상대방이 거절하면 match를 삭제한다. 애초에 상대방이 받아들일 때 까지 매치를 만드는게 이상함.
   def destroy
     match = Match.find(params[:id])
-    ActionCable.server.broadcast('notification_channel', {type: "MatchCancel", user_id: match.users.first.id})
+    ActionCable.server.broadcast("notification_channel_#{match.users.first.id.to_s}", {type: "MatchCancel", user_id: match.users.first.id})
     match&.destroy
   end
 
@@ -62,7 +65,7 @@ class Api::MatchesController < ApplicationController
   def create_dual_match_for(user, rule_id)
     match = Match.create(match_type: "Dual", status: "pending", rule_id: rule_id)
     card = Scorecard.create(user_id: user.id, match_id: match.id, side: "left")
-    ActionCable.server.broadcast('notification_channel',
+    ActionCable.server.broadcast("notification_channel_#{params[:enemy_id].to_s}",
       {type: "MatchCreate", match_id: match.id, enemy_id: params[:enemy_id], profile: user.profile})
     user.update_status("playing")
     match

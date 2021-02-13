@@ -461,6 +461,7 @@ body {
 
 #chat-index-view {
   width: 60vw;
+  min-width: 500px;
 }
 
 #chat-index-view #chat-index-header-view {
@@ -478,4 +479,12 @@ body {
 #chat-index-view .ui.search {
   color: grey;
   font-weight: 200;
+}
+
+#chat-index-view #my-chat-room-list-view {
+  flex-wrap: wrap;
+}
+
+#chat-index-view #public-chat-room-list-view {
+  flex-wrap: wrap;
 }

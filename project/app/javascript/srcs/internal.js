@@ -48,6 +48,9 @@ import { UserMenuView } from "./views/persist/appearance/user_menu_view";
 
 import { UserIndexView } from "./views/user/user_index_view";
 import { ChatIndexView } from "./views/chat/chat_index_view";
+import { ChatRoomCardListView } from "./views/chat/chat_room_card_list_view";
+import { ChatRoomCardView } from "./views/chat/chat_room_card_view";
+
 import { ChatRoomView } from "./views/chat/chat_room_view";
 import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
 import { GuildIndexView } from "./views/guild/guild_index_view";
@@ -132,6 +135,9 @@ export let App = {
 
     UserIndexView,
     ChatIndexView,
+    ChatRoomCardListView,
+    ChatRoomCardView,
+
     ChatRoomView,
     ChatRoomCreateView,
     GuildIndexView,

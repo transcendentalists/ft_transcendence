@@ -6,12 +6,10 @@ export let DirectChatRoomView = Backbone.View.extend({
     this.chat_user.fetch();
     this.parent = options["parent"];
 
-    this.chat_messages = new App.Collection.ChatMessages();
-    this.chat_messages.url =
-      "/api/users/" +
-      App.current_user.get("id") +
-      "/direct_chat_rooms/" +
-      this.chat_user.get("id");
+    this.chat_messages = new App.Collection.ChatMessages({
+      current_user: App.current_user,
+      chat_user: this.chat_user,
+    });
 
     const room_id =
       _.min([this.chat_user.id, App.current_user.id]) +

@@ -7,18 +7,33 @@ export let ChatIndexView = Backbone.View.extend({
 
   initialize: function () {
     this.$el.html(this.template());
+  },
+
+  renderMyChatRoomCallback: function (data) {
     this.my_chat_room_list_view = new App.View.ChatRoomCardListView();
     this.my_chat_room_list_view.setElement(this.$("#my-chat-room-list-view"));
+    this.my_chat_room_list_view.render(data.group_chat_rooms);
+  },
 
+  renderPublicChatRoomCallback: function (data) {
     this.public_chat_room_list_view = new App.View.ChatRoomCardListView();
     this.public_chat_room_list_view.setElement(
       this.$("#public-chat-room-list-view")
     );
+    this.public_chat_room_list_view.render(data.group_chat_rooms);
   },
 
   render: function () {
-    this.my_chat_room_list_view.render();
-    this.public_chat_room_list_view.render();
+    const my_chat_room_url = "group_chat_rooms?for=my_group_chat_room_list";
+    Helper.fetch(my_chat_room_url, {
+      success_callback: this.renderMyChatRoomCallback.bind(this),
+    });
+
+    const public_chat_room_url = "group_chat_rooms?room_type=public";
+    Helper.fetch(public_chat_room_url, {
+      success_callback: this.renderPublicChatRoomCallback.bind(this),
+    });
+
     return this;
   },
 

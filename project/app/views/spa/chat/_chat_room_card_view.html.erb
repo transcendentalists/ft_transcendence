@@ -1,20 +1,24 @@
 <script type="text/template" id="chat-room-card-view-template">
 <div class="card-header flex-container space-between center-aligned">
-  <div><i class="lock grey icon"></i></div>
+  <div>
+    <%% if(room_type == "private") { %>
+      <i class="lock grey icon"></i>
+    <%% } %>
+  </div>
   <div class="flex-container center-aligned">
-    <img src="/assets/eunhkim1.png" class="ui mini circular image"/>
-    <div class ="name">eunhkim</div>
+    <img src="<%%= owner.image_url %>" class="ui mini circular image"/>
+    <div class ="name"><%%= owner.name %></div>
   </div>
 </div>
-<div class="subject">우리 같이 한 번 재미나게 놀아요.</div>
+<div class="subject"><%%= title %></div>
 <div class="flex-container space-between extra-content">
   <div class="count">
     <i class="user grey icon"></i>
-    <span class="person-count">23/32</span>
+    <span class="person-count"><%%= current_member_count %>/<%%= max_member_count %></span>
   </div>
   <div class="position">
-    member
+    <%%= position %>
   </div>
 </div>
-<div class="ui join button">입장하기</div>
+<div class="ui join button" data-room-id="<%%= id %>">입장하기</div>
 </script>

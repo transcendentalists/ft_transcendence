@@ -7,23 +7,20 @@ export let ChatRoomCardListView = Backbone.View.extend({
     this.child_views = [];
   },
 
-  addOne: function () {
-    for (let i = 0; i < 4; ++i) {
-      let child_view = new App.View.ChatRoomCardView();
-      this.child_views.push(child_view);
-      this.$el.append(child_view.render().$el);
-    }
+  addOne: function (room) {
+    let child_view = new App.View.ChatRoomCardView();
+    this.child_views.push(child_view);
+    this.$el.append(child_view.render(room).$el);
   },
 
-  render: function () {
+  render: function (rooms) {
     this.$el.empty();
-    this.addOne();
-    // users_data.forEach(this.addOne, this);
+    rooms.forEach(this.addOne, this);
     return this;
   },
 
   close: function () {
+    this.child_views.forEach((child_view) => child_view.close());
     this.child_views = [];
-    this.remove();
   },
 });

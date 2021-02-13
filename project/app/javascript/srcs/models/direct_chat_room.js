@@ -18,7 +18,7 @@ export let DirectChatRoom = Backbone.Model.extend({
       "+" +
       _.max([this.chat_user.id, App.current_user.id]);
 
-    this.chat_message_list_view = new App.View.ChatMessageListView({
+    this.chat_message_list_view = new App.View.DirectChatMessageListView({
       chat_user: this.chat_user,
       collection: this.chat_messages,
       room_id: room_id,

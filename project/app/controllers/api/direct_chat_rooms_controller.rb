@@ -16,7 +16,7 @@ class Api::DirectChatRoomsController < ApplicationController
       }
     end
     render :json => {
-      chat_messages: room ? room.messages.order(:created_at).limit(20) : nil
+      chat_messages: room ? room.messages.last(20) : nil
     }
   end
 

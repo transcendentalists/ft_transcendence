@@ -3,9 +3,10 @@ class Guild < ApplicationRecord
   has_many :memberships, class_name: "GuildMembership"
   has_many :war_statuses
   has_many :users, through: :memberships, source: :user
+  has_many :invitations, class_name: "GuildInvitation"
 
   def to_simple
-    permitted = ["id", "name", "anagram"]
+    permitted = ["id", "name", "anagram", "image_url"]
     data = self.attributes.filter { |field, value| permitted.include?(field) }
   end
 end

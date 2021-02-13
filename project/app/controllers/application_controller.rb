@@ -6,4 +6,11 @@ class ApplicationController < ActionController::Base
   def remove_session
     cookies.encrypted[:service_id] = 0
   end
+
+  def render_error(type, msg, status_code)
+    return render :json => { error: {
+      'type': type, 'msg': msg
+      }
+    }, :status => status_code
+  end
 end

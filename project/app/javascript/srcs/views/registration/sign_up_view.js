@@ -12,12 +12,10 @@ export let SignUpView = Backbone.View.extend({
     App.current_user.set("id", data.user.id);
     App.current_user.login();
     App.appView.render();
-    console.log(`#/users/${data.user.id}`);
     App.router.navigate(`#/users/${data.user.id}`);
   },
 
   failCallback: function (data) {
-    console.log(data);
     this.$(".ui.negative.message").empty();
     this.$(".ui.negative.message").append(
       this.warning_message_template(data.error)

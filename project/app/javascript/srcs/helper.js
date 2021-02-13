@@ -19,8 +19,9 @@ export let Helper = {
     if (hash_args.hasOwnProperty("headers")) {
       $.extend(params.headers, hash_args.headers);
     }
-    if (hash_args.hasOwnProperty("body"))
+    if (hash_args.hasOwnProperty("body")) {
       params["body"] = JSON.stringify(hash_args["body"]);
+    }
 
     let prefix = hash_args.hasOwnProperty("prefix")
       ? hash_args["prefix"]
@@ -31,7 +32,7 @@ export let Helper = {
     try {
       let response = await fetch(prefix + url, params);
       console.log(response); // for response debugging
-      success = response.status / 100 == 2;
+      success = Math.floor(response.status / 100) == 2;
       data = await response.json();
     } catch (err) {
       console.log(err);
@@ -49,6 +50,10 @@ export let Helper = {
 
   isCurrentView: function (view_name) {
     return $("#main-view-container").has(view_name).length > 0;
+  },
+
+  isCurrentUser: function (user_id) {
+    return App.current_user.id == user_id;
   },
 
   callModalError: function () {

@@ -20,5 +20,7 @@
     <%%= position %>
   </div>
 </div>
-<div class="ui join button" data-room-id="<%%= id %>">입장하기</div>
+<%% if(current_member_count == max_member_count){ %>
+  <div class="ui join button" data-room-id="<%%= id %>">입장하기</div>
+<%% } %>
 </script>

@@ -10,10 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_04_012328) do
+ActiveRecord::Schema.define(version: 2021_02_10_110811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "chat_bans", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -80,6 +108,18 @@ ActiveRecord::Schema.define(version: 2021_02_04_012328) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["owner_id"], name: "index_group_chat_rooms_on_owner_id"
+  end
+
+  create_table "guild_invitations", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "guild_id", null: false
+    t.bigint "invited_user_id", null: false
+    t.string "result", default: "pending", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["guild_id"], name: "index_guild_invitations_on_guild_id"
+    t.index ["invited_user_id"], name: "index_guild_invitations_on_invited_user_id"
+    t.index ["user_id"], name: "index_guild_invitations_on_user_id"
   end
 
   create_table "guild_memberships", force: :cascade do |t|
@@ -219,6 +259,8 @@ ActiveRecord::Schema.define(version: 2021_02_04_012328) do
     t.index ["war_request_id"], name: "index_wars_on_war_request_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "chat_bans", "users"
   add_foreign_key "chat_bans", "users", column: "banned_user_id"
   add_foreign_key "chat_messages", "users"
@@ -229,6 +271,9 @@ ActiveRecord::Schema.define(version: 2021_02_04_012328) do
   add_foreign_key "group_chat_memberships", "group_chat_rooms"
   add_foreign_key "group_chat_memberships", "users"
   add_foreign_key "group_chat_rooms", "users", column: "owner_id"
+  add_foreign_key "guild_invitations", "guilds"
+  add_foreign_key "guild_invitations", "users"
+  add_foreign_key "guild_invitations", "users", column: "invited_user_id"
   add_foreign_key "guild_memberships", "guilds"
   add_foreign_key "guild_memberships", "users"
   add_foreign_key "guilds", "users", column: "owner_id"

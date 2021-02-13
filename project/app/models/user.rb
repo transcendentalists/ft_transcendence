@@ -10,15 +10,17 @@ class User < ApplicationRecord
   has_one  :guild_membership
   has_one  :own_guild, foreign_key: 'owner_id', class_name: 'Guild'
   has_one  :in_guild, through: :guild_membership, source: :guild
+  has_many :guild_invitations, foreign_key: "invited_user_id"
   has_many :friendships
   has_many :friends, through: :friendships, source: :friend
   has_many :scorecards
   has_many :matches, through: :scorecards
   has_many :tournament_memberships
   has_many :tournaments, through: :tournament_memberships
-
+  has_one_attached :avatar
   scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
-
+  validates :name, :email, uniqueness: true
+  
   def login(verification: false)
     return self if two_factor_auth && !verification
 

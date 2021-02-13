@@ -43,7 +43,25 @@ class Api::UsersController < ApplicationController
   end
 
   def update
-    render plain: 'update'
+    if (!params.has_key?(:user))
+      return render_error("upload fail", "API에 user 키가 없습니다.", 400);
+    end
+    params[:user] = JSON.parse(params[:user]) if params.has_key?("has_file")
+
+    user = User.find_by_id(params[:id])
+    if (user.nil?)
+     return render_error("upload fail", "해당 id를 가진 user가 없습니다.", 400)
+    end
+
+    if params.has_key?(:file)
+      user.avatar.purge if user.avatar.attached?
+      user.avatar.attach(params[:file])
+      user.image_url = url_for(user.avatar)
+      user.save
+    elsif user.update(update_params) == false
+      return render_error("parameter error", "유효하지 읺은 파라미터입니다.", 400);
+    end
+    head :no_content, status: 204
   end
 
   def login
@@ -94,6 +112,10 @@ class Api::UsersController < ApplicationController
 
   def signin_params
     params.require(:user).permit(:name)
+  end
+
+  def update_params
+    params.require(:user).permit(:name, :image, :two_factor_auth)
   end
 
   def service_params

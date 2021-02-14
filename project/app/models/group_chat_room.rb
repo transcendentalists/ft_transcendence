@@ -5,8 +5,8 @@ class GroupChatRoom < ApplicationRecord
   has_many :users, through: :memberships, source: :user
   scope :list_associated_with_current_user, -> (user_id) do
     owner_keys = [:id, :name, :image_url]
-    current_user_room_ids = User.find_by_id(user_id).in_group_chat_room_ids
     current_user = User.find_by_id(user_id)
+    current_user_room_ids = current_user.in_group_chat_room_ids
     current_user_memberships = current_user.group_chat_memberships
     current_user.in_group_chat_rooms.includes(:owner).map { |chatroom| 
       {

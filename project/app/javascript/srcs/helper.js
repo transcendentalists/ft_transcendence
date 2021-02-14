@@ -31,11 +31,9 @@ export let Helper = {
     let success = false;
     try {
       let response = await fetch(prefix + url, params);
-      console.log(response); // for response debugging
       success = Math.floor(response.status / 100) == 2;
       data = await response.json();
     } catch (err) {
-      console.log(err);
     }
 
     if (!success && fail_callback) return fail_callback(data);

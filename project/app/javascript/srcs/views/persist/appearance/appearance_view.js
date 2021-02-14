@@ -25,6 +25,7 @@ export let AppearanceView = Backbone.View.extend({
     this.notification_channel = new App.Channel.ConnectNotificationChannel(
       App.current_user.id
     );
+    App.notification_channel = this.notification_channel;
 
     this.$el.empty();
     this.$el.html(this.template());

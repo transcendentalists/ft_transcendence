@@ -127,6 +127,12 @@ body {
 /* DIRECT CHAT VIEW
    ========================================================================== */
 
+@media (max-width: 740px) {
+  #direct-chat-view {
+    display: none;
+  }
+}
+
 #direct-chat-view {
   z-index: 5;
   position: fixed;
@@ -403,6 +409,7 @@ body {
 
 #user-index-view {
   max-width: 740px;
+  min-width: 480px;
   margin-bottom: 4rem;
 }
 

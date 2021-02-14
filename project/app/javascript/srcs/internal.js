@@ -27,6 +27,7 @@ import { InfoModalView } from "./views/persist/info_modal_view";
 import { InputModalView } from "./views/persist/input_modal_view";
 import { ImageUploadModalView } from "./views/persist/image_upload_modal_view";
 import { InviteView } from "./views/persist/invite_view";
+import { RequestView } from "./views/persist/request_view";
 import { NavBarView } from "./views/persist/nav_bar_view";
 
 /** error view */
@@ -137,6 +138,7 @@ export let App = {
     InputModalView,
     ImageUploadModalView,
     InviteView,
+    RequestView,
     NavBarView,
 
     UserIndexView,

@@ -30,7 +30,7 @@ export let DirectChatRoomView = Backbone.View.extend({
   },
 
   start: function () {
-    if (this.status == "run") this.stop();
+    if (this.status == "run") return;
 
     this.chat_message_list_view
       .setElement($("#direct-chat-view .comments"))

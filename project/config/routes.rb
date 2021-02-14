@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :matches, only: %i[index create destroy] do
+    resources :matches, only: %i[index create] do
       member do
         patch :report, to: 'matches#report'
         patch :join, to: 'matches#join'

@@ -4,9 +4,16 @@ export let ChatIndexView = Backbone.View.extend({
   template: _.template($("#chat-index-view-template").html()),
   id: "chat-index-view",
   className: "flex-container column-direction center-aligned top-margin",
+  events: {
+    "click .create.button": "createChatRoom",
+  },
 
   initialize: function () {
     this.$el.html(this.template());
+  },
+
+  createChatRoom: function () {
+    App.router.navigate("#/chatrooms/new");
   },
 
   renderMyChatRoomCallback: function (data) {

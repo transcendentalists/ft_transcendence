@@ -75,6 +75,28 @@ body {
   margin-top: 8rem;
 }
 
+.create-view {
+  width: 400px;
+  margin-top: 12rem;
+  border: 1px solid grey;
+  padding: 4rem;
+  border-radius: 2%;
+  box-shadow: 5px 10px 15px -8px #777;
+}
+
+.create-view .ui.header {
+  margin-bottom: 3rem;
+}
+
+.crate-view .field {
+  margin-bottom: 1rem;
+}
+
+.create-view .buttons {
+  text-align: center;
+  margin-top: 2rem;
+}
+
 /* ==========================================================================
                                 PERSIST VIEW
    ========================================================================== */

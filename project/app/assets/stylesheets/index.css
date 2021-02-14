@@ -121,6 +121,14 @@ body {
   position: fixed;
   bottom: 0;
   right: 590px;
+  z-index: 103;
+}
+
+#request-view {
+  position: fixed;
+  bottom: 0;
+  right: 590px;
+  z-index: 103;
 }
 
 /* DIRECT CHAT VIEW

@@ -1,6 +1,10 @@
 import consumer from "./consumer";
 
-export function ConnectDirectChatChannel(addOneMessage, chat_room, room_id) {
+export function ConnectDirectChatChannel(
+  message_collection,
+  chat_room,
+  room_id
+) {
   return consumer.subscriptions.create(
     {
       channel: "DirectChatChannel",
@@ -17,7 +21,8 @@ export function ConnectDirectChatChannel(addOneMessage, chat_room, room_id) {
       },
 
       received(data) {
-        addOneMessage.bind(chat_room)(data, true);
+        message_collection.add(data);
+        message_collection.trigger("scroll");
       },
 
       speak(current_user_message) {

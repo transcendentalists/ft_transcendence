@@ -15,8 +15,8 @@ export let ChatMessageView = Backbone.View.extend({
       this.template({
         name: this.chat_user.name,
         image_url: this.chat_user.image_url,
-        created_at: Helper.getMessageTime(this.model.created_at),
-        message: this.model.message,
+        created_at: Helper.getMessageTime(this.model.get("created_at")),
+        message: this.model.get("message"),
       })
     );
     return this;

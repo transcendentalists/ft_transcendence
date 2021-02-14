@@ -12,7 +12,7 @@ class GroupChatRoom < ApplicationRecord
       {
           id: chatroom.id,
           title: chatroom.title,
-          locked: !chatroom.password.nil?,
+          locked: !chatroom.password.blank?,
           owner: chatroom.owner.slice(*owner_keys),
           max_member_count: chatroom.max_member_count,
           current_member_count: chatroom.users.count,
@@ -27,7 +27,7 @@ class GroupChatRoom < ApplicationRecord
       {
         id: chatroom.id,
         title: chatroom.title,
-        locked: !chatroom.password.nil?,
+        locked: !chatroom.password.blank?,
         owner: chatroom.owner.slice(*owner_keys),
         max_member_count: chatroom.max_member_count,
         current_member_count: chatroom.users.count,

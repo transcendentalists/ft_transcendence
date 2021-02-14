@@ -34,13 +34,6 @@ class Api::MatchesController < ApplicationController
     end
   end
 
-  # TODO: 상대방이 거절하면 match를 삭제한다. 애초에 상대방이 받아들일 때 까지 매치를 만드는게 이상함.
-  def destroy
-    match = Match.find(params[:id])
-    ActionCable.server.broadcast("notification_channel_#{match.users.first.id.to_s}", {type: "MatchCancel", user_id: match.users.first.id})
-    match&.destroy
-  end
-
   def join
     if params[:id]
       render plain: "You just joined " + params[:id] + " match"
@@ -65,9 +58,11 @@ class Api::MatchesController < ApplicationController
   def create_dual_match_for(user, rule_id)
     match = Match.create(match_type: "Dual", status: "pending", rule_id: rule_id)
     card = Scorecard.create(user_id: user.id, match_id: match.id, side: "left")
-    ActionCable.server.broadcast("notification_channel_#{params[:enemy_id].to_s}",
-      {type: "MatchCreate", match_id: match.id, enemy_id: params[:enemy_id], profile: user.profile})
+    # TODO: notification_channel.rb 함수를 실행하는 법을 알아내면 실행시키자.
+    ActionCable.server.broadcast("notification_channel_#{params[:challenger_id].to_s}",
+      {type: "dual", status: "approved", match_id: match.id, challenger_id: params[:challenger_id]})
     user.update_status("playing")
+
     match
   end
 

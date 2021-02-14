@@ -6,34 +6,35 @@ export let InviteView = Backbone.View.extend({
 
   events: {
     "click [data-invite-value=approve]": "approve",
-    "click [data-invite-value=cancel]": "cancel",
+    "click [data-invite-value=decline]": "decline",
   },
 
   initialize: function () {
-    this.match_id = null;
+    this.challenger = null;
     this.$el.hide();
   },
 
   approve: function () {
-    App.router.navigate(`#/matches?match-type=dual&match-id=${this.match_id}`);
+    App.router.navigate(
+        `#/matches?match-type=dual&challenger-id=${this.challenger.id}`
+    );
     this.close();
   },
 
-  cancel: function () {
-    Helper.fetch(`matches/${this.match_id}`, { method: "DELETE" });
+  decline: function () {
+    App.notification_channel.dualRequestDecline(this.challenger.id);
     this.close();
   },
 
-  render: function (data, match_id) {
-    if (this.match_id) this.cancel();
-    this.match_id = match_id;
+  render: function (challenger) {
+    this.challenger = challenger;
     this.$el.empty();
-    this.$el.html(this.template(data));
+    this.$el.html(this.template(challenger));
     this.$el.show();
   },
 
   close: function () {
-    this.match_id = null;
+    this.challenger = null;
     this.$el.hide();
   },
 });

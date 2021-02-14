@@ -5,7 +5,7 @@ export let ChatIndexView = Backbone.View.extend({
   id: "chat-index-view",
   className: "flex-container column-direction center-aligned top-margin",
   events: {
-    ".search.label": "search",
+    "click .search.label": "search",
   },
 
   initialize: function () {
@@ -13,11 +13,13 @@ export let ChatIndexView = Backbone.View.extend({
   },
 
   search: function () {
-    const chat_room_search_url = `group_chat_rooms?code=${$(
-      ".labeled.input"
+    const chat_room_search_url = `group_chat_rooms?channel_code=${$(
+      ".labeled.input input"
     ).val()}`;
-    Helper.fetch(public_chat_room_url, {
-      success_callback: this.renderPublicChatRoomCallback.bind(this),
+    Helper.fetch(chat_room_search_url, {
+      success_callback: function (data) {
+        App.router.navigate("#/chatrooms/" + data.group_chat_rooms.id);
+      }.bind(this),
     });
   },
 

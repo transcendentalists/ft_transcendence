@@ -1,6 +1,7 @@
 class Api::GroupChatRoomsController < ApplicationController
+  
+  # list_all scope 미구현 상태(admin 개발시 구현)
   def index
-
     if params[:for] == 'my_group_chat_room_list'
       group_chat_rooms = GroupChatRoom.list_associated_with_current_user(params[:current_user_id])
     elsif params[:channel_code]
@@ -16,6 +17,10 @@ class Api::GroupChatRoomsController < ApplicationController
 
   def create
     render plain: "group chat room create"
+  end
+
+  def join
+    render plain: "group chat room join"
   end
 
   def show

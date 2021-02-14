@@ -36,8 +36,4 @@ class GroupChatRoom < ApplicationRecord
     }
   }
 
-  def current_user_position(current_user_id)
-    "normal member"
-  end
-
 end

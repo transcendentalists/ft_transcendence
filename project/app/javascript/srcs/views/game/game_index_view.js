@@ -17,8 +17,8 @@ export let GameIndexView = Backbone.View.extend({
     this.is_player = id == undefined ? true : false;
     this.params = Helper.parseHashQuery();
     this.match_type = this.params["match-type"];
-    this.enemy_id = this.params.hasOwnProperty("enemy-id")
-      ? this.params["enemy-id"]
+    this.challenger_id = this.params.hasOwnProperty("challenger-id")
+      ? this.params["challenger-id"]
       : null;
     this.rule_id = this.params.hasOwnProperty("rule-id")
       ? this.params["rule-id"]
@@ -44,7 +44,7 @@ export let GameIndexView = Backbone.View.extend({
       body: {
         for: this.match_type,
         user_id: App.current_user.id,
-        enemy_id: this.enemy_id,
+        challenger_id: this.challenger_id,
         rule_id: this.rule_id,
         match_id: this.match_id,
       },
@@ -104,7 +104,7 @@ export let GameIndexView = Backbone.View.extend({
       (msg.type == "ENTER" && App.current_user.id == msg["send_id"])
     ) {
       this.spec = msg;
-      this.renderPlayerView(msg);
+      if (this.left_player_view == null) this.renderPlayerView(msg);
     } else if (msg.type == "BROADCAST") {
       if (this.play_view == null && !this.is_player) {
         this.play_view = new App.View.GamePlayView(this, this.spec);

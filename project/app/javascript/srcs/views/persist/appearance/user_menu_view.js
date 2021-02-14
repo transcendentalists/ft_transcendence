@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let UserMenuView = Backbone.View.extend({
   template: _.template($("#user-menu-view-template").html()),
@@ -57,9 +57,41 @@ export let UserMenuView = Backbone.View.extend({
     this.close();
   },
 
+  checkUserStatus: function () {
+    if (App.current_user.get("status") == "playing") {
+      Helper.info({
+        subject: "대전 신청 불가능",
+        description: "게임 중에는 대전 신청이 불가능합니다.",
+      });
+      return false;
+    } else if (this.model.get("status") != "online") {
+      Helper.info({
+        subject: "대전 신청 불가능",
+        description:
+          this.model.get("name") +
+          "님은 현재 " +
+          this.model.get("status") +
+          " 중입니다.",
+      });
+      return false;
+    } else if (
+      $("#invite-view").is(":visible") ||
+      $("#request-view").is(":visible")
+    ) {
+      Helper.info({
+        subject: "대전 신청 불가능",
+        description: "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.",
+      });
+      return false;
+    }
+    return true;
+  },
+
   battle: function () {
-    App.notification_channel.dualRequest(this.model.get("id"));
-    App.appView.request_view.render(this.model.attributes);
+    if (this.checkUserStatus()) {
+      App.notification_channel.dualRequest(this.model.get("id"));
+      App.appView.request_view.render(this.model.attributes);
+    }
     this.close();
   },
 

@@ -4,9 +4,21 @@ export let ChatIndexView = Backbone.View.extend({
   template: _.template($("#chat-index-view-template").html()),
   id: "chat-index-view",
   className: "flex-container column-direction center-aligned top-margin",
+  events: {
+    ".search.label": "search",
+  },
 
   initialize: function () {
     this.$el.html(this.template());
+  },
+
+  search: function () {
+    const chat_room_search_url = `group_chat_rooms?code=${$(
+      ".labeled.input"
+    ).val()}`;
+    Helper.fetch(public_chat_room_url, {
+      success_callback: this.renderPublicChatRoomCallback.bind(this),
+    });
   },
 
   renderMyChatRoomCallback: function (data) {

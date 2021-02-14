@@ -1,15 +1,17 @@
 class Api::GroupChatRoomsController < ApplicationController
   def index
+
     if params[:for] == 'my_group_chat_room_list'
-      group_chatrooms = GroupChatRoom.list_associated_with_current_user(params[:current_user_id])
+      group_chat_rooms = GroupChatRoom.list_associated_with_current_user(params[:current_user_id])
+    elsif params[:channel_code]
+      group_chat_rooms = GroupChatRoom.find_by_channel_code(params[:channel_code])
+      return render_error("NOT FOUND", "채널을 찾을 수 없습니다.", 404) if group_chat_rooms.nil?
+    elsif params[:room_type]
+      group_chat_rooms = GroupChatRoom.list_filtered_by_type(params[:room_type], params[:current_user_id])
     else
-      if params[:room_type]
-        group_chatrooms = GroupChatRoom.list_filtered_by_type(params[:room_type], params[:current_user_id])
-      else
-        group_chatrooms = GroupChatRoom.list_all(params[:current_user_id])
-      end
+      group_chat_rooms = GroupChatRoom.list_all(params[:current_user_id])
     end
-    render :json => { group_chat_rooms: group_chatrooms }
+    render :json => { group_chat_rooms: group_chat_rooms }
   end
 
   def create

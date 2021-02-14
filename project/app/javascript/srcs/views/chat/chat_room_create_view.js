@@ -4,52 +4,43 @@ export let ChatRoomCreateView = Backbone.View.extend({
   id: "chat-room-create-view",
   className: "create-view",
   template: _.template($("#chat-room-create-view-template").html()),
-  warning_message_template: _.template($("#warning-message-template").html()),
   events: {
     "click .create.button": "submit",
     "click .cancel.button": "cancel",
   },
 
-  submit: function () {
-    let name = $("input[name=name]").val();
-    let password = $("input[name=password]").val();
-    let email = $("input[name=email]").val();
+  redirectChatRoomCallback: function (data) {
+    App.router.navigate(`#/chatrooms/${data.group_chat_room.id}`);
+  },
 
-    Helper.fetch("users", this.signUpParams(name, password, email));
+  createRoomParams: function (input_data) {
+    return {
+      method: "POST",
+      success_callback: this.redirectChatRoomCallback.bind(this),
+      fail_callback: (data) => App.router.navigate("#/errors/105"),
+      body: {
+        group_chat_room: input_data,
+      },
+    };
+  },
+
+  submit: function () {
+    let input_data = {};
+    input_data["title"] = $("input[name=title]").val();
+    input_data["owner_id"] = App.current_user.id;
+    input_data["password"] = $("input[name=password]").val();
+    input_data["room_type"] = $("input[name=room_type]").is(":checked")
+      ? "private"
+      : "public";
+    input_data["max_member_count"] = +$(
+      ".max-member-count option:selected"
+    ).val();
+
+    Helper.fetch("group_chat_rooms", this.createRoomParams(input_data));
   },
 
   cancel: function () {
     App.router.navigate("#/chatrooms");
-  },
-
-  signUpSuccessCallback: function (data) {
-    App.current_user.set("id", data.user.id);
-    App.current_user.login();
-    App.appView.render();
-    App.router.navigate(`#/users/${data.user.id}`);
-  },
-
-  failCallback: function (data) {
-    this.$(".ui.negative.message").empty();
-    this.$(".ui.negative.message").append(
-      this.warning_message_template(data.error)
-    );
-    this.$(".ui.negative.message").show();
-  },
-
-  signUpParams: function (name, password, email) {
-    return {
-      method: "POST",
-      success_callback: this.signUpSuccessCallback.bind(this),
-      fail_callback: this.failCallback.bind(this),
-      body: {
-        user: {
-          name,
-          email,
-          password,
-        },
-      },
-    };
   },
 
   render: function () {

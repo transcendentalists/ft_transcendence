@@ -42,7 +42,6 @@ export let Router = Backbone.Router.extend({
   },
 
   chatRoomsController: function (param) {
-    console.log("🚀 ~ file: router.js ~ line 45 ~ param", param);
     if (param === null) this.redirect_to(App.View.ChatIndexView);
     else if (param === "new")
       this.redirect_to(App.View.ChatRoomCreateView, param);

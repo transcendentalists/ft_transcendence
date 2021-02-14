@@ -3,6 +3,11 @@ class GroupChatRoom < ApplicationRecord
   has_many :messages, class_name: "ChatMessage", as: :room
   has_many :memberships, class_name: "GroupChatMembership"
   has_many :users, through: :memberships, source: :user
+
+  validates :title, presence: true, allow_blank: false
+  validates :max_member_count, :inclusion => { :in => 2..8 }
+  validates :room_type, inclusion: { in: ["public", "private"] }
+
   scope :list_associated_with_current_user, -> (user_id) do
     owner_keys = [:id, :name, :image_url]
     current_user_room_ids = User.find_by_id(user_id).in_group_chat_room_ids
@@ -12,7 +17,7 @@ class GroupChatRoom < ApplicationRecord
       {
           id: chatroom.id,
           title: chatroom.title,
-          locked: chatroom.password.nil?,
+          locked: chatroom.password.blank?,
           owner: chatroom.owner.slice(*owner_keys),
           max_member_count: chatroom.max_member_count,
           current_member_count: chatroom.users.count,

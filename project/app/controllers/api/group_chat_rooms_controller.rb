@@ -13,7 +13,14 @@ class Api::GroupChatRoomsController < ApplicationController
   end
 
   def create
-    render plain: "group chat room create"
+    room = params[:group_chat_room]
+    return render_error("not found", "group_chat_room key가 없습니다.", 404) if room.nil?
+    room[:password] = BCrypt::Password.create(room[:password]) if room.has_key?(:password)
+    room[:channel_code] = generate_chat_room_code
+    return render_error("create failed", "이미 개설된 룸이 너무 많습니다. 관리자에게 문의하세요.", 503) if room[:channel_code].nil?
+    room = GroupChatRoom.create(create_params)
+    return render_error("create failed", "parameter가 유효하지 않습니다.", 403) if not room.persisted?
+    render :json => { group_chat_room: room }
   end
 
   def show
@@ -26,6 +33,22 @@ class Api::GroupChatRoomsController < ApplicationController
 
   def destroy
     render plain: params[:id] + " group chat room destroy"
+  end
+
+  private
+  def create_params
+    params.require(:group_chat_room).permit(:owner_id, :room_type, :max_member_count, :title, :password, :channel_code)
+  end
+
+  def generate_chat_room_code
+    10.times do
+      code = ""
+      9.times { code << (65 + rand(25)).chr }
+      code.insert(3, '-')
+      code.insert(7, '-')
+      return code if GroupChatRoom.find_by_channel_code(code).nil?
+    end
+    nil
   end
 
 end

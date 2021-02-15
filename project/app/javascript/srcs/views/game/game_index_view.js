@@ -25,18 +25,19 @@ export let GameIndexView = Backbone.View.extend({
 
   parseMatchQuery: function (match_id) {
     let params = Helper.parseHashQuery();
+    let default_hash = {
+      "challenger-id": null,
+      "rule-id": "1",
+      "target-score": "3",
+      "match-id": match_id,
+    };
 
+    params = Object.assign({}, default_hash, params);
+    this.challenger_id = params["challenger-id"];
+    this.rule_id = params["rule-id"];
+    this.target_score = params["target-score"];
+    this.match_id = params["match-id"];
     this.match_type = params["match-type"];
-    this.challenger_id = params.hasOwnProperty("challenger-id")
-      ? params["challenger-id"]
-      : null;
-    this.rule_id = params.hasOwnProperty("rule-id") ? params["rule-id"] : "1";
-    this.target_score = params.hasOwnProperty("target-score")
-      ? params["target-score"]
-      : "3";
-    this.match_id = params.hasOwnProperty("match-id")
-      ? params["match-id"]
-      : match_id;
   },
 
   /**

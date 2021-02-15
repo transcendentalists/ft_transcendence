@@ -1,0 +1,53 @@
+<script type="text/template" id="rule-modal-view-template">
+  <i class="close icon"></i>
+  <div class="header">
+    <p>Rule</p>
+  </div>
+  <div class="content">
+    <div class="ui form">
+      <h4 class="ui dividing header">Rule 설정</h4>
+      <select name="rules">
+        <option value="1">classic</option>
+        <option value="2">invisible</option>
+        <option value="3">dwindle</option>
+        <option value="4">accel_wall</option>
+        <option value="5">accel_paddle</option>
+        <option value="6">bound_wall</option>
+        <option value="7">bound_paddle</option>
+      </select>
+      <h4 class="ui dividing header">Target Score 설정</h4>
+      <div class="field" name="target-score">
+        <div class="inline fields">
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="score" checked="checked" value="3">
+              <label>3점</label> 
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="score" value="5">
+              <label>5점</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="score" value="7">
+              <label>7점</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="score" value="10">
+              <label>10점</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui cancel button">취소</div>
+    <div class="ui green button">전송</div>
+  </div>
+</script>

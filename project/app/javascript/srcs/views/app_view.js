@@ -9,6 +9,7 @@ export let AppView = Backbone.View.extend({
     this.input_modal_view = new App.View.InputModalView();
     this.alert_modal_view = new App.View.AlertModalView();
     this.info_modal_view = new App.View.InfoModalView();
+    this.rule_modal_view = new App.View.RuleModalView();
     this.image_upload_modal_view = new App.View.ImageUploadModalView();
 
     this.invite_view = new App.View.InviteView();
@@ -31,6 +32,7 @@ export let AppView = Backbone.View.extend({
     this.nav_bar_view.close();
 
     this.input_modal_view.close();
+    this.rule_modal_view.close();
     this.alert_modal_view.close();
     this.info_modal_view.close();
 

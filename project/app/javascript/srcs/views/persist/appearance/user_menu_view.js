@@ -24,7 +24,7 @@ export let UserMenuView = Backbone.View.extend({
     this.listenTo(
       App.appView.appearance_view,
       "destroy_user_menu_all",
-      this.close
+      this.close,
     );
     this.listenTo(window, "resize", this.close);
   },
@@ -57,7 +57,7 @@ export let UserMenuView = Backbone.View.extend({
     this.close();
   },
 
-  checkUserStatus: function () {
+  isDualRequestPossible: function () {
     if (App.current_user.get("status") == "playing") {
       Helper.info({
         subject: "대전 신청 불가능",
@@ -85,9 +85,8 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   battle: function () {
-    if (this.checkUserStatus()) {
-      App.notification_channel.dualRequest(this.model.get("id"));
-      App.appView.request_view.render(this.model.attributes);
+    if (this.isDualRequestPossible()) {
+      App.appView.rule_modal_view.render(this.model);
     }
     this.close();
   },
@@ -102,7 +101,7 @@ export let UserMenuView = Backbone.View.extend({
         model: this.model,
         banned: this.chat_bans.isUserChatBanned(this.model.id),
         is_friend: this.is_friend,
-      })
+      }),
     );
     this.$el.css("position", "absolute");
     this.$el.css("top", position.top);

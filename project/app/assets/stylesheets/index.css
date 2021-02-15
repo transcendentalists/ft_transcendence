@@ -118,6 +118,7 @@ body {
    ========================================================================== */
 
 #invite-view {
+  z-index: 5;
   position: fixed;
   bottom: 0;
   right: 590px;
@@ -134,7 +135,14 @@ body {
 /* DIRECT CHAT VIEW
    ========================================================================== */
 
+@media (max-width: 740px) {
+  #direct-chat-view {
+    display: none;
+  }
+}
+
 #direct-chat-view {
+  z-index: 5;
   position: fixed;
   bottom: 0;
   right: 230px;
@@ -174,6 +182,14 @@ body {
   padding-right: 0.5rem;
 }
 
+#direct-chat-view .comment .content-header {
+  align-items: baseline;
+}
+
+#direct-chat-view .comment .metadata {
+  margin-right: 0.75em;
+}
+
 #direct-chat-view .ui.reply.form {
   margin: 0 1rem 1rem 1rem;
 }
@@ -185,6 +201,10 @@ body {
 
 #direct-chat-view .current-user .avatar {
   float: right;
+}
+
+#direct-chat-view .close.icon {
+  cursor: pointer;
 }
 
 .ui.comments .current-user.comment > .avatar ~ .content {
@@ -405,6 +425,7 @@ body {
 
 #user-index-view {
   max-width: 740px;
+  min-width: 480px;
   margin-bottom: 4rem;
 }
 
@@ -597,4 +618,91 @@ body {
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
     0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
     0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+/* ==========================================================================
+   CHAT INDEX VIEW
+   ========================================================================== */
+
+#chat-index-view {
+  min-width: 740px;
+  max-width: 1024px;
+  margin-bottom: 8rem;
+}
+
+#chat-index-view #chat-index-header-view {
+  width: 100%;
+  margin-bottom: 3rem;
+  align-items: baseline;
+  padding-left: 10rem;
+}
+
+#chat-index-view #chat-index-header-view .create-room-button-container {
+  align-items: flex-start;
+}
+
+#chat-index-view #chat-index-header-view .button {
+  margin-left: 1.5rem;
+}
+
+#chat-index-view .ui.labeled.input {
+  color: grey;
+  font-weight: 200;
+  padding-top: 1rem;
+  position: relative;
+  bottom: 0.3rem;
+}
+
+#chat-index-view .chat-room-list {
+  flex-wrap: wrap;
+  width: 100%;
+  padding-left: 10rem;
+}
+
+#chat-index-view .room-card {
+  max-width: 20rem;
+  min-width: 20rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  border: 1.5px solid #dad8d8;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 7px 5px -6px #777;
+  height: fit-content;
+}
+
+#chat-index-view .room-card .subject {
+  margin: 1.5rem 0;
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+}
+
+#chat-index-view .room-card .position {
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+#chat-index-view .room-card .name {
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+}
+
+#chat-index-view .room-card .join.button {
+  margin-top: 1rem;
+}
+
+#chat-index-view .room-card .disable.button {
+  margin-top: 1rem;
+  background-color: #adadad;
+}
+
+#chat-index-view .public-chat-room-list-header {
+  margin: 4rem 0;
+  width: 100%;
+  padding-left: 10rem;
+}
+
+#chat-index-view .search.label {
+  cursor: pointer;
 }

@@ -6,11 +6,13 @@ import { GameBall } from "./models/game_ball";
 import { GameScore } from "./models/game_score";
 import { GamePaddle } from "./models/game_paddle";
 import { ChatBan } from "./models/chat_ban";
+import { ChatMessage } from "./models/chat_message";
 
 /* COLLECTION */
 import { Users } from "./collections/users";
 import { Friends } from "./collections/friends";
 import { ChatBans } from "./collections/chat_bans";
+import { ChatMessages } from "./collections/chat_messages";
 
 /* VIEW */
 
@@ -22,7 +24,6 @@ import { SignUpView } from "./views/registration/sign_up_view";
 import { MainView } from "./views/persist/main_view";
 import { AppearanceView } from "./views/persist/appearance/appearance_view";
 import { AlertModalView } from "./views/persist/alert_modal_view";
-import { DirectChatView } from "./views/persist/direct_chat_view";
 import { InfoModalView } from "./views/persist/info_modal_view";
 import { InputModalView } from "./views/persist/input_modal_view";
 import { ImageUploadModalView } from "./views/persist/image_upload_modal_view";
@@ -57,7 +58,16 @@ import { OnlineUserListView } from "./views/persist/appearance/online_user_list_
 import { UserUnitView } from "./views/persist/appearance/user_unit_view";
 import { UserMenuView } from "./views/persist/appearance/user_menu_view";
 
+/** direct chat views */
+import { DirectChatView } from "./views/persist/direct_chat_view";
+import { DirectChatRoomView } from "./views/chat/direct_chat_room_view";
+import { DirectChatMessageListView } from "./views/chat/direct_chat_message_list_view";
+import { ChatMessageView } from "./views/chat/chat_message_view";
+
 import { ChatIndexView } from "./views/chat/chat_index_view";
+import { ChatRoomCardListView } from "./views/chat/chat_room_card_list_view";
+import { ChatRoomCardView } from "./views/chat/chat_room_card_view";
+
 import { ChatRoomView } from "./views/chat/chat_room_view";
 import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
 import { GuildIndexView } from "./views/guild/guild_index_view";
@@ -116,6 +126,7 @@ export let App = {
     User,
     CurrentUser,
     ChatBan,
+    ChatMessage,
     GameNet,
     GameBall,
     GameScore,
@@ -125,6 +136,7 @@ export let App = {
     Users,
     Friends,
     ChatBans,
+    ChatMessages,
   },
   View: {
     SignInView,
@@ -134,6 +146,7 @@ export let App = {
     MainView,
     AlertModalView,
     DirectChatView,
+    DirectChatRoomView,
     ErrorView,
     InfoModalView,
     InputModalView,
@@ -145,8 +158,13 @@ export let App = {
 
     UserIndexView,
     UserIndexButtonsView,
+    DirectChatMessageListView,
+    ChatMessageView,
 
     ChatIndexView,
+    ChatRoomCardListView,
+    ChatRoomCardView,
+
     ChatRoomView,
     ChatRoomCreateView,
     GuildIndexView,

@@ -49,6 +49,10 @@ export let Helper = {
     return $("#main-view-container").has(view_name).length > 0;
   },
 
+  isUserChatBanned: function (user_id) {
+    return App.appView.appearance_view.chat_bans.isUserChatBanned(user_id);
+  },
+
   isCurrentUser: function (user_id) {
     return App.current_user.id == user_id;
   },
@@ -131,5 +135,15 @@ export let Helper = {
         });
       }
     }
+  },
+
+  getMessageTime: function (timestamp) {
+    return (
+      timestamp.substr(5, 2) +
+      "월 " +
+      timestamp.substr(8, 2) +
+      "일, " +
+      timestamp.substr(11, 5)
+    );
   },
 };

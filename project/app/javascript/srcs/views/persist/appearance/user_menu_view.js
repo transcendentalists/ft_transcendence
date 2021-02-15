@@ -30,7 +30,7 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   directChat: function () {
-    App.appView.direct_chat_view.render();
+    App.appView.direct_chat_view.render(this.model);
     this.close();
   },
 

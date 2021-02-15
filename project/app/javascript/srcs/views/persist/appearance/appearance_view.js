@@ -21,12 +21,7 @@ export let AppearanceView = Backbone.View.extend({
 
   render: function () {
     this.chat_bans.fetch();
-    this.appearance_channel = new App.Channel.ConnectAppearanceChannel();
-    this.notification_channel = new App.Channel.ConnectNotificationChannel(
-      App.current_user.id
-    );
-    App.notification_channel = this.notification_channel;
-
+    this.appearance_channel = App.Channel.ConnectAppearanceChannel();
     this.$el.empty();
     this.$el.html(this.template());
 

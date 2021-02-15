@@ -21,6 +21,11 @@ export let AppView = Backbone.View.extend({
     this.appearance_view.render();
     this.nav_bar_view.render();
 
+    this.notification_channel = App.Channel.ConnectNotificationChannel(
+      App.current_user.id
+    );
+    App.notification_channel = this.notification_channel;
+
     // this.invite_view.render();
     // this.direct_chat_view.render();
 

@@ -700,6 +700,13 @@ body {
   left: 0;
 }
 
+.chat-room-right-area {
+  padding-top: 2rem;
+  padding-left: 2rem;
+  width: calc(100vw - 440px);
+  min-width: 740px;
+}
+
 #chat-room-appearance-view {
   overflow-y: auto;
   background-color: #f5f5f5;
@@ -712,7 +719,7 @@ body {
 }
 
 #chat-room-appearance-view .ui.label:first-child {
-  margin-left: 0em 0.14285714em;
+  margin-left: 0.14285714em;
 }
 
 #chat-room-menu-view {
@@ -730,8 +737,8 @@ body {
 }
 
 .user-unit .mute.icon {
-  margin-right: 0;
-  margin-left: 0.5rem;
+  margin-right: 0 i !important;
+  margin-left: 0.5rem !important;
   padding-left: 0.5rem;
   border-left: 2px solid white;
 }
@@ -745,10 +752,33 @@ body {
   min-width: 420px;
   border-top: 2px solid #ececec;
   padding-top: 1.5rem;
+  background-color: white;
 }
 
-@media (max-width: 760px) {
-  #chat-room-view .user-input-field {
-    display: none;
-  }
+#chat-room-view .ui.comments:first-child {
+  margin-bottom: 0;
+  max-width: 100% !important;
+}
+
+#chat-room-view #chat-message-list-view {
+  overflow-y: scroll;
+  max-height: calc(100vh - 250px);
+  padding-top: 2rem;
+}
+
+#chat-room-view .current-user .author {
+  color: teal;
+}
+
+#chat-room-view .current-user .author {
+  color: teal;
+}
+
+#chat-room-view .current-user .metadata {
+  color: teal;
+  font-weight: 700;
+}
+
+#chat-room-view textarea {
+  max-height: 112px;
 }

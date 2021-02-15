@@ -13,9 +13,9 @@ export let ChatIndexView = Backbone.View.extend({
   },
 
   search: function () {
-    const chat_room_search_url = `group_chat_rooms?channel_code=${$(
-      ".labeled.input input"
-    ).val()}`;
+    const input = $(".labeled.input input").val();
+    if (input == "") return;
+    const chat_room_search_url = `group_chat_rooms?channel_code=${input}`;
     Helper.fetch(chat_room_search_url, {
       success_callback: function (data) {
         App.router.navigate("#/chatrooms/" + data.group_chat_rooms.id);

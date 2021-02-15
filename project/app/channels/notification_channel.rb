@@ -11,29 +11,28 @@ class NotificationChannel < ApplicationCable::Channel
     # ActionCable.server.broadcast
     ActionCable.server.broadcast(
       "notification_channel_#{enemy['id'].to_s}",
-      { type: 'dual', status: 'request', profile: current_user.profile }
+      { type: 'dual', status: 'request', profile: current_user.profile },
     )
   end
 
   def dual_declined(challenger)
     ActionCable.server.broadcast(
       "notification_channel_#{challenger['id'].to_s}",
-      { type: 'dual', status: 'declined' }
+      { type: 'dual', status: 'declined' },
     )
   end
 
   def dual_cancel(challenger)
     ActionCable.server.broadcast(
       "notification_channel_#{challenger['id'].to_s}",
-      { type: 'dual', status: 'canceled' }
+      { type: 'dual', status: 'canceled' },
     )
   end
 
   def dual_request_exist(challenger)
     ActionCable.server.broadcast(
       "notification_channel_#{challenger['id'].to_s}",
-      { type: 'dual', status: 'exist' }
+      { type: 'dual', status: 'exist' },
     )
   end
-
 end

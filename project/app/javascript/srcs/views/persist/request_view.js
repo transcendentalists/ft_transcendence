@@ -9,24 +9,24 @@ export let RequestView = Backbone.View.extend({
   },
 
   initialize: function () {
-    this.challenger = null;
+    this.enemy = null;
     this.$el.hide();
   },
 
   cancel: function () {
-    App.notification_channel.dualRequestCancel(this.challenger.id);
+    App.notification_channel.dualRequestCancel(this.enemy.id);
     this.close();
   },
 
-  render: function (challenger) {
-    this.challenger = challenger;
+  render: function (enemy) {
+    this.enemy = enemy;
     this.$el.empty();
-    this.$el.html(this.template(challenger));
+    this.$el.html(this.template(enemy));
     this.$el.show();
   },
 
   close: function () {
-    this.challenger = null;
+    this.enemy = null;
     this.$el.hide();
   },
 });

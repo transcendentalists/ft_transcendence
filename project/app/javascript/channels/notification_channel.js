@@ -81,9 +81,9 @@ export function ConnectNotificationChannel(room_id) {
 
       startDualGame: function () {
         App.router.navigate(
-          `#/matches?match-type=dual&match-id=${this.data.match_id}`
+          `#/matches?match-type=dual&match-id=${this.data.match_id}`,
         );
       },
-    }
+    },
   );
 }

@@ -29,7 +29,12 @@ export let DirectChatView = Backbone.View.extend({
   },
 
   render: function (chat_user) {
-    if (this.chat_room && this.chat_room.chat_user.id == chat_user.id) return;
+    if (
+      this.chat_room &&
+      this.chat_room.status == "run" &&
+      this.chat_room.chat_user.id == chat_user.id
+    )
+      return;
 
     this.$el.html(this.template(chat_user.attributes));
 

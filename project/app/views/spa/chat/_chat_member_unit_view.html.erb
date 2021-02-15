@@ -1,0 +1,14 @@
+<script type="text/template" id="chat-member-unit-view-template">
+  <img src="<%%= image_url %>">
+  <%% if(position == "owner") { %>
+    <i class="chess king icon"></i>
+  <%% } else if(position == "admin") { %>
+    <i class="chess rook icon"></i>
+  <<%% } else { %>
+    <i class="chess pawn icon"></i>
+  <%% } %>
+  <%%= name %>
+  <%% if(mute) {%>
+    <i class="microphone slash mute icon"></i>
+  <%% } %>
+</script>

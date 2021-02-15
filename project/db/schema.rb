@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_10_110811) do
+ActiveRecord::Schema.define(version: 2021_02_13_093146) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,7 @@ ActiveRecord::Schema.define(version: 2021_02_10_110811) do
   create_table "direct_chat_rooms", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "symbol"
   end
 
   create_table "friendships", force: :cascade do |t|
@@ -211,7 +212,7 @@ ActiveRecord::Schema.define(version: 2021_02_10_110811) do
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "password", null: false
-    t.string "image_url", default: "default_image_url", null: false
+    t.string "image_url", default: "assets/default_avatar.png", null: false
     t.string "title", default: "beginner", null: false
     t.string "status", default: "offline", null: false
     t.boolean "two_factor_auth", default: false, null: false

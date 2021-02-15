@@ -6,6 +6,7 @@ export let ChatIndexView = Backbone.View.extend({
   className: "flex-container column-direction center-aligned top-margin",
   events: {
     "click .create.button": "createChatRoom",
+    "click .search.label": "search",
   },
 
   initialize: function () {
@@ -14,6 +15,17 @@ export let ChatIndexView = Backbone.View.extend({
 
   createChatRoom: function () {
     App.router.navigate("#/chatrooms/new");
+  },
+
+  search: function () {
+    const chat_room_search_url = `group_chat_rooms?channel_code=${$(
+      ".labeled.input input"
+    ).val()}`;
+    Helper.fetch(chat_room_search_url, {
+      success_callback: function (data) {
+        App.router.navigate("#/chatrooms/" + data.group_chat_rooms.id);
+      }.bind(this),
+    });
   },
 
   renderMyChatRoomCallback: function (data) {

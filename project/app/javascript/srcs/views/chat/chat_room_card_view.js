@@ -1,4 +1,4 @@
-import { App } from "srcs/helper";
+import { App } from "srcs/internal";
 
 export let ChatRoomCardView = Backbone.View.extend({
   template: _.template($("#chat-room-card-view-template").html()),

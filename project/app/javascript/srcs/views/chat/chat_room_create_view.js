@@ -2,7 +2,7 @@ import { App, Helper } from "srcs/internal";
 
 export let ChatRoomCreateView = Backbone.View.extend({
   id: "chat-room-create-view",
-  className: "create-view",
+  className: "create-view top-margin",
   template: _.template($("#chat-room-create-view-template").html()),
   events: {
     "click .create.button": "submit",

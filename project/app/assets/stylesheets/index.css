@@ -78,6 +78,7 @@ body {
 .create-view {
   width: 400px;
   margin-top: 12rem;
+  margin-bottom: 12rem;
   border: 1px solid grey;
   padding: 4rem;
   border-radius: 2%;
@@ -140,6 +141,7 @@ body {
    ========================================================================== */
 
 #invite-view {
+  z-index: 5;
   position: fixed;
   bottom: 0;
   right: 590px;
@@ -148,7 +150,14 @@ body {
 /* DIRECT CHAT VIEW
    ========================================================================== */
 
+@media (max-width: 740px) {
+  #direct-chat-view {
+    display: none;
+  }
+}
+
 #direct-chat-view {
+  z-index: 5;
   position: fixed;
   bottom: 0;
   right: 230px;
@@ -188,6 +197,14 @@ body {
   padding-right: 0.5rem;
 }
 
+#direct-chat-view .comment .content-header {
+  align-items: baseline;
+}
+
+#direct-chat-view .comment .metadata {
+  margin-right: 0.75em;
+}
+
 #direct-chat-view .ui.reply.form {
   margin: 0 1rem 1rem 1rem;
 }
@@ -199,6 +216,10 @@ body {
 
 #direct-chat-view .current-user .avatar {
   float: right;
+}
+
+#direct-chat-view .close.icon {
+  cursor: pointer;
 }
 
 .ui.comments .current-user.comment > .avatar ~ .content {
@@ -419,6 +440,7 @@ body {
 
 #user-index-view {
   max-width: 740px;
+  min-width: 480px;
   margin-bottom: 4rem;
 }
 
@@ -694,4 +716,8 @@ body {
   margin: 4rem 0;
   width: 100%;
   padding-left: 10rem;
+}
+
+#chat-index-view .search.label {
+  cursor: pointer;
 }

@@ -5,7 +5,7 @@ export let RuleModalView = Backbone.View.extend({
   el: "#rule-modal-view",
 
   initialize: function () {
-    this.model = null;
+    this.enemy = null;
   },
 
   events: {
@@ -13,8 +13,8 @@ export let RuleModalView = Backbone.View.extend({
     "click .cancel.button": "close",
   },
 
-  render: function (model) {
-    this.model = model;
+  render: function (enemy) {
+    this.enemy = enemy;
     this.$el.empty();
     this.$el.html(this.template());
     $("#rule-modal-view.tiny.modal").modal("show");
@@ -23,20 +23,20 @@ export let RuleModalView = Backbone.View.extend({
 
   close: function () {
     this.$el.empty();
-    this.model = null;
+    this.enemy = null;
     $("#rule-modal-view.tiny.modal").modal("hide");
   },
 
   isEnemyOnline: function () {
     let user_unit_view = $(
-      `#appearance-view:contains("${this.model.get("name")}")`,
+      `#appearance-view:contains("${this.enemy.get("name")}")`,
     );
     if (!user_unit_view.length) return false;
     let user_unit_views = $("#appearance-view")
       .find("[data-status=online]")
       .parent();
     for (let user_unit_view of user_unit_views) {
-      if (user_unit_view.textContent.trim() == this.model.get("name")) {
+      if (user_unit_view.textContent.trim() == this.enemy.get("name")) {
         return true;
       }
     }
@@ -55,18 +55,19 @@ export let RuleModalView = Backbone.View.extend({
         subject: "게임 신청 불가능",
         description: description,
       });
+      this.close();
       return;
     }
     let rule_id = $("select[name=rules]").val();
     let rule_name = $("select[name=rules] option:checked").text();
     let target_score = this.$el.find('[name="score"]:checked').val();
     App.notification_channel.dualRequest(
-      this.model.id,
+      this.enemy.id,
       rule_id,
       rule_name,
       target_score,
     );
-    App.appView.request_view.render(this.model.attributes);
+    App.appView.request_view.render(this.enemy.attributes);
     this.close();
   },
 });

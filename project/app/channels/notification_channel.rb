@@ -7,16 +7,16 @@ class NotificationChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def dual_request(enemy)
+  def dual_request(data)
     ActionCable.server.broadcast(
-      "notification_channel_#{enemy['id'].to_s}",
+      "notification_channel_#{data['id'].to_s}",
       {
         type: 'dual',
         status: 'request',
         profile: current_user.profile,
-        rule_id: enemy['rule_id'],
-        rule_name: enemy['rule_name'],
-        target_score: enemy['target_score'],
+        rule_id: data['rule_id'],
+        rule_name: data['rule_name'],
+        target_score: data['target_score'],
       },
     )
   end
@@ -28,14 +28,14 @@ class NotificationChannel < ApplicationCable::Channel
     )
   end
 
-  def dual_cancel(challenger)
+  def dual_cancel(enemy)
     ActionCable.server.broadcast(
-      "notification_channel_#{challenger['id'].to_s}",
+      "notification_channel_#{enemy['id'].to_s}",
       { type: 'dual', status: 'canceled' },
     )
   end
 
-  def dual_request_exist(challenger)
+  def dual_request_already_exist(challenger)
     ActionCable.server.broadcast(
       "notification_channel_#{challenger['id'].to_s}",
       { type: 'dual', status: 'exist' },

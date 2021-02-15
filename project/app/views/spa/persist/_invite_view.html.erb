@@ -1,19 +1,29 @@
 <script type="text/template" id="invite-view-template">
   <div class="content">
     <div class="header">
-      <%%= name %>
+      <%%= profile.name %>
       <div class="right floated image">
-        <img class="ui avatar image" src="<%%= image_url %>">
+        <img class="ui avatar image" src="<%%= profile.image_url %>">
       </div>
     </div>
     <div class="meta">
       <span class="category">
-        <%%= guild ? guild.anagram : "소속된 길드가 없습니다." %>
+        <%%= profile.guild ? profile.guild.anagram : "소속된 길드가 없습니다." %>
       </span>
     </div>
+    <div class="ui divider"></div>
+    <a class="ui large teal label">
+      <i class="slack hash icon"></i>
+      <%%= rule_name %>
+    </a>
+    <a class="ui large teal label">
+      <i class="heart outline icon"></i>
+      <%%= target_score %>
+    </a>
+    <div class="ui divider"></div>
     <div class="description">
       <p>
-        <%%= name + "님이 대전을 신청하셨습니다."%>
+        <%%= profile.name + "님이 대전을 신청하셨습니다." %>
       </p>
     </div>
   </div>

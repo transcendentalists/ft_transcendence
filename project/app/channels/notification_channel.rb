@@ -15,6 +15,7 @@ class NotificationChannel < ApplicationCable::Channel
         status: 'request',
         profile: current_user.profile,
         rule_id: enemy['rule_id'],
+        rule_name: enemy['rule_name'],
         target_score: enemy['target_score'],
       },
     )

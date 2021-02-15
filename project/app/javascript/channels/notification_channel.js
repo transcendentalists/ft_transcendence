@@ -52,10 +52,11 @@ export function ConnectNotificationChannel(room_id) {
         }
       },
 
-      dualRequest(user_id, rule_id, target_score) {
+      dualRequest(user_id, rule_id, rule_name, target_score) {
         this.perform("dual_request", {
           id: user_id,
           rule_id: rule_id,
+          rule_name: rule_name,
           target_score: target_score,
         });
       },

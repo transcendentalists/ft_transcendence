@@ -38,7 +38,10 @@ class Api::GroupChatRoomsController < ApplicationController
   end
 
   def update
-    render plain: params[:id] + " group chat room update"
+    group_chat_room = GroupChatRoom.find_by_id(params[:id])
+    return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", "404") if group_chat_room.nil? 
+    group_chat_room.update_by_params update_chat_room_params
+    head :no_content, status: 204
   end
 
   def destroy
@@ -69,5 +72,9 @@ class Api::GroupChatRoomsController < ApplicationController
 
   def is_valid_password?(group_chat_room)
     group_chat_room.is_valid_password?(request.headers['Authorization'])
+  end
+
+  def update_chat_room_params
+    params.require(:group_chat_room).permit(:title, :password, :room_type)
   end
 end

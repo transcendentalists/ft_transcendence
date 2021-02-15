@@ -1,8 +1,12 @@
+require 'bcrypt'
+
 class GroupChatRoom < ApplicationRecord
   belongs_to :owner, class_name: "User", :foreign_key => "owner_id"
   has_many :messages, class_name: "ChatMessage", as: :room
   has_many :memberships, class_name: "GroupChatMembership"
   has_many :users, through: :memberships, source: :user
+  validates :title, presence: true
+  validates :room_type, acceptance: { accept: ["public", "private"] }
   scope :list_associated_with_current_user, -> (current_user) do
     current_user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
       {
@@ -73,6 +77,18 @@ class GroupChatRoom < ApplicationRecord
   def is_valid_password?(input_password)
     # BCrypt::Password::new(self.password) == input_password
     self.password == input_password
+  end
+
+  def update_by_params(params)
+    update_keys = {}
+    update_keys.merge!({title: params[:title]}) if params[:title]
+    update_keys.merge!({room_type: params[:room_type]}) if params[:room_type]
+    if params[:password]
+      password = params[:password] == "" ? nil : BCrypt::Password::create(params[:password])
+      update_keys.merge!({password: password})
+    end
+
+    self.update(update_keys) if update_keys
   end
 
   # def is_user_authorized_to_destroy(current_user)

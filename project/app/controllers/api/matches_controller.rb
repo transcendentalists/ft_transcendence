@@ -63,7 +63,7 @@ class Api::MatchesController < ApplicationController
   def find_or_create_ladder_match_for(user)
     match =
       Match
-        .where(match_type: 'Ladder', status: 'pending')
+        .where(match_type: 'ladder', status: 'pending')
         .first_or_create(rule_id: 1)
     side = match.users.count == 0 ? 'left' : 'right'
     card = Scorecard.create(user_id: user.id, match_id: match.id, side: side)
@@ -74,19 +74,19 @@ class Api::MatchesController < ApplicationController
   def create_dual_match_for(user, rule_id, target_score)
     match =
       Match.create(
-        match_type: 'Dual',
+        match_type: 'dual',
         status: 'pending',
         rule_id: rule_id,
         target_score: target_score,
       )
     card = Scorecard.create(user_id: user.id, match_id: match.id, side: 'left')
     ActionCable.server.broadcast(
-      "notification_channel_#{params[:challenger_id].to_s}",
+      "notification_channel_#{params[:dual][:challenger_id].to_s}",
       {
         type: 'dual',
         status: 'approved',
         match_id: match.id,
-        challenger_id: params[:challenger_id],
+        challenger_id: params[:dual][:challenger_id],
       },
     )
     user.update_status('playing')

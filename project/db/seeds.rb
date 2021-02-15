@@ -54,17 +54,17 @@ War.create([
 ])
 
 Match.create([
-  {rule_id: 6, status: "completed", match_type: "Dual"},
-  {rule_id: 1, status: "completed", match_type: "Dual"},
-  {rule_id: 2, status: "completed", match_type: "Ladder"},
-  {rule_id: 4, status: "completed", match_type: "Ladder"},
-  {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 1, match_type: "War"},
-  {rule_id: 3, status: "completed", eventable_type: "War", eventable_id: 2, match_type: "War"},
-  {rule_id: 5, status: "completed", eventable_type: "War", eventable_id: 3, match_type: "War"},
-  {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 4, match_type: "War"},
-  {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 5, match_type: "War"},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 1, match_type: "Tournament"},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 1, match_type: "Tournament"},
+  {rule_id: 6, status: "completed", match_type: "dual"},
+  {rule_id: 1, status: "completed", match_type: "dual"},
+  {rule_id: 2, status: "completed", match_type: "ladder"},
+  {rule_id: 4, status: "completed", match_type: "ladder"},
+  {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 1, match_type: "war"},
+  {rule_id: 3, status: "completed", eventable_type: "war", eventable_id: 2, match_type: "war"},
+  {rule_id: 5, status: "completed", eventable_type: "war", eventable_id: 3, match_type: "war"},
+  {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 4, match_type: "war"},
+  {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 5, match_type: "war"},
+  {rule_id: 1, status: "completed", eventable_type: "tournament", eventable_id: 1, match_type: "tournament"},
+  {rule_id: 1, status: "completed", eventable_type: "tournament", eventable_id: 1, match_type: "tournament"},
 ])
 
 Scorecard.create([

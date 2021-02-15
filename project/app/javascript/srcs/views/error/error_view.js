@@ -23,6 +23,7 @@ export let ErrorView = Backbone.View.extend({
       102: ["Route Error", "요청하신 Tournament 페이지를 찾을 수 없습니다."],
       103: ["Unauthorized", "Admin 권한이 없습니다."],
       104: ["Route Error", "요청하신 Admin 페이지를 찾을 수 없습니다."],
+      105: ["Create Failed", "요청하신 ChatRoom을 만들 수 없습니다."],
     };
 
     this.error_code = error_code;

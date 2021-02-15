@@ -15,17 +15,7 @@ class Api::MatchesController < ApplicationController
   def create
     if params[:user_id]
       user = User.find(params[:user_id])
-      if params[:for] == "ladder"
-        match = find_or_create_ladder_match_for(user)
-      # TODO: private 함수로 뺴기
-      elsif params[:for] == "dual"
-        # TODO: 삼항연산자로 만들어서 분기 간소화하기
-        unless params[:match_id].nil?
-          match = join_dual_match_for(user, params[:match_id])
-        else
-          match = create_dual_match_for(user, params[:rule_id], params[:target_score])
-        end
-      end
+      find_or_create_match(user)
       render :json => { match: { id: match.id, match_type: params[:for], user: { id: user.id } } }
     elsif params[:war_id]
       render plain: "war creates " + params[:war_id] + "'s matches"
@@ -47,6 +37,16 @@ class Api::MatchesController < ApplicationController
   end
 
   private
+  def find_or_create_match(user)
+    if params[:for] == "ladder"
+      match = find_or_create_ladder_match_for(user)
+    elsif params[:for] == "dual"
+      match = params[:match_id].nil?
+      ? create_dual_match_for(user, params[:rule_id], params[:target_score])
+      : join_dual_match_for(user, params[:match_id])
+    end
+  end
+
   def find_or_create_ladder_match_for(user)
     match = Match.where(match_type: "Ladder", status: "pending").first_or_create(rule_id: 1)
     side = match.users.count == 0 ? "left" : "right"

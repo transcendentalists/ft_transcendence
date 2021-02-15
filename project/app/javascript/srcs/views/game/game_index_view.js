@@ -1,4 +1,4 @@
-cimport { App, Helper } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let GameIndexView = Backbone.View.extend({
   template: _.template($("#game-index-view-template").html()),
@@ -30,9 +30,7 @@ export let GameIndexView = Backbone.View.extend({
     this.challenger_id = params.hasOwnProperty("challenger-id")
       ? params["challenger-id"]
       : null;
-    this.rule_id = params.hasOwnProperty("rule-id")
-      ? params["rule-id"]
-      : "1";
+    this.rule_id = params.hasOwnProperty("rule-id") ? params["rule-id"] : "1";
     this.target_score = params.hasOwnProperty("target-score")
       ? params["target-score"]
       : "3";

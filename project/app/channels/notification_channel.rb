@@ -8,7 +8,6 @@ class NotificationChannel < ApplicationCable::Channel
   end
 
   def dual_request(enemy)
-    # ActionCable.server.broadcast
     ActionCable.server.broadcast(
       "notification_channel_#{enemy['id'].to_s}",
       {

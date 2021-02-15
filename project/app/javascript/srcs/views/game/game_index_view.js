@@ -111,10 +111,6 @@ export let GameIndexView = Backbone.View.extend({
    ** 4) "END" : 정상적인 게임 종료 -> 클로즈 처리
    ** 5) "ENEMY_GIVEUP" : 게임 중 상대 유저 이탈에 따른 게임 종료 -> 클로즈 처리
    */
-  checkPlayerProfileIsRendered: function () {
-    return this.left_player_view == null || this.right_player_view == null;
-  },
-
   recv: function (msg) {
     if (
       msg.type == "START" ||

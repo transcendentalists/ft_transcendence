@@ -117,17 +117,29 @@ body {
 /* INVITE VIEW
    ========================================================================== */
 
+@media (max-width: 885px) {
+  #invite-view {
+    display: none;
+  }
+}
+
 #invite-view {
   position: fixed;
   bottom: 0;
-  right: 50%;
+  right: 585px;
   z-index: 103;
+}
+
+@media (max-width: 885px) {
+  #request-view {
+    display: none;
+  }
 }
 
 #request-view {
   position: fixed;
   bottom: 0;
-  right: 50%;
+  right: 585px;
   z-index: 103;
 }
 

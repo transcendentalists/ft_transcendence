@@ -35,5 +35,32 @@ class GroupChatRoom < ApplicationRecord
       }
     }
   }
+  
+  def for_chat_room_format
+    hash_key_format = [ :id, :room_type, :title, :max_member_count, 
+                          :current_member_count, :channel_code ]
+    self.slice(*hash_key_format)
+  end
+
+  def current_user_info(user)
+    current_user_chat_room_membership = self.memberships.find_by_user_id(user.id)
+
+    {
+      position: current_user_chat_room_membership.position,
+      mute: current_user_chat_room_membership.mute
+    }
+  end
+
+  def members
+    members = []
+    self.memberships.each do |member|
+      member_hash = User.find_by_id(member.user_id).for_chat_room_format.merge({
+        position: member.position,
+        mute: member.mute
+      })
+      members.push(member_hash)
+    end
+    members
+  end
 
 end

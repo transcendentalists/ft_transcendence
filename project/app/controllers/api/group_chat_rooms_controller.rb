@@ -1,4 +1,5 @@
 class Api::GroupChatRoomsController < ApplicationController
+  before_action :check_headers_and_find_current_user, only: [:show ]
   
   # list_all scope 미구현 상태(admin 개발시 구현)
   def index
@@ -19,12 +20,28 @@ class Api::GroupChatRoomsController < ApplicationController
     render plain: "group chat room create"
   end
 
-  def join
-    render plain: "group chat room join"
-  end
-
   def show
-    render plain: params[:id] + " group chat room show"
+    group_chat_room = GroupChatRoom.find_by_id(params[:id])
+    if group_chat_room.nil?
+      return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", "404")
+    end
+
+    # if group_chat_room.locked?
+    #   input_password = request.headers['authorization']
+    #   if input_password.nil?
+    #     return render_error("EMPTY PASSWORD", "Password가 입력되지 않았습니다.", "401")
+    #   end
+    #   if group_chat_room.is_valid_password(input_password)
+    #     return render_error("INVALID PASSWORD", "Password가 일치하지 않습니다.", "403")
+    #   end
+    # end
+
+    render json: { 
+      group_chat_room: group_chat_room.for_chat_room_format,
+      owner: group_chat_room.owner.for_chat_room_format,
+      current_user: group_chat_room.current_user_info(@current_user),
+      chat_room_members: group_chat_room.members
+    }
   end
 
   def update
@@ -35,4 +52,15 @@ class Api::GroupChatRoomsController < ApplicationController
     render plain: params[:id] + " group chat room destroy"
   end
 
+  private
+  
+  def check_headers_and_find_current_user
+    if !request.headers['HTTP_CURRENT_USER']
+      return render_error("NOT VALID HEADERS", "요청 Header가 유효하지 않습니다.", "400")
+    end
+    @current_user = User.find_by_id(request.headers['HTTP_CURRENT_USER'])
+    if @current_user.nil?
+      return render_error("NOT VALID HEADERS", "요청 Header가 유효하지 않습니다.", "400")
+    end
+  end
 end

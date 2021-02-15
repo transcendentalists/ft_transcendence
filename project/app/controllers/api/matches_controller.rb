@@ -16,7 +16,7 @@ class Api::MatchesController < ApplicationController
     if params[:user_id]
       user = User.find(params[:user_id])
       match = find_or_create_match(user)
-      render :json => { match: { id: match.id, match_type: params[:for], user: { id: user.id } } }
+      render :json => { match: { id: match.id, match_type: params[:match_type], user: { id: user.id } } }
     elsif params[:war_id]
       render plain: "war creates " + params[:war_id] + "'s matches"
     else
@@ -38,9 +38,9 @@ class Api::MatchesController < ApplicationController
 
   private
   def find_or_create_match(user)
-    if params[:for] == "ladder"
+    if params[:match_type] == "ladder"
       match = find_or_create_ladder_match_for(user)
-    elsif params[:for] == "dual"
+    elsif params[:match_type] == "dual"
       match = params[:match_id].nil? ? create_dual_match_for(user, params[:rule_id], params[:target_score])
       : join_dual_match_for(user, params[:match_id])
     end

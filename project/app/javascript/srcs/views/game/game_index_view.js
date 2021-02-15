@@ -49,7 +49,7 @@ export let GameIndexView = Backbone.View.extend({
       method: "POST",
       success_callback: this.subscribeChannel.bind(this),
       body: {
-        for: this.match_type,
+        match_type: this.match_type,
         user_id: App.current_user.id,
         challenger_id: this.challenger_id,
         rule_id: this.rule_id,

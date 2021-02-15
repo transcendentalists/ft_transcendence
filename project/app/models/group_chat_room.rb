@@ -5,7 +5,7 @@ class GroupChatRoom < ApplicationRecord
   has_many :users, through: :memberships, source: :user
 
   validates :title, presence: true, length: {minimum: 1, maximum: 20}, allow_blank: false
-  validates :max_member_count, :inclusion => { :in => 2..8 }
+  validates :max_member_count, :inclusion => { :in => 2..10 }
   validates :room_type, inclusion: { in: ["public", "private"] }
 
   scope :list_associated_with_current_user, -> (user_id) do
@@ -17,7 +17,7 @@ class GroupChatRoom < ApplicationRecord
       {
           id: chatroom.id,
           title: chatroom.title,
-          locked: !chatroom.password.blank?,
+          locked: !chatroom.password.nil?,
           owner: chatroom.owner.slice(*owner_keys),
           max_member_count: chatroom.max_member_count,
           current_member_count: chatroom.users.count,
@@ -32,7 +32,7 @@ class GroupChatRoom < ApplicationRecord
       {
         id: chatroom.id,
         title: chatroom.title,
-        locked: !chatroom.password.blank?,
+        locked: !chatroom.password.nil?,
         owner: chatroom.owner.slice(*owner_keys),
         max_member_count: chatroom.max_member_count,
         current_member_count: chatroom.users.count,
@@ -40,5 +40,27 @@ class GroupChatRoom < ApplicationRecord
       }
     }
   }
+
+  def self.generate(create_params)
+    GroupChatRoom.transaction do
+      room = GroupChatRoom.create(create_params)
+      raise ActiveRecord::Rollback unless room.persisted? && create_params.has_key?(:owner_id)
+      user = User.find_by_id(create_params[:owner_id])
+      membership = room.join(user, "owner")
+      raise ActiveRecord::Rollback if membership.nil? || !membership.persisted?
+      room
+    end
+  end
+
+  def join(user, position = "member")
+    return nil if user.nil?
+    return nil if self.current_member_count == self.max_member_count
+    GroupChatMembership.create(user_id: user.id, group_chat_room_id: self.id, position: position)
+  end
+
+
+
+  def self.test
+  end
 
 end

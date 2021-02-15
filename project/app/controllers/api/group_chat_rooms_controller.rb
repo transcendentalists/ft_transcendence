@@ -18,11 +18,15 @@ class Api::GroupChatRoomsController < ApplicationController
   def create
     room = params[:group_chat_room]
     return render_error("not found", "group_chat_room key가 없습니다.", 404) if room.nil?
-    room[:password] = BCrypt::Password.create(room[:password]) if room.has_key?(:password)
+    if room.has_key?(:password) && room[:password] != ""
+      room[:password] = BCrypt::Password.create(room[:password]) 
+    else
+      room[:password] = nil
+    end
     room[:channel_code] = generate_chat_room_code
     return render_error("create failed", "이미 개설된 룸이 너무 많습니다. 관리자에게 문의하세요.", 503) if room[:channel_code].nil?
-    room = GroupChatRoom.create(create_params)
-    return render_error("create failed", "parameter가 유효하지 않습니다.", 403) if not room.persisted?
+    room = GroupChatRoom.generate(create_params)
+    return render_error("create failed", "parameter가 유효하지 않습니다.", 403) if room.nil?
     render :json => { group_chat_room: room }
   end
 

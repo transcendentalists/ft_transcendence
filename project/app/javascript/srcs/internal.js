@@ -67,9 +67,9 @@ import { ChatMessageView } from "./views/chat/chat_message_view";
 import { ChatIndexView } from "./views/chat/chat_index_view";
 import { ChatRoomCardListView } from "./views/chat/chat_room_card_list_view";
 import { ChatRoomCardView } from "./views/chat/chat_room_card_view";
+import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
 
 import { ChatRoomView } from "./views/chat/chat_room_view";
-import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
 import { GuildIndexView } from "./views/guild/guild_index_view";
 import { GuildDetailView } from "./views/guild/guild_detail_view";
 import { GuildCreateView } from "./views/guild/guild_create_view";

@@ -22,19 +22,12 @@ class Api::GroupChatRoomsController < ApplicationController
 
   def show
     group_chat_room = GroupChatRoom.find_by_id(params[:id])
-    if group_chat_room.nil?
-      return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", "404")
-    end
+    return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", "404") if group_chat_room.nil?
 
-    # if group_chat_room.locked?
-    #   input_password = request.headers['authorization']
-    #   if input_password.nil?
-    #     return render_error("EMPTY PASSWORD", "Password가 입력되지 않았습니다.", "401")
-    #   end
-    #   if group_chat_room.is_valid_password(input_password)
-    #     return render_error("INVALID PASSWORD", "Password가 일치하지 않습니다.", "403")
-    #   end
-    # end
+    if group_chat_room.is_locked?
+      return render_error("EMPTY PASSWORD", "Password가 입력되지 않았습니다.", "401") unless is_password_entered?
+      return render_error("INVALID PASSWORD", "Password가 일치하지 않습니다.", "403") unless is_valid_password?(group_chat_room)
+    end
 
     render json: { 
       group_chat_room: group_chat_room.for_chat_room_format,
@@ -62,5 +55,13 @@ class Api::GroupChatRoomsController < ApplicationController
     if @current_user.nil?
       return render_error("NOT VALID HEADERS", "요청 Header가 유효하지 않습니다.", "400")
     end
+  end
+
+  def is_password_entered?
+    !request.headers['authorization'].nil?
+  end
+
+  def is_valid_password?(group_chat_room)
+    group_chat_room.is_valid_password?(request.headers['Authorization'])
   end
 end

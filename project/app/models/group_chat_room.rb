@@ -63,4 +63,13 @@ class GroupChatRoom < ApplicationRecord
     members
   end
 
+  def is_locked?
+    !self.password.blank?
+  end
+
+  def is_valid_password?(input_password)
+    # BCrypt::Password::new(self.password) == input_password
+    self.password == input_password
+  end
+
 end

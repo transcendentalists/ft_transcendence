@@ -10,35 +10,35 @@ export let InviteView = Backbone.View.extend({
   },
 
   initialize: function () {
-    this.challenger = null;
+    this.data = null;
     this.$el.hide();
   },
 
   approve: function () {
     const url =
-      "#/matches?match-type=dual&challenger-id=" +
-      this.challenger.profile.id +
-      "&rule-id=" +
-      this.challenger.rule_id +
-      "&target-score=" +
-      this.challenger.target_score;
+      "#/matches?match_type=dual&challenger_id=" +
+      this.data.profile.id +
+      "&rule_id=" +
+      this.data.rule_id +
+      "&target_score=" +
+      this.data.target_score;
     App.router.navigate(url);
     this.close();
   },
 
   decline: function () {
-    App.notification_channel.dualRequestDecline(this.challenger.profile.id);
+    App.notification_channel.dualRequestDecline(this.data.profile.id);
     this.close();
   },
 
-  render: function (challenger) {
-    this.challenger = challenger;
-    this.$el.html(this.template({profile: challenger.profile, rule_name: challenger.rule_name, target_score: challenger.target_score}));
+  render: function (data) {
+    this.data = data;
+    this.$el.html(this.template({profile: data.profile, rule_name: data.rule_name, target_score: data.target_score}));
     this.$el.show();
   },
 
   close: function () {
-    this.challenger = null;
+    this.data = null;
     this.$el.hide();
   },
 });

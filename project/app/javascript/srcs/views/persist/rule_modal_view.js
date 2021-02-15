@@ -46,7 +46,7 @@ export let RuleModalView = Backbone.View.extend({
   submit: function () {
     let description = null;
     if (this.isEnemyOnline() == false) {
-      description = "상대방이 로그아웃 했습니다.";
+      description = "상대방이 로그아웃했습니다.";
     } else if (App.current_user.checkDualRequestOrInviteViewExist()) {
       description = "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.";
     }

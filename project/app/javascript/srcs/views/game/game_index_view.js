@@ -17,6 +17,7 @@ export let GameIndexView = Backbone.View.extend({
     this.is_player = match_id == undefined ? true : false;
     this.left_player_view = null;
     this.right_player_view = null;
+    this.is_render_player_view = false;
     this.play_view = null;
     this.clear_id = null;
 
@@ -26,18 +27,18 @@ export let GameIndexView = Backbone.View.extend({
   parseMatchQuery: function (match_id) {
     let params = Helper.parseHashQuery();
     let default_hash = {
-      "challenger-id": null,
-      "rule-id": "1",
-      "target-score": "3",
-      "match-id": match_id,
+      challenger_id: null,
+      rule_id: "1",
+      target_score: "3",
+      match_id: match_id,
     };
 
     params = Object.assign({}, default_hash, params);
-    this.challenger_id = params["challenger-id"];
-    this.rule_id = params["rule-id"];
-    this.target_score = params["target-score"];
-    this.match_id = params["match-id"];
-    this.match_type = params["match-type"];
+    this.challenger_id = params["challenger_id"];
+    this.rule_id = params["rule_id"];
+    this.target_score = params["target_score"];
+    this.match_id = params["match_id"];
+    this.match_type = params["match_type"];
   },
 
   /**
@@ -46,16 +47,19 @@ export let GameIndexView = Backbone.View.extend({
    */
 
   joinGame: function () {
+    App.current_user.update_status("playing");
     Helper.fetch("matches", {
       method: "POST",
       success_callback: this.subscribeChannel.bind(this),
       body: {
         match_type: this.match_type,
         user_id: App.current_user.id,
-        challenger_id: this.challenger_id,
         rule_id: this.rule_id,
         target_score: this.target_score,
         match_id: this.match_id,
+        dual: {
+          challenger_id: this.challenger_id,
+        },
       },
     });
   },
@@ -68,7 +72,7 @@ export let GameIndexView = Backbone.View.extend({
     this.channel = App.Channel.ConnectGameChannel(
       this.recv,
       this,
-      this.is_player ? data["match"]["id"] : data
+      this.is_player ? data["match"]["id"] : data,
     );
   },
 
@@ -107,13 +111,17 @@ export let GameIndexView = Backbone.View.extend({
    ** 4) "END" : 정상적인 게임 종료 -> 클로즈 처리
    ** 5) "ENEMY_GIVEUP" : 게임 중 상대 유저 이탈에 따른 게임 종료 -> 클로즈 처리
    */
+  checkPlayerProfileIsRendered: function () {
+    return this.left_player_view == null || this.right_player_view == null;
+  },
+
   recv: function (msg) {
     if (
       msg.type == "START" ||
       (msg.type == "ENTER" && App.current_user.id == msg["send_id"])
     ) {
       this.spec = msg;
-      if (this.left_player_view == null) this.renderPlayerView(msg);
+      this.renderPlayerView(msg);
     } else if (msg.type == "BROADCAST") {
       if (this.play_view == null && !this.is_player) {
         this.play_view = new App.View.GamePlayView(this, this.spec);
@@ -141,14 +149,17 @@ export let GameIndexView = Backbone.View.extend({
    ** 게스트일 경우 로딩 대기
    */
   renderPlayerView: function (data) {
+    if (this.is_render_player_view)
+      return;
     this.left_player_view = new App.View.UserProfileCardView();
     this.right_player_view = new App.View.UserProfileCardView();
+    this.is_render_player_view = true;
     this.$(".vs-icon").html("VS");
     this.$("#left-game-player-view").append(
-      this.left_player_view.render(data["left"]).$el
+      this.left_player_view.render(data["left"]).$el,
     );
     this.$("#right-game-player-view").append(
-      this.right_player_view.render(data["right"]).$el
+      this.right_player_view.render(data["right"]).$el,
     );
 
     if (data.type == "START") {
@@ -175,7 +186,7 @@ export let GameIndexView = Backbone.View.extend({
           this.start();
         }
       }.bind(this),
-      1000
+      1000,
     );
   },
 
@@ -194,7 +205,6 @@ export let GameIndexView = Backbone.View.extend({
     this.$el.html(this.template());
     if (this.is_player) this.joinGame();
     else this.subscribeChannel(this.match_id);
-    App.current_user.set("status", "playing");
     return this;
   },
 
@@ -204,7 +214,7 @@ export let GameIndexView = Backbone.View.extend({
     if (this.play_view) this.play_view.close();
     if (this.channel) this.channel.unsubscribe();
     if (this.clear_id) clearInterval(this.clear_id);
-    App.current_user.set("status", "online");
+    if (this.is_player) App.current_user.update_status("online");
     this.remove();
   },
 });

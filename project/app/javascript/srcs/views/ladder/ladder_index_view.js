@@ -37,7 +37,7 @@ export let LadderIndexView = Backbone.View.extend({
       });
       return;
     }
-    App.router.navigate("#/matches?match-type=ladder");
+    App.router.navigate("#/matches?match_type=ladder");
   },
 
   /**

@@ -25,7 +25,7 @@ export function ConnectNotificationChannel(room_id) {
       dual(data) {
         if (data.status == "request") {
           if (this.checkViewVisible(data)) return;
-          App.appView.invite_view.render(data.profile);
+          App.appView.invite_view.render(data);
         } else if (data.status == "approved") {
           this.data = data;
           App.appView.request_view.close();
@@ -52,8 +52,12 @@ export function ConnectNotificationChannel(room_id) {
         }
       },
 
-      dualRequest(user_id) {
-        this.perform("dual_request", { id: user_id });
+      dualRequest(user_id, rule_id, target_score) {
+        this.perform("dual_request", {
+          id: user_id,
+          rule_id: rule_id,
+          target_score: target_score,
+        });
       },
 
       dualRequestDecline(user_id) {

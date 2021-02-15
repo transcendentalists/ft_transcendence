@@ -15,21 +15,26 @@ export let InviteView = Backbone.View.extend({
   },
 
   approve: function () {
-    App.router.navigate(
-        `#/matches?match-type=dual&challenger-id=${this.challenger.id}`
-    );
+    const url =
+      "#/matches?match-type=dual&challenger-id=" +
+      this.challenger.profile.id +
+      "&rule-id=" +
+      this.challenger.rule_id +
+      "&target-score=" +
+      this.challenger.target_score;
+    App.router.navigate(url);
     this.close();
   },
 
   decline: function () {
-    App.notification_channel.dualRequestDecline(this.challenger.id);
+    App.notification_channel.dualRequestDecline(this.challenger.profile.id);
     this.close();
   },
 
   render: function (challenger) {
     this.challenger = challenger;
     this.$el.empty();
-    this.$el.html(this.template(challenger));
+    this.$el.html(this.template(challenger.profile));
     this.$el.show();
   },
 

@@ -1,4 +1,4 @@
-import { App, Helper } from "srcs/internal";
+cimport { App, Helper } from "srcs/internal";
 
 export let GameIndexView = Backbone.View.extend({
   template: _.template($("#game-index-view-template").html()),
@@ -11,25 +11,34 @@ export let GameIndexView = Backbone.View.extend({
    ** @clear_id: 실행중인 렌더링 엔진을 멈추기 위한 clear key(setInterval)
    */
 
-  initialize: function (id) {
+  initialize: function (match_id) {
     this.spec = null;
     this.channel = null;
-    this.is_player = id == undefined ? true : false;
-    this.params = Helper.parseHashQuery();
-    this.match_type = this.params["match-type"];
-    this.challenger_id = this.params.hasOwnProperty("challenger-id")
-      ? this.params["challenger-id"]
-      : null;
-    this.rule_id = this.params.hasOwnProperty("rule-id")
-      ? this.params["rule-id"]
-      : "1";
-    this.match_id = this.params.hasOwnProperty("match-id")
-      ? this.params["match-id"]
-      : id;
+    this.is_player = match_id == undefined ? true : false;
     this.left_player_view = null;
     this.right_player_view = null;
     this.play_view = null;
     this.clear_id = null;
+
+    this.parseMatchQuery(match_id);
+  },
+
+  parseMatchQuery: function (match_id) {
+    let params = Helper.parseHashQuery();
+
+    this.match_type = params["match-type"];
+    this.challenger_id = params.hasOwnProperty("challenger-id")
+      ? params["challenger-id"]
+      : null;
+    this.rule_id = params.hasOwnProperty("rule-id")
+      ? params["rule-id"]
+      : "1";
+    this.target_score = params.hasOwnProperty("target-score")
+      ? params["target-score"]
+      : "3";
+    this.match_id = params.hasOwnProperty("match-id")
+      ? params["match-id"]
+      : match_id;
   },
 
   /**
@@ -46,6 +55,7 @@ export let GameIndexView = Backbone.View.extend({
         user_id: App.current_user.id,
         challenger_id: this.challenger_id,
         rule_id: this.rule_id,
+        target_score: this.target_score,
         match_id: this.match_id,
       },
     });
@@ -185,6 +195,7 @@ export let GameIndexView = Backbone.View.extend({
     this.$el.html(this.template());
     if (this.is_player) this.joinGame();
     else this.subscribeChannel(this.match_id);
+    App.current_user.set("status", "playing");
     return this;
   },
 
@@ -194,6 +205,7 @@ export let GameIndexView = Backbone.View.extend({
     if (this.play_view) this.play_view.close();
     if (this.channel) this.channel.unsubscribe();
     if (this.clear_id) clearInterval(this.clear_id);
+    App.current_user.set("status", "online");
     this.remove();
   },
 });

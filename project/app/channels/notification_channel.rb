@@ -11,7 +11,13 @@ class NotificationChannel < ApplicationCable::Channel
     # ActionCable.server.broadcast
     ActionCable.server.broadcast(
       "notification_channel_#{enemy['id'].to_s}",
-      { type: 'dual', status: 'request', profile: current_user.profile },
+      {
+        type: 'dual',
+        status: 'request',
+        profile: current_user.profile,
+        rule_id: enemy['rule_id'],
+        target_score: enemy['target_score'],
+      },
     )
   end
 

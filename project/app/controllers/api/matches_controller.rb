@@ -23,7 +23,7 @@ class Api::MatchesController < ApplicationController
         unless params[:match_id].nil?
           match = join_dual_match_for(user, params[:match_id])
         else
-          match = create_dual_match_for(user, params[:rule_id])
+          match = create_dual_match_for(user, params[:rule_id], params[:target_score])
         end
       end
       render :json => { match: { id: match.id, match_type: params[:for], user: { id: user.id } } }
@@ -55,14 +55,13 @@ class Api::MatchesController < ApplicationController
     match
   end
 
-  def create_dual_match_for(user, rule_id)
-    match = Match.create(match_type: "Dual", status: "pending", rule_id: rule_id)
+  def create_dual_match_for(user, rule_id, target_score)
+    match = Match.create(match_type: "Dual", status: "pending", rule_id: rule_id, target_score: target_score)
     card = Scorecard.create(user_id: user.id, match_id: match.id, side: "left")
     # TODO: notification_channel.rb 함수를 실행하는 법을 알아내면 실행시키자.
     ActionCable.server.broadcast("notification_channel_#{params[:challenger_id].to_s}",
       {type: "dual", status: "approved", match_id: match.id, challenger_id: params[:challenger_id]})
     user.update_status("playing")
-
     match
   end
 

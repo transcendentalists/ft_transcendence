@@ -119,7 +119,7 @@ export let Helper = {
   checkDualRequestOrInviteAndRemove: function (user) {
     if (user.status == "offline" && this.checkDualRequestOrInviteViewExist()) {
       let id = $("#invite-view").is(":visible")
-        ? App.appView.invite_view.challenger.id
+        ? App.appView.invite_view.challenger.profile.id
         : App.appView.request_view.enemy.id;
       if (user.id == id) {
         $("#invite-view").is(":visible")

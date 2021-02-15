@@ -30,7 +30,10 @@ export let Friends = Backbone.Collection.extend({
   },
 
   fetchFriends: function () {
-    this.fetch({ reset: true });
+    this.fetch({
+      data: $.param({ for: "appearance" }),
+      reset: true,
+    });
   },
 
   destroyFriendship: function (friend_id) {

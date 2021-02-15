@@ -144,22 +144,21 @@ GroupChatMembership.create([
 ])
 
 DirectChatRoom.create([
-  {},
-  {},
+  {symbol: '1+3'},
+])
+
+DirectChatMembership.create([
+  {user_id: 1, direct_chat_room_id: 1},
+  {user_id: 3, direct_chat_room_id: 1},
 ])
 
 ChatMessage.create([
-  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "Helloooo"},
-  {user_id: 2, room_type: "DirectChatRoom", room_id: 1, message: "testtest"},
-  {user_id: 3, room_type: "DirectChatRoom", room_id: 2, message: "gooooood"},
-  {user_id: 4, room_type: "DirectChatRoom", room_id: 2, message: "11111111"},
-  {user_id: 4, room_type: "DirectChatRoom", room_id: 2, message: "22222222"},
-  {user_id: 1, room_type: "GroupChatRoom", room_id: 1, message: "1"},
-  {user_id: 2, room_type: "GroupChatRoom", room_id: 1, message: "2"},
-  {user_id: 3, room_type: "GroupChatRoom", room_id: 1, message: "3"},
-  {user_id: 4, room_type: "GroupChatRoom", room_id: 1, message: "4"},
-  {user_id: 5, room_type: "GroupChatRoom", room_id: 1, message: "5"},
-  {user_id: 6, room_type: "GroupChatRoom", room_id: 1, message: "6"},
+  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "Hello, eunhkim!"},
+  {user_id: 3, room_type: "DirectChatRoom", room_id: 1, message: "Hi, Sanam!"},
+  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "안녕하세요. eunhkim!"},
+  {user_id: 3, room_type: "DirectChatRoom", room_id: 1, message: "안녕하세요, Sanam!"},
+  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "메시지는 잘 뜨나요?"},
+  {user_id: 3, room_type: "DirectChatRoom", room_id: 1, message: "네. 잘 뜨네요!"},
 ])
 
 ChatBan.create([

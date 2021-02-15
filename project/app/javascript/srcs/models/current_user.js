@@ -24,6 +24,10 @@ export let CurrentUser = Backbone.Model.extend({
     });
   },
 
+  update_status: function (status) {
+    this.set("status", status)
+  },
+
   dualRequestTo: function (enemy) {
     if (this.isDualRequestPossibleTo(enemy)) {
       App.appView.rule_modal_view.render(enemy);
@@ -37,8 +41,8 @@ export let CurrentUser = Backbone.Model.extend({
     } else if (enemy.get("status") != "online") {
       description =
         enemy.get("status") == "offline"
-          ? enemy.get("name") + "님은 현재 " + "로그아웃 상태입니다."
-          : enemy.get("name") + "님은 현재 " + "게임중입니다.";
+          ? enemy.get("name") + "님은 현재 로그아웃 상태입니다."
+          : enemy.get("name") + "님은 현재 게임중입니다.";
     } else if (this.checkDualRequestOrInviteViewExist()) {
       description = "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.";
     }
@@ -69,7 +73,7 @@ export let CurrentUser = Backbone.Model.extend({
           : App.appView.request_view.close();
         Helper.info({
           subject: "게임 취소",
-          description: "상대방이 로그아웃 했습니다..",
+          description: "상대방이 로그아웃했습니다.",
         });
       }
     }

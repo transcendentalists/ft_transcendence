@@ -164,6 +164,12 @@ export let Helper = {
     return true;
   },
 
+  dualRequest: function(model) {
+    if (this.isDualRequestPossible(model)) {
+      App.appView.rule_modal_view.render(model);
+    }
+  },
+
   getMessageTime: function (timestamp) {
     return (
       timestamp.substr(5, 2) +

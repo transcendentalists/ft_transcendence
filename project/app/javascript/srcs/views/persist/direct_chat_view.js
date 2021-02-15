@@ -11,9 +11,7 @@ export let DirectChatView = Backbone.View.extend({
   },
 
   dual: function() {
-    if (Helper.isDualRequestPossible(this.chat_room.chat_user)) {
-      App.appView.rule_modal_view.render(this.chat_room.chat_user);
-    }
+    Helper.dualRequest(this.chat_room.chat_user);
   },
 
   initialize: function () {

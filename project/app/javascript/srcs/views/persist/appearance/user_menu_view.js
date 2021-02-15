@@ -58,9 +58,7 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   battle: function () {
-    if (Helper.isDualRequestPossible(this.model)) {
-      App.appView.rule_modal_view.render(this.model);
-    }
+    Helper.dualRequest(this.model);
     this.close();
   },
 

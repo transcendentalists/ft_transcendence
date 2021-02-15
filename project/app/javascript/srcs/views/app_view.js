@@ -35,6 +35,7 @@ export let AppView = Backbone.View.extend({
     this.info_modal_view.close();
 
     this.invite_view.close();
+    this.request_view.close();
     this.direct_chat_view.close();
   },
 });

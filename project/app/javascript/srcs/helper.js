@@ -33,8 +33,7 @@ export let Helper = {
       let response = await fetch(prefix + url, params);
       success = Math.floor(response.status / 100) == 2;
       data = await response.json();
-    } catch (err) {
-    }
+    } catch (err) {}
 
     if (!success && fail_callback) return fail_callback(data);
     if (success && success_callback) return success_callback(data);
@@ -109,5 +108,28 @@ export let Helper = {
       return res;
     }, {});
     return result;
+  },
+
+  checkDualRequestOrInviteViewExist: function () {
+    return (
+      $("#invite-view").is(":visible") || $("#request-view").is(":visible")
+    );
+  },
+
+  checkDualRequestOrInviteAndRemove: function (user) {
+    if (user.status == "offline" && this.checkDualRequestOrInviteViewExist()) {
+      let id = $("#invite-view").is(":visible")
+        ? App.appView.invite_view.challenger.id
+        : App.appView.request_view.enemy.id;
+      if (user.id == id) {
+        $("#invite-view").is(":visible")
+          ? App.appView.invite_view.close()
+          : App.appView.request_view.close();
+        this.info({
+          subject: "게임 취소",
+          description: "상대방이 로그아웃 했습니다..",
+        });
+      }
+    }
   },
 };

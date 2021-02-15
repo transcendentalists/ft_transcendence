@@ -7,29 +7,35 @@
 
     <div id="appearance-view" class="three wide tablet only three wide computer only column">
     </div>
-    <div id="main-view-container" class="sixteen wide mobile thirteen wide tablet thirteen wide computer right floated column flex-container column-direction center-aligned">
+    <div id="main-view-container" class="sixteen wide mobile thirteen wide tablet thirteen wide computer column flex-container column-direction center-aligned">
 
     </div>
   </div>
 
   <%= render partial: 'spa/registration/sign_in_view' %>
   <%= render partial: 'spa/registration/sign_up_view' %>
-  <%= render partial: 'spa/share/warning_message' %>
-  <%= render partial: "spa/share/user_profile_card_view" %>
+
   <%= render partial: 'spa/persist/direct_chat_view' %>
   <%= render partial: 'spa/persist/appearance/appearance_view' %>
   <%= render partial: 'spa/persist/appearance/friends_list' %>
   <%= render partial: 'spa/persist/appearance/online_user_list' %>
   <%= render partial: 'spa/persist/appearance/user_list_unit' %>
   <%= render partial: 'spa/persist/appearance/user_menu' %>
-  <%= render partial: 'spa/share/chat_message_view' %>
-  <%= render partial: 'spa/share/current_user_chat_message_view' %>
   <%= render partial: 'spa/persist/invite_view' %>
   <%= render partial: 'spa/persist/input_modal_view' %>
   <%= render partial: 'spa/persist/info_modal_view' %>
   <%= render partial: 'spa/persist/alert_modal_view' %>
-  <%= render partial: 'spa/persist/image_upload_modal_view' %>
+
+  <%= render partial: 'spa/share/warning_message' %>
+  <%= render partial: "spa/share/user_profile_card_view" %>
+  <%= render partial: 'spa/share/chat_message_view' %>
+  <%= render partial: 'spa/share/current_user_chat_message_view' %>
+  
   <%= render partial: 'spa/error/error_view' %>
+
+  <%= render partial: "spa/game/game_index_view" %>
+  
+  <%= render partial: 'spa/persist/image_upload_modal_view' %>
   <%= render partial: 'spa/user/user_index_view' %>
   <%= render partial: 'spa/user/user_index_buttons_view' %>
   <%= render partial: 'spa/game/match_history_view' %>
@@ -37,7 +43,10 @@
   <%= render partial: "spa/ladder/ladder_index_view" %>
   <%= render partial: "spa/ladder/my_rating_view" %>
   <%= render partial: "spa/ladder/user_ranking_view" %>
-  <%= render partial: "spa/game/game_index_view" %>
+  
+  <%= render partial: "spa/chat/chat_index_view" %>
+  <%= render partial: "spa/chat/chat_room_card_view" %>
+
   <%= javascript_pack_tag 'app' %>
 </div>
 

@@ -74,10 +74,7 @@ export let UserMenuView = Backbone.View.extend({
           " 중입니다.",
       });
       return false;
-    } else if (
-      $("#invite-view").is(":visible") ||
-      $("#request-view").is(":visible")
-    ) {
+    } else if (Helper.checkDualRequestOrInviteViewExist()) {
       Helper.info({
         subject: "대전 신청 불가능",
         description: "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.",

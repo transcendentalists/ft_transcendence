@@ -61,7 +61,8 @@ export let SignInView = Backbone.View.extend({
     App.current_user.set("id", data.current_user.id);
     App.current_user.login();
     App.appView.render();
-    App.router.navigate(`#/users/${data.current_user.id}`);
+    App.router.navigate(`#/chatrooms/1`);
+    // App.router.navigate(`#/users/${data.current_user.id}`);
   },
 
   failCallback: function (data) {

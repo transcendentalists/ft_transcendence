@@ -10,6 +10,7 @@ body {
 
 #root {
   height: 100%;
+  overflow-x: scroll !important;
 }
 
 #root .ui.mini.pointing.vertical.menu {
@@ -676,4 +677,37 @@ body {
 
 #chat-index-view .search.label {
   cursor: pointer;
+}
+
+/* ==========================================================================
+   CHAT INDEX VIEW
+   ========================================================================== */
+
+#chat-room-view {
+  min-width: 740px;
+  max-width: 740px;
+}
+
+.chat-room-left-area {
+  position: fixed;
+  height: 100vh;
+  width: 220px;
+  padding: 2.85714286em 0 0 0;
+  z-index: 100;
+  left: 0;
+}
+
+#chat-room-appearance-view {
+  overflow-y: scroll;
+  background-color: rgb(250, 190, 190);
+  height: calc(100vh - 2.85714286em - 10rem);
+}
+
+#chat-room-menu-view {
+  position: fixed;
+  bottom: 0;
+  width: 220px;
+  height: 10rem;
+  z-index: 10;
+  background-color: rgb(172, 172, 237);
 }

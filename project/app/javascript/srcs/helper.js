@@ -137,6 +137,33 @@ export let Helper = {
     }
   },
 
+  isDualRequestPossible: function (model) {
+    if (App.current_user.get("status") == "playing") {
+      this.info({
+        subject: "대전 신청 불가능",
+        description: "게임 중에는 대전 신청이 불가능합니다.",
+      });
+      return false;
+    } else if (model.get("status") != "online") {
+      Helper.info({
+        subject: "대전 신청 불가능",
+        description:
+          model.get("name") +
+          "님은 현재 " +
+          model.get("status") +
+          " 중입니다.",
+      });
+      return false;
+    } else if (this.checkDualRequestOrInviteViewExist()) {
+      this.info({
+        subject: "대전 신청 불가능",
+        description: "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.",
+      });
+      return false;
+    }
+    return true;
+  },
+
   getMessageTime: function (timestamp) {
     return (
       timestamp.substr(5, 2) +

@@ -57,35 +57,8 @@ export let UserMenuView = Backbone.View.extend({
     this.close();
   },
 
-  isDualRequestPossible: function () {
-    if (App.current_user.get("status") == "playing") {
-      Helper.info({
-        subject: "대전 신청 불가능",
-        description: "게임 중에는 대전 신청이 불가능합니다.",
-      });
-      return false;
-    } else if (this.model.get("status") != "online") {
-      Helper.info({
-        subject: "대전 신청 불가능",
-        description:
-          this.model.get("name") +
-          "님은 현재 " +
-          this.model.get("status") +
-          " 중입니다.",
-      });
-      return false;
-    } else if (Helper.checkDualRequestOrInviteViewExist()) {
-      Helper.info({
-        subject: "대전 신청 불가능",
-        description: "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.",
-      });
-      return false;
-    }
-    return true;
-  },
-
   battle: function () {
-    if (this.isDualRequestPossible()) {
+    if (Helper.isDualRequestPossible(this.model)) {
       App.appView.rule_modal_view.render(this.model);
     }
     this.close();

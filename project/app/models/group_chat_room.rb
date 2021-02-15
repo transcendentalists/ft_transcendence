@@ -3,38 +3,41 @@ class GroupChatRoom < ApplicationRecord
   has_many :messages, class_name: "ChatMessage", as: :room
   has_many :memberships, class_name: "GroupChatMembership"
   has_many :users, through: :memberships, source: :user
-  scope :list_associated_with_current_user, -> (user_id) do
-    owner_keys = [:id, :name, :image_url]
-    current_user = User.find_by_id(user_id)
-    current_user_room_ids = current_user.in_group_chat_room_ids
-    current_user_memberships = current_user.group_chat_memberships
-    current_user.in_group_chat_rooms.includes(:owner).map { |chatroom| 
+  scope :list_associated_with_current_user, -> (current_user) do
+    current_user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
       {
-          id: chatroom.id,
-          title: chatroom.title,
-          locked: !chatroom.password.blank?,
-          owner: chatroom.owner.slice(*owner_keys),
-          max_member_count: chatroom.max_member_count,
-          current_member_count: chatroom.users.count,
-          current_user_position: current_user_memberships.find_by_group_chat_room_id(chatroom.id).position
+          id: chat_room.id,
+          title: chat_room.title,
+          locked: chat_room.is_locked?,
+          owner: chat_room.owner.for_chat_room_format,
+          max_member_count: chat_room.max_member_count,
+          current_member_count: chat_room.users.count,
+          current_user_position: chat_room.memberships.find_by_user_id(current_user.id)&.position
       }
     }
   end
-  scope :list_filtered_by_type, -> (room_type, current_user_id) {
-    owner_keys = [:id, :name, :image_url]
-    current_user_room_ids = User.find_by_id(current_user_id).in_group_chat_room_ids
-    where(room_type: room_type).where.not(id: current_user_room_ids).map { |chatroom|
+  scope :list_filtered_by_type, -> (room_type, current_user) {
+    current_user_room_ids = current_user.in_group_chat_room_ids
+    where(room_type: room_type).where.not(id: current_user_room_ids).map { |chat_room|
       {
-        id: chatroom.id,
-        title: chatroom.title,
-        locked: !chatroom.password.blank?,
-        owner: chatroom.owner.slice(*owner_keys),
-        max_member_count: chatroom.max_member_count,
-        current_member_count: chatroom.users.count,
+        id: chat_room.id,
+        title: chat_room.title,
+        locked: chat_room.is_locked?,
+        owner: chat_room.owner.for_chat_room_format,
+        max_member_count: chat_room.max_member_count,
+        current_member_count: chat_room.users.count,
         current_user_position: nil
       }
     }
   }
+  scope :matching_channel_code, -> (channel_code, current_user) {
+    chat_room = self.find_by_channel_code(channel_code)
+    return nil if chat_room.nil?
+    chat_room.for_chat_room_format.merge({
+      current_user_position: chat_room.memberships.find_by_id(current_user.id)&.position
+    })
+  }
+
   
   def for_chat_room_format
     hash_key_format = [ :id, :room_type, :title, :max_member_count, 
@@ -43,11 +46,11 @@ class GroupChatRoom < ApplicationRecord
   end
 
   def current_user_info(user)
-    current_user_chat_room_membership = self.memberships.find_by_user_id(user.id)
+    current_user_membership = self.memberships.find_by_user_id(user.id)
 
     {
-      position: current_user_chat_room_membership.position,
-      mute: current_user_chat_room_membership.mute
+      position: current_user_membership.position,
+      mute: current_user_membership.mute
     }
   end
 

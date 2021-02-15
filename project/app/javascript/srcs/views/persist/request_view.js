@@ -20,7 +20,6 @@ export let RequestView = Backbone.View.extend({
 
   render: function (enemy) {
     this.enemy = enemy;
-    this.$el.empty();
     this.$el.html(this.template(enemy));
     this.$el.show();
   },

@@ -33,7 +33,6 @@ export let InviteView = Backbone.View.extend({
 
   render: function (challenger) {
     this.challenger = challenger;
-    this.$el.empty();
     this.$el.html(this.template({profile: challenger.profile, rule_name: challenger.rule_name, target_score: challenger.target_score}));
     this.$el.show();
   },

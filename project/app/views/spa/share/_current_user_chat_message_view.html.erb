@@ -1,17 +1,17 @@
 <script type="text/template" id="current-user-chat-message-view-template">
   <div class="comment current-user">
     <a class="avatar">
-      <img src="/assets/kristy.png">
+      <img src="<%%= image_url %>">
     </a>
     <div class="content">
       <div class="content-header flex-container">
         <div class="metadata">
-          <span class="date">Yesterday at 12:30AM</span>
-          <a class="author">Elliot Fu</a>
+          <span class="date"><%%= created_at %></span>
         </div>
+          <a class="author"><%%= name %></a>
       </div>
       <div class="text">
-        <p>This has been very useful for my research. Thanks as well!</p>
+        <p><%%= message %></p>
       </div>  
     </div>
   </div>

@@ -75,4 +75,9 @@ class GroupChatRoom < ApplicationRecord
     self.password == input_password
   end
 
+  # def is_user_authorized_to_destroy(current_user)
+  #   current_user_position = self.memberships.find_by_user_id(current_user.id)&.position
+  #   authorized_position = ["web_admin"]
+  #   authorized_position.include?(current_user_position)
+  # end
 end

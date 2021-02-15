@@ -1,5 +1,5 @@
 class Api::GroupChatRoomsController < ApplicationController
-  before_action :check_headers_and_find_current_user, only: [:show, :index]
+  before_action :check_headers_and_find_current_user, only: [:show, :index, :destroy]
   
   # list_all scope 미구현 상태(admin 개발시 구현)
   def index
@@ -42,7 +42,13 @@ class Api::GroupChatRoomsController < ApplicationController
   end
 
   def destroy
-    render plain: params[:id] + " group chat room destroy"
+    # group_chat_room = GroupChatRooms.find_by_id(params[:id])
+    # if group_chat_room.is_user_authorized_to_destroy(@current_user)
+    #   group_chat_room.destroy
+    # else
+    #   return render_error("UNAUTHORIZED", "삭제 권한이 없습니다.", "403")
+    # end
+    render plain: "group chat room destroy"
   end
 
   private

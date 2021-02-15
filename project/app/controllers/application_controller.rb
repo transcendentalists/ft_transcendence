@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  # TODO: 'protect... null_session' 코드는 CSRF token 인증 생략 위해 임시로 추가함.
+  protect_from_forgery with: :null_session
+
   def create_session(id)
     cookies.encrypted[:service_id] = id
   end

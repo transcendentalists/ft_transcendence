@@ -24,30 +24,28 @@ export let CurrentUser = Backbone.Model.extend({
     });
   },
 
-  dualRequestTo: function (model) {
-    if (this.isDualRequestPossible(model)) {
-      App.appView.rule_modal_view.render(model);
+  dualRequestTo: function (enemy) {
+    if (this.isDualRequestPossibleTo(enemy)) {
+      App.appView.rule_modal_view.render(enemy);
     }
   },
 
-  isDualRequestPossible: function (model) {
+  isDualRequestPossibleTo: function (enemy) {
+    let description = null;
     if (this.get("status") == "playing") {
-      Helper.info({
-        subject: "대전 신청 불가능",
-        description: "게임 중에는 대전 신청이 불가능합니다.",
-      });
-      return false;
-    } else if (model.get("status") != "online") {
-      Helper.info({
-        subject: "대전 신청 불가능",
-        description:
-          model.get("name") + "님은 현재 " + model.get("status") + " 중입니다.",
-      });
-      return false;
+      description = "게임 중에는 대전 신청이 불가능합니다.";
+    } else if (enemy.get("status") != "online") {
+      description =
+        enemy.get("status") == "offline"
+          ? enemy.get("name") + "님은 현재 " + "로그아웃 상태입니다."
+          : enemy.get("name") + "님은 현재 " + "게임중입니다.";
     } else if (this.checkDualRequestOrInviteViewExist()) {
+      description = "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.";
+    }
+    if (description != null) {
       Helper.info({
         subject: "대전 신청 불가능",
-        description: "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.",
+        description: description,
       });
       return false;
     }

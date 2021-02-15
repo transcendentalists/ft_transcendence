@@ -111,6 +111,14 @@ class User < ApplicationRecord
     ActionCable.server.broadcast('appearance_channel', make_user_data(status))
   end
 
+
+  def for_chat_room_format
+    hash_key_format = [:id, :name, :status, :image_url]
+    self.slice(*hash_key_format).merge({
+      anagram: guild_membership&.guild&.anagram
+    })
+  end
+
   private
 
   def make_user_data(status)

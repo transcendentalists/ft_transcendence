@@ -29,19 +29,15 @@ export let RuleModalView = Backbone.View.extend({
 
   submit: function () {
     let rule_id = $("select[name=rules]").val();
-    let target_score = this.$el.find('[name="score"]:checked').val()
-    if (Helper.checkDualRequestOrInviteViewExist()) {
-        Helper.info({
-          subject: "게임 신청 불가능",
-          description: "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.",
-        });
+    let target_score = this.$el.find('[name="score"]:checked').val();
+    if (App.current_user.checkDualRequestOrInviteViewExist()) {
+      Helper.info({
+        subject: "게임 신청 불가능",
+        description: "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.",
+      });
       this.close();
     }
-    App.notification_channel.dualRequest(
-      this.model.id,
-      rule_id,
-      target_score,
-    );
+    App.notification_channel.dualRequest(this.model.id, rule_id, target_score);
     App.appView.request_view.render(this.model.attributes);
     this.close();
   },

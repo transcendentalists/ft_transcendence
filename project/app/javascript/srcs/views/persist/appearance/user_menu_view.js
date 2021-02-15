@@ -58,7 +58,7 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   battle: function () {
-    Helper.dualRequest(this.model);
+    App.current_user.dualRequestTo(this.model);
     this.close();
   },
 

@@ -14,7 +14,7 @@ export function ConnectAppearanceChannel() {
 
     received(user) {
       // Called when there's incoming data on the websocket for this channel
-      Helper.checkDualRequestOrInviteAndRemove(user);
+      App.current_user.checkDualRequestOrInviteAndRemove(user);
       App.appView.appearance_view.updateUserList(user);
     },
   });

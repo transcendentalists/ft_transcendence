@@ -30,7 +30,7 @@ export let LadderIndexView = Backbone.View.extend({
 
   //  승급전 참여 버튼 클릭시 게임 인덱스 뷰로 이동
   gamePage: function () {
-    if (Helper.checkDualRequestOrInviteViewExist()) {
+    if (App.current_user.checkDualRequestOrInviteViewExist()) {
       Helper.info({
         subject: "래더 신청 불가능",
         description: "다른 유저와 듀얼 신청 중에는 래더 신청이 불가능합니다.",

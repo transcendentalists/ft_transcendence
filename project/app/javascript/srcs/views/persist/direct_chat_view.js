@@ -10,8 +10,8 @@ export let DirectChatView = Backbone.View.extend({
     "click .dual-join.button": "dual",
   },
 
-  dual: function() {
-    Helper.dualRequest(this.chat_room.chat_user);
+  dual: function () {
+    App.current_user.dualRequestTo(this.chat_room.chat_user);
   },
 
   initialize: function () {

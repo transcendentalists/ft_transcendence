@@ -73,7 +73,7 @@ export function ConnectNotificationChannel(room_id) {
       },
 
       checkViewVisible: function (data) {
-        if (Helper.checkDualRequestOrInviteViewExist()) {
+        if (App.current_user.checkDualRequestOrInviteViewExist()) {
           this.dualRequestExist(data.profile.id);
           return true;
         }

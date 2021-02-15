@@ -121,14 +121,14 @@ body {
   z-index: 5;
   position: fixed;
   bottom: 0;
-  right: 590px;
+  right: 50%;
   z-index: 103;
 }
 
 #request-view {
   position: fixed;
   bottom: 0;
-  right: 590px;
+  right: 50%;
   z-index: 103;
 }
 

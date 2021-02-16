@@ -94,19 +94,19 @@ Scorecard.create([
 ])
 
 GroupChatRoom.create([
-  {owner_id: 1, room_type: "public", title: "public locked owner", channel_code: "XXX-XXX-XX1", password: "123123"},
-  {owner_id: 1, room_type: "public", title: "public unlocked owner", channel_code: "XXX-XXX-XX2" },
-  {owner_id: 2, room_type: "public", title: "public locked admin", channel_code: "XXX-XXX-XX3", password: "123123"},
-  {owner_id: 2, room_type: "public", title: "public unlocked admin", channel_code: "XXX-XXX-XX4" },
-  {owner_id: 3, room_type: "public", title: "public locked member", channel_code: "XXX-XXX-XX5", password: "123123"},
-  {owner_id: 3, room_type: "public", title: "public unlocked member", channel_code: "XXX-XXX-XX6" },
+  {owner_id: 1, room_type: "public", title: "room 1", channel_code: "XXX-XXX-XX1", password: "123123"},
+  {owner_id: 1, room_type: "public", title: "room 2", channel_code: "XXX-XXX-XX2" },
+  {owner_id: 2, room_type: "public", title: "room 3", channel_code: "XXX-XXX-XX3", password: "123123"},
+  {owner_id: 2, room_type: "public", title: "room 4", channel_code: "XXX-XXX-XX4" },
+  {owner_id: 3, room_type: "public", title: "room 5", channel_code: "XXX-XXX-XX5", password: "123123"},
+  {owner_id: 3, room_type: "public", title: "room 6", channel_code: "XXX-XXX-XX6" },
   
-  {owner_id: 1, room_type: "private", title: "private locked owner", channel_code: "XXX-XXX-XX7", password: "123123"},
-  {owner_id: 1, room_type: "private", title: "private unlocked owner", channel_code: "XXX-XXX-XX8" },
-  {owner_id: 2, room_type: "private", title: "private locked admin", channel_code: "XXX-XXX-XX9", password: "123123"},
-  {owner_id: 2, room_type: "private", title: "private unlocked admin", channel_code: "XXX-XXX-X10" },
-  {owner_id: 3, room_type: "private", title: "private locked member", channel_code: "XXX-XXX-X11", password: "123123"},
-  {owner_id: 3, room_type: "private", title: "private unlocked member", channel_code: "XXX-XXX-X12" },
+  {owner_id: 1, room_type: "private", title: "room 7", channel_code: "XXX-XXX-XX7", password: "123123"},
+  {owner_id: 1, room_type: "private", title: "room 8", channel_code: "XXX-XXX-XX8" },
+  {owner_id: 2, room_type: "private", title: "room 9", channel_code: "XXX-XXX-XX9", password: "123123"},
+  {owner_id: 2, room_type: "private", title: "room 10", channel_code: "XXX-XXX-X10" },
+  {owner_id: 3, room_type: "private", title: "room 11", channel_code: "XXX-XXX-X11", password: "123123"},
+  {owner_id: 3, room_type: "private", title: "room 12", channel_code: "XXX-XXX-X12" },
 ])
 
 GroupChatMembership.create([
@@ -144,22 +144,21 @@ GroupChatMembership.create([
 ])
 
 DirectChatRoom.create([
-  {},
-  {},
+  {symbol: '1+3'},
+])
+
+DirectChatMembership.create([
+  {user_id: 1, direct_chat_room_id: 1},
+  {user_id: 3, direct_chat_room_id: 1},
 ])
 
 ChatMessage.create([
-  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "Helloooo"},
-  {user_id: 2, room_type: "DirectChatRoom", room_id: 1, message: "testtest"},
-  {user_id: 3, room_type: "DirectChatRoom", room_id: 2, message: "gooooood"},
-  {user_id: 4, room_type: "DirectChatRoom", room_id: 2, message: "11111111"},
-  {user_id: 4, room_type: "DirectChatRoom", room_id: 2, message: "22222222"},
-  {user_id: 1, room_type: "GroupChatRoom", room_id: 1, message: "1"},
-  {user_id: 2, room_type: "GroupChatRoom", room_id: 1, message: "2"},
-  {user_id: 3, room_type: "GroupChatRoom", room_id: 1, message: "3"},
-  {user_id: 4, room_type: "GroupChatRoom", room_id: 1, message: "4"},
-  {user_id: 5, room_type: "GroupChatRoom", room_id: 1, message: "5"},
-  {user_id: 6, room_type: "GroupChatRoom", room_id: 1, message: "6"},
+  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "Hello, eunhkim!"},
+  {user_id: 3, room_type: "DirectChatRoom", room_id: 1, message: "Hi, Sanam!"},
+  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "안녕하세요. eunhkim!"},
+  {user_id: 3, room_type: "DirectChatRoom", room_id: 1, message: "안녕하세요, Sanam!"},
+  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "메시지는 잘 뜨나요?"},
+  {user_id: 3, room_type: "DirectChatRoom", room_id: 1, message: "네. 잘 뜨네요!"},
 ])
 
 ChatBan.create([

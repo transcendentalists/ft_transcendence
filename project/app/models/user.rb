@@ -98,7 +98,7 @@ class User < ApplicationRecord
   end
 
   def to_simple
-    permitted = %w[id name status two_factor_auth]
+    permitted = %w[id name status two_factor_auth image_url]
     data = attributes.filter { |field, _value| permitted.include?(field) }
   end
 
@@ -109,6 +109,14 @@ class User < ApplicationRecord
   def update_status(status)
     self.update(status: status)
     ActionCable.server.broadcast('appearance_channel', make_user_data(status))
+  end
+
+
+  def for_chat_room_format
+    hash_key_format = [:id, :name, :status, :image_url]
+    self.slice(*hash_key_format).merge({
+      anagram: guild_membership&.guild&.anagram
+    })
   end
 
   private

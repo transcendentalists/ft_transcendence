@@ -20,7 +20,7 @@
     <%%= current_user_position %>
   </div>
 </div>
-<%% if(current_member_count < max_member_count) { %>
+<%% if(current_user_position || current_member_count < max_member_count) { %>
   <div class="ui join button" data-room-id="<%%= id %>">입장하기</div>
 <%% } else { %>
   <div class="ui disable button" data-room-id="<%%= id %>">정원초과</div>

@@ -31,12 +31,9 @@ export let Helper = {
     let success = false;
     try {
       let response = await fetch(prefix + url, params);
-      console.log(response); // for response debugging
       success = Math.floor(response.status / 100) == 2;
       data = await response.json();
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
 
     if (!success && fail_callback) return fail_callback(data);
     if (success && success_callback) return success_callback(data);
@@ -50,6 +47,10 @@ export let Helper = {
 
   isCurrentView: function (view_name) {
     return $("#main-view-container").has(view_name).length > 0;
+  },
+
+  isUserChatBanned: function (user_id) {
+    return App.appView.appearance_view.chat_bans.isUserChatBanned(user_id);
   },
 
   isCurrentUser: function (user_id) {
@@ -99,5 +100,15 @@ export let Helper = {
       data.description = "알려줄 내용을 설명해주세요.";
 
     App.appView.info_modal_view.render(data);
+  },
+
+  getMessageTime: function (timestamp) {
+    return (
+      timestamp.substr(5, 2) +
+      "월 " +
+      timestamp.substr(8, 2) +
+      "일, " +
+      timestamp.substr(11, 5)
+    );
   },
 };

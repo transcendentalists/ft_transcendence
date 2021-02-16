@@ -1,17 +1,54 @@
-export let ChatRoomCreateView = Backbone.View.extend({
-  // template: _.template($("#chat-room-create-view-template").html()),
+import { App, Helper } from "srcs/internal";
 
-  renderPasswordInputModal: function (room_id) {
-    Helper.input({
-      subject: "비밀번호 입력",
-      description: "이 채팅방에 입장하려면 비밀번호 입력이 필요합니다.",
-      success_callback: function (input) {
-        app.router.navigate(`#/chatrooms/${room_id}/${input}`);
-      },
-    });
+export let ChatRoomCreateView = Backbone.View.extend({
+  id: "chat-room-create-view",
+  className: "create-view top-margin",
+  template: _.template($("#chat-room-create-view-template").html()),
+  events: {
+    "click .create.button": "submit",
+    "click .cancel.button": "cancel",
   },
 
-  render: function () {},
+  redirectChatRoomCallback: function (data) {
+    App.router.navigate(`#/chatrooms/${data.group_chat_room.id}`);
+  },
+
+  createRoomParams: function (input_data) {
+    return {
+      method: "POST",
+      success_callback: this.redirectChatRoomCallback.bind(this),
+      fail_callback: (data) => App.router.navigate("#/errors/105"),
+      body: {
+        group_chat_room: input_data,
+      },
+    };
+  },
+
+  submit: function () {
+    let input_data = {};
+    input_data["title"] = $("input[name=title]").val();
+    input_data["owner_id"] = App.current_user.id;
+    input_data["password"] = $("input[name=password]").val();
+    input_data["room_type"] = $("input[name=room_type]").is(":checked")
+      ? "private"
+      : "public";
+    input_data["max_member_count"] = +$(
+      ".max-member-count option:selected"
+    ).val();
+
+    Helper.fetch("group_chat_rooms", this.createRoomParams(input_data));
+  },
+
+  cancel: function () {
+    App.router.navigate("#/chatrooms");
+  },
+
+  render: function () {
+    this.$el.empty();
+    this.$el.html(this.template());
+    this.$(".ui.negative.message").hide();
+    return this;
+  },
 
   close: function () {
     this.remove();

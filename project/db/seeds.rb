@@ -94,19 +94,19 @@ Scorecard.create([
 ])
 
 GroupChatRoom.create([
-  {owner_id: 1, room_type: "public", title: "public locked owner", channel_code: "XXX-XXX-XX1", password: "123123"},
-  {owner_id: 1, room_type: "public", title: "public unlocked owner", channel_code: "XXX-XXX-XX2" },
-  {owner_id: 2, room_type: "public", title: "public locked admin", channel_code: "XXX-XXX-XX3", password: "123123"},
-  {owner_id: 2, room_type: "public", title: "public unlocked admin", channel_code: "XXX-XXX-XX4" },
-  {owner_id: 3, room_type: "public", title: "public locked member", channel_code: "XXX-XXX-XX5", password: "123123"},
-  {owner_id: 3, room_type: "public", title: "public unlocked member", channel_code: "XXX-XXX-XX6" },
+  {owner_id: 1, room_type: "public", title: "room 1", channel_code: "XXX-XXX-XX1", password: "123123"},
+  {owner_id: 1, room_type: "public", title: "room 2", channel_code: "XXX-XXX-XX2" },
+  {owner_id: 2, room_type: "public", title: "room 3", channel_code: "XXX-XXX-XX3", password: "123123"},
+  {owner_id: 2, room_type: "public", title: "room 4", channel_code: "XXX-XXX-XX4" },
+  {owner_id: 3, room_type: "public", title: "room 5", channel_code: "XXX-XXX-XX5", password: "123123"},
+  {owner_id: 3, room_type: "public", title: "room 6", channel_code: "XXX-XXX-XX6" },
   
-  {owner_id: 1, room_type: "private", title: "private locked owner", channel_code: "XXX-XXX-XX7", password: "123123"},
-  {owner_id: 1, room_type: "private", title: "private unlocked owner", channel_code: "XXX-XXX-XX8" },
-  {owner_id: 2, room_type: "private", title: "private locked admin", channel_code: "XXX-XXX-XX9", password: "123123"},
-  {owner_id: 2, room_type: "private", title: "private unlocked admin", channel_code: "XXX-XXX-X10" },
-  {owner_id: 3, room_type: "private", title: "private locked member", channel_code: "XXX-XXX-X11", password: "123123"},
-  {owner_id: 3, room_type: "private", title: "private unlocked member", channel_code: "XXX-XXX-X12" },
+  {owner_id: 1, room_type: "private", title: "room 7", channel_code: "XXX-XXX-XX7", password: "123123"},
+  {owner_id: 1, room_type: "private", title: "room 8", channel_code: "XXX-XXX-XX8" },
+  {owner_id: 2, room_type: "private", title: "room 9", channel_code: "XXX-XXX-XX9", password: "123123"},
+  {owner_id: 2, room_type: "private", title: "room 10", channel_code: "XXX-XXX-X10" },
+  {owner_id: 3, room_type: "private", title: "room 11", channel_code: "XXX-XXX-X11", password: "123123"},
+  {owner_id: 3, room_type: "private", title: "room 12", channel_code: "XXX-XXX-X12" },
 ])
 
 GroupChatMembership.create([

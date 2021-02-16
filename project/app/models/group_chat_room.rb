@@ -5,7 +5,8 @@ class GroupChatRoom < ApplicationRecord
   has_many :messages, class_name: "ChatMessage", as: :room
   has_many :memberships, class_name: "GroupChatMembership"
   has_many :users, through: :memberships, source: :user
-  validates :title, presence: true
+  validates :title, presence: true, length: {minimum: 1, maximum: 20}, allow_blank: false
+  validates :max_member_count, :inclusion => { :in => 2..10 }
   validates :room_type, inclusion: { in: ["public", "private"] }
   scope :list_associated_with_current_user, -> (current_user) do
     current_user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
@@ -16,7 +17,6 @@ class GroupChatRoom < ApplicationRecord
           owner: chat_room.owner.for_chat_room_format,
           max_member_count: chat_room.max_member_count,
           current_member_count: chat_room.users.count,
-          current_user_position: chat_room.memberships.find_by_user_id(current_user.id)&.position
       }
     }
   end
@@ -96,4 +96,21 @@ class GroupChatRoom < ApplicationRecord
   #   authorized_position = ["web_admin"]
   #   authorized_position.include?(current_user_position)
   # end
+
+  def self.generate(create_params)
+    GroupChatRoom.transaction do
+      room = GroupChatRoom.create(create_params)
+      raise ActiveRecord::Rollback unless room.persisted? && create_params.has_key?(:owner_id)
+      user = User.find_by_id(create_params[:owner_id])
+      membership = room.join(user, "owner")
+      raise ActiveRecord::Rollback if membership.nil? || !membership.persisted?
+      room
+    end
+  end
+
+  def join(user, position = "member")
+    return nil if user.nil?
+    return nil if self.current_member_count == self.max_member_count
+    GroupChatMembership.create(user_id: user.id, group_chat_room_id: self.id, position: position)
+  end
 end

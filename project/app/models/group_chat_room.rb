@@ -6,7 +6,7 @@ class GroupChatRoom < ApplicationRecord
   has_many :memberships, class_name: "GroupChatMembership"
   has_many :users, through: :memberships, source: :user
   validates :title, presence: true
-  validates :room_type, acceptance: { accept: ["public", "private"] }
+  validates :room_type, inclusion: { in: ["public", "private"] }
   scope :list_associated_with_current_user, -> (current_user) do
     current_user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
       {

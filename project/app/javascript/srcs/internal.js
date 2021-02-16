@@ -107,6 +107,7 @@ export let App = {
     this.mainView = App.appView.main_view;
     this.current_user = new CurrentUser();
     this.consumer = consumer;
+    this.resources = {};
   },
 
   restart: function () {
@@ -118,6 +119,7 @@ export let App = {
     this.current_user.logout();
     this.current_user = new CurrentUser();
     this.router.navigate("#/sessions/new");
+    this.resources = {};
   },
 
   Model: {

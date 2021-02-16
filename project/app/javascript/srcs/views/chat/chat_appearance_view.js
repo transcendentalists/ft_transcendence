@@ -1,18 +1,15 @@
 import { App } from "srcs/internal";
 
-export let AppearanceView = Backbone.View.extend({
-  el: "#appearance-view",
-  template: _.template($("#appearance-view-template").html()),
+export let ChatAppearanceView = Backbone.View.extend({
+  el: "#chat-appearance-view",
+  template: _.template($("#chat-appearance-view-template").html()),
 
-  events: {
-    "click .logout.button ": "logout",
-  },
+  events: {},
 
   initialize: function () {
     this.chat_bans = App.resources.chat_bans;
-    // this.chat_bans = new App.Collection.ChatBans();
-    this.online_users = new App.Collection.Users();
-    this.friends = new App.Collection.Friends();
+    // this.online_users = new App.Collection.Users();
+    // this.friends = new App.Collection.Friends();
   },
 
   logout: function () {

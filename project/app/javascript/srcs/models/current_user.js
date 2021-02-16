@@ -1,3 +1,5 @@
+import { App } from "../internal";
+
 export let CurrentUser = Backbone.Model.extend({
   urlRoot: "/api/users/",
 
@@ -20,5 +22,6 @@ export let CurrentUser = Backbone.Model.extend({
     this.fetch({
       data: { for: "profile" },
     });
+    App.resources.chat_bans = new App.Collection.ChatBans();
   },
 });

@@ -15,13 +15,35 @@ export let ChatRoomView = Backbone.View.extend({
     this.current_member_menu_view = null;
 
     this.chat_message_collection = null;
-    this.chat_members = null;
+    this.chat_room_members = null;
   },
+  // chat_room_members
+  // {
+  //     "id": 1,
+  //     "name": "sanam1",
+  //     "status": "offline",
+  //     "image_url": "assets/sanam1.png",
+  //     "anagram": "GUN",
+  //     "position": "owner",
+  //     "mute": false
+  // },
+  // {
+  //     "id": 4,
+  //     "name": "iwoo1",
+  //     "status": "offline",
+  //     "image_url": "/assets/iwoo1.png",
+  //     "anagram": null,
+  //     "position": "member",
+  //     "mute": false
+  // },
 
   enterToChatRoom: function (data) {
     this.$el.html(this.template());
-    this.chat_members = data.chat_room_members;
-
+    this.chat_room_members = new App.Collection.Users(data.chat_room_members);
+    this.chat_appearance_view = new App.View.ChatAppearanceView({
+      parent: this,
+    });
+    this.chat_appearance_view.render();
     // Helper.fetch({
     //   success_callback:
     // })

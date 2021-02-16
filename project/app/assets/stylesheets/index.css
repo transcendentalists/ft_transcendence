@@ -805,10 +805,11 @@ body {
   max-width: 100% !important;
 }
 
-#chat-room-view #chat-message-list-view {
+#chat-room-view #chat-room-message-list-view {
   overflow-y: scroll;
   max-height: calc(100vh - 250px);
   padding-top: 2rem;
+  padding-top: 1rem;
 }
 
 #chat-room-view .current-user .author {

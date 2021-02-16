@@ -44,6 +44,7 @@ export let GroupChatMessageListView = Backbone.View.extend({
   addAll: function () {
     this.child_views.forEach((child_view) => child_view.close());
     this.messages.forEach((message) => this.addOne(message));
+    this.messages.trigger("scroll");
   },
 
   render: function () {

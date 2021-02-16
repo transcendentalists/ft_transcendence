@@ -168,6 +168,21 @@ ChatMessage.create([
     것은 기관과 봄날의 그리하였는가? 길지 석가는 피어나기 것은 이것이다. 돋고, 가치를 아니한 더운지라 봄바람이다. 우리는 위하여 품에 무엇을 듣는다. 같이 우리 만물은 생명을 인간의 없는 아름답고 있으랴? 이 수 실현에 피가 거친 구하지 쓸쓸하랴? 피가 새가 구하기 지혜는 칼이다. 보배를 찾아다녀도, 많이 심장의 눈이 사막이다. 않는 그들은 풀밭에 열락의 발휘하기 보배를 운다."},
   {user_id: 7, room_type: "GroupChatRoom", room_id: 1, message: "test3"},
   {user_id: 1, room_type: "GroupChatRoom", room_id: 1, message: "test4"},
+  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "Hello, eunhkim!"},
+  {user_id: 3, room_type: "DirectChatRoom", room_id: 1, message: "Hi, Sanam!"},
+  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "안녕하세요. eunhkim!"},
+  {user_id: 3, room_type: "DirectChatRoom", room_id: 1, message: "안녕하세요, Sanam!"},
+  {user_id: 1, room_type: "DirectChatRoom", room_id: 1, message: "메시지는 잘 뜨나요?"},
+  {user_id: 3, room_type: "DirectChatRoom", room_id: 1, message: "네. 잘 뜨네요!"},
+
+  {user_id: 1, room_type: "GroupChatRoom", room_id: 1, message: "쓸쓸한 부패를 긴지라 사는가 이는 속에서 영원히 영락과 소리다.이것은 것이다. 귀는 청춘의 발휘하기 대한 봄바람이다. 피어나기 충분히 들어 부패뿐이다. 작고 얼마나 피부가 군영과 천고에 끝에 이것이다. 영락과 맺어, 사랑의 대중을 어디 약동하다. 착목한는 더운지라 그들은 피가 곳으로 있는가? 무엇이 우리의 대중을 곳이 할지라도 남는 구할 청춘의 커다란 것이다. 피가 새가 과실이 그것을 부패를 우리는 것이다. 품었기 가는 있음으로써 것이다."},
+  {user_id: 4, room_type: "GroupChatRoom", room_id: 1, message: "1"},
+  {user_id: 5, room_type: "GroupChatRoom", room_id: 1, message: "2!"},
+  {user_id: 6, room_type: "GroupChatRoom", room_id: 1, message: "것은 우리 품고 맺어, 생의 사랑의 가치를 봄바람이다. 가슴에 보이는 구하지 청춘의 교향악이다. 끓는 이상의 자신과 가진 우는 가슴이 인생을 돋고, 부패뿐이다. 끓는 발휘하기 어디 가장 청춘의 오아이스도 사막이다. 이상의 꽃이 끝에 교향악이다. 뛰노는 속에서 가치를 대고, 방황하였으며, 하여도 위하여서 산야에 약동하다. 가치를 피가 싹이 쓸쓸하랴? 용기가 용감하고 그들의 보라. 이것은 길지 뼈 넣는 인생을 들어 가치를 위하여 발휘하기 때문이다. 있을 관현악이며, 열락의 꽃이 불어 따뜻한 충분히 그러므로 물방아 이것이다. 커다란 뛰노는 찾아다녀도, 끓는다.
+    것이 보는 뜨고, 것이다. 실로 인간의 곳이 타오르고 끓는다. 주며, 이상의 광야에서 이상의 미묘한 거친 발휘하기 것이다. 두손을 청춘에서만 사랑의 위하여서, 노년에게서 않는 방지하는 것이다. 아니한 그들에게 있는 것이다. 소리다.이것은 있는 충분히 따뜻한 있다. 없는 더운지라 뼈 하여도 인생의 것이다. 능히 얼음이 피고 아름답고 황금시대의 같이, 이것을 위하여서. 천자만홍이 기관과 것은 두손을 천고에 현저하게 그것을 행복스럽고 그들은 보라. 돋고, 곧 속에 싹이 그들에게 청춘을 위하여서 남는 심장의 보라. 그림자는 무엇을 방황하여도, 맺어, 아름다우냐?
+    것은 기관과 봄날의 그리하였는가? 길지 석가는 피어나기 것은 이것이다. 돋고, 가치를 아니한 더운지라 봄바람이다. 우리는 위하여 품에 무엇을 듣는다. 같이 우리 만물은 생명을 인간의 없는 아름답고 있으랴? 이 수 실현에 피가 거친 구하지 쓸쓸하랴? 피가 새가 구하기 지혜는 칼이다. 보배를 찾아다녀도, 많이 심장의 눈이 사막이다. 않는 그들은 풀밭에 열락의 발휘하기 보배를 운다."},
+  {user_id: 7, room_type: "GroupChatRoom", room_id: 1, message: "test3"},
+  {user_id: 1, room_type: "GroupChatRoom", room_id: 1, message: "test4"},
 ])
 
 ChatBan.create([

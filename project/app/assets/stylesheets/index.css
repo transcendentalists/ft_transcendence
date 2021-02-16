@@ -737,7 +737,7 @@ body {
 }
 
 .user-unit .mute.icon {
-  margin-right: 0 i !important;
+  margin-right: 0 !important;
   margin-left: 0.5rem !important;
   padding-left: 0.5rem;
   border-left: 2px solid white;

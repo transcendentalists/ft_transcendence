@@ -18,7 +18,10 @@ export let ChatRoomMemberListView = Backbone.View.extend({
   },
 
   addOne: function (member) {
-    let member_unit_view = new App.View.ChatRoomMemberUnitView(member);
+    let member_unit_view = new App.View.ChatRoomMemberUnitView({
+      model: member,
+      parent: this,
+    });
     this.child_views.push(member_unit_view);
     this.$el.append(member_unit_view.render().$el);
   },

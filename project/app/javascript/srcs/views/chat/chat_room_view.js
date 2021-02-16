@@ -28,8 +28,6 @@ export let ChatRoomView = Backbone.View.extend({
     // Helper.fetch({
     //   success_callback:
     // })
-
-    console.log("success to enter to chat_room");
   },
 
   showPasswordInputModal: function () {
@@ -51,7 +49,6 @@ export let ChatRoomView = Backbone.View.extend({
    ** 404: 챗룸 탐색 실패
    */
   enterFailCallback: function (data) {
-    console.log("🚀 ~ file: chat_room_view.js ~ line 31 ~ data", data);
     if (data.error == undefined || data.error.code == undefined)
       return App.router.navigate("#/errors/500");
 

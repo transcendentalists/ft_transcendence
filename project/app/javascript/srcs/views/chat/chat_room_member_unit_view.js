@@ -3,6 +3,7 @@ import { App } from "srcs/internal";
 export let ChatRoomMemberUnitView = Backbone.View.extend({
   className: "ui teal image label user-unit",
   template: _.template($("#chat-room-member-unit-view-template").html()),
+  tagName: "a",
   events: {},
 
   initialize: function (options) {

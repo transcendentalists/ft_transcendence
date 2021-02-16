@@ -8,7 +8,7 @@ export let InputModalView = Backbone.View.extend({
 
   events: {
     "click .green.button": "send",
-    "click .cancel.button": "close",
+    "click .cancel.button": "cancel",
   },
 
   render: function (data) {
@@ -19,6 +19,11 @@ export let InputModalView = Backbone.View.extend({
     return this;
   },
 
+  cancel: function () {
+    if (this.data.cancel_callback != undefined) this.data.cancel_callback();
+    this.close();
+  },
+
   close: function () {
     this.$el.empty();
     $("#input-modal-view.tiny.modal").modal("hide");
@@ -27,6 +32,7 @@ export let InputModalView = Backbone.View.extend({
   send: function () {
     let input = this.$("input").val();
     this.$("input").val("");
+    if (input == "") return App.router.navigate("#/errors/106");
     if (this.data.hasOwnProperty("success_callback"))
       this.data.success_callback(input);
     this.close();

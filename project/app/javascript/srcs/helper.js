@@ -36,8 +36,10 @@ export let Helper = {
     let success = false;
     try {
       let response = await fetch(prefix + url, params);
+      console.log("🚀 ~ file: helper.js ~ line 39 ~ response", response);
       success = Math.floor(response.status / 100) == 2;
       data = await response.json();
+      console.log("🚀 ~ file: helper.js ~ line 42 ~ data", data);
     } catch (err) {}
 
     if (!success && fail_callback) return fail_callback(data);

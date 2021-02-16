@@ -24,6 +24,12 @@ export let ErrorView = Backbone.View.extend({
       103: ["Unauthorized", "Admin 권한이 없습니다."],
       104: ["Route Error", "요청하신 Admin 페이지를 찾을 수 없습니다."],
       105: ["Create Failed", "요청하신 ChatRoom을 만들 수 없습니다."],
+      106: ["Input not entered", "아무런 정보가 입력되지 않았습니다."],
+
+      403: ["Invalid Authorization", "인증 정보가 일치하지 않습니다."],
+      404: ["Not Found", "요청하신 리소스를 찾을 수 없습니다."],
+
+      500: ["Server Error", "잠시 후 다시 시도해주세요."],
     };
 
     this.error_code = error_code;

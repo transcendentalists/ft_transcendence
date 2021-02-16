@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 
   def render_error(type, msg, status_code)
     return render :json => { error: {
-      'type': type, 'msg': msg
+      'type': type, 'msg': msg, 'code': status_code
       }
     }, :status => status_code
   end

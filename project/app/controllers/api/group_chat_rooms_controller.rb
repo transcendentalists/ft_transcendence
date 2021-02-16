@@ -78,7 +78,7 @@ class Api::GroupChatRoomsController < ApplicationController
   end
 
   def is_password_entered?
-    !request.headers['authorization'].nil?
+    !request.headers['Authorization'].nil?
   end
 
   def is_valid_password?(group_chat_room)

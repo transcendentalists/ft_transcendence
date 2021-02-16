@@ -17,6 +17,9 @@ class GroupChatRoom < ApplicationRecord
           owner: chat_room.owner.for_chat_room_format,
           max_member_count: chat_room.max_member_count,
           current_member_count: chat_room.users.count,
+          current_user: {
+            position: chat_room.memberships.find_by_id(current_user.id)&.position
+          }
       }
     }
   end
@@ -30,7 +33,9 @@ class GroupChatRoom < ApplicationRecord
         owner: chat_room.owner.for_chat_room_format,
         max_member_count: chat_room.max_member_count,
         current_member_count: chat_room.users.count,
-        current_user_position: nil
+        current_user: {
+          position: nil
+        }
       }
     }
   }
@@ -38,7 +43,9 @@ class GroupChatRoom < ApplicationRecord
     chat_room = self.find_by_channel_code(channel_code)
     return nil if chat_room.nil?
     chat_room.for_chat_room_format.merge({
-      current_user_position: chat_room.memberships.find_by_id(current_user.id)&.position
+      current_user: {
+        position: chat_room.memberships.find_by_id(current_user.id)&.position
+      }
     })
   }
 
@@ -75,8 +82,7 @@ class GroupChatRoom < ApplicationRecord
   end
 
   def is_valid_password?(input_password)
-    # BCrypt::Password::new(self.password) == input_password
-    self.password == input_password
+    BCrypt::Password::new(self.password) == input_password
   end
 
   def update_by_params(params)

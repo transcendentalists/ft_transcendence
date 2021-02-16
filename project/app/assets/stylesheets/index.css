@@ -223,17 +223,17 @@ body {
   cursor: pointer;
 }
 
-.ui.comments .current-user.comment > .avatar ~ .content {
+#direct-chat-view .ui.comments .current-user.comment > .avatar ~ .content {
   margin-left: 0;
   width: 257px;
 }
 
-.ui.comments .current-user.comment .text {
+#direct-chat-view .ui.comments .current-user.comment .text {
   width: 257px;
   text-align: right;
 }
 
-.ui.comments .current-user.comment .content-header {
+#direct-chat-view .ui.comments .current-user.comment .content-header {
   justify-content: flex-end;
 }
 
@@ -745,8 +745,9 @@ body {
 }
 
 .chat-room-right-area {
-  padding-top: 2rem;
+  padding-top: 3rem;
   padding-left: 2rem;
+  padding-right: 2rem;
   width: calc(100vw - 440px);
   min-width: 740px;
 }

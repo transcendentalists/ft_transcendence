@@ -13,6 +13,7 @@ import { Users } from "./collections/users";
 import { Friends } from "./collections/friends";
 import { ChatBans } from "./collections/chat_bans";
 import { ChatMessages } from "./collections/chat_messages";
+import { GroupChatMessages } from "./collections/group_chat_messages";
 
 /* VIEW */
 
@@ -62,6 +63,7 @@ import { DirectChatRoomView } from "./views/chat/direct_chat_room_view";
 import { DirectChatMessageListView } from "./views/chat/direct_chat_message_list_view";
 import { ChatMessageView } from "./views/chat/chat_message_view";
 
+/** chat views */
 import { ChatIndexView } from "./views/chat/chat_index_view";
 import { ChatRoomCardListView } from "./views/chat/chat_room_card_list_view";
 import { ChatRoomCardView } from "./views/chat/chat_room_card_view";
@@ -69,6 +71,7 @@ import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
 import { ChatRoomView } from "./views/chat/chat_room_view";
 import { ChatRoomMemberListView } from "./views/chat/chat_room_member_list_view";
 import { ChatRoomMemberUnitView } from "./views/chat/chat_room_member_unit_view";
+import { GroupChatMessageListView } from "./views/chat/group_chat_message_list_view";
 
 import { GuildIndexView } from "./views/guild/guild_index_view";
 import { GuildDetailView } from "./views/guild/guild_detail_view";
@@ -141,6 +144,7 @@ export let App = {
     Friends,
     ChatBans,
     ChatMessages,
+    GroupChatMessages,
   },
   View: {
     SignInView,
@@ -170,6 +174,7 @@ export let App = {
     ChatRoomMemberListView,
     ChatRoomMemberUnitView,
     ChatRoomCreateView,
+    GroupChatMessageListView,
 
     GuildIndexView,
     GuildDetailView,

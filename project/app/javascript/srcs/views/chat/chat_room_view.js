@@ -14,8 +14,16 @@ export let ChatRoomView = Backbone.View.extend({
     this.chat_menu_view = null;
     this.current_member_menu_view = null;
 
-    this.chat_message_collection = null;
+    this.chat_messages = null;
     this.chat_room_members = null;
+  },
+
+  renderChatMessages: function () {
+    this.chat_messages = new App.Collection.GroupChatMessages(this.room_id);
+    this.chat_message_list_view = new App.View.GroupChatMessageListView({
+      parent: this,
+    });
+    this.chat_messages.fetch({ reset: true });
   },
 
   enterToChatRoom: function (data) {
@@ -25,9 +33,7 @@ export let ChatRoomView = Backbone.View.extend({
       parent: this,
     });
     this.chat_room_member_list_view.render();
-    // Helper.fetch({
-    //   success_callback:
-    // })
+    this.renderChatMessages();
   },
 
   showPasswordInputModal: function () {

@@ -17,7 +17,7 @@ export let GameIndexView = Backbone.View.extend({
     this.is_player = match_id == undefined ? true : false;
     this.left_player_view = null;
     this.right_player_view = null;
-    this.is_render_player_view = false;
+    this.is_player_view_rendered = false;
     this.play_view = null;
     this.clear_id = null;
 
@@ -72,7 +72,7 @@ export let GameIndexView = Backbone.View.extend({
     this.channel = App.Channel.ConnectGameChannel(
       this.recv,
       this,
-      this.is_player ? data["match"]["id"] : data,
+      this.is_player ? data["match"]["id"] : data
     );
   },
 
@@ -145,17 +145,16 @@ export let GameIndexView = Backbone.View.extend({
    ** 게스트일 경우 로딩 대기
    */
   renderPlayerView: function (data) {
-    if (this.is_render_player_view)
-      return;
+    if (this.is_player_view_rendered) return;
     this.left_player_view = new App.View.UserProfileCardView();
     this.right_player_view = new App.View.UserProfileCardView();
-    this.is_render_player_view = true;
+    this.is_player_view_rendered = true;
     this.$(".vs-icon").html("VS");
     this.$("#left-game-player-view").append(
-      this.left_player_view.render(data["left"]).$el,
+      this.left_player_view.render(data["left"]).$el
     );
     this.$("#right-game-player-view").append(
-      this.right_player_view.render(data["right"]).$el,
+      this.right_player_view.render(data["right"]).$el
     );
 
     if (data.type == "START") {
@@ -182,7 +181,7 @@ export let GameIndexView = Backbone.View.extend({
           this.start();
         }
       }.bind(this),
-      1000,
+      1000
     );
   },
 

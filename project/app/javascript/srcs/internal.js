@@ -96,6 +96,8 @@ import { ConnectNotificationChannel } from "channels/notification_channel";
 /* CONFIGURATION AND UTIL */
 import { Helper } from "./helper";
 export { Helper } from "./helper";
+import { DualHelper } from "./dual_helper";
+export { DualHelper } from "./dual_helper";
 import { Router } from "./router";
 import { AppView } from "./views/app_view";
 

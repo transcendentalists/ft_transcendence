@@ -4,7 +4,7 @@ class Match < ApplicationRecord
   has_many :scorecards, dependent: :delete_all
   has_many :users, through: :scorecards
 
-  validates :rule_id, inclusion: { :in => 1..7 }
+  validates :rule_id, inclusion: { in: 1..7 }
   validates :target_score, inclusion: { in: [3, 5, 7, 10] }
 
   scope :for_user_index, -> (user_id) do

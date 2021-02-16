@@ -6,7 +6,7 @@ export let Users = Backbone.Collection.extend({
 
   initialize: function (users = []) {
     if (users.length == 0) return;
-    users.forEach((user) => this.add(new App.Model.User(user)));
+    users.forEach((user) => this.add(new User(user)));
   },
 
   parse: function (response) {

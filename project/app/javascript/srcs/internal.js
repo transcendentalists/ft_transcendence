@@ -66,8 +66,10 @@ import { ChatIndexView } from "./views/chat/chat_index_view";
 import { ChatRoomCardListView } from "./views/chat/chat_room_card_list_view";
 import { ChatRoomCardView } from "./views/chat/chat_room_card_view";
 import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
-
 import { ChatRoomView } from "./views/chat/chat_room_view";
+import { ChatRoomMemberListView } from "./views/chat/chat_room_member_list_view";
+import { ChatRoomMemberUnitView } from "./views/chat/chat_room_member_unit_view";
+
 import { GuildIndexView } from "./views/guild/guild_index_view";
 import { GuildDetailView } from "./views/guild/guild_detail_view";
 import { GuildCreateView } from "./views/guild/guild_create_view";
@@ -102,12 +104,14 @@ import consumer from "channels/consumer";
 export let App = {
   initialize: function () {
     Helper.fetch("session", { method: "DELETE" });
+    this.resources = {
+      chat_bans: new App.Collection.ChatBans(),
+    };
     this.appView = new AppView();
     this.router = new Router();
     this.mainView = App.appView.main_view;
     this.current_user = new CurrentUser();
     this.consumer = consumer;
-    this.resources = {};
   },
 
   restart: function () {
@@ -162,9 +166,11 @@ export let App = {
     ChatIndexView,
     ChatRoomCardListView,
     ChatRoomCardView,
-
     ChatRoomView,
+    ChatRoomMemberListView,
+    ChatRoomMemberUnitView,
     ChatRoomCreateView,
+
     GuildIndexView,
     GuildDetailView,
     GuildCreateView,

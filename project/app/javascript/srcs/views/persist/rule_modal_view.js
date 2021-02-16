@@ -5,7 +5,9 @@ export let RuleModalView = Backbone.View.extend({
   el: "#rule-modal-view",
 
   initialize: function () {
-    this.enemy = null;
+    $("#rule-modal-view").modal("setting", {
+      closable: false,
+    });
   },
 
   events: {

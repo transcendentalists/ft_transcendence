@@ -6,6 +6,9 @@ export let ChatRoomView = Backbone.View.extend({
   template: _.template($("#chat-room-view-template").html()),
   entering_template: _.template($("#entering-chat-room-view-template").html()),
   className: "flex-container column-direction",
+  events: {
+    "click .submit.button": "send",
+  },
 
   initialize: function (room_id) {
     this.room_id = room_id;
@@ -16,6 +19,21 @@ export let ChatRoomView = Backbone.View.extend({
 
     this.chat_messages = null;
     this.chat_room_members = null;
+    this.channel = null;
+  },
+
+  send: function () {
+    let msg = this.$el.find($(".reply-field")).val();
+    if (msg == "") return;
+    if (this.channel == null) return;
+    $(".reply-field").val("");
+    this.channel.speak({
+      image_url: App.current_user.get("image_url"),
+      name: App.current_user.get("name"),
+      created_at: new Date(),
+      message: msg,
+      user_id: App.current_user.get("id"),
+    });
   },
 
   renderChatMessages: function () {
@@ -34,6 +52,10 @@ export let ChatRoomView = Backbone.View.extend({
     });
     this.chat_room_member_list_view.render();
     this.renderChatMessages();
+    this.channel = App.Channel.ConnectGroupChatChannel(
+      this.chat_messages,
+      this.room_id
+    );
   },
 
   showPasswordInputModal: function () {
@@ -90,6 +112,16 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   close: function () {
+    if (this.chat_message_list_view) this.chat_message_list_view.close();
+    if (this.chat_room_member_list_view)
+      this.chat_room_member_list_view.close();
+    if (this.chat_menu_view) this.chat_menu_view.close();
+    if (this.current_member_menu_view) this.current_member_menu_view.close();
+
+    this.chat_messages = null;
+    this.chat_room_members = null;
+    if (this.channel) this.channel.unsubscribe();
+
     this.remove();
   },
 });

@@ -47,25 +47,9 @@ export let GroupChatMessageListView = Backbone.View.extend({
     this.messages.trigger("scroll");
   },
 
-  render: function () {
-    // this.channel = App.Channel.ConnectDirectChatChannel(
-    //   this.messages,
-    //   this,
-    //   this.room_id
-    // );
-    return this;
-  },
-
-  stop: function () {
-    this.stopListening();
-    if (this.channel) this.channel.unsubscribe();
-    this.channel = null;
-  },
-
   close: function () {
     this.child_views.forEach((child_view) => child_view.close());
     this.child_views = [];
-    this.messages.remove();
     this.remove();
   },
 });

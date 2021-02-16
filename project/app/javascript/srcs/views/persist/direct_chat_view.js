@@ -16,9 +16,9 @@ export let DirectChatView = Backbone.View.extend({
   },
 
   send: function () {
-    let msg = $("#reply-field").val();
+    let msg = $(".reply-field").val();
     if (msg == "") return;
-    $("#reply-field").val("");
+    this.$el.find($(".reply-field")).val("");
     this.chat_room.send({
       image_url: App.current_user.get("image_url"),
       name: App.current_user.get("name"),

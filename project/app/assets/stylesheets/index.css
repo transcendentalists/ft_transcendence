@@ -210,7 +210,7 @@ body {
   margin: 0 1rem 1rem 1rem;
 }
 
-#direct-chat-view #reply-field {
+#direct-chat-view .reply-field {
   min-height: 4em;
   height: 4em;
 }

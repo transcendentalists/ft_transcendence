@@ -32,8 +32,8 @@ export let ChatRoomMemberListView = Backbone.View.extend({
   },
 
   close: function () {
-    this.online_user_list_view.close();
-    this.friends_list_view.close();
+    if (this.online_user_list_view) this.online_user_list_view.close();
+    if (this.friends_list_view) this.friends_list_view.close();
     this.remove();
   },
 });

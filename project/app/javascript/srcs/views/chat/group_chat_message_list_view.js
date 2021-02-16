@@ -50,6 +50,7 @@ export let GroupChatMessageListView = Backbone.View.extend({
   close: function () {
     this.child_views.forEach((child_view) => child_view.close());
     this.child_views = [];
+
     this.remove();
   },
 });

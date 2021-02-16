@@ -55,7 +55,11 @@ export let Helper = {
   },
 
   isUserChatBanned: function (user_id) {
-    return App.appView.appearance_view.chat_bans.isUserChatBanned(user_id);
+    return App.resources.chat_bans.isUserChatBanned(user_id);
+  },
+
+  isUserFriend: function (user_id) {
+    return App.appView.appearance_view.friends.get(user_id) !== undefined;
   },
 
   isCurrentUser: function (user_id) {

@@ -14,7 +14,6 @@ export let ChatRoomView = Backbone.View.extend({
     this.room_id = room_id;
     this.chat_message_list_view = null; // chat_message_collection
     this.chat_room_member_list_view = null; // chat_members
-    this.chat_menu_view = null;
     this.current_member_menu_view = null;
 
     this.chat_messages = null;
@@ -88,7 +87,6 @@ export let ChatRoomView = Backbone.View.extend({
       case "403":
       case "404":
         return App.router.navigate("#/errors/" + code);
-        break;
       default:
         return App.router.navigate("#/errors/500");
     }
@@ -116,7 +114,6 @@ export let ChatRoomView = Backbone.View.extend({
     if (this.chat_room_member_list_view)
       this.chat_room_member_list_view.close();
     if (this.chat_menu_view) this.chat_menu_view.close();
-    if (this.current_member_menu_view) this.current_member_menu_view.close();
 
     this.chat_messages = null;
     this.chat_room_members = null;

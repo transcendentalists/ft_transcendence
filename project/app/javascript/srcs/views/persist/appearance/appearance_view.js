@@ -9,7 +9,6 @@ export let AppearanceView = Backbone.View.extend({
   },
 
   initialize: function () {
-    // this.chat_bans = new App.Collection.ChatBans();
     this.chat_bans = App.resources.chat_bans;
     this.online_users = new App.Collection.Users();
     this.friends = new App.Collection.Friends();

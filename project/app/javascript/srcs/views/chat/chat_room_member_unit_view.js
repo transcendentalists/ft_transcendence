@@ -14,6 +14,7 @@ export let ChatRoomMemberUnitView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(this.template(this.model.attributes));
+    this.$el.attr("data-user-id", this.model.id);
     return this;
   },
 

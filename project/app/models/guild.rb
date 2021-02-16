@@ -4,6 +4,11 @@ class Guild < ApplicationRecord
   has_many :war_statuses
   has_many :users, through: :memberships, source: :user
   has_many :invitations, class_name: "GuildInvitation"
+  scope :for_guild_index, -> {
+    order(point: :desc).map { |guild|
+      guild.guild_stat
+    }
+  }
 
   def guild_stat()
     stat = self.to_simple

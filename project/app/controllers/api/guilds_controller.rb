@@ -1,6 +1,8 @@
 class Api::GuildsController < ApplicationController
   def index
-    if params[:user_id]
+    if params[:for] == "guild_index"
+      render :json => { guilds: Guild.for_guild_index }
+    elsif params[:user_id]
       render plain: "This is user " + params[:user_id] + "'s matches"
     elsif params[:war_id]
       render plain: "This is war " + params[:war_id] + "'s matches"

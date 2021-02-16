@@ -562,14 +562,18 @@ body {
   margin-left: 1rem;
 }
 
-#guild-index-view .guild-index-headers {
-  display: flex;
-  margin-bottom: 0.5rem;
+#guild-index-view .guild-ranking-list .stat {
+  margin-left: 1rem;
 }
 
-#guild-index-view .guild-index-buttons {
+#guild-index-view .guild-profile.buttons {
   margin-left: auto;
-  margin-top: 0.5rem;
+}
+
+#guild-index-view .guild-profile .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
 }
 
 #guild-index-view .war-request-card-list {

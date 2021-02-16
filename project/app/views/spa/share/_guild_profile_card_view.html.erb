@@ -1,18 +1,28 @@
 <script type="text/template" id="guild-profile-card-template">
-  <img class="ui circular small image" src="<%%= guild.image_url %>">
+  <img class="ui circular small image" src="<%%= image_url %>">
   <div class="content flex-container column-direction">
     <div class="row flex-container baseline">
-      <div class="name"><%%= guild.name %></div>
-      <div class="stat"> <strong><%%= guild.anagram %></strong> | <%%= guild.rank %> 위 (<%%= guild.position %>)</div>
+      <div class="name"><%%= name %></div>
+      <div class="stat"> <strong><%%= anagram %></strong> | <%%= rank %> 위 </div>
     </div>
     <div class="row">
-      <%%= '현재 오너: ' + guild.owner %>
+      <%%= '현재 오너: ' + owner %>
     </div>
     <div class="row">
-      <%%= '길드원 수: ' + guild.num_of_member %>
+      <%%= '길드원 수: ' + num_of_member %>
     </div>
     <div class="row profile-trophy">
-      <%%= '길드 포인트: ' + guild.point %>
+      <%%= '길드 포인트: ' + point %>
     </div>
+  </div>
+  <div class="guild-profile buttons content flex-container column-direction">
+    <button id="guild-show-button" class="ui button mini teal">
+      길드보기
+    </button>
+    <%% if (is_guild_of_current_user) { %>
+    <button id="guild-leave-button" class="ui button mini red">
+      길드탈퇴
+    </button>
+    <%% } %>
   </div>
 </script>

@@ -6,7 +6,6 @@ export let WarRequestCardView = Backbone.View.extend({
   initialize: function () {},
 
   render: function (data) {
-    console.log(data);
     this.$el.html(this.template(data));
     return this;
   },

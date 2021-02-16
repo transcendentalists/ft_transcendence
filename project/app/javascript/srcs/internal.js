@@ -85,6 +85,7 @@ import { GuildIndexView } from "./views/guild/guild_index_view";
 import { GuildDetailView } from "./views/guild/guild_detail_view";
 import { GuildCreateView } from "./views/guild/guild_create_view";
 import { GuildProfileCardView } from "./views/guild/guild_profile_card_view";
+import { GuildRankingView } from "./views/guild/guild_ranking_view";
 import { WarRequestCardListView } from "./views/guild/war_request_card_list_view";
 import { WarRequestCardView } from "./views/guild/war_request_card_view";
 
@@ -172,6 +173,7 @@ export let App = {
     GuildDetailView,
     GuildCreateView,
     GuildProfileCardView,
+    GuildRankingView,
     WarRequestCardListView,
     WarRequestCardView,
     GuildInvitationView,

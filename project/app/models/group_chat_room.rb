@@ -100,7 +100,7 @@ class GroupChatRoom < ApplicationRecord
   def self.generate(create_params)
     GroupChatRoom.transaction do
       room = GroupChatRoom.create(create_params)
-      raise ActiveRecord::Rollback unless room.persisted? && create_params.has_key?(:owner_id)
+      raise ActiveRecord::Rollback if !room.persisted? || !create_params.has_key?(:owner_id)
       user = User.find_by_id(create_params[:owner_id])
       membership = room.join(user, "owner")
       raise ActiveRecord::Rollback if membership.nil? || !membership.persisted?

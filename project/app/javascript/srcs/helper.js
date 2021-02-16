@@ -1,6 +1,11 @@
 import { App } from "srcs/internal";
 
 export let Helper = {
+  current_user_header: function (headers = {}) {
+    headers.current_user = App.current_user.id;
+    return headers;
+  },
+
   fetch: async function (url, hash_args = {}) {
     let params = {
       method: hash_args.hasOwnProperty("method") ? hash_args["method"] : "GET",

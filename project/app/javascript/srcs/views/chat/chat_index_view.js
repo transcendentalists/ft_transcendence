@@ -22,9 +22,7 @@ export let ChatIndexView = Backbone.View.extend({
     if (input == "") return;
     const chat_room_search_url = `group_chat_rooms?channel_code=${input}`;
     Helper.fetch(chat_room_search_url, {
-      headers: {
-        current_user: App.current_user.id,
-      },
+      headers: Helper.current_user_header(),
       success_callback: function (data) {
         App.router.navigate("#/chatrooms/" + data.group_chat_rooms.id);
       }.bind(this),
@@ -50,17 +48,13 @@ export let ChatIndexView = Backbone.View.extend({
   render: function () {
     const my_chat_room_url = "group_chat_rooms?for=my_group_chat_room_list";
     Helper.fetch(my_chat_room_url, {
-      headers: {
-        current_user: App.current_user.id,
-      },
+      headers: Helper.current_user_header(),
       success_callback: this.renderMyChatRoomCallback.bind(this),
     });
 
     const public_chat_room_url = "group_chat_rooms?room_type=public";
     Helper.fetch(public_chat_room_url, {
-      headers: {
-        current_user: App.current_user.id,
-      },
+      headers: Helper.current_user_header(),
       success_callback: this.renderPublicChatRoomCallback.bind(this),
     });
 

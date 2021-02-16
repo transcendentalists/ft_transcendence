@@ -1,6 +1,11 @@
 class Api::WarRequestsController < ApplicationController
   def index
-    render plain: params[:guild_id] + " guild's war requests index"
+    if params[:for] == "guild_index"
+      render json: { war_requests: WarRequest.for_guild_index(params[:guild_id]) }
+      # render json: WarRequest.for_guild_index(params[:guild_id])
+    else
+      render plain: params[:guild_id] + " guild's war requests index"
+    end
   end
 
   def create

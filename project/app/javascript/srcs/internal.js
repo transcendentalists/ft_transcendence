@@ -68,9 +68,6 @@ import { ChatRoomCardView } from "./views/chat/chat_room_card_view";
 import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
 
 import { ChatRoomView } from "./views/chat/chat_room_view";
-import { GuildIndexView } from "./views/guild/guild_index_view";
-import { GuildDetailView } from "./views/guild/guild_detail_view";
-import { GuildCreateView } from "./views/guild/guild_create_view";
 import { UserProfileCardView } from "./views/user/user_profile_card_view";
 import { LiveIndexView } from "./views/live/live_index_view";
 import { WarIndexView } from "./views/war/war_index_view";
@@ -82,6 +79,14 @@ import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
 import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
 import { AdminGuildDetailView } from "./views/admin/admin_guild_detail_view";
+
+/** guild views */
+import { GuildIndexView } from "./views/guild/guild_index_view";
+import { GuildDetailView } from "./views/guild/guild_detail_view";
+import { GuildCreateView } from "./views/guild/guild_create_view";
+import { GuildProfileCardView } from "./views/guild/guild_profile_card_view";
+import { WarRequestCardListView } from "./views/guild/war_request_card_list_view";
+import { WarRequestCardView } from "./views/guild/war_request_card_view";
 
 /* CHANNEL */
 import { ConnectAppearanceChannel } from "channels/appearance_channel";
@@ -166,6 +171,9 @@ export let App = {
     GuildIndexView,
     GuildDetailView,
     GuildCreateView,
+    GuildProfileCardView,
+    WarRequestCardListView,
+    WarRequestCardView,
     GuildInvitationView,
     GuildInvitationListView,
     LadderIndexView,

@@ -551,6 +551,51 @@ body {
 }
 
 /* ==========================================================================
+   GUILD INDEX VIEW
+   ========================================================================== */
+
+#guild-index-view {
+  margin-top: 8rem;
+}
+
+#guild-index-view .guild-profile-view .stat {
+  margin-left: 1rem;
+}
+
+#guild-index-view .guild-index-headers {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+
+#guild-index-view .guild-index-buttons {
+  margin-left: auto;
+  margin-top: 0.5rem;
+}
+
+#guild-index-view .war-request-card-list {
+  margin: 5% 0;
+}
+
+#guild-index-view .war-request-card .stat {
+  margin-left: 1rem;
+}
+
+#guild-index-view .war-request-card .content {
+  margin-left: 2rem;
+  margin-top: -1rem;
+}
+
+#guild-index-view .war-request.buttons {
+  margin-left: auto;
+}
+
+#guild-index-view .war-request .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+/* ==========================================================================
    LADDER INDEX VIEW
    ========================================================================== */
 

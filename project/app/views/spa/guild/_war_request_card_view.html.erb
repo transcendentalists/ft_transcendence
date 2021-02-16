@@ -1,0 +1,29 @@
+<script type="text/template" id="war-request-card-view-template">
+  <img class="ui circular small image" src="<%%= enemy.image_url %>">
+  <div class="content flex-container column-direction">
+    <div class="row flex-container baseline">
+      <div class="name"><%%= enemy.name %></div>
+      <div class="stat"> <strong><%%= enemy.anagram %></strong> | <%%= enemy.rank %> 위</div>
+    </div>
+    <div class="row">
+      <%%= '현재 오너: ' + enemy.owner %>
+  </div>
+    <div class="row">
+      <%%= '길드원 수: ' + enemy.num_of_member %>
+    </div>
+    <div class="row">
+      <%%= '배팅 포인트: ' + bet_point %>
+    </div>
+    <div class="row">
+      <%%= '워 타임: ' + war_time %>
+    </div>
+  </div>
+  <div class="war-request buttons content flex-container column-direction">
+    <button id="guild-manage-button" class="ui button mini teal">
+      수락하기
+    </button>
+    <button id="guild-leave-button" class="ui button mini red">
+      거절하기
+    </button>
+  </div>
+</script>

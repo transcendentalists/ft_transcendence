@@ -50,16 +50,13 @@ export let GameIndexView = Backbone.View.extend({
     App.current_user.update_status("playing");
     Helper.fetch("matches", {
       method: "POST",
-      success_callback: this.subscribeChannel.bind(this),
+      success_callback: this.subscribeGameChannelAndBroadcast.bind(this),
       body: {
         match_type: this.match_type,
         user_id: App.current_user.id,
         rule_id: this.rule_id,
         target_score: this.target_score,
         match_id: this.match_id,
-        dual: {
-          challenger_id: this.challenger_id,
-        },
       },
     });
   },
@@ -67,13 +64,20 @@ export let GameIndexView = Backbone.View.extend({
   /**
    ** 플레이어일 경우 joinMatch의 리턴 데이터를 이용하여 match id를 room으로 지정,
    ** 게스트일 경우 router parameter data를 그대로 room 이름으로 사용
+   ** 매치 타입이 dual인 경우 게임 채널을 구독하고  challenger한테 broadcast 한다.
    */
-  subscribeChannel: function (data) {
+  subscribeGameChannelAndBroadcast: function (data) {
     this.channel = App.Channel.ConnectGameChannel(
       this.recv,
       this,
       this.is_player ? data["match"]["id"] : data
     );
+    if (this.match_type == "dual" && this.challenger_id != null) {
+      App.notification_channel.dualMatchHasCreated(
+        this.challenger_id,
+        data["match"]["id"]
+      );
+    }
   },
 
   showInfoModal: function (type) {

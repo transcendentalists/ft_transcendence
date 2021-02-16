@@ -39,9 +39,7 @@ export function ConnectNotificationChannel(room_id) {
         } else if (data.status == "approved") {
           this.data = data;
           App.appView.request_view.close();
-          // NOTE: 시간차 문제 해결하기 위해 500 시간을 줌.
-          // score card 가 띄어졌는지 확인한다.
-          setTimeout(this.dualGameStart.bind(this), 500);
+          this.dualGameStart();
         } else if (statuses.includes(data.status)) {
           if (data.status != "canceled") {
             Helper.info({
@@ -72,6 +70,13 @@ export function ConnectNotificationChannel(room_id) {
 
       dualRequestAlreadyExist(challenger_id) {
         this.perform("dual_request_already_exist", { id: challenger_id });
+      },
+
+      dualMatchHasCreated(challenger_id, match_id) {
+        this.perform("dual_match_has_created", {
+          challenger_id: challenger_id,
+          match_id: match_id,
+        });
       },
 
       dualGameStart: function () {

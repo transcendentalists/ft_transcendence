@@ -41,4 +41,15 @@ class NotificationChannel < ApplicationCable::Channel
       { type: 'dual', status: 'exist' },
     )
   end
+
+  def dual_match_has_created(params)
+    ActionCable.server.broadcast(
+      "notification_channel_#{params['challenger_id'].to_s}",
+      {
+        type: 'dual',
+        status: 'approved',
+        match_id: params['match_id'],
+      },
+    )
+  end
 end

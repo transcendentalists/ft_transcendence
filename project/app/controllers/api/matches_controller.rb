@@ -80,15 +80,6 @@ class Api::MatchesController < ApplicationController
         target_score: target_score,
       )
     card = Scorecard.create(user_id: user.id, match_id: match.id, side: 'left')
-    ActionCable.server.broadcast(
-      "notification_channel_#{params[:dual][:challenger_id].to_s}",
-      {
-        type: 'dual',
-        status: 'approved',
-        match_id: match.id,
-        challenger_id: params[:dual][:challenger_id],
-      },
-    )
     user.update_status('playing')
     match
   end

@@ -6,11 +6,13 @@ export let CurrentUser = Backbone.Model.extend({
   initialize: function () {
     this.is_admin = false;
     this.sign_in = false;
+    this.working = false;
   },
 
   logout: function () {
     this.is_admin = false;
     this.sign_in = false;
+    this.working = false;
   },
 
   parse: function (response) {
@@ -25,7 +27,7 @@ export let CurrentUser = Backbone.Model.extend({
   },
 
   update_status: function (status) {
-    this.set("status", status)
+    this.set("status", status);
   },
 
   dualRequestTo: function (enemy) {
@@ -43,7 +45,7 @@ export let CurrentUser = Backbone.Model.extend({
         enemy.get("status") == "offline"
           ? enemy.get("name") + "님은 현재 로그아웃 상태입니다."
           : enemy.get("name") + "님은 현재 게임중입니다.";
-    } else if (this.checkDualRequestOrInviteViewExist()) {
+    } else if (this.isWorking()) {
       description = "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.";
     }
     if (description != null) {
@@ -56,26 +58,7 @@ export let CurrentUser = Backbone.Model.extend({
     return true;
   },
 
-  checkDualRequestOrInviteViewExist: function () {
-    return (
-      $("#invite-view").is(":visible") || $("#request-view").is(":visible")
-    );
-  },
-
-  checkDualRequestOrInviteAndRemove: function (user) {
-    if (user.status == "offline" && this.checkDualRequestOrInviteViewExist()) {
-      let id = $("#invite-view").is(":visible")
-        ? App.appView.invite_view.challenger.profile.id
-        : App.appView.request_view.enemy.id;
-      if (user.id == id) {
-        $("#invite-view").is(":visible")
-          ? App.appView.invite_view.close()
-          : App.appView.request_view.close();
-        Helper.info({
-          subject: "게임 취소",
-          description: "상대방이 로그아웃했습니다.",
-        });
-      }
-    }
+  isWorking: function () {
+    return this.working;
   },
 });

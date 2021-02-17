@@ -8,7 +8,10 @@ export let WarRequestCardListView = Backbone.View.extend({
   },
 
   addOne: function (war_request) {
-    let child_view = new App.View.WarRequestCardView();
+    let child_view = new App.View.WarRequestCardView({
+      war_request_id: war_request.id,
+      enemy_guild_id: war_request.enemy.id,
+    });
     this.child_views.push(child_view);
     this.$el.append(child_view.render(war_request).$el);
   },

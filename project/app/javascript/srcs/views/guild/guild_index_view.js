@@ -12,13 +12,9 @@ export let GuildIndexView = Backbone.View.extend({
   },
 
   renderGuildProfileCallback: function (data) {
-    data.guild.is_guild_of_current_user = Helper.isGuildOfCurrentUser(
-      this.guild.id
+    this.guild_profile_card_view = new App.View.GuildProfileCardView(
+      data.guild.id
     );
-    // data.guild.append({
-    //   is_guild_of_current_user: Helper.isGuildOfCurrentUser(this.guild.id),
-    // });
-    this.guild_profile_card_view = new App.View.GuildProfileCardView();
     this.guild_profile_card_view
       .setElement(this.$(".current-user-guild.profile-card"))
       .render(data.guild);
@@ -32,9 +28,7 @@ export let GuildIndexView = Backbone.View.extend({
   },
 
   renderGuildRankingCallback: function (data) {
-    data.guilds.is_guild_of_current_user = Helper.isGuildOfCurrentUser(
-      this.guild.id
-    );
+    data.guilds.is_guild_of_current_user = Helper.isGuildOfCurrentUser();
     this.guild_ranking_view = new App.View.GuildRankingView();
     this.guild_ranking_view
       .setElement(this.$(".guild-ranking-list"))

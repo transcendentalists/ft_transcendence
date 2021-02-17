@@ -1,6 +1,11 @@
+import { App } from "../srcs/internal";
 import consumer from "./consumer";
 
-export function ConnectGroupChatChannel(message_collection, room_id) {
+export function ConnectGroupChatChannel(
+  message_collection,
+  room_id,
+  room_members
+) {
   return consumer.subscriptions.create(
     {
       channel: "GroupChatChannel",
@@ -17,8 +22,21 @@ export function ConnectGroupChatChannel(message_collection, room_id) {
       },
 
       received(message) {
-        message_collection.add(message);
-        message_collection.trigger("scroll");
+        const type = message.type;
+        if (type == "msg") {
+          message_collection.add(message);
+          message_collection.trigger("scroll");
+          return;
+        }
+
+        const member = room_members.get(message.user_id);
+        if (type == "kick") {
+          console.log("notification about kick");
+        } else if (type == "position") {
+          member.set("position", message.position);
+        } else if (message.type == "mute") {
+          member.set("mute", message.mute);
+        }
       },
 
       speak(current_user_message) {

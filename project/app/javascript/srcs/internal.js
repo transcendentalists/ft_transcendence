@@ -73,6 +73,7 @@ import { ChatRoomMemberListView } from "./views/chat/chat_room_member_list_view"
 import { ChatRoomMemberUnitView } from "./views/chat/chat_room_member_unit_view";
 import { GroupChatMessageListView } from "./views/chat/group_chat_message_list_view";
 import { ChatRoomMemberMenuView } from "./views/chat/chat_room_member_menu_view";
+import { ChatRoomMenuView } from "./views/chat/chat_room_menu_view";
 
 import { GuildIndexView } from "./views/guild/guild_index_view";
 import { GuildDetailView } from "./views/guild/guild_detail_view";
@@ -172,6 +173,7 @@ export let App = {
     ChatRoomCardListView,
     ChatRoomCardView,
     ChatRoomView,
+    ChatRoomMenuView,
     ChatRoomMemberListView,
     ChatRoomMemberUnitView,
     ChatRoomMemberMenuView,

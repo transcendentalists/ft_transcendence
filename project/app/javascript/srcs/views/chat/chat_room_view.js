@@ -15,6 +15,7 @@ export let ChatRoomView = Backbone.View.extend({
     this.chat_message_list_view = null; // chat_message_collection
     this.chat_room_member_list_view = null; // chat_members
     this.current_member_menu_view = null;
+    this.chat_room_menu_view = null;
 
     this.chat_messages = null;
     this.chat_room_members = null;
@@ -50,6 +51,13 @@ export let ChatRoomView = Backbone.View.extend({
       parent: this,
     });
     this.chat_room_member_list_view.render();
+
+    this.chat_room_menu_view = new App.View.ChatRoomMenuView({
+      parent: this,
+    });
+    this.chat_room_menu_view.setElement(this.$("#chat-room-menu-view"));
+    this.chat_room_menu_view.render();
+
     this.renderChatMessages();
     this.channel = App.Channel.ConnectGroupChatChannel(
       this.chat_messages,
@@ -113,7 +121,7 @@ export let ChatRoomView = Backbone.View.extend({
     if (this.chat_message_list_view) this.chat_message_list_view.close();
     if (this.chat_room_member_list_view)
       this.chat_room_member_list_view.close();
-    if (this.chat_menu_view) this.chat_menu_view.close();
+    if (this.chat_room_menu_view) this.chat_room_menu_view.close();
 
     this.chat_messages = null;
     this.chat_room_members = null;

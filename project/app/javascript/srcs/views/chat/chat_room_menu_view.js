@@ -12,6 +12,7 @@ export let ChatRoomMenuView = Backbone.View.extend({
 
   initialize: function (options) {
     this.parent = options.parent;
+    this.room = options.room;
     this.room_id = this.parent.room_id;
     this.chat_room_members = this.parent.chat_room_members;
     this.current_user_as_room_member = this.chat_room_members.get(
@@ -55,7 +56,7 @@ export let ChatRoomMenuView = Backbone.View.extend({
   },
 
   render: function () {
-    this.$el.html(this.template());
+    this.$el.html(this.template(this.room));
     this.showOrHideButtonsByPosition();
     return this;
   },

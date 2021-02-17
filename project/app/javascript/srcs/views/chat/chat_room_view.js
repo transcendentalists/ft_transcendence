@@ -20,6 +20,7 @@ export let ChatRoomView = Backbone.View.extend({
     this.chat_messages = null;
     this.chat_room_members = null;
     this.channel = null;
+    this.room_info = null;
   },
 
   send: function () {
@@ -45,6 +46,7 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   enterToChatRoom: function (data) {
+    this.room_info = data;
     this.$el.html(this.template());
     this.chat_room_members = new App.Collection.GroupChatMembers(
       data.chat_room_members,
@@ -57,6 +59,7 @@ export let ChatRoomView = Backbone.View.extend({
 
     this.chat_room_menu_view = new App.View.ChatRoomMenuView({
       parent: this,
+      room: data.group_chat_room,
     });
     this.chat_room_menu_view.setElement(this.$("#chat-room-menu-view"));
     this.chat_room_menu_view.render();

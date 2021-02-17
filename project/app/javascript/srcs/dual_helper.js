@@ -8,12 +8,17 @@ export let DualHelper = {
     );
   },
 
-  showInfoMatchImposibleAndClose: function () {
-    Helper.info({
-      subject: "게임 진행 불가능",
-      description: "상대방이 게임 진행이 불가능한 상태입니다.",
-    });
-    this.close();
+  showInfoMatchImposibleAndClose: function (user_model) {
+    if (
+      this.el.id == "rule-modal-view" ||
+      user_model.get("status") == "offline"
+    ) {
+      Helper.info({
+        subject: "게임 진행 불가능",
+        description: "상대방이 게임 진행이 불가능한 상태입니다.",
+      });
+      this.close();
+    }
   },
 
   addLitsenToUserModel: function (view, user_id) {
@@ -24,14 +29,10 @@ export let DualHelper = {
     }
     view.listenTo(
       user_model,
-      "remove",
+      "change:status",
       this.showInfoMatchImposibleAndClose.bind(view)
     );
-    view.listenTo(
-      user_model,
-      "change:status:offline",
-      this.showInfoMatchImposibleAndClose.bind(view)
-    );
+
     return true;
   },
 };

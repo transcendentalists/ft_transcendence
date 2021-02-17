@@ -27,19 +27,18 @@ export function ConnectNotificationChannel(room_id) {
        */
 
       dual(data) {
-        let statuses = ["declined", "exist", "canceled"];
+        let statuses = ["declined", "working", "canceled"];
         let descriptions = {
           declined: "상대방이 게임 요청을 거절하였습니다.",
-          exist: "상대방이 게임 진행이 불가능한 상태입니다.",
+          working: "상대방이 게임 진행이 불가능한 상태입니다.",
         };
         if (data.status == "request") {
           if (App.current_user.isWorking()) {
             this.dualRequestAlreadyExist(data.profile.id);
           } else App.appView.invite_view.render(data);
         } else if (data.status == "approved") {
-          this.data = data;
           App.appView.request_view.close();
-          this.dualGameStart();
+          this.dualGameStart(data);
         } else if (statuses.includes(data.status)) {
           if (data.status != "canceled") {
             Helper.info({
@@ -79,8 +78,8 @@ export function ConnectNotificationChannel(room_id) {
         });
       },
 
-      dualGameStart: function () {
-        if (this.data.match_id == null) {
+      dualGameStart: function (data) {
+        if (data.match_id == null) {
           Helper.info({
             subject: "게임 생성 실패",
             description: "잘못된 정보를 입력하셨습니다.",
@@ -89,12 +88,12 @@ export function ConnectNotificationChannel(room_id) {
         }
 
         App.router.navigate(
-          `#/matches?match_type=dual&match_id=${this.data.match_id}`
+          `#/matches?match_type=dual&match_id=${data.match_id}`
         );
       },
 
       dualCloseInviteOrRequestView: function () {
-        App.appView.request_view.enemy
+        App.current_user.is_challenger
           ? App.appView.request_view.close()
           : App.appView.invite_view.close();
       },

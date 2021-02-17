@@ -38,7 +38,7 @@ class NotificationChannel < ApplicationCable::Channel
   def dual_request_already_exist(challenger)
     ActionCable.server.broadcast(
       "notification_channel_#{challenger['id'].to_s}",
-      { type: 'dual', status: 'exist' },
+      { type: 'dual', status: 'working' },
     )
   end
 

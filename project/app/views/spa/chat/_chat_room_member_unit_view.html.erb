@@ -1,14 +1,12 @@
 <script type="text/template" id="chat-room-member-unit-view-template">
   <img src="<%%= image_url %>">
   <%% if(position == "owner") { %>
-    <i class="chess king icon"></i>
+    <i class="chess king position icon"></i>
   <%% } else if(position == "admin") { %>
-    <i class="chess rook icon"></i>
+    <i class="chess rook position icon"></i>
   <%% } else { %>
-    <i class="chess pawn icon"></i>
+    <i class="chess pawn position icon"></i>
   <%% } %>
   <%%= name %>
-  <%% if(mute) {%>
-    <i class="microphone slash mute icon"></i>
-  <%% } %>
+  <i class="microphone slash mute icon"></i>
 </script>

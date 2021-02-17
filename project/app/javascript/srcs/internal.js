@@ -14,6 +14,7 @@ import { Friends } from "./collections/friends";
 import { ChatBans } from "./collections/chat_bans";
 import { ChatMessages } from "./collections/chat_messages";
 import { GroupChatMessages } from "./collections/group_chat_messages";
+import { GroupChatMembers } from "./collections/group_chat_members";
 
 /* VIEW */
 
@@ -127,7 +128,7 @@ export let App = {
     this.current_user.logout();
     this.current_user = new CurrentUser();
     this.router.navigate("#/sessions/new");
-    this.resources = {};
+    this.resources = { chat_bans: new App.Collection.ChatBans() };
   },
 
   Model: {
@@ -146,6 +147,7 @@ export let App = {
     ChatBans,
     ChatMessages,
     GroupChatMessages,
+    GroupChatMembers,
   },
   View: {
     SignInView,

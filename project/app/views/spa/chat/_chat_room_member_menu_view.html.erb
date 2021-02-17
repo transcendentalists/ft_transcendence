@@ -10,14 +10,14 @@
       대화차단 <%%= banned ? "해제" : "" %>
     </a>
     <a class="item" data-event-name="toggle-friend">
-      친구 <%%= is_friend ? "삭제" : "추가" %>
+      친구<%%= is_friend ? "삭제" : "추가" %>
     </a>
     <a class="item" data-event-name="battle">
       대전신청
     </a>
     
     <%% if (current_user_position == "owner") { %>
-      <%% if (position == "member") { %>
+      <%% if (user.position == "member") { %>
         <a class="item" data-event-name="give-admin-position">관리자 지정</a>
       <%% } else { %>
         <a class="item" data-event-name="remove-admin-position">관리자 해제</a>
@@ -25,7 +25,7 @@
     <%% } %>
 
     <%% if(["admin", "owner"].includes(current_user_position) && user.position != "owner") { %>
-      <a class="item" data-event-name="toggle-mute"> <%%= user.mute ? "뮤트 설정" : "뮤트 해제" %></a>
+      <a class="item" data-event-name="toggle-mute"> <%%= user.mute ? "뮤트 해제" : "뮤트 설정" %></a>
       <a class="item" data-event-name="kick">멤버 내보내기</a>
     <%% } %>
 </div>

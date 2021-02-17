@@ -5,7 +5,7 @@ export let ChatRoomMemberListView = Backbone.View.extend({
 
   events: {
     "click .user-unit": "openMemberMenu",
-    // "mouseleave .user-unit": "closeMemberMenu",
+    mouseleave: "closeMemberMenu",
   },
 
   initialize: function (options) {
@@ -17,29 +17,29 @@ export let ChatRoomMemberListView = Backbone.View.extend({
   },
 
   openMemberMenu: function (event) {
-    console.log(event.clientX, event.clientY);
     const client_x = event.clientX;
     const client_y = event.clientY;
-    const user = this.chat_room_members.get(
-      event.target.getAttribute("data-user-id")
+    window.ft_target = event.target;
+    const member = this.chat_room_members.get(
+      event.target.closest(".user-unit").getAttribute("data-user-id")
     );
-    const options = { user, client_x, client_y };
+    const options = { member, client_x, client_y };
     this.chat_member_menu_view.render(options);
   },
 
-  // closeMemberMenu: function (event) {
-  //   this.chat_member_menu_view.hide();
-  //   console.log(
-  //     "user id " +
-  //       event.target.getAttribute("data-user-id") +
-  //       "를 클릭 해제하셨습니다."
-  //   );
-  // },
+  closeMemberMenu: function (event) {
+    if (
+      event.target.id != "chat-room-member-list-view" &&
+      event.target.id != "chat-room-message-list-view"
+    )
+      return;
+    this.chat_member_menu_view.hide();
+  },
 
   render: function () {
     this.addAll();
     this.chat_member_menu_view = new App.View.ChatRoomMemberMenuView(this);
-    return this;
+    this.chat_member_menu_view.setElement($("#chat-room-member-menu-view"));
   },
 
   addOne: function (member) {

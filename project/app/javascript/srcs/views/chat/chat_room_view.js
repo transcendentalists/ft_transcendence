@@ -14,10 +14,9 @@ export let ChatRoomView = Backbone.View.extend({
     this.room_id = room_id;
     this.chat_message_list_view = null; // chat_message_collection
     this.chat_room_member_list_view = null; // chat_members
-    this.current_member_menu_view = null;
-
     this.chat_messages = null;
     this.chat_room_members = null;
+    this.current_user_membership = null;
     this.channel = null;
   },
 
@@ -31,7 +30,8 @@ export let ChatRoomView = Backbone.View.extend({
       name: App.current_user.get("name"),
       created_at: new Date(),
       message: msg,
-      user_id: App.current_user.get("id"),
+      type: "msg",
+      user_id: App.current_user.id,
     });
   },
 
@@ -45,7 +45,13 @@ export let ChatRoomView = Backbone.View.extend({
 
   enterToChatRoom: function (data) {
     this.$el.html(this.template());
-    this.chat_room_members = new App.Collection.Users(data.chat_room_members);
+    this.chat_room_members = new App.Collection.GroupChatMembers(
+      data.chat_room_members
+    );
+    this.chat_room_members.room_id = this.room_id;
+    this.current_user_membership = this.chat_room_members.get(
+      App.current_user.id
+    );
     this.chat_room_member_list_view = new App.View.ChatRoomMemberListView({
       parent: this,
     });
@@ -53,7 +59,8 @@ export let ChatRoomView = Backbone.View.extend({
     this.renderChatMessages();
     this.channel = App.Channel.ConnectGroupChatChannel(
       this.chat_messages,
-      this.room_id
+      this.room_id,
+      this.chat_room_members
     );
   },
 

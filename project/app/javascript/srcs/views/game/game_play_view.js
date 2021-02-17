@@ -83,6 +83,9 @@ export let GamePlayView = Backbone.View.extend({
       this.sendObjectSpec(this.ball.to_simple());
     } else if (this.enemy_paddle.near(this.ball)) {
       this.ball.delay_time = 5;
+    } else if (this.ball.missPosition()) {
+      this.ball.reset();
+      this.sendObjectSpec(this.ball.to_simple());
     }
   },
 

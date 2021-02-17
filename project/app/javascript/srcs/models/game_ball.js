@@ -2,6 +2,7 @@ import * as Draw from "srcs/draw";
 
 export const GameBall = Backbone.Model.extend({
   initialize: function (self, rule) {
+    this.parent = self;
     this.cvs = self.cvs;
     this.ctx = self.ctx;
     this.x = this.cvs.width / 2;
@@ -148,6 +149,21 @@ export const GameBall = Backbone.Model.extend({
     this.event_count = +data.event_count;
     this.freeze_time = +data.freeze_time;
     this.accel_time = +data.accel_time;
+  },
+
+  missPosition: function () {
+    const side = this.parent.current_paddle.side == "RIGHT" ? 1 : -1;
+    if (side * this.velocityX < 0) return false;
+
+    const x_distance = this.cvs.width / 2;
+    const y_distance = this.cvs.height / 2;
+
+    if (this.x < 0 - x_distance || this.x > this.cvs.width + x_distance)
+      return true;
+    if (this.y < 0 - y_distance || this.y > this.cvs.height + y_distance)
+      return true;
+
+    return false;
   },
 
   reset: function () {

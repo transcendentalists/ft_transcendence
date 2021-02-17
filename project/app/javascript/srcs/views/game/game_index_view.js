@@ -51,7 +51,6 @@ export let GameIndexView = Backbone.View.extend({
   },
 
   showInfoModal: function (type) {
-    const description = n;
     Helper.info({
       subject: "게임종료",
       description:

@@ -30,6 +30,7 @@ export let GameIndexView = Backbone.View.extend({
     Helper.fetch("matches", {
       method: "POST",
       success_callback: this.subscribeChannel.bind(this),
+      fail_callback: this.rejectMatchCallback.bind(this),
       body: {
         for: "ladder",
         user_id: App.current_user.id,
@@ -50,6 +51,7 @@ export let GameIndexView = Backbone.View.extend({
   },
 
   showInfoModal: function (type) {
+    const description = n;
     Helper.info({
       subject: "게임종료",
       description:
@@ -60,15 +62,12 @@ export let GameIndexView = Backbone.View.extend({
     });
   },
 
-  sendAlert: function () {
+  rejectMatchCallback: function () {
     Helper.info({
       subject: "잘못된 접근",
-      description:
-        (type == "END"
-          ? "게임이 종료되었습니다. "
-          : "유저가 게임을 기권하였습니다. ") +
-        "잠시후 홈 화면으로 이동합니다.",
+      description: "잠시후 홈 화면으로 이동합니다.",
     });
+    setTimeout(this.redirectHomeCallback, 2000);
   },
 
   redirectHomeCallback: function () {
@@ -101,7 +100,7 @@ export let GameIndexView = Backbone.View.extend({
       if (this.play_view) this.play_view.stopRender();
       if (this.clear_id) clearInterval(this.clear_id);
       this.showInfoModal(msg.type);
-      setTimeout(this.redirectHomeCallback, 3000);
+      setTimeout(this.redirectHomeCallback, 2000);
       this.channel.unsubscribe();
       this.channel = null;
     } else if (msg.type == "STOP") {

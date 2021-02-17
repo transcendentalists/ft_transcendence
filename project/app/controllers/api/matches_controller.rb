@@ -39,7 +39,7 @@ class Api::MatchesController < ApplicationController
 
   private
   def find_or_create_ladder_match_for(user)
-    return nil unless Scorecard.where(user_id: user.id, result: "wait").first.nil?
+    return nil unless Scorecard.where(user_id: user.id, result: ["wait", "ready"]).first.nil?
     Match.transaction do
       @match = Match.where(match_type: "ladder", status: "pending").last
       @match = Match.create(match_type: "ladder", rule_id: 1) if @match.nil? || @match.users.count >= 2

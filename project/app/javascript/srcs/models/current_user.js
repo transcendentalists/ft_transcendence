@@ -21,4 +21,15 @@ export let CurrentUser = Backbone.Model.extend({
       data: { for: "profile" },
     });
   },
+
+  // isMyGuild: function (guild_id) {
+  //   return (
+  //     App.current_user.attributes.guild !== null && //get
+  //     App.current_user.attributes.guild.id === guild_id
+  //   );
+  // },
+
+  getGuildId: function () {
+    return this.get("guild") ? this.get("guild").id : null;
+  },
 });

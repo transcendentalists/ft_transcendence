@@ -4,7 +4,17 @@ class Api::GuildMembershipsController < ApplicationController
   end
 
   def create
-    render plain: params[:guild_id] + " guild membership create"
+    guild_membership = GuildMembership.create(
+      user_id: params[:user][:id],
+      guild_id: params[:guild_id],
+      position: params[:position],
+    )
+    render json: { guildMembership: {
+      id: guild_membership.id,
+      user_id: guild_membership.user_id,
+      guild_id: guild_membership.guild_id
+      }
+    }
   end
 
   def update
@@ -12,6 +22,6 @@ class Api::GuildMembershipsController < ApplicationController
   end
 
   def destroy
-    render plain: params[:guild_id] + " guild membership destroy " + params[:id]
+    GuildMembership.find(params[:id])&.destroy
   end
 end

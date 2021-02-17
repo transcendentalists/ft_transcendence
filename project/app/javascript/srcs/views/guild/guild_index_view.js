@@ -5,7 +5,7 @@ export let GuildIndexView = Backbone.View.extend({
   template: _.template($("#guild-index-view-template").html()),
 
   initialize: function () {
-    this.guild = App.current_user.attributes.guild;
+    this.guild = App.current_user.get("guild");
     this.guild_profile_card_view = null;
     this.war_request_card_view = null;
     this.guild_ranking_view = null;
@@ -28,25 +28,36 @@ export let GuildIndexView = Backbone.View.extend({
   },
 
   renderGuildRankingCallback: function (data) {
-    data.guilds.is_guild_of_current_user = Helper.isGuildOfCurrentUser();
+    data.guilds.my_guild_id = App.current_user.getGuildId();
     this.guild_ranking_view = new App.View.GuildRankingView();
     this.guild_ranking_view
       .setElement(this.$(".guild-ranking-list"))
       .render(data.guilds);
   },
 
-  render: function () {
-    this.$el.html(this.template());
-    const guild_profile_url = "guilds/" + this.guild.id + "?for=profile";
-    Helper.fetch(guild_profile_url, {
-      success_callback: this.renderGuildProfileCallback.bind(this),
-    });
+  redirectHomeCallback: function () {
+    return App.router.navigate("#/");
+  },
 
-    const war_request_url =
-      "guilds/" + this.guild.id + "/war_requests?for=guild_index";
-    Helper.fetch(war_request_url, {
-      success_callback: this.renderWarRequestCallback.bind(this),
-    });
+  render: function () {
+    this.$el.html(this.template({ guild: this.guild }));
+
+    if (this.guild) {
+      const guild_profile_url =
+        "guilds/" +
+        this.guild.id +
+        "?for=profile&user_id=" +
+        App.current_user.id;
+      Helper.fetch(guild_profile_url, {
+        success_callback: this.renderGuildProfileCallback.bind(this),
+      });
+
+      const war_request_url =
+        "guilds/" + this.guild.id + "/war_requests?for=guild_index";
+      Helper.fetch(war_request_url, {
+        success_callback: this.renderWarRequestCallback.bind(this),
+      });
+    }
 
     const guild_ranking_url = "guilds?for=guild_index";
     Helper.fetch(guild_ranking_url, {

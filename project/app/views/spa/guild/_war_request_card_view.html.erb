@@ -1,15 +1,15 @@
 <script type="text/template" id="war-request-card-view-template">
-  <img class="ui circular small image" src="<%%= enemy.image_url %>">
+  <img class="ui circular small image" src="<%%= challenger.image_url %>">
   <div class="content flex-container column-direction">
     <div class="row flex-container baseline">
-      <div class="name"><%%= enemy.name %></div>
-      <div class="stat"> <strong><%%= enemy.anagram %></strong> | <%%= enemy.rank %> 위</div>
+      <div class="name"><%%= challenger.name %></div>
+      <div class="stat"> <strong><%%= challenger.anagram %></strong> | <%%= challenger.rank %> 위</div>
     </div>
     <div class="row">
-      <%%= '현재 오너: ' + enemy.owner %>
+      <%%= '현재 오너: ' + challenger.owner %>
   </div>
     <div class="row">
-      <%%= '길드원 수: ' + enemy.num_of_member %>
+      <%%= '길드원 수: ' + challenger.num_of_member %>
     </div>
     <div class="row">
       <%%= '배팅 포인트: ' + bet_point %>
@@ -18,12 +18,14 @@
       <%%= '워 타임: ' + war_time %>
     </div>
   </div>
-  <div class="war-request buttons content flex-container column-direction">
-    <button id="war-request-accept-button" class="ui button mini teal">
-      수락하기
-    </button>
-    <button id="war-request-decline-button" class="ui button mini red">
-      거절하기
-    </button>
-  </div>
+  <%% if (position != "member") { %>
+    <div class="war-request buttons content flex-container column-direction">
+      <button id="war-request-accept-button" class="ui button mini teal">
+        수락하기
+      </button>
+      <button id="war-request-decline-button" class="ui button mini red">
+        거절하기
+      </button>
+    </div>
+  <%% } %>
 </script>

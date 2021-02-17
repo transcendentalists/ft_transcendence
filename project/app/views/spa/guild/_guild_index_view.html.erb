@@ -1,13 +1,15 @@
 <script type="text/template" id="guild-index-view-template">
 
-  <h1 class="ui header">My Guild</h1>
-  <div class="guild-profile-view ui text container">
-    <div class="current-user-guild profile-card ui segment flex-container center-aligned"></div>
-  </div>
+  <%% if (guild !== null) { %>
+    <h1 class="ui header">My Guild</h1>
+    <div class="guild-profile-view ui text container">
+      <div class="current-user-guild profile-card ui segment flex-container center-aligned"></div>
+    </div>
 
-  <h1 class="ui header">War Request</h1>
-  <div class="war-request-card-list flex-container column-direction">
-  </div>
+    <h1 class="ui header">War Request</h1>
+    <div class="war-request-card-list flex-container column-direction">
+    </div>
+  <%% } %>
 
   <h1 class="ui header">Guild Ranking</h1>
   <div class="guild-ranking-list flex-container column-direction">

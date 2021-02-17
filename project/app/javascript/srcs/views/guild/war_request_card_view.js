@@ -50,6 +50,7 @@ export let WarRequestCardView = Backbone.View.extend({
   },
 
   render: function (data) {
+    data.position = App.current_user.get("guild").position;
     this.$el.html(this.template(data));
     return this;
   },

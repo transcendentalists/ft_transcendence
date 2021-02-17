@@ -57,13 +57,6 @@ export let Helper = {
     return App.current_user.id == user_id;
   },
 
-  isGuildOfCurrentUser: function (guild_id) {
-    return (
-      App.current_user.attributes.guild !== null &&
-      App.current_user.attributes.guild.id === guild_id
-    );
-  },
-
   callModalError: function () {
     this.info({
       subject: "ERROR",

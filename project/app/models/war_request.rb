@@ -5,9 +5,10 @@ class WarRequest < ApplicationRecord
 
   scope :for_guild_index, -> (guild_id) do
     guild = Guild.find_by_id(guild_id)
-    guild.war_statuses.where(guild_id: guild_id).where.not(position: "challenger").map { |war_status|
+    guild.war_statuses.where(guild_id: guild_id, position: "enemy").map { |war_status|
+      challenger_guild_id = WarStatus.find_by_war_request_id_and_position(war_status.war_request_id, "challenger").guild_id
       war_request = war_status.request.to_simple
-      war_request.merge!( enemy: guild.guild_stat )
+      war_request.merge!( challenger: Guild.find_by_id(challenger_guild_id).guild_stat )
     }
   end
 

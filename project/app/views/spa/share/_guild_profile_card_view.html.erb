@@ -19,9 +19,13 @@
     <button id="guild-show-button" class="ui button mini teal">
       길드보기
     </button>
-    <%% if (is_guild_of_current_user) { %>
+    <%% if (current_user_guild_id == id) { %>
     <button id="guild-leave-button" class="ui button mini red">
       길드탈퇴
+    </button>
+    <%% } if (!current_user_guild_id) { %>
+    <button id="guild-join-button" class="ui button mini purple">
+      길드가입
     </button>
     <%% } %>
   </div>

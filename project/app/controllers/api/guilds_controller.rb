@@ -16,13 +16,11 @@ class Api::GuildsController < ApplicationController
   end
 
   def show
-    user_id = params[:id]
-    guild_id = User.includes(:in_guild).find(user_id).profile[:guild]['id']
-    guild = Guild.find(guild_id)
+    guild = Guild.find_by_id(params[:id])
     if params[:for] == "profile"
-      render :json => { guild: guild.profile(user_id) }
+      render :json => { guild: guild.profile(params[:user_id]) }
     else
-      render plain: "This is " + guild_id + " 's guilds detail view"
+      render plain: "This is " + guild.id.to_s + " 's guilds detail view"
     end
   end
 

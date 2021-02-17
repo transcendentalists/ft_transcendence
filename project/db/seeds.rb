@@ -46,6 +46,13 @@ Guild.create([
 
 WarRequest.create([
   {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
 ])
 
 War.create([
@@ -206,8 +213,22 @@ TournamentMembership.create([
 
 
 WarStatus.create([
-  {guild_id: 1, war_request_id: 1, position: "challenger"},
-  {guild_id: 2, war_request_id: 1, position: "enemy"},
+  {guild_id: 2, war_request_id: 1, position: "challenger"},
+  {guild_id: 1, war_request_id: 1, position: "enemy"},
+  {guild_id: 3, war_request_id: 2, position: "challenger"},
+  {guild_id: 1, war_request_id: 2, position: "enemy"},
+  {guild_id: 4, war_request_id: 3, position: "challenger"},
+  {guild_id: 1, war_request_id: 3, position: "enemy"},
+  {guild_id: 2, war_request_id: 4, position: "challenger"},
+  {guild_id: 1, war_request_id: 4, position: "enemy"},
+  {guild_id: 2, war_request_id: 5, position: "challenger"},
+  {guild_id: 1, war_request_id: 5, position: "enemy"},
+  {guild_id: 3, war_request_id: 6, position: "challenger"},
+  {guild_id: 1, war_request_id: 6, position: "enemy"},
+  {guild_id: 4, war_request_id: 7, position: "challenger"},
+  {guild_id: 1, war_request_id: 7, position: "enemy"},
+  {guild_id: 2, war_request_id: 8, position: "challenger"},
+  {guild_id: 1, war_request_id: 8, position: "enemy"},
 ])
 
 

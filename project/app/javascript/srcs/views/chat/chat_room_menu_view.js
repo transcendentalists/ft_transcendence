@@ -56,7 +56,6 @@ export let ChatRoomMenuView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(this.template());
-    console.log(this.current_user_as_room_member);
     this.showOrHideButtonsByPosition();
     return this;
   },

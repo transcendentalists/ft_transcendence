@@ -12,12 +12,15 @@ export let GroupChatMembers = Backbone.Collection.extend({
   },
 
   letOutOfChatRoom: function (chat_room_member) {
-    Helper.fetch(`api/group_chat_rooms/${this.room_id}/memberships`, {
-      method: "DELETE",
-      headers: Helper.current_user_header,
-      successCallBack: function () {
-        this.remove(chat_room_member);
-      }.bind(this),
-    });
+    Helper.fetch(
+      `group_chat_rooms/${this.room_id}/memberships/${chat_room_member.id}`,
+      {
+        method: "DELETE",
+        headers: Helper.current_user_header(),
+        successCallBack: function () {
+          this.remove(chat_room_member);
+        }.bind(this),
+      }
+    );
   },
 });

@@ -6,11 +6,12 @@ class GameChannel < ApplicationCable::Channel
     current_user.reload
     reject if current_user.status == "offline"
     stream_from "game_channel_#{params[:match_id].to_s}"
-    return stop(params[:match_id]) if not Match.exists?(params[:match_id])
-    @match = Match.find(params[:match_id])
-    return if @match.users.count < 2
-    return stop(params[:match_id]) if ["completed", "canceled"].include?(@match.status)
+    @match = Match.find_by_id(params[:match_id])
+    return stop(params[:match_id]) if @match.nil? || ["completed", "canceled"].include?(@match.status)
+    card = @match.scorecards.find_by_user_id(current_user.id)
+    card.update(result: "ready") unless card.nil?
     return wait_start if @match.match_type == "tournament" && Time.now < @match.start_time
+    return if @match.users.count < 2 || !@match.scorecards.reload.find_by_result("wait").nil?
     not_started = @match.status == "pending"
     @match.start if not_started
     enter(not_started)

@@ -12,17 +12,16 @@ export let ChatRoomMenuView = Backbone.View.extend({
 
   initialize: function (options) {
     this.parent = options.parent;
-    // this.$element = $("#room-popup-menu");
-    // this.chat_bans = this.parent.chat_bans;
-    // this.online_users = this.parent.online_users;
-    // this.friends = this.parent.friends;
-    // this.is_friend = options.is_friend;
-    // this.listenTo(
-    //   App.appView.appearance_view,
-    //   "destroy_user_menu_all",
-    //   this.close
-    // );
-    // this.listenTo(window, "resize", this.close);
+    this.chat_room_members = this.parent.chat_room_members;
+    this.current_user_as_room_member = this.chat_room_members.get(
+      App.current_user.id
+    );
+
+    this.listenTo(
+      this.current_user_as_room_member,
+      "change:position",
+      this.showOrHideButtonsByPosition
+    );
   },
 
   changeRoomInfo: function () {
@@ -37,8 +36,26 @@ export let ChatRoomMenuView = Backbone.View.extend({
     console.log("leaveFromChatRoom");
   },
 
+  showAuthorizedButtonsToOwner: function () {
+    this.$el.find(".owner-auth").show();
+  },
+
+  hideAuthorizedButtonsToOwner: function () {
+    this.$el.find(".owner-auth").hide();
+  },
+
+  showOrHideButtonsByPosition: function () {
+    if (this.current_user_as_room_member.get("position") == "owner") {
+      this.showAuthorizedButtonsToOwner();
+    } else {
+      this.hideAuthorizedButtonsToOwner();
+    }
+  },
+
   render: function () {
     this.$el.html(this.template());
+    console.log(this.current_user_as_room_member);
+    this.showOrHideButtonsByPosition();
     return this;
   },
 

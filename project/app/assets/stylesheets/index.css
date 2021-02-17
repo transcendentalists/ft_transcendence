@@ -560,10 +560,12 @@ body {
 
 #guild-index-view .guild-profile-view .stat {
   margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 #guild-index-view .guild-ranking-list .stat {
   margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 #guild-index-view .guild-profile.buttons {

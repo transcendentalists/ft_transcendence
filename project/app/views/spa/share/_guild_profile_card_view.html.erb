@@ -3,7 +3,12 @@
   <div class="content flex-container column-direction">
     <div class="row flex-container baseline">
       <div class="name"><%%= name %></div>
-      <div class="stat"> <strong><%%= anagram %></strong> | <%%= rank %> 위 </div>
+      <div class="stat">
+        <strong><%%= anagram %></strong> | <%%= rank %> 위 
+        <%% if (current_user_guild_id == id && current_user_guild_position) { %>
+          (<%%= current_user_guild_position %>)
+        <%% } %>
+      </div>
     </div>
     <div class="row">
       <%%= '현재 오너: ' + owner %>
@@ -19,7 +24,7 @@
     <button id="guild-show-button" class="ui button mini teal">
       길드보기
     </button>
-    <%% if (current_user_guild_id == id) { %>
+    <%% if (current_user_guild_id == id && current_user_guild_position != "owner") { %>
     <button id="guild-leave-button" class="ui button mini red">
       길드탈퇴
     </button>

@@ -22,14 +22,11 @@ export let CurrentUser = Backbone.Model.extend({
     });
   },
 
-  // isMyGuild: function (guild_id) {
-  //   return (
-  //     App.current_user.attributes.guild !== null && //get
-  //     App.current_user.attributes.guild.id === guild_id
-  //   );
-  // },
-
   getGuildId: function () {
     return this.get("guild") ? this.get("guild").id : null;
+  },
+
+  getGuildPosition: function () {
+    return this.get("guild") ? this.get("guild").position : null;
   },
 });

@@ -46,7 +46,10 @@ export let ChatRoomView = Backbone.View.extend({
 
   enterToChatRoom: function (data) {
     this.$el.html(this.template());
-    this.chat_room_members = new App.Collection.Users(data.chat_room_members);
+    this.chat_room_members = new App.Collection.GroupChatMembers(
+      data.chat_room_members,
+      { room_id: this.room_id }
+    );
     this.chat_room_member_list_view = new App.View.ChatRoomMemberListView({
       parent: this,
     });

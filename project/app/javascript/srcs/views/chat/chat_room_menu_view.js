@@ -12,6 +12,7 @@ export let ChatRoomMenuView = Backbone.View.extend({
 
   initialize: function (options) {
     this.parent = options.parent;
+    this.room_id = this.parent.room_id;
     this.chat_room_members = this.parent.chat_room_members;
     this.current_user_as_room_member = this.chat_room_members.get(
       App.current_user.id
@@ -33,7 +34,8 @@ export let ChatRoomMenuView = Backbone.View.extend({
   },
 
   leaveFromChatRoom: function () {
-    console.log("leaveFromChatRoom");
+    this.chat_room_members.letOutOfChatRoom(this.current_user_as_room_member);
+    this.backToChatRoomList();
   },
 
   showAuthorizedButtonsToOwner: function () {

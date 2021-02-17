@@ -7,12 +7,14 @@ export let CurrentUser = Backbone.Model.extend({
     this.is_admin = false;
     this.sign_in = false;
     this.working = false;
+    this.is_challenger = false;
   },
 
   logout: function () {
     this.is_admin = false;
     this.sign_in = false;
     this.working = false;
+    this.is_challenger = false;
   },
 
   parse: function (response) {

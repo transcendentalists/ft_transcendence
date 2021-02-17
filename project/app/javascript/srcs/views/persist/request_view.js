@@ -20,14 +20,15 @@ export let RequestView = Backbone.View.extend({
 
   render: function (enemy) {
     if (DualHelper.addLitsenToUserModel(this, enemy.id)) {
+      App.current_user.is_challenger = true;
       this.enemy = enemy;
-      App.current_user.working = true;
       this.$el.html(this.template(enemy));
       this.$el.show();
     }
   },
 
   close: function () {
+    App.current_user.is_challenger = false;
     this.stopListening();
     App.current_user.working = false;
     this.enemy = null;

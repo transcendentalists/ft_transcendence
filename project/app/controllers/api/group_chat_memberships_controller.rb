@@ -59,11 +59,11 @@ class Api::GroupChatMembershipsController < ApplicationController
           room.destroy
         else
           room.make_another_member_owner if membership.position == "owner"
-          membership.destroy
+          membership.update_position("ghost")
         end
       end
     rescue
-      return render_error("FAILED TO DESTROY", "멤버십 삭제를 실패했습니다.", "500") unless membership.destroyed?
+      return render_error("FAILED TO DESTROY", "멤버십 삭제를 실패했습니다.", "500")
     end
 
     head :no_content, status: 204

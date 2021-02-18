@@ -11,20 +11,21 @@ class GroupChatRoom < ApplicationRecord
   scope :list_associated_with_current_user, -> (current_user) do
     current_user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
       {
-          id: chat_room.id,
-          title: chat_room.title,
-          locked: chat_room.is_locked?,
-          owner: chat_room.owner.for_chat_room_format,
-          max_member_count: chat_room.max_member_count,
-          current_member_count: chat_room.users.count,
-          current_user: {
-            position: chat_room.memberships.find_by_user_id(current_user.id)&.position
-          }
+        id: chat_room.id,
+        title: chat_room.title,
+        locked: chat_room.is_locked?,
+        owner: chat_room.owner.for_chat_room_format,
+        max_member_count: chat_room.max_member_count,
+        current_member_count: chat_room.active_member_count,
+        current_user: {
+          position: chat_room.memberships.find_by_user_id(current_user.id)&.position
+        }
       }
     }
   end
   scope :list_filtered_by_type, -> (room_type, current_user) {
-    current_user_room_ids = current_user.in_group_chat_room_ids
+    current_user_room_ids = current_user.group_chat_memberships.where.not(position: "ghost").pluck(:group_chat_room_id)
+
     where(room_type: room_type).where.not(id: current_user_room_ids).map { |chat_room|
       {
         id: chat_room.id,
@@ -32,7 +33,7 @@ class GroupChatRoom < ApplicationRecord
         locked: chat_room.is_locked?,
         owner: chat_room.owner.for_chat_room_format,
         max_member_count: chat_room.max_member_count,
-        current_member_count: chat_room.users.count,
+        current_member_count: chat_room.active_member_count,
         current_user: {
           position: nil
         }

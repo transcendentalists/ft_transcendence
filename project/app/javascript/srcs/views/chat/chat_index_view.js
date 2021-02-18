@@ -62,8 +62,9 @@ export let ChatIndexView = Backbone.View.extend({
   },
 
   close: function () {
-    this.my_chat_room_list_view.close();
-    this.public_chat_room_list_view.close();
+    if (this.my_chat_room_list_view) this.my_chat_room_list_view.close();
+    if (this.public_chat_room_list_view)
+      this.public_chat_room_list_view.close();
     this.$el.empty();
     this.remove();
   },

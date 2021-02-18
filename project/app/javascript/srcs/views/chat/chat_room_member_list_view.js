@@ -43,6 +43,7 @@ export let ChatRoomMemberListView = Backbone.View.extend({
   },
 
   addOne: function (member) {
+    if (member.get("position") == "ghost") return;
     let member_unit_view = new App.View.ChatRoomMemberUnitView({
       model: member,
       parent: this,
@@ -53,7 +54,9 @@ export let ChatRoomMemberListView = Backbone.View.extend({
 
   addAll: function () {
     this.child_views.forEach((child_view) => child_view.close());
-    this.chat_room_members.forEach((member) => this.addOne(member));
+    this.chat_room_members.forEach(function (member) {
+      if (member.position != "ghost") this.addOne(member);
+    }, this);
   },
 
   close: function () {

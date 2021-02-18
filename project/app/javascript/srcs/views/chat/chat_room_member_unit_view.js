@@ -34,6 +34,8 @@ export let ChatRoomMemberUnitView = Backbone.View.extend({
 
   changePosition: function () {
     const position = this.model.get("position");
+    if (position == "ghost") this.close();
+
     const remove_icon = this.position_icons[
       position == "member" ? "admin" : "member"
     ];

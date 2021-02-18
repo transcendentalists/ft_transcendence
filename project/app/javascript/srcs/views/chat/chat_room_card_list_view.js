@@ -8,6 +8,7 @@ export let ChatRoomCardListView = Backbone.View.extend({
   },
 
   addOne: function (room) {
+    if (room.current_user.position == "ghost") return;
     let child_view = new App.View.ChatRoomCardView();
     this.child_views.push(child_view);
     this.$el.append(child_view.render(room).$el);

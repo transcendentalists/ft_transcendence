@@ -2,38 +2,36 @@ class GroupChatMembership < ApplicationRecord
   belongs_to :user
   belongs_to :room, class_name: "GroupChatRoom", foreign_key: "group_chat_room_id"
 
-  def is_authorized_user_to_destroy(current_user)
-    self.user_id == current_user.id || authorized_users_to_ban(current_user.id)
+  def can_be_destroyed_by?(current_user)
+    self.user_id == current_user.id || can_be_kicked_by?(current_user.position)
   end
 
-  # TODO: web admin도 추가해야함.
-  def authorized_users_to_ban(current_user_id)
-    owner_id = self.room.owner.id
-    return true if owner_id == current_user_id
-
-    room_admin_ids = self.room.memberships.where(position: "admin").pluck(:user_id)
-    room_admin_ids.include?(current_user_id) and self.user_id != owner_id
-  end
-    
-  def update_position_as(position)
-    self.update(position: position) unless position.nil?
-  end
-  
-  def self.updateChatRoomMembership(params)
-    return nil if params.nil?
-    member_membership = params[:member_membership]
-    if params[:mute] && member_membership.position != "owner"
-      member_membership.mute = params[:mute]
-    end
-    return nil if member_membership.save == false
-    member_membership.update_position if params[:position]
-    member_membership
+  def can_be_muted_by?(current_user_position)
+    position_grade = ApplicationRecord.position_grade
+    position_grade[self.position] <= 2 && position_grade[current_user_position] >= 2
   end
 
-  def update_mute(params)
-    return nil if params[:mute].nil? || self.position == "owner"
-    self.mute = params[:mute]
-    return nil if save == false
+  def can_be_position_changed_by?(current_user_position)
+    position_grade = ApplicationRecord.position_grade
+    position_grade[self.position] <= 2 && position_grade[current_user_position] >= 3
+  end
+
+  def can_be_kicked_by?(current_user_position)
+    position_grade = ApplicationRecord.position_grade
+    position_grade[self.position] <= 2 && position_grade[current_user_position] >= 2
+  end
+      
+  def ghost?
+    self.position == "ghost"
+  end
+
+  def restore
+    self.update(position: "member")
+    self
+  end
+
+  def update_mute(mute)
+    return nil if !self.update(mute: mute)
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.group_chat_room_id.to_s}",
       {
@@ -45,11 +43,8 @@ class GroupChatMembership < ApplicationRecord
     self
   end
 
-  def update_position(params)
-    return nil if params[:position].nil?
-    return nil if params[:admin_membership].position != "owner"
-    self.position = params[:position]
-    return nil if save == false
+  def update_position(position)
+    return nil if !self.update(position: position)
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.group_chat_room_id.to_s}",
       {
@@ -60,5 +55,4 @@ class GroupChatMembership < ApplicationRecord
     )
     self
   end
-
 end

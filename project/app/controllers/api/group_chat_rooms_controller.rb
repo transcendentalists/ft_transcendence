@@ -41,17 +41,24 @@ class Api::GroupChatRoomsController < ApplicationController
     end
 
     # TODO: 웹 관리자일 때의 처리 추가 필요
-    if group_chat_room.memberships.find_by_user_id(@current_user.id).nil?
-      membership = group_chat_room.join(@current_user)
-      if membership.nil?
-        return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다." "403")
-      end
+    membership = group_chat_room.memberships.find_by_user_id(@current_user.id)
+    membership = group_chat_room.join(@current_user) if membership.nil?
+    membership = membership.restore if membership&.ghost?
+    if membership.nil?
+      return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다." "403")
     end
+
+    # if group_chat_room.memberships.find_by_user_id(@current_user.id).nil?
+    #   membership = group_chat_room.join(@current_user)
+    #   if membership.nil?
+    #     return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다." "403")
+    #   end
+    # end
 
     render json: { 
       group_chat_room: group_chat_room.for_chat_room_format,
       owner: group_chat_room.owner.for_chat_room_format,
-      current_user: group_chat_room.current_user_info(@current_user),
+      current_user: group_chat_room.membership_by_user(@current_user),
       chat_room_members: group_chat_room.members
     }
   end

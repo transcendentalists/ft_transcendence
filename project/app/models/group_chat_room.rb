@@ -49,18 +49,40 @@ class GroupChatRoom < ApplicationRecord
     })
   }
 
-  
+  def self.generate(create_params)
+    GroupChatRoom.transaction do
+      room = GroupChatRoom.create(create_params)
+      raise ActiveRecord::Rollback if !room.persisted? || !create_params.has_key?(:owner_id)
+      user = User.find_by_id(create_params[:owner_id])
+      membership = room.join(user, "owner")
+      raise ActiveRecord::Rollback if membership.nil? || !membership.persisted?
+      room
+    end
+  end
+
+  def is_locked?
+    !self.password.blank?
+  end
+
+  def is_valid_password?(input_password)
+    BCrypt::Password::new(self.password) == input_password
+  end
+
+  def active_member_count
+    self.users.where.not(position: "ghost").count
+  end
+
   def for_chat_room_format
     hash_key_format = [ :id, :room_type, :title, :max_member_count, 
                           :current_member_count, :channel_code ]
     self.slice(*hash_key_format)
   end
 
-  def current_user_info(user)
-    current_user_membership = self.memberships.find_by_user_id(user.id)
+  def membership_by_user(user)
+    membership = self.memberships.find_by_user_id(user.id)
 
-    { position: current_user_membership.position,
-      mute:     current_user_membership.mute      }
+    { position: membership.position,
+      mute:     membership.mute      }
   end
 
   def members
@@ -73,14 +95,6 @@ class GroupChatRoom < ApplicationRecord
       members.push(member_hash)
     end
     members
-  end
-
-  def is_locked?
-    !self.password.blank?
-  end
-
-  def is_valid_password?(input_password)
-    BCrypt::Password::new(self.password) == input_password
   end
 
   def update_by_params(params)
@@ -101,20 +115,20 @@ class GroupChatRoom < ApplicationRecord
   #   authorized_position.include?(current_user_position)
   # end
 
-  def self.generate(create_params)
-    GroupChatRoom.transaction do
-      room = GroupChatRoom.create(create_params)
-      raise ActiveRecord::Rollback if !room.persisted? || !create_params.has_key?(:owner_id)
-      user = User.find_by_id(create_params[:owner_id])
-      membership = room.join(user, "owner")
-      raise ActiveRecord::Rollback if membership.nil? || !membership.persisted?
-      room
-    end
-  end
-
   def join(user, position = "member")
     return nil if user.nil?
     return nil if self.current_member_count == self.max_member_count
     GroupChatMembership.create(user_id: user.id, group_chat_room_id: self.id, position: position)
   end
+
+  def make_another_member_owner
+    memberships = self.memberships
+
+    admin = memberships.find_by_position("admin")
+    return admin.update_position("owner") unless admin.nil?
+
+    member = memberships.find_by_position("member")
+    return member.update_position("owner") unless member.nil?
+  end
+
 end

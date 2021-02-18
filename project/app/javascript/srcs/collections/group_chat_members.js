@@ -21,6 +21,7 @@ export let GroupChatMembers = Backbone.Collection.extend({
   ) {
     Helper.fetch(this.url(member.id), {
       method: "PATCH",
+      headers: Helper.current_user_header(),
       body: {
         admin_id: App.current_user.id,
         member_id: member.id,

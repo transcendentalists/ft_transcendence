@@ -45,7 +45,7 @@ export let Friends = Backbone.Collection.extend({
   destroyFriendshipParams: function () {
     return {
       method: "DELETE",
-      success_callback: this.removeFriend.bind(this),
+      success_callback: this.removeFriendAndAddToOnlineUsers.bind(this),
     };
   },
 

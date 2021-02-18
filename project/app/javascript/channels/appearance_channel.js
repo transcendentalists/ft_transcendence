@@ -1,5 +1,5 @@
 import consumer from "./consumer";
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export function ConnectAppearanceChannel() {
   return consumer.subscriptions.create("AppearanceChannel", {

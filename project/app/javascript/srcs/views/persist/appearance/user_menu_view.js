@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let UserMenuView = Backbone.View.extend({
   template: _.template($("#user-menu-view-template").html()),
@@ -45,19 +45,18 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   createFriend: function () {
-    this.friends.createFriendship(this.model.get("id"));
+    this.friends.createFriendship(this.model);
     this.online_users.remove(this.model);
     this.close();
   },
 
   destroyFriend: function () {
-    this.friends.destroyFriendship(this.model.get("id"));
-    if (this.model.get("status") != "offline")
-      this.online_users.add(this.model);
+    this.friends.destroyFriendship(this.model);
     this.close();
   },
 
   battle: function () {
+    App.current_user.dualRequestTo(this.model);
     this.close();
   },
 

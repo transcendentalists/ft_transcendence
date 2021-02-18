@@ -54,17 +54,17 @@ War.create([
 ])
 
 Match.create([
-  {rule_id: 6, status: "completed", match_type: "Dual"},
-  {rule_id: 1, status: "completed", match_type: "Dual"},
-  {rule_id: 2, status: "completed", match_type: "Ladder"},
-  {rule_id: 4, status: "completed", match_type: "Ladder"},
-  {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 1, match_type: "War"},
-  {rule_id: 3, status: "completed", eventable_type: "War", eventable_id: 2, match_type: "War"},
-  {rule_id: 5, status: "completed", eventable_type: "War", eventable_id: 3, match_type: "War"},
-  {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 4, match_type: "War"},
-  {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 5, match_type: "War"},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 1, match_type: "Tournament"},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 1, match_type: "Tournament"},
+  {rule_id: 6, status: "completed", match_type: "dual"},
+  {rule_id: 1, status: "completed", match_type: "dual"},
+  {rule_id: 2, status: "completed", match_type: "ladder"},
+  {rule_id: 4, status: "completed", match_type: "ladder"},
+  {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 1, match_type: "war"},
+  {rule_id: 3, status: "completed", eventable_type: "war", eventable_id: 2, match_type: "war"},
+  {rule_id: 5, status: "completed", eventable_type: "war", eventable_id: 3, match_type: "war"},
+  {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 4, match_type: "war"},
+  {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 5, match_type: "war"},
+  {rule_id: 1, status: "completed", eventable_type: "tournament", eventable_id: 1, match_type: "tournament"},
+  {rule_id: 1, status: "completed", eventable_type: "tournament", eventable_id: 2, match_type: "tournament"},
 ])
 
 Scorecard.create([
@@ -79,7 +79,7 @@ Scorecard.create([
   {user_id: 2, score: 2, result: "lose", match_id: 9, side: "right"},
   {user_id: 2, score: 1, result: "lose", match_id: 10, side: "left"},
   {user_id: 2, score: 0, result: "lose", match_id: 11, side: "right"},
-  
+
   {user_id: 1, score: 2, result: "lose", match_id: 1, side: "right"},
   {user_id: 3, score: 1, result: "lose", match_id: 2, side: "right"},
   {user_id: 4, score: 0, result: "lose", match_id: 3, side: "right"},
@@ -100,7 +100,7 @@ GroupChatRoom.create([
   {owner_id: 2, room_type: "public", title: "room 4", channel_code: "XXX-XXX-XX4" },
   {owner_id: 3, room_type: "public", title: "room 5", channel_code: "XXX-XXX-XX5", password: "123123"},
   {owner_id: 3, room_type: "public", title: "room 6", channel_code: "XXX-XXX-XX6" },
-  
+
   {owner_id: 1, room_type: "private", title: "room 7", channel_code: "XXX-XXX-XX7", password: "123123"},
   {owner_id: 1, room_type: "private", title: "room 8", channel_code: "XXX-XXX-XX8" },
   {owner_id: 2, room_type: "private", title: "room 9", channel_code: "XXX-XXX-XX9", password: "123123"},

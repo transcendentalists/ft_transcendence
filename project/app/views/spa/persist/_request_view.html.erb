@@ -1,0 +1,29 @@
+<script type="text/template" id="request-view-template">
+  <div class="content">
+    <div class="header">
+      <%%= name %>
+      <div class="right floated image">
+        <img class="ui avatar image" src="<%%= image_url %>">
+      </div>
+    </div>
+    <div class="meta">
+      <span class="category">
+        <%%= anagram ? anagram : "소속된 길드가 없습니다." %>
+      </span>
+    </div>
+    <div class="description">
+      <p>
+        <%%= name + "님에게 대전을 신청중입니다."%>
+      </p>
+    </div>
+  </div>
+  <div class="extra content">
+    <div class="ui centered grid">
+      <div class="row">
+        <button class="ui red basic button" data-request-value="cancel">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</script>

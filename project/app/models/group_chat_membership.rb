@@ -14,4 +14,8 @@ class GroupChatMembership < ApplicationRecord
     room_admin_ids = self.room.memberships.where(position: "admin").pluck(:user_id)
     room_admin_ids.include?(current_user_id) and self.user_id != owner_id
   end
+    
+  def update_position_as(position)
+    self.update(position: position) unless position.nil?
+  end
 end

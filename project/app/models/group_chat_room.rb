@@ -18,7 +18,7 @@ class GroupChatRoom < ApplicationRecord
           max_member_count: chat_room.max_member_count,
           current_member_count: chat_room.users.count,
           current_user: {
-            position: chat_room.memberships.find_by_id(current_user.id)&.position
+            position: chat_room.memberships.find_by_user_id(current_user.id)&.position
           }
       }
     }

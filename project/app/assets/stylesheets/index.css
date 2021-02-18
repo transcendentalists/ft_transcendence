@@ -551,6 +551,75 @@ body {
 }
 
 /* ==========================================================================
+   GUILD DETAIL VIEW
+   ========================================================================== */
+
+#guild-detail-view .war-history-list {
+  padding-top: 1.5rem;
+}
+
+#guild-detail-view .war-history-view {
+  justify-content: space-between;
+  align-items: stretch;
+  height: 33px;
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .buttons {
+  margin-bottom: 1rem;
+}
+
+#guild-detail-view #war-request-create-button {
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-detail-view .war-history-view .right.button {
+  margin-right: 1.5rem;
+}
+
+#guild-detail-view .war-history-view .enemy {
+  width: 7rem;
+}
+
+#guild-detail-view .war-history-view .enemy div:nth-child(2) {
+  margin-left: 1rem;
+}
+
+#guild-detail-view .war-history-view div[data-text] {
+  font-size: 1.2rem;
+  margin-top: -0.4rem;
+}
+
+#guild-detail-view .war-history-view {
+  height: 2.5rem;
+}
+
+#guild-detail-view .war-history-view .ui.fluid.buttons {
+  margin-bottom: 0;
+}
+
+#guild-detail-view .guild.profile-card .stat {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+#guild-detail-view .guild.ranking-list .stat {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+#guild-detail-view .guild-profile.buttons {
+  margin-left: auto;
+}
+
+#guild-detail-view .guild-profile.buttons .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+/* ==========================================================================
    GUILD INDEX VIEW
    ========================================================================== */
 
@@ -583,10 +652,6 @@ body {
   height: 2.5rem;
   width: 7rem;
 }
-
-/* #guild-index-view .war-request-card-list {
-  margin: 5% 0;
-} */
 
 #guild-index-view .war-request-card .stat {
   margin-left: 1rem;

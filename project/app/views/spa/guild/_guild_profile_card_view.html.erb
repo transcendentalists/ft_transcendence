@@ -20,11 +20,13 @@
       <%%= '길드 포인트: ' + point %>
     </div>
   </div>
+
   <div class="guild-profile buttons content flex-container column-direction">
+    <%% if (!is_detail_view) { %>
     <button id="guild-show-button" class="ui button mini teal">
       길드보기
     </button>
-    <%% if (current_user_guild_id == id && current_user_guild_position != "owner") { %>
+    <%% } if (current_user_guild_id == id && current_user_guild_position != "owner") { %>
     <button id="guild-leave-button" class="ui button mini red">
       길드탈퇴
     </button>

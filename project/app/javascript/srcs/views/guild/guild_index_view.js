@@ -29,6 +29,7 @@ export let GuildIndexView = Backbone.View.extend({
     this.guild_profile_card_view = new App.View.GuildProfileCardView(
       data.guild.id
     );
+    data.guild.is_detail_view = false;
     this.guild_profile_card_view
       .setElement(this.$(".current-user-guild.profile-card"))
       .render(data.guild);

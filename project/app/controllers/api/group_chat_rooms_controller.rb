@@ -1,5 +1,5 @@
 class Api::GroupChatRoomsController < ApplicationController
-  before_action :check_headers_and_find_current_user, only: [:show, :index, :destroy]
+  before_action :check_headers_and_find_current_user, only: [ :index, :show, :update, :destroy]
   
   # list_all scope 미구현 상태(admin 개발시 구현)
   def index
@@ -33,11 +33,11 @@ class Api::GroupChatRoomsController < ApplicationController
 
   def show
     group_chat_room = GroupChatRoom.find_by_id(params[:id])
-    return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", "404") if group_chat_room.nil?
+    return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", 404) if group_chat_room.nil?
 
     if group_chat_room.is_locked?
-      return render_error("EMPTY PASSWORD", "Password가 입력되지 않았습니다.", "401") unless is_password_entered?
-      return render_error("INVALID PASSWORD", "Password가 일치하지 않습니다.", "403") unless is_valid_password?(group_chat_room)
+      return render_error("EMPTY PASSWORD", "Password가 입력되지 않았습니다.", 401) unless is_password_entered?
+      return render_error("INVALID PASSWORD", "Password가 일치하지 않습니다.", 403) unless is_valid_password?(group_chat_room)
     end
 
     # TODO: 웹 관리자일 때의 처리 추가 필요
@@ -45,13 +45,13 @@ class Api::GroupChatRoomsController < ApplicationController
     membership = group_chat_room.join(@current_user) if membership.nil?
     membership = membership.restore if membership&.ghost?
     if membership.nil?
-      return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다." "403")
+      return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다.", 403)
     end
 
     # if group_chat_room.memberships.find_by_user_id(@current_user.id).nil?
     #   membership = group_chat_room.join(@current_user)
     #   if membership.nil?
-    #     return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다." "403")
+    #     return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다." 403)
     #   end
     # end
 
@@ -65,8 +65,14 @@ class Api::GroupChatRoomsController < ApplicationController
 
   def update
     group_chat_room = GroupChatRoom.find_by_id(params[:id])
-    return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", "404") if group_chat_room.nil? 
-    group_chat_room.update_by_params update_chat_room_params
+    return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", 404) if group_chat_room.nil? 
+    return render_error("UNAUTHORIZED", "권한이 없습니다.", 403) if !group_chat_room.can_be_update_by?(@current_user)
+    
+    begin
+      group_chat_room.update_by_params update_chat_room_params
+    rescue
+      return render_error("FAILED TO UPDATE", "업데이트를 실패했습니다.", 500)
+    end
     head :no_content, status: 204
   end
 
@@ -75,7 +81,7 @@ class Api::GroupChatRoomsController < ApplicationController
     # if group_chat_room.is_user_authorized_to_destroy(@current_user)
     #   group_chat_room.destroy
     # else
-    #   return render_error("UNAUTHORIZED", "삭제 권한이 없습니다.", "403")
+    #   return render_error("UNAUTHORIZED", "삭제 권한이 없습니다.", 403)
     # end
     render plain: "group chat room destroy"
   end
@@ -84,11 +90,11 @@ class Api::GroupChatRoomsController < ApplicationController
   
   def check_headers_and_find_current_user
     if !request.headers['HTTP_CURRENT_USER']
-      return render_error("NOT VALID HEADERS", "필요한 요청 Header가 없습니다.", "400")
+      return render_error("NOT VALID HEADERS", "필요한 요청 Header가 없습니다.", 400)
     end
     @current_user = User.find_by_id(request.headers['HTTP_CURRENT_USER'])
     if @current_user.nil?
-      return render_error("NOT VALID HEADERS", "요청 Header의 값이 유효하지 않습니다.", "400")
+      return render_error("NOT VALID HEADERS", "요청 Header의 값이 유효하지 않습니다.", 400)
     end
   end
 

@@ -98,16 +98,16 @@ class GroupChatRoom < ApplicationRecord
     members
   end
 
-  def update_by_params(params)
-    update_keys = {}
-    update_keys.merge!({title: params[:title]}) if params[:title]
-    update_keys.merge!({room_type: params[:room_type]}) if params[:room_type]
-    if params[:password]
-      password = params[:password] == "" ? nil : BCrypt::Password::create(params[:password])
-      update_keys.merge!({password: password})
-    end
+  # TODO: web_admin도 할 수 있도록 추후 수정할 것.
+  def can_be_update_by?(current_user)
+    self.owner_id == current_user.id
+  end
 
-    self.update(update_keys) if update_keys
+  def update_by_params(params)
+    self.title = params[:title] unless params[:title].blank?
+    self.room_type = params[:room_type] unless params[:room_type].blank?
+    self.password = BCrypt::Password::create(params[:password]) unless params[:password].blank?
+    save!
   end
 
   # def is_user_authorized_to_destroy(current_user)

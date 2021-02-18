@@ -107,7 +107,7 @@ class Api::GroupChatRoomsController < ApplicationController
   end
 
   def update_chat_room_params
-    params.require(:group_chat_room).permit(:title, :password, :room_type)
+    params.require(:group_chat_room).permit(:password)
   end
 
   def create_params

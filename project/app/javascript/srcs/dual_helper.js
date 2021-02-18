@@ -30,7 +30,7 @@ export let DualHelper = {
     view.listenTo(
       user_model,
       "change:status",
-      this.showInfoMatchImposibleAndClose.bind(view)
+      this.showInfoMatchImposibleAndClose
     );
 
     return true;

@@ -59,10 +59,8 @@ class GroupChatRoom < ApplicationRecord
   def current_user_info(user)
     current_user_membership = self.memberships.find_by_user_id(user.id)
 
-    {
-      position: current_user_membership.position,
-      mute: current_user_membership.mute
-    }
+    { position: current_user_membership.position,
+      mute:     current_user_membership.mute      }
   end
 
   def members

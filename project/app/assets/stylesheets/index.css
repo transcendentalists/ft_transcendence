@@ -619,6 +619,15 @@ body {
   width: 7rem;
 }
 
+#guild-member-list-buttons-view {
+  margin-left: auto;
+}
+
+#guild-member-list-buttons-view .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
 /* ==========================================================================
    GUILD INDEX VIEW
    ========================================================================== */

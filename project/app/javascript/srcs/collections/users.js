@@ -1,3 +1,4 @@
+import { Helper } from "../helper";
 import { User } from "../models/user";
 
 export let Users = Backbone.Collection.extend({

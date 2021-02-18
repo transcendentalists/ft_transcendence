@@ -9,6 +9,12 @@ export let GroupChatMembers = Backbone.Collection.extend({
     return `group_chat_rooms/${this.room_id}/memberships/${member_id}`;
   },
 
+  initialize: function (chat_members, options) {
+    chat_members.forEach((user) => this.add(new User(user)));
+    if (Object.keys(options) === 0) return;
+    this.room_id = options.room_id;
+  },
+
   changeMembershipRequest: function (
     member,
     params = { position: null, mute: null }
@@ -43,5 +49,18 @@ export let GroupChatMembers = Backbone.Collection.extend({
     this.changeMembershipRequest(params.member, {
       mute: !params.member.get("mute"),
     });
+  },
+
+  letOutOfChatRoom: function (chat_room_member) {
+    Helper.fetch(
+      `group_chat_rooms/${this.room_id}/memberships/${chat_room_member.id}`,
+      {
+        method: "DELETE",
+        headers: Helper.current_user_header(),
+        successCallBack: function () {
+          this.remove(chat_room_member);
+        }.bind(this),
+      }
+    );
   },
 });

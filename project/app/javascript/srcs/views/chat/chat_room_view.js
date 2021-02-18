@@ -4,7 +4,6 @@ import { App } from "../../internal";
 export let ChatRoomView = Backbone.View.extend({
   id: "chat-room-view",
   template: _.template($("#chat-room-view-template").html()),
-  entering_template: _.template($("#entering-chat-room-view-template").html()),
   className: "flex-container column-direction",
   events: {
     "click .submit.button": "send",
@@ -123,7 +122,6 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   render: function () {
-    this.$el.html(this.entering_template());
     this.tryToEnterToChatRoom();
     return this;
   },

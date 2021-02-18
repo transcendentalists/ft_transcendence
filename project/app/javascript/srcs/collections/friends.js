@@ -12,20 +12,20 @@ export let Friends = Backbone.Collection.extend({
     return response.friendships;
   },
 
-  createFriendship: function (model) {
-    this.user_model = model;
+  createFriendship: function (user_model) {
+    this.user_model = user_model;
     Helper.fetch(
       `users/${App.current_user.id}/friendships`,
-      this.createFriendshipParams(model)
+      this.createFriendshipParams(user_model)
     );
   },
 
-  createFriendshipParams: function (model) {
+  createFriendshipParams: function (user_model) {
     return {
       method: "POST",
       success_callback: this.addFriend.bind(this),
       body: {
-        friend_id: model.id,
+        friend_id: user_model.id,
       },
     };
   },
@@ -34,10 +34,10 @@ export let Friends = Backbone.Collection.extend({
     this.add(this.user_model);
   },
 
-  destroyFriendship: function (model) {
-    this.user_model = model;
+  destroyFriendship: function (user_model) {
+    this.user_model = user_model;
     Helper.fetch(
-      `users/${App.current_user.id}/friendships/${model.id}`,
+      `users/${App.current_user.id}/friendships/${user_model.id}`,
       this.destroyFriendshipParams()
     );
   },
@@ -49,7 +49,7 @@ export let Friends = Backbone.Collection.extend({
     };
   },
 
-  removeFriend: function () {
+  removeFriendAndAddToOnlineUsers: function () {
     this.remove(this.user_model);
     if (this.user_model.get("status") != "offline") {
       App.appView.appearance_view.online_users.add(this.user_model);

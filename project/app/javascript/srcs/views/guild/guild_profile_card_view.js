@@ -29,8 +29,10 @@ export let GuildProfileCardView = Backbone.View.extend({
       success_callback: function () {
         App.current_user.fetch({
           data: { for: "profile" },
+          success: function () {
+            App.router.navigate("#/guilds", true);
+          },
         });
-        App.router.navigate(`#/users/${App.current_user.id}`);
       },
       fail_callback: function () {
         Helper.info({
@@ -54,8 +56,10 @@ export let GuildProfileCardView = Backbone.View.extend({
       success_callback: function (data) {
         App.current_user.fetch({
           data: { for: "profile" },
+          success: function () {
+            App.router.navigate("#/guilds", true);
+          },
         });
-        App.router.navigate(`#/users/${App.current_user.id}`);
       },
       fail_callback: function () {
         Helper.info({
@@ -74,7 +78,6 @@ export let GuildProfileCardView = Backbone.View.extend({
   },
 
   close: function () {
-    this.$el.empty();
     this.remove();
   },
 });

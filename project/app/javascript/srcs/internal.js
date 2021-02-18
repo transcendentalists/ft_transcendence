@@ -70,8 +70,7 @@ import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
 import { ChatRoomView } from "./views/chat/chat_room_view";
 import { UserProfileCardView } from "./views/user/user_profile_card_view";
 import { LiveIndexView } from "./views/live/live_index_view";
-import { WarIndexView } from "./views/war/war_index_view";
-import { WarCreateView } from "./views/war/war_create_view";
+
 import { TournamentIndexView } from "./views/tournament/tournament_index_view";
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
 import { AdminUserIndexView } from "./views/admin/admin_user_index_view";
@@ -86,8 +85,12 @@ import { GuildDetailView } from "./views/guild/guild_detail_view";
 import { GuildCreateView } from "./views/guild/guild_create_view";
 import { GuildProfileCardView } from "./views/guild/guild_profile_card_view";
 import { GuildRankingView } from "./views/guild/guild_ranking_view";
-import { WarRequestCardListView } from "./views/guild/war_request_card_list_view";
-import { WarRequestCardView } from "./views/guild/war_request_card_view";
+
+/** war views */
+import { WarRequestCardListView } from "./views/war/war_request_card_list_view";
+import { WarRequestCardView } from "./views/war/war_request_card_view";
+import { WarIndexView } from "./views/war/war_index_view";
+import { WarCreateView } from "./views/war/war_create_view";
 
 /* CHANNEL */
 import { ConnectAppearanceChannel } from "channels/appearance_channel";

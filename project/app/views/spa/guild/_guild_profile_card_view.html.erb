@@ -5,13 +5,13 @@
       <div class="name"><%%= name %></div>
       <div class="stat">
         <strong><%%= anagram %></strong> | <%%= rank %> 위 
-        <%% if (current_user_guild_id == id && current_user_guild_position) { %>
+        <%% if (current_user_guild_id == id) { %>
           (<%%= current_user_guild_position %>)
         <%% } %>
       </div>
     </div>
     <div class="row">
-      <%%= '현재 오너: ' + owner %>
+      <%%= '길드 오너: ' + owner %>
     </div>
     <div class="row">
       <%%= '길드원 수: ' + num_of_member %>
@@ -27,6 +27,10 @@
     <%% if (current_user_guild_id == id && current_user_guild_position != "owner") { %>
     <button id="guild-leave-button" class="ui button mini red">
       길드탈퇴
+    </button>
+    <%% } if (current_user_guild_id != id && current_user_guild_position == "owner") { %>
+    <button id="war-request-button" class="ui button mini red">
+      전쟁제안
     </button>
     <%% } if (!current_user_guild_id) { %>
     <button id="guild-join-button" class="ui button mini purple">

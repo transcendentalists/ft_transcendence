@@ -31,7 +31,7 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def update_mute(mute)
-    return nil if !self.update(mute: mute)
+    self.update!(mute: mute)
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.group_chat_room_id.to_s}",
       {
@@ -44,7 +44,7 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def update_position(position)
-    return nil if !self.update(position: position)
+    self.update!(position: position)
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.group_chat_room_id.to_s}",
       {

@@ -69,7 +69,7 @@ class GroupChatRoom < ApplicationRecord
   end
 
   def active_member_count
-    self.users.where.not(position: "ghost").count
+    self.memberships.where.not(position: "ghost").count
   end
 
   def for_chat_room_format
@@ -124,11 +124,10 @@ class GroupChatRoom < ApplicationRecord
   def make_another_member_owner
     memberships = self.memberships
 
-    admin = memberships.find_by_position("admin")
-    return admin.update_position("owner") unless admin.nil?
-
-    member = memberships.find_by_position("member")
-    return member.update_position("owner") unless member.nil?
+    new_owner = memberships.find_by_position("admin")
+    new_owner = memberships.find_by_position("member") if new_owner.nil?
+    self.update!(owner_id: new_owner.user_id)
+    new_owner.update_position("owner")
   end
 
 end

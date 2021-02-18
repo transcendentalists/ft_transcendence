@@ -53,16 +53,19 @@ class Api::GroupChatMembershipsController < ApplicationController
     return render_error("NOT AUTHORIZED", "권한이 없는 유저입니다.", "403") unless membership.can_be_destroyed_by?(@current_user)
 
     room = membership.room
-    room.with_lock do
-      if room.active_member_count == 1
-        room.destroy
-      else
-        room.make_another_member_owner if membership.position == "owner"
-        membership.destroy
+    begin
+      room.with_lock do
+        if room.active_member_count == 1
+          room.destroy
+        else
+          room.make_another_member_owner if membership.position == "owner"
+          membership.destroy
+        end
       end
+    rescue
+      return render_error("FAILED TO DESTROY", "멤버십 삭제를 실패했습니다.", "500") unless membership.destroyed?
     end
 
-    return render_error("FAILED TO DESTROY", "멤버십 삭제를 실패했습니다.", "500") unless membership.destroyed?
     head :no_content, status: 204
   end
 

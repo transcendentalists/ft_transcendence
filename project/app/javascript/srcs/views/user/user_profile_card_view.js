@@ -1,4 +1,4 @@
-import { Helper } from "../../internal";
+import { Helper } from "srcs/internal";
 
 /**
  ** my_rating_view 혹은 user_ranking_view에 의해

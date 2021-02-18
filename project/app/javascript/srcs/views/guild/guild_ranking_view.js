@@ -1,4 +1,4 @@
-import { App, Helper } from "../../internal";
+import { App, Helper } from "srcs/internal";
 
 export let GuildRankingView = Backbone.View.extend({
   template: _.template($("#guild-ranking-view-template").html()),

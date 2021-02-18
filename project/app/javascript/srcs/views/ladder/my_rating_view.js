@@ -1,4 +1,4 @@
-import { App } from "../../internal";
+import { App } from "srcs/internal";
 
 export let MyRatingView = Backbone.View.extend({
   className: "ui text container",

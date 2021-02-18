@@ -14,6 +14,8 @@ export let ChatRoomMemberListView = Backbone.View.extend({
     this.chat_room_members = this.parent.chat_room_members;
     this.child_views = [];
     this.chat_member_menu_view = null;
+
+    this.listenTo(this.chat_room_members, "restore", this.addOne);
   },
 
   openMemberMenu: function (event) {
@@ -38,6 +40,8 @@ export let ChatRoomMemberListView = Backbone.View.extend({
 
   render: function () {
     this.addAll();
+    this.listenTo(this.chat_room_members, "add", this.addOne);
+
     this.chat_member_menu_view = new App.View.ChatRoomMemberMenuView(this);
     this.chat_member_menu_view.setElement($("#chat-room-member-menu-view"));
   },

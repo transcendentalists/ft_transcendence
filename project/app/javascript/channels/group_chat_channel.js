@@ -30,7 +30,12 @@ export function ConnectGroupChatChannel(
         }
 
         const member = room_members.get(message.user_id);
-        if (type == "kick") {
+        if (type == "join") {
+          room_members.add(message.user);
+        } else if (type == "restore") {
+          member.set("position", "member");
+          member.trigger("restore", member);
+        } else if (type == "kick") {
           console.log("notification about kick");
         } else if (type == "position") {
           member.set("position", message.position);

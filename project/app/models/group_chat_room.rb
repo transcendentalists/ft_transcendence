@@ -119,7 +119,19 @@ class GroupChatRoom < ApplicationRecord
   def join(user, position = "member")
     return nil if user.nil?
     return nil if self.current_member_count == self.max_member_count
-    GroupChatMembership.create(user_id: user.id, group_chat_room_id: self.id, position: position)
+    membership = GroupChatMembership.create(user_id: user.id, group_chat_room_id: self.id, position: position)
+    ActionCable.server.broadcast(
+      "group_chat_channel_#{self.id.to_s}",
+      {
+        type: "join",
+        user_id: user.id,
+        user: user.for_chat_room_format.merge({
+          position: membership.position,
+          mute: membership.mute
+        })
+      }
+    )
+    membership
   end
 
   def make_another_member_owner

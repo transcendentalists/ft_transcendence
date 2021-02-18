@@ -747,7 +747,6 @@ body {
 .chat-room-right-area {
   padding-top: 3rem;
   padding-left: 2rem;
-  padding-right: 2rem;
   width: calc(100vw - 440px);
   min-width: 740px;
 }
@@ -810,7 +809,8 @@ body {
   overflow-y: scroll;
   max-height: calc(100vh - 250px);
   padding-top: 2rem;
-  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-right: 2rem;
 }
 
 #chat-room-view .current-user .author {

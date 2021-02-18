@@ -26,7 +26,14 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def restore
-    self.update(position: "member")
+    self.update!(position: "member")
+    ActionCable.server.broadcast(
+      "group_chat_channel_#{self.group_chat_room_id.to_s}",
+      {
+        type: "restore",
+        user_id: self.user_id,
+      }
+    )
     self
   end
 

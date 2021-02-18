@@ -1,7 +1,7 @@
 class WarRequest < ApplicationRecord
   belongs_to :rule
-  has_one :war
-  has_many :war_statuses
+  has_one :war, dependent: :destroy
+  has_many :war_statuses, dependent: :destroy
 
   scope :for_guild_index, -> (guild_id) do
     guild = Guild.find_by_id(guild_id)

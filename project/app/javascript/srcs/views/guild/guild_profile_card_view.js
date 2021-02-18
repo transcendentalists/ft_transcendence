@@ -1,4 +1,4 @@
-import { App, Helper } from "../../internal";
+import { App, Helper } from "srcs/internal";
 
 export let GuildProfileCardView = Backbone.View.extend({
   template: _.template($("#guild-profile-card-template").html()),
@@ -8,6 +8,7 @@ export let GuildProfileCardView = Backbone.View.extend({
     "click #guild-show-button": "showGuild",
     "click #guild-leave-button": "leaveGuild",
     "click #guild-join-button": "joinGuild",
+    "click #war-request-create-button": "createWarRequest",
   },
 
   initialize: function (guild_id) {
@@ -26,15 +27,15 @@ export let GuildProfileCardView = Backbone.View.extend({
       App.current_user.get("guild").membership_id;
     Helper.fetch(leave_guild_url, {
       method: "DELETE",
-      success_callback: function () {
+      success_callback: () => {
         App.current_user.fetch({
           data: { for: "profile" },
-          success: function () {
+          success: () => {
             App.router.navigate("#/guilds", true);
           },
         });
       },
-      fail_callback: function () {
+      fail_callback: () => {
         Helper.info({
           subject: "탈퇴 실패",
           description: "오류",
@@ -53,21 +54,25 @@ export let GuildProfileCardView = Backbone.View.extend({
         },
         position: "member",
       },
-      success_callback: function (data) {
+      success_callback: (data) => {
         App.current_user.fetch({
           data: { for: "profile" },
-          success: function () {
+          success: () => {
             App.router.navigate("#/guilds", true);
           },
         });
       },
-      fail_callback: function () {
+      fail_callback: () => {
         Helper.info({
           subject: "가입 실패",
           description: "오류",
         });
       },
     });
+  },
+
+  createWarRequest: function () {
+    App.router.navigate("#/guilds/war_request/new?enemy_id=" + this.guild_id);
   },
 
   render: function (data) {

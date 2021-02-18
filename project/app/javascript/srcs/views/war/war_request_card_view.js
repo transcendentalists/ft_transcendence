@@ -1,4 +1,4 @@
-import { App, Helper } from "../../internal";
+import { App, Helper } from "srcs/internal";
 
 export let WarRequestCardView = Backbone.View.extend({
   template: _.template($("#war-request-card-view-template").html()),
@@ -10,53 +10,58 @@ export let WarRequestCardView = Backbone.View.extend({
     "click #war-request-decline-button": "declineWarRequest",
   },
 
-  initialize: function (data) {
-    this.war_request_id = data.war_request_id;
-    this.enemy_guild_id = data.enemy_guild_id;
+  initialize: function (war_request) {
+    this.war_request_id = war_request.id;
+    this.challenger_guild_id = war_request.challenger.id;
   },
 
+  /**
+   ** war 생성 API 가 없음
+   */
   acceptWarRequest: function () {
     const accept_war_request_url =
-      "guilds/" + this.enemy_guild_id + "/war_requests/" + this.war_request_id;
+      "guilds/" + this.challenger_guild_id + "/war";
     Helper.fetch(accept_war_request_url, {
-      method: "PATCH",
-      success_callback: function () {
-        App.router.navigate("#/matches");
+      method: "POST",
+      success_callback: () => {
+        App.router.navigate("#/war");
       },
-      fail_callback: function () {
-        Helper.info({
-          subject: "수락 실패",
-          description: "오류",
-        });
-      },
+      fail_callback: () => {},
     });
   },
 
   declineWarRequest: function () {
     const decline_war_request_url =
-      "guilds/" + this.enemy_guild_id + "/war_requests/" + this.war_request_id;
+      "guilds/" +
+      this.challenger_guild_id +
+      "/war_requests/" +
+      this.war_request_id;
     Helper.fetch(decline_war_request_url, {
       method: "DELETE",
-      success_callback: function () {
-        App.router.navigate("#/guilds");
+      success_callback: () => {
+        App.current_user.fetch({
+          data: { for: "profile" },
+          success: () => {
+            App.router.navigate("#/guilds", true);
+          },
+        });
       },
-      fail_callback: function () {
+      fail_callback: (data) => {
         Helper.info({
-          subject: "거절 실패",
-          description: "오류",
+          subject: data.error.type,
+          description: data.error.msg,
         });
       },
     });
   },
 
   render: function (data) {
-    data.position = App.current_user.get("guild").position;
+    data.current_user_position = App.current_user.get("guild").position;
     this.$el.html(this.template(data));
     return this;
   },
 
   close: function () {
-    this.$el.empty();
     this.remove();
   },
 });

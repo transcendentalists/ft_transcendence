@@ -17,7 +17,6 @@ export let GuildRankingView = Backbone.View.extend({
 
   render: function (guilds) {
     this.$el.html(this.template());
-    this.$("#guild-profile-card-list").html("");
     guilds.forEach(this.addOne, this);
     return this;
   },

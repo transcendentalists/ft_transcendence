@@ -12,6 +12,12 @@ class Api::WarRequestsController < ApplicationController
   end
 
   def destroy
-    render plain: params[:guild_id] + " guild destory " + params[:id] + " war request"
+    unless WarRequest.exists?(id: params[:id])
+      render :json => { error: {
+        'type': 'War Request', 'msg': "이미 거절되었거나 존재하지 않는 전쟁요청입니다."
+        }
+      }, :status => 401
+    end
+    WarRequest.find_by_id(params[:id])&.destroy
   end
 end

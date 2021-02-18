@@ -4,6 +4,10 @@ export let GuildIndexView = Backbone.View.extend({
   id: "guild-index-view",
   template: _.template($("#guild-index-view-template").html()),
 
+  events: {
+    "click #guild-create-button": "createGuild",
+  },
+
   initialize: function () {
     this.current_user_guild = App.current_user.get("guild");
     this.guild_profile_card_view = null;
@@ -75,6 +79,10 @@ export let GuildIndexView = Backbone.View.extend({
     }
     this.fetchAndRenderGuildRankingCardListView();
     return this;
+  },
+
+  createGuild: function () {
+    App.router.navigate("#/guilds/new");
   },
 
   close: function () {

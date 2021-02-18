@@ -558,6 +558,12 @@ body {
   margin-top: 8rem;
 }
 
+#guild-index-view #guild-create-button {
+  margin-left: auto;
+  height: 2.5rem;
+  width: 7rem;
+}
+
 #guild-index-view .guild-profile-view .stat {
   margin-left: 1rem;
   margin-right: 1rem;
@@ -578,9 +584,9 @@ body {
   width: 7rem;
 }
 
-#guild-index-view .war-request-card-list {
+/* #guild-index-view .war-request-card-list {
   margin: 5% 0;
-}
+} */
 
 #guild-index-view .war-request-card .stat {
   margin-left: 1rem;
@@ -599,6 +605,11 @@ body {
   margin-top: 1rem;
   height: 2.5rem;
   width: 7rem;
+}
+
+#guild-index-view .guild-ranking-header {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 /* ==========================================================================

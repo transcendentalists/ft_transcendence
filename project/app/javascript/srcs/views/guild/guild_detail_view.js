@@ -61,7 +61,9 @@ export let GuildDetailView = Backbone.View.extend({
   renderGuildMemberRankingView: function (data) {
     data.guild_members.my_guild_id = App.current_user.getGuildId();
     if (data.guild_members.length < 10) this.is_last_page = true;
-    this.guild_member_ranking_view = new App.View.GuildMemberRankingView();
+    this.guild_member_ranking_view = new App.View.GuildMemberRankingView(
+      this.guild_id
+    );
     this.guild_member_ranking_view
       .setElement(this.$(".member-ranking-list"))
       .render(data.guild_members);

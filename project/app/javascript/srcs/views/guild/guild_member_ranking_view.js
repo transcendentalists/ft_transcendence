@@ -5,11 +5,17 @@ export let GuildMemberRankingView = Backbone.View.extend({
   id: "guild-member-ranking-view",
   className: "ui text container",
 
-  initialize: function () {
+  initialize: function (guild_id) {
     this.child_views = [];
+    this.guild_id = guild_id;
   },
 
   addOne: function (member) {
+    member.guild_detail = {
+      id: this.guild_id,
+      current_user_guild_id: App.current_user.getGuildId(),
+      current_user_guild_position: App.current_user.getGuildPosition(),
+    };
     let child_view = new App.View.UserProfileCardView();
     this.child_views.push(child_view);
     this.$("#guild-member-profile-card-list").append(

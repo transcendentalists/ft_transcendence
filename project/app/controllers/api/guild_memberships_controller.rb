@@ -18,10 +18,22 @@ class Api::GuildMembershipsController < ApplicationController
   end
 
   def update
-    render plain: params[:guild_id] + " guild membership update " + params[:id]
+    unless GuildMembership.exists?(id: params[:id])
+      render :json => { error: {
+        'type': '관리자 임명 실패', 'msg': "이미 관리자이거나 탈퇴한 멤버입니다."
+        }
+      }, :status => 401
+    end
+    GuildMembership.find_by_id(params[:id])&.update(position: params[:position])
   end
 
   def destroy
-    GuildMembership.find(params[:id])&.destroy
+    unless GuildMembership.exists?(id: params[:id])
+      render :json => { error: {
+        'type': '관리자 제명 실패', 'msg': "이미 제명되었거나 탈퇴한 멤버입니다."
+        }
+      }, :status => 401
+    end
+    GuildMembership.find_by_id(params[:id])&.destroy
   end
 end

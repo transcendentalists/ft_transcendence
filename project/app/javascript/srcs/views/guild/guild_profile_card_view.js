@@ -13,72 +13,17 @@ export let GuildProfileCardView = Backbone.View.extend({
 
   initialize: function (guild_id) {
     this.guild_id = guild_id;
-  },
-
-  showGuild: function () {
-    App.router.navigate("#/guilds/" + this.guild_id + "/1");
-  },
-
-  leaveGuild: function () {
-    const leave_guild_url =
-      "guilds/" +
-      this.guild_id +
-      "/memberships/" +
-      App.current_user.get("guild").membership_id;
-    Helper.fetch(leave_guild_url, {
-      method: "DELETE",
-      success_callback: () => {
-        App.current_user.fetch({
-          data: { for: "profile" },
-          success: () => {
-            App.router.navigate("#/guilds", true);
-          },
-        });
-      },
-      fail_callback: () => {
-        Helper.info({
-          subject: "탈퇴 실패",
-          description: "오류",
-        });
-      },
-    });
-  },
-
-  joinGuild: function () {
-    const join_guild_url = "guilds/" + this.guild_id + "/memberships";
-    Helper.fetch(join_guild_url, {
-      method: "POST",
-      body: {
-        user: {
-          id: App.current_user.id,
-        },
-        position: "member",
-      },
-      success_callback: (data) => {
-        App.current_user.fetch({
-          data: { for: "profile" },
-          success: () => {
-            App.router.navigate("#/guilds", true);
-          },
-        });
-      },
-      fail_callback: () => {
-        Helper.info({
-          subject: "가입 실패",
-          description: "오류",
-        });
-      },
-    });
-  },
-
-  createWarRequest: function () {
-    App.router.navigate("#/guilds/war_request/new?enemy_id=" + this.guild_id);
+    this.buttons_view = null;
   },
 
   render: function (data) {
     data.current_user_guild_id = App.current_user.getGuildId();
     data.current_user_guild_position = App.current_user.getGuildPosition();
     this.$el.html(this.template(data));
+    this.buttons_view = new App.View.GuildProfileCardButtonsView(this.guild_id);
+    this.buttons_view
+      .setElement(this.$("#guild-profile-card-buttons-view"))
+      .render(data);
     return this;
   },
 

@@ -5,7 +5,7 @@ export let ChatRoomMenuView = Backbone.View.extend({
   template: _.template($("#chat-room-menu-view-template").html()),
 
   events: {
-    "click [data-event-name=change-room-info]": "changeRoomInfo",
+    "click [data-event-name=change-room-info]": "renderChangeRoomPasswordModal",
     "click [data-event-name=back-to-chat-room-list]": "backToChatRoomList",
     "click [data-event-name=leave-from-chat-room]": "leaveFromChatRoom",
   },
@@ -26,8 +26,26 @@ export let ChatRoomMenuView = Backbone.View.extend({
     );
   },
 
-  changeRoomInfo: function () {
-    console.log("changeRoomInfo!");
+  changePasswordRequest: function (password) {
+    Helper.fetch(`group_chat_rooms/${this.room_id}`, {
+      method: "PATCH",
+      headers: Helper.current_user_header(),
+      body: {
+        group_chat_room: {
+          password: password,
+        },
+      },
+    });
+  },
+
+  renderChangeRoomPasswordModal: function () {
+    Helper.input({
+      subject: "새로운 비밀번호 입력",
+      description: "비밀번호 미입력시 누구나 들어올 수 있습니다.",
+      success_callback: function (password) {
+        this.changePasswordRequest(password);
+      }.bind(this),
+    });
   },
 
   backToChatRoomList: function () {

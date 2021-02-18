@@ -1,9 +1,14 @@
+import { App } from "srcs/internal";
+
 export let InputModalView = Backbone.View.extend({
   template: _.template($("#input-modal-view-template").html()),
   el: "#input-modal-view",
 
   initialize: function () {
     this.data = null;
+    $("#input-modal-view.tiny.modal").modal("setting", {
+      closable: false,
+    });
   },
 
   events: {
@@ -32,7 +37,6 @@ export let InputModalView = Backbone.View.extend({
   send: function () {
     let input = this.$("input").val();
     this.$("input").val("");
-    if (input == "") return App.router.navigate("#/errors/106");
     if (this.data.hasOwnProperty("success_callback"))
       this.data.success_callback(input);
     this.close();

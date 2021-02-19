@@ -17,7 +17,6 @@ export let ChatRoomView = Backbone.View.extend({
     this.chat_room_members = null;
     this.current_user_membership = null;
     this.channel = null;
-    this.room_info = null;
   },
 
   send: function () {
@@ -35,7 +34,7 @@ export let ChatRoomView = Backbone.View.extend({
     });
   },
 
-  renderChatMessages: function () {
+  fetchAndRenderChatMessages: function () {
     this.chat_messages = new App.Collection.GroupChatMessages(this.room_id);
     this.chat_message_list_view = new App.View.GroupChatMessageListView({
       parent: this,
@@ -43,29 +42,28 @@ export let ChatRoomView = Backbone.View.extend({
     this.chat_messages.fetch({ reset: true });
   },
 
-  enterToChatRoom: function (data) {
-    this.room_info = data;
-    this.$el.html(this.template());
+  readyToRenderChatRoom: function (data) {
     this.chat_room_members = new App.Collection.GroupChatMembers(
       data.chat_room_members,
       { room_id: this.room_id }
     );
+
     this.current_user_membership = this.chat_room_members.get(
       App.current_user.id
     );
+
     this.chat_room_member_list_view = new App.View.ChatRoomMemberListView({
       parent: this,
     });
-    this.chat_room_member_list_view.render();
 
     this.chat_room_menu_view = new App.View.ChatRoomMenuView({
       parent: this,
       room: data.group_chat_room,
     });
     this.chat_room_menu_view.setElement(this.$("#chat-room-menu-view"));
-    this.chat_room_menu_view.render();
+  },
 
-    this.renderChatMessages();
+  connectChannelAndListenEvent: function () {
     this.channel = App.Channel.ConnectGroupChatChannel(
       this.chat_messages,
       this.room_id,
@@ -79,12 +77,24 @@ export let ChatRoomView = Backbone.View.extend({
     );
   },
 
+  enterToChatRoom: function (data) {
+    this.$el.html(this.template());
+
+    this.readyToRenderChatRoom(data);
+
+    this.chat_room_member_list_view.render();
+    this.chat_room_menu_view.render();
+    this.fetchAndRenderChatMessages();
+
+    this.connectChannelAndListenEvent();
+  },
+
   showPasswordInputModal: function () {
     Helper.input({
       subject: "입장 검사",
       description: "룸 입장을 위해 비밀번호를 입력해주세요.",
       success_callback: function (password) {
-        this.tryToEnterToChatRoom(password);
+        this.tryToEnterChatRoom(password);
       }.bind(this),
       cancel_callback: function () {
         App.router.navigate("#/chatrooms");
@@ -114,7 +124,7 @@ export let ChatRoomView = Backbone.View.extend({
     }
   },
 
-  tryToEnterToChatRoom: function (password = null) {
+  tryToEnterChatRoom: function (password = null) {
     let headers = Helper.current_user_header();
     if (password !== null) headers.Authorization = password;
 
@@ -138,7 +148,7 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   render: function () {
-    this.tryToEnterToChatRoom();
+    this.tryToEnterChatRoom();
     return this;
   },
 

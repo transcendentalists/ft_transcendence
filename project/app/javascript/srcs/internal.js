@@ -93,6 +93,7 @@ import { WarRequestCardListView } from "./views/war/war_request_card_list_view";
 import { WarRequestCardView } from "./views/war/war_request_card_view";
 import { WarIndexView } from "./views/war/war_index_view";
 import { WarCreateView } from "./views/war/war_create_view";
+import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_view";
 
 /* CHANNEL */
 import { ConnectAppearanceChannel } from "channels/appearance_channel";
@@ -185,6 +186,7 @@ export let App = {
     GuildRankingView,
     WarRequestCardListView,
     WarRequestCardView,
+    WarRequestDetailModalView,
     GuildInvitationView,
     GuildInvitationListView,
     LadderIndexView,

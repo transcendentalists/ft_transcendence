@@ -1,0 +1,39 @@
+<script type="text/template" id="war-request-detail-modal-view-template">
+  <div class="header">
+    War Request Detail
+    <i class="right floated close grey icon"></i>
+  </div>
+  <div class="content">
+    <p>룰: <%%= rule_id %></p>
+    <p>배팅 포인트: <%%= bet_point %></p>
+    <p>래더 포함여부: 
+      <%% if (include_ladder) { %>
+        Yes
+      <%% } else { %>
+        No
+      <%% } %>
+    </p>
+    <p>토너먼트 포함여부: 
+      <%% if (include_tournament) { %>
+        Yes
+      <%% } else { %>
+        No
+      <%% } %>
+    </p>
+    <p>타겟 매치 스코어: <%%= target_match_score %></p>
+    <p>최대 미응답수: <%%= max_no_reply_count %></p>
+    <p>워타임: <%%= war_time %></p>
+    <p>시작일: <%%= start_date %></p>
+    <p>종료일: <%%= end_date %></p>
+  </div>
+  <div class="actions">
+  <%% if (current_user_position != "member") { %>
+    <div class="war-request-accept-button ui positive right labeled icon button">
+      수락하기
+    </div>
+    <div class="war-request-decline-button ui negative button">
+      거절하기
+    </div>
+  <%% } %>
+  </div>
+</script>

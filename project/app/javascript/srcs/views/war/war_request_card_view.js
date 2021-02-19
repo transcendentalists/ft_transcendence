@@ -6,50 +6,19 @@ export let WarRequestCardView = Backbone.View.extend({
     "ui segment profile-card war-request-card flex-container center-aligned",
 
   events: {
-    "click .war-request-accept-button": "acceptWarRequest",
-    "click .war-request-decline-button": "declineWarRequest",
+    "click .war-request-detail-button": "showWarRequestDetail",
   },
 
   initialize: function (war_request) {
     this.war_request = war_request;
     this.war_request_id = war_request.id;
     this.challenger_guild_id = war_request.challenger.id;
+    this.war_request_detail_modal_view = null;
   },
 
-  /**
-   ** war 생성 API 가 없음
-   */
-  acceptWarRequest: function () {
-    const accept_war_request_url = `guilds/${this.challenger_guild_id}/war`;
-    Helper.fetch(accept_war_request_url, {
-      method: "POST",
-      success_callback: () => {
-        App.router.navigate("#/war");
-      },
-      fail_callback: () => {},
-    });
-  },
-
-  declineWarRequest: function () {
-    const decline_war_request_url = `guilds/${this.challenger_guild_id}/war_requests/${this.war_request_id}?status=canceled`;
-    Helper.fetch(decline_war_request_url, {
-      method: "PATCH",
-      data: { status: "canceled" },
-      success_callback: () => {
-        App.current_user.fetch({
-          data: { for: "profile" },
-          success: () => {
-            this.close();
-          },
-        });
-      },
-      fail_callback: data => {
-        Helper.info({
-          subject: data.error.type,
-          description: data.error.msg,
-        });
-      },
-    });
+  showWarRequestDetail: function () {
+    this.war_request_detail_modal_view = new App.View.WarRequestDetailModalView({ parent: this });
+    this.war_request_detail_modal_view.render();
   },
 
   render: function () {
@@ -63,6 +32,9 @@ export let WarRequestCardView = Backbone.View.extend({
   },
 
   close: function () {
+    if (this.war_request_detail_modal_view) {
+      this.war_request_detail_modal_view.close();
+    }
     this.remove();
   },
 });

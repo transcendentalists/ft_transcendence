@@ -5,10 +5,10 @@ export let GuildProfileCardView = Backbone.View.extend({
   className: "ui segment profile-card flex-container center-aligned",
 
   events: {
-    "click #guild-show-button": "showGuild",
-    "click #guild-leave-button": "leaveGuild",
-    "click #guild-join-button": "joinGuild",
-    "click #war-request-create-button": "createWarRequest",
+    "click .guild-show-button": "showGuild",
+    "click .guild-leave-button": "leaveGuild",
+    "click .guild-join-button": "joinGuild",
+    "click .war-request-create-button": "createWarRequest",
   },
 
   initialize: function (guild_id) {

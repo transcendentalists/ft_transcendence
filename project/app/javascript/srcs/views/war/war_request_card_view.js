@@ -6,8 +6,8 @@ export let WarRequestCardView = Backbone.View.extend({
     "ui segment profile-card war-request-card flex-container center-aligned",
 
   events: {
-    "click #war-request-accept-button": "acceptWarRequest",
-    "click #war-request-decline-button": "declineWarRequest",
+    "click .war-request-accept-button": "acceptWarRequest",
+    "click .war-request-decline-button": "declineWarRequest",
   },
 
   initialize: function (war_request) {

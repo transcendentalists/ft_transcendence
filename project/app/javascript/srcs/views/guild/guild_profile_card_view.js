@@ -24,24 +24,20 @@ export let GuildProfileCardView = Backbone.View.extend({
     Helper.fetch(url, {
       method: "DELETE",
       success_callback: () => {
-        App.current_user.fetch({
-          data: { for: "profile" },
-          success: () => {
-            App.router.navigate("#/guilds", true);
-          },
-        });
+        App.current_user.set("guild", null);
+        App.router.navigate("#/guilds", true);
       },
       fail_callback: () => {
         Helper.info({
           subject: "탈퇴 실패",
-          description: "오류",
+          description: "이미 탈퇴되었거나 존재하지 않는 길드입니다.",
         });
       },
     });
   },
 
   joinGuild: function () {
-    const url = `guilds/${this.guild_id}/memberships/`;
+    const url = `guilds/${this.guild_id}/memberships`;
     Helper.fetch(url, {
       method: "POST",
       body: {
@@ -50,18 +46,14 @@ export let GuildProfileCardView = Backbone.View.extend({
         },
         position: "member",
       },
-      success_callback: data => {
-        App.current_user.fetch({
-          data: { for: "profile" },
-          success: () => {
-            App.router.navigate("#/guilds", true);
-          },
-        });
+      success_callback: (data) => {
+        App.current_user.set("guild", data.guildMembership);
+        App.router.navigate("#/guilds", true);
       },
-      fail_callback: () => {
+      fail_callback: (data) => {
         Helper.info({
-          subject: "가입 실패",
-          description: "오류",
+          subject: data.error.type,
+          description: data.error.msg,
         });
       },
     });

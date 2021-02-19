@@ -6,7 +6,7 @@ class Api::GuildMembershipsController < ApplicationController
   def create
     if not Guild.exists?(params[:guild_id])
       return(
-        render_error('길드 가입 실패', '해당 길드가 존재하지 않습니다.', '404')
+        render_error('길드 가입 실패', '해당 길드 또는 유저가 존재하지 않습니다.', 404)
       )
     end
     guild_membership =
@@ -20,7 +20,7 @@ class Api::GuildMembershipsController < ApplicationController
         render_error(
           '길드 가입 실패',
           '유효하지 않은 정보가 포함되어 있습니다.',
-          '404',
+          404,
         )
       )
     end
@@ -32,6 +32,6 @@ class Api::GuildMembershipsController < ApplicationController
   end
 
   def destroy
-    GuildMembership.find(params[:id])&.destroy
+    GuildMembership.find_by_id(params[:id])&.destroy
   end
 end

@@ -40,11 +40,6 @@ class Api::GroupChatMembershipsController < ApplicationController
   end
 
   def destroy
-    # TODO: 
-    # 1. 나간 멤버가 오너라면 
-    #   1) 다른 멤버를 오너로 만들 것 (DONE) 
-    #   2) 다른 멤버가 오너로 바뀌었다는 사실을 알릴 것 (DONE)
-    # 2. 룸에 인원이 없으면 룸을 삭제할 것. (DONE)
     memberships = GroupChatMembership.where(group_chat_room_id: params[:group_chat_room_id])
     return render_error("NOT FOUND", "해당하는 챗룸 정보가 없습니다.", "404") if memberships.empty?
 

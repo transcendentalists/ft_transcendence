@@ -14,14 +14,6 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
     this.current_user_membership = self.parent.current_user_membership;
     this.friends = App.appView.appearance_view.friends;
     this.online_users = App.appView.appearance_view.online_users;
-
-    // this.is_friend = options.is_friend;
-    // this.listenTo(
-    //   App.appView.appearance_view,
-    //   "destroy_user_menu_all",
-    //   this.close
-    // );
-    // this.listenTo(window, "resize", this.close);
   },
 
   menuAction: function (e) {
@@ -31,10 +23,6 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
       current_user: this.current_user_membership,
       member: member,
     };
-    console.log(
-      "🚀 ~ file: chat_room_member_menu_view.js ~ line 34 ~ params",
-      params
-    );
 
     this.hide();
     switch (event) {
@@ -46,7 +34,6 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
         return this.toggleFriendship();
       case "battle":
         return;
-      // return App.current_user.dualRequestTo(this.user);
       case "give-admin-position":
         return this.chat_members.giveAdminPosition(params);
       case "remove-admin-position":
@@ -96,7 +83,6 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
     if (this.$el.css("display") == "none") return;
     this.$el.empty();
     this.$el.css("display", "none");
-    $(this.menu).off();
   },
 
   close: function () {

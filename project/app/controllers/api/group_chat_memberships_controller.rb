@@ -15,7 +15,7 @@ class Api::GroupChatMembershipsController < ApplicationController
     memberships = GroupChatMembership.where(group_chat_room_id: params[:group_chat_room_id])
     return render_error("NOT FOUND", "존재하지 않는 챗룸입니다.", "404") if memberships.nil?
     
-    membership = memberships.find_by_user_id(params[:id])
+    membership = memberships.find_by_id(params[:id])
     # TODO: webadmin check
     # current_user_position = @current_user.web_admin ? "admin" : memberships.find_by_user_id(@current_user.id)
     current_user_position = memberships.find_by_user_id(@current_user.id)&.position
@@ -43,7 +43,7 @@ class Api::GroupChatMembershipsController < ApplicationController
     memberships = GroupChatMembership.where(group_chat_room_id: params[:group_chat_room_id])
     return render_error("NOT FOUND", "해당하는 챗룸 정보가 없습니다.", "404") if memberships.empty?
 
-    membership = memberships.find_by_user_id(params[:id])
+    membership = memberships.find_by_id(params[:id])
     return render_error("NOT FOUND", "챗룸에 유저 정보가 없습니다.", "404") if membership.nil?
     return render_error("NOT AUTHORIZED", "권한이 없는 유저입니다.", "403") unless membership.can_be_destroyed_by?(@current_user)
 

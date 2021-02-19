@@ -82,16 +82,18 @@ class GroupChatRoom < ApplicationRecord
   def membership_by_user(user)
     membership = self.memberships.find_by_user_id(user.id)
 
-    { position: membership.position,
+    { membership_id: membership.id,
+      position: membership.position,
       mute:     membership.mute      }
   end
 
   def members
     members = []
-    self.memberships.each do |member|
-      member_hash = User.find_by_id(member.user_id).for_chat_room_format.merge({
-        position: member.position,
-        mute: member.mute
+    self.memberships.each do |membership|
+      member_hash = User.find_by_id(membership.user_id).for_chat_room_format.merge({
+        membership_id: membership.id,
+        position: membership.position,
+        mute: membership.mute
       })
       members.push(member_hash)
     end

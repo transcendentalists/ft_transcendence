@@ -5,8 +5,8 @@ import { User } from "../models/user";
 export let GroupChatMembers = Backbone.Collection.extend({
   model: User,
 
-  url: function (member_id) {
-    return `group_chat_rooms/${this.room_id}/memberships/${member_id}`;
+  url: function (membership_id) {
+    return `group_chat_rooms/${this.room_id}/memberships/${membership_id}`;
   },
 
   initialize: function (chat_members, options) {
@@ -19,7 +19,7 @@ export let GroupChatMembers = Backbone.Collection.extend({
     member,
     params = { position: null, mute: null }
   ) {
-    Helper.fetch(this.url(member.id), {
+    Helper.fetch(this.url(member.get("membership_id")), {
       method: "PATCH",
       headers: Helper.current_user_header(),
       body: {

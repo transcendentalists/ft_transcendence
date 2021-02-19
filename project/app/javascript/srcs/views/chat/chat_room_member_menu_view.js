@@ -87,6 +87,7 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
 
   close: function () {
     this.hide();
+    $(this.menu).off();
     this.remove();
   },
 });

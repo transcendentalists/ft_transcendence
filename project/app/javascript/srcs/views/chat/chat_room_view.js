@@ -72,6 +72,12 @@ export let ChatRoomView = Backbone.View.extend({
       this.room_id,
       this.chat_room_members
     );
+
+    this.listenTo(
+      this.chat_room_members,
+      "change:position",
+      this.letOutIfKicked
+    );
   },
 
   showPasswordInputModal: function () {
@@ -119,6 +125,18 @@ export let ChatRoomView = Backbone.View.extend({
       success_callback: this.enterToChatRoom.bind(this),
       fail_callback: this.enterFailCallback.bind(this),
     });
+  },
+
+  letOutIfKicked: function (chat_room_member) {
+    if (chat_room_member.get("position") != "ghost") return;
+
+    if (App.current_user.get("id") == chat_room_member.get("id")) {
+      App.router.navigate("#/chatrooms");
+      Helper.info({
+        subject: "강제 퇴장",
+        description: "챗룸에서 강제 퇴장되었습니다ㅠㅠ",
+      });
+    }
   },
 
   render: function () {

@@ -35,8 +35,6 @@ export function ConnectGroupChatChannel(
         } else if (type == "restore") {
           member.set("position", "member");
           member.trigger("restore", member);
-        } else if (type == "kick") {
-          console.log("notification about kick");
         } else if (type == "position") {
           member.set("position", message.position);
         } else if (message.type == "mute") {

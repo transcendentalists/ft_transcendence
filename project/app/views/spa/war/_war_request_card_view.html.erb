@@ -1,21 +1,21 @@
 <script type="text/template" id="war-request-card-view-template">
-  <img class="ui circular small image" src="<%%= challenger.image_url %>">
+  <img class="ui circular small image" src="<%%= war_request.challenger.image_url %>">
   <div class="content flex-container column-direction">
     <div class="row flex-container baseline">
-      <div class="name"><%%= challenger.name %></div>
-      <div class="stat"> <strong><%%= challenger.anagram %></strong> | <%%= challenger.rank %> 위</div>
+      <div class="name"><%%= war_request.challenger.name %></div>
+      <div class="stat"> <strong><%%= war_request.challenger.anagram %></strong> | <%%= war_request.challenger.rank %> 위</div>
     </div>
     <div class="row">
-      <%%= '현재 오너: ' + challenger.owner %>
+      <%%= '현재 오너: ' + war_request.challenger.owner %>
   </div>
     <div class="row">
-      <%%= '길드원 수: ' + challenger.num_of_member %>
+      <%%= '길드원 수: ' + war_request.challenger.num_of_member %>
     </div>
     <div class="row">
-      <%%= '배팅 포인트: ' + bet_point %>
+      <%%= '배팅 포인트: ' + war_request.bet_point %>
     </div>
     <div class="row">
-      <%%= '워 타임: ' + war_time %>
+      <%%= '워 타임: ' + war_request.war_time %>
     </div>
   </div>
   <%% if (current_user_position != "member") { %>

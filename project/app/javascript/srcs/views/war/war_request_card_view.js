@@ -11,6 +11,7 @@ export let WarRequestCardView = Backbone.View.extend({
   },
 
   initialize: function (war_request) {
+    this.war_request = war_request;
     this.war_request_id = war_request.id;
     this.challenger_guild_id = war_request.challenger.id;
   },
@@ -50,9 +51,13 @@ export let WarRequestCardView = Backbone.View.extend({
     });
   },
 
-  render: function (data) {
-    data.current_user_position = App.current_user.get("guild")?.position;
-    this.$el.html(this.template(data));
+  render: function () {
+    this.$el.html(
+      this.template({
+        war_request: this.war_request,
+        current_user_position: App.current_user.get("guild")?.position,
+      }),
+    );
     return this;
   },
 

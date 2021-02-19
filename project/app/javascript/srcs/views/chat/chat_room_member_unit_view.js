@@ -1,9 +1,9 @@
 import { App } from "srcs/internal";
 
 export let ChatRoomMemberUnitView = Backbone.View.extend({
-  className: "ui teal image label user-unit",
+  className: "chat-member-unit",
   template: _.template($("#chat-room-member-unit-view-template").html()),
-  tagName: "a",
+  tagName: "div",
 
   initialize: function (options) {
     this.parent = options.parent;

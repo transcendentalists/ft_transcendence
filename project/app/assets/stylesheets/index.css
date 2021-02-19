@@ -724,7 +724,7 @@ body {
 }
 
 /* ==========================================================================
-   CHAT INDEX VIEW
+   CHAT ROOM VIEW
    ========================================================================== */
 
 #chat-room-view {
@@ -830,6 +830,10 @@ body {
   max-height: 112px;
 }
 
+#chat-room-view .chat-member-unit {
+  display: block;
+}
+
 #entering-chat-room-view {
   margin-left: 20%;
   height: 100%;
@@ -837,7 +841,6 @@ body {
   flex-direction: column;
   justify-content: center;
 }
-
 #entering-chat-room-view .box {
   display: flex;
   justify-content: center;
@@ -855,14 +858,12 @@ body {
     0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
     0 100px 80px rgba(0, 0, 0, 0.12);
 }
-
 #entering-chat-room-view .circle {
   width: 500px;
   height: 500px;
   border-radius: 50%;
   background-color: #f0f4fd;
 }
-
 #entering-chat-room-view .code {
   font-size: 4rem;
   display: contents;

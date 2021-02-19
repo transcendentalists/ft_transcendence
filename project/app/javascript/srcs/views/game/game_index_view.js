@@ -11,28 +11,53 @@ export let GameIndexView = Backbone.View.extend({
    ** @clear_id: 실행중인 렌더링 엔진을 멈추기 위한 clear key(setInterval)
    */
 
-  initialize: function (id) {
+  initialize: function (match_id) {
     this.spec = null;
     this.channel = null;
-    this.is_player = id == undefined ? true : false;
-    this.match_id = id;
+    this.is_player = match_id == undefined ? true : false;
     this.left_player_view = null;
     this.right_player_view = null;
+    this.is_player_view_rendered = false;
     this.play_view = null;
     this.clear_id = null;
+
+    this.parseMatchQuery(match_id);
+  },
+
+  parseMatchQuery: function (match_id) {
+    let params = Helper.parseHashQuery();
+    let default_hash = {
+      challenger_id: null,
+      rule_id: "1",
+      target_score: "3",
+      match_id: match_id,
+    };
+
+    params = Object.assign({}, default_hash, params);
+    this.challenger_id = params["challenger_id"];
+    this.rule_id = params["rule_id"];
+    this.target_score = params["target_score"];
+    this.match_id = params["match_id"];
+    this.match_type = params["match_type"];
   },
 
   /**
    ** 새로운 래더 게임에 참여, 게임(match) id 변환
    ** render 메서드 실행시 플레이어일 경우 함께 호출
    */
+
   joinGame: function () {
+    App.current_user.update_status("playing");
     Helper.fetch("matches", {
       method: "POST",
-      success_callback: this.subscribeChannel.bind(this),
+      success_callback: this.subscribeGameChannelAndBroadcast.bind(this),
+      fail_callback: this.rejectMatchCallback.bind(this),
       body: {
-        for: "ladder",
+        match_type: this.match_type,
         user_id: App.current_user.id,
+        rule_id: this.rule_id,
+        target_score: this.target_score,
+        match_id: this.match_id,
       },
     });
   },
@@ -40,13 +65,20 @@ export let GameIndexView = Backbone.View.extend({
   /**
    ** 플레이어일 경우 joinMatch의 리턴 데이터를 이용하여 match id를 room으로 지정,
    ** 게스트일 경우 router parameter data를 그대로 room 이름으로 사용
+   ** 매치 타입이 dual인 경우 게임 채널을 구독하고  challenger한테 broadcast 한다.
    */
-  subscribeChannel: function (data) {
+  subscribeGameChannelAndBroadcast: function (data) {
     this.channel = App.Channel.ConnectGameChannel(
       this.recv,
       this,
       this.is_player ? data["match"]["id"] : data
     );
+    if (this.match_type == "dual" && this.challenger_id != null) {
+      App.notification_channel.dualMatchHasCreated(
+        this.challenger_id,
+        data["match"]["id"]
+      );
+    }
   },
 
   showInfoModal: function (type) {
@@ -60,15 +92,12 @@ export let GameIndexView = Backbone.View.extend({
     });
   },
 
-  sendAlert: function () {
+  rejectMatchCallback: function () {
     Helper.info({
       subject: "잘못된 접근",
-      description:
-        (type == "END"
-          ? "게임이 종료되었습니다. "
-          : "유저가 게임을 기권하였습니다. ") +
-        "잠시후 홈 화면으로 이동합니다.",
+      description: "잠시후 홈 화면으로 이동합니다.",
     });
+    setTimeout(this.redirectHomeCallback, 2000);
   },
 
   redirectHomeCallback: function () {
@@ -101,7 +130,7 @@ export let GameIndexView = Backbone.View.extend({
       if (this.play_view) this.play_view.stopRender();
       if (this.clear_id) clearInterval(this.clear_id);
       this.showInfoModal(msg.type);
-      setTimeout(this.redirectHomeCallback, 3000);
+      setTimeout(this.redirectHomeCallback, 2000);
       this.channel.unsubscribe();
       this.channel = null;
     } else if (msg.type == "STOP") {
@@ -118,8 +147,10 @@ export let GameIndexView = Backbone.View.extend({
    ** 게스트일 경우 로딩 대기
    */
   renderPlayerView: function (data) {
+    if (this.is_player_view_rendered) return;
     this.left_player_view = new App.View.UserProfileCardView();
     this.right_player_view = new App.View.UserProfileCardView();
+    this.is_player_view_rendered = true;
     this.$(".vs-icon").html("VS");
     this.$("#left-game-player-view").append(
       this.left_player_view.render(data["left"]).$el
@@ -180,6 +211,7 @@ export let GameIndexView = Backbone.View.extend({
     if (this.play_view) this.play_view.close();
     if (this.channel) this.channel.unsubscribe();
     if (this.clear_id) clearInterval(this.clear_id);
+    if (this.is_player) App.current_user.update_status("online");
     this.remove();
   },
 });

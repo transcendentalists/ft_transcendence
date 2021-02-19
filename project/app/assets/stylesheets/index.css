@@ -141,11 +141,30 @@ body {
 /* INVITE VIEW
    ========================================================================== */
 
+@media (max-width: 885px) {
+  #invite-view {
+    display: none;
+  }
+}
+
 #invite-view {
-  z-index: 5;
   position: fixed;
   bottom: 0;
-  right: 590px;
+  right: 585px;
+  z-index: 103;
+}
+
+@media (max-width: 885px) {
+  #request-view {
+    display: none;
+  }
+}
+
+#request-view {
+  position: fixed;
+  bottom: 0;
+  right: 585px;
+  z-index: 103;
 }
 
 /* DIRECT CHAT VIEW

@@ -7,6 +7,11 @@ export let DirectChatView = Backbone.View.extend({
   events: {
     "click .close.icon": "hide",
     "click .submit.button": "send",
+    "click .dual-join.button": "dual",
+  },
+
+  dual: function () {
+    App.current_user.dualRequestTo(this.chat_room.chat_user);
   },
 
   initialize: function () {
@@ -41,7 +46,7 @@ export let DirectChatView = Backbone.View.extend({
     if (this.chat_room) this.chat_room.stop();
 
     this.chat_room = this.chat_room_list.find(
-      (room) => room.chat_user.get("id") == chat_user.get("id")
+      room => room.chat_user.get("id") == chat_user.get("id"),
     );
     if (this.chat_room == undefined) {
       this.chat_room = new App.View.DirectChatRoomView({
@@ -67,7 +72,7 @@ export let DirectChatView = Backbone.View.extend({
   },
 
   close: function () {
-    this.chat_room_list.forEach((chat_room) => chat_room.close());
+    this.chat_room_list.forEach(chat_room => chat_room.close());
     this.chat_room_list = [];
     this.chat_room = null;
     this.$el.hide();

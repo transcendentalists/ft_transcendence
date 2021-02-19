@@ -1,5 +1,4 @@
-import { App } from "srcs/internal";
-import { Helper } from "../../helper";
+import { App, Helper } from "srcs/internal";
 
 export let GroupChatMessageListView = Backbone.View.extend({
   el: "#chat-room-message-list-view",

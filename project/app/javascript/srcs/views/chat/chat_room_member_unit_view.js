@@ -1,5 +1,3 @@
-import { App } from "srcs/internal";
-
 export let ChatRoomMemberUnitView = Backbone.View.extend({
   className: "chat-member-unit",
   template: _.template($("#chat-room-member-unit-view-template").html()),

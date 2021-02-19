@@ -1,5 +1,4 @@
-import { Helper } from "../../helper";
-import { App } from "../../internal";
+import { App, Helper } from "srcs/internal";
 
 export let ChatRoomView = Backbone.View.extend({
   id: "chat-room-view",

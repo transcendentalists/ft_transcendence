@@ -1,5 +1,4 @@
-import { App } from "srcs/internal";
-import { Helper } from "srcs/helper";
+import { App, Helper } from "srcs/internal";
 
 export let ChatRoomMenuView = Backbone.View.extend({
   template: _.template($("#chat-room-menu-view-template").html()),

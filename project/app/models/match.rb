@@ -3,6 +3,10 @@ class Match < ApplicationRecord
   belongs_to :eventable, polymorphic: true, optional: true
   has_many :scorecards, dependent: :delete_all
   has_many :users, through: :scorecards
+
+  validates :rule_id, inclusion: { in: 1..7 }
+  validates :target_score, inclusion: { in: [3, 5, 7, 10] }
+
   scope :for_user_index, -> (user_id) do
     current_user = User.find(user_id)
     where(id: current_user.match_ids, status: "completed").order(created_at: :desc).limit(5).map { |match|

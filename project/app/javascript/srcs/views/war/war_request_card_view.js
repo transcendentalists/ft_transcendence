@@ -19,8 +19,7 @@ export let WarRequestCardView = Backbone.View.extend({
    ** war 생성 API 가 없음
    */
   acceptWarRequest: function () {
-    const accept_war_request_url =
-      "guilds/" + this.challenger_guild_id + "/war";
+    const accept_war_request_url = `guilds/${this.challenger_guild_id}/war`;
     Helper.fetch(accept_war_request_url, {
       method: "POST",
       success_callback: () => {
@@ -31,11 +30,7 @@ export let WarRequestCardView = Backbone.View.extend({
   },
 
   declineWarRequest: function () {
-    const decline_war_request_url =
-      "guilds/" +
-      this.challenger_guild_id +
-      "/war_requests/" +
-      this.war_request_id;
+    const decline_war_request_url = `guilds/${this.challenger_guild_id}/war_requests/${this.war_request_id}`;
     Helper.fetch(decline_war_request_url, {
       method: "DELETE",
       success_callback: () => {
@@ -46,7 +41,7 @@ export let WarRequestCardView = Backbone.View.extend({
           },
         });
       },
-      fail_callback: (data) => {
+      fail_callback: data => {
         Helper.info({
           subject: data.error.type,
           description: data.error.msg,

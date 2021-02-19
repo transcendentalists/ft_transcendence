@@ -17,17 +17,14 @@ export let GuildIndexView = Backbone.View.extend({
 
   fetchAndRenderGuildProfileCardView: function () {
     this.fetchAndRender(
-      "guilds/" +
-        this.current_user_guild.id +
-        "?for=profile&user_id=" +
-        App.current_user.id,
-      this.renderGuildProfileCardView.bind(this)
+      `guilds/${this.current_user_guild.id}?for=profile&user_id=${App.current_user.id}`,
+      this.renderGuildProfileCardView.bind(this),
     );
   },
 
   renderGuildProfileCardView: function (data) {
     this.guild_profile_card_view = new App.View.GuildProfileCardView(
-      data.guild.id
+      data.guild.id,
     );
     this.guild_profile_card_view
       .setElement(this.$(".current-user-guild.profile-card"))
@@ -36,8 +33,8 @@ export let GuildIndexView = Backbone.View.extend({
 
   fetchAndRenderWarRequestCardListView: function () {
     this.fetchAndRender(
-      "guilds/" + this.current_user_guild.id + "/war_requests?for=guild_index",
-      this.renderWarRequestCardListView.bind(this)
+      `guilds/${this.current_user_guild.id}/war_requests?for=guild_index`,
+      this.renderWarRequestCardListView.bind(this),
     );
   },
 
@@ -51,7 +48,7 @@ export let GuildIndexView = Backbone.View.extend({
   fetchAndRenderGuildRankingCardListView: function () {
     this.fetchAndRender(
       "guilds?for=guild_index",
-      this.renderGuildRankingCardListView.bind(this)
+      this.renderGuildRankingCardListView.bind(this),
     );
   },
 
@@ -71,7 +68,7 @@ export let GuildIndexView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(
-      this.template({ current_user_guild: this.current_user_guild })
+      this.template({ current_user_guild: this.current_user_guild }),
     );
     if (this.current_user_guild) {
       this.fetchAndRenderGuildProfileCardView();

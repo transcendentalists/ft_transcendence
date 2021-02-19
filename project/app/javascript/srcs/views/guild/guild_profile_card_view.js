@@ -16,16 +16,12 @@ export let GuildProfileCardView = Backbone.View.extend({
   },
 
   showGuild: function () {
-    App.router.navigate("#/guilds/" + this.guild_id);
+    App.router.navigate(`#/guilds/${this.guild_id}`);
   },
 
   leaveGuild: function () {
-    const leave_guild_url =
-      "guilds/" +
-      this.guild_id +
-      "/memberships/" +
-      App.current_user.get("guild").membership_id;
-    Helper.fetch(leave_guild_url, {
+    const url = `guilds/${this.guild_id}/memberships/${App.current_user.get("guild").membership_id}`;
+    Helper.fetch(url, {
       method: "DELETE",
       success_callback: () => {
         App.current_user.fetch({
@@ -45,8 +41,8 @@ export let GuildProfileCardView = Backbone.View.extend({
   },
 
   joinGuild: function () {
-    const join_guild_url = "guilds/" + this.guild_id + "/memberships";
-    Helper.fetch(join_guild_url, {
+    const url = `guilds/${this.guild_id}/memberships/`;
+    Helper.fetch(url, {
       method: "POST",
       body: {
         user: {
@@ -54,7 +50,7 @@ export let GuildProfileCardView = Backbone.View.extend({
         },
         position: "member",
       },
-      success_callback: (data) => {
+      success_callback: data => {
         App.current_user.fetch({
           data: { for: "profile" },
           success: () => {
@@ -72,7 +68,7 @@ export let GuildProfileCardView = Backbone.View.extend({
   },
 
   createWarRequest: function () {
-    App.router.navigate("#/guilds/war_request/new?enemy_id=" + this.guild_id);
+    App.router.navigate(`#/guilds/war_request/new?enemy_id=${this.guild_id}`);
   },
 
   render: function (data) {

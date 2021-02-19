@@ -31,14 +31,15 @@ export let WarRequestCardView = Backbone.View.extend({
   },
 
   declineWarRequest: function () {
-    const decline_war_request_url = `guilds/${this.challenger_guild_id}/war_requests/${this.war_request_id}`;
+    const decline_war_request_url = `guilds/${this.challenger_guild_id}/war_requests/${this.war_request_id}?status=canceled`;
     Helper.fetch(decline_war_request_url, {
-      method: "DELETE",
+      method: "PATCH",
+      data: { status: "canceled" },
       success_callback: () => {
         App.current_user.fetch({
           data: { for: "profile" },
           success: () => {
-            App.router.navigate("#/guilds", true);
+            this.close();
           },
         });
       },

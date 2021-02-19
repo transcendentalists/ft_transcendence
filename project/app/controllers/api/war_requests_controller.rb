@@ -17,5 +17,6 @@ class Api::WarRequestsController < ApplicationController
       render_error("전쟁 요청 검색 에러", "요청하신 전쟁요청이 존재하지 않습니다.", 404)
     end
     war_request.update(status: params[:status]) if params[:status]
+    head :no_content, status: 204
   end
 end

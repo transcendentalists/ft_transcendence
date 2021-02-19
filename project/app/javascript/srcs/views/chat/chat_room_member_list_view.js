@@ -21,10 +21,10 @@ export let ChatRoomMemberListView = Backbone.View.extend({
   openMemberMenu: function (event) {
     const client_x = event.clientX;
     const client_y = event.clientY;
-    window.ft_target = event.target;
-    const member = this.chat_room_members.get(
-      event.target.closest(".user-unit").getAttribute("data-user-id")
-    );
+    const member_id = event.target
+      .closest(".chat-member-unit")
+      .getAttribute("data-user-id");
+    const member = this.chat_room_members.get(member_id);
     const options = { member, client_x, client_y };
     this.chat_member_menu_view.render(options);
   },

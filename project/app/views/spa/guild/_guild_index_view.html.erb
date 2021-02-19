@@ -1,14 +1,21 @@
 <script type="text/template" id="guild-index-view-template">
 
+  <h1 class="ui header">My Guild</h1>
   <%% if (current_user_guild !== null) { %>
-    <h1 class="ui header">My Guild</h1>
     <div class="guild-profile-view ui text container">
       <div class="current-user-guild profile-card ui segment flex-container center-aligned"></div>
     </div>
+  <%% } else { %>
+    <span>소속된 길드가 없습니다.</span>
+  <%% } %>
 
-    <h1 class="ui header">War Request</h1>
-    <div class="war-request-card-list ui text container">
+  <h1 class="ui header">War Request</h1>
+  <%% if (current_user_guild !== null) { %>
+    <div class="guild-profile-view ui text container">
+    <div class="war-request-card-list ui text container"> </div>
     </div>
+  <%% } else { %>
+    <span>소속된 길드가 없습니다.</span>
   <%% } %>
 
   <div class="guild-ranking-header flex-container">

@@ -72,8 +72,8 @@ export let GuildProfileCardView = Backbone.View.extend({
   },
 
   render: function (data) {
-    data.current_user_guild_id = App.current_user.getGuildId();
-    data.current_user_guild_position = App.current_user.getGuildPosition();
+    data.current_user_guild_id = App.current_user.get("guild")?.id;
+    data.current_user_guild_position = App.current_user.get("guild")?.position;
     this.$el.html(this.template(data));
     return this;
   },

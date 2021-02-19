@@ -53,7 +53,7 @@ export let GuildIndexView = Backbone.View.extend({
   },
 
   renderGuildRankingCardListView: function (data) {
-    data.guilds.my_guild_id = App.current_user.getGuildId();
+    data.guilds.my_guild_id = App.current_user.get("guild")?.id;
     this.guild_ranking_view = new App.View.GuildRankingView();
     this.guild_ranking_view
       .setElement(this.$(".guild-ranking-list"))

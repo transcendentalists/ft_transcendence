@@ -28,14 +28,6 @@ export let CurrentUser = Backbone.Model.extend({
     });
   },
 
-  getGuildId: function () {
-    return this.get("guild") ? this.get("guild").id : null;
-  },
-
-  getGuildPosition: function () {
-    return this.get("guild") ? this.get("guild").position : null;
-  },
-
   update_status: function (status) {
     this.set("status", status);
   },

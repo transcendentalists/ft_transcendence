@@ -5,16 +5,12 @@ class WarRequest < ApplicationRecord
   validates :status, inclusion: { in: ["pending", "approved", "canceled"] }
   validates :rule_id, inclusion: { in: 1..7 }
   validates :target_match_score, inclusion: { in: [3, 5, 7, 10] }
-  # validates_datetime :end_date, after: :start_date
-  # validates_datetime :start_date, after: DateTime.now()
+  validate :end_date_after_start_date
+  validate :start_date_after_now
 
   scope :for_guild_index, -> (guild_id) do
     WarRequest.joins(:war_statuses).where(war_statuses: {guild_id: guild_id, position: "enemy"}, status: "pending").order(start_date: :asc).map { |request| 
       challenger_guild_stat = request.war_statuses.find_by_position("challenger")&.guild.profile
-
-      # war_request.start_date = request.start_date.strftime("%F")
-      # war_request.end_date = request.end_date .strftime("%F")
-      # war_request.war_time = request.war_time.strftime("%H")
       
       war_request = request.as_json(except: [:start_date, :end_date, :war_time])
       war_request['start_date'] = request.start_date.strftime("%F")
@@ -22,5 +18,18 @@ class WarRequest < ApplicationRecord
       war_request['war_time'] = request.war_time.strftime("%H")
       war_request.merge!( challenger: challenger_guild_stat )
     }
+  end
+
+  private
+  def start_date_after_now
+    if start_date.past?
+      errors.add(:start_date, "must be after now")
+    end
+  end
+
+  def end_date_after_start_date
+    if end_date < start_date
+      errors.add(:end_date, "must be after the start date")
+    end
   end
 end

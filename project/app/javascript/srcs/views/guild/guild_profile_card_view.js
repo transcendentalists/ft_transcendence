@@ -23,6 +23,7 @@ export let GuildProfileCardView = Backbone.View.extend({
     const url = `guilds/${this.guild_id}/memberships/${App.current_user.get("guild").membership_id}`;
     Helper.fetch(url, {
       method: "DELETE",
+      headers: Helper.current_user_header(),
       success_callback: () => {
         App.current_user.set("guild", null);
         App.router.navigate("#/guilds", true);
@@ -40,6 +41,7 @@ export let GuildProfileCardView = Backbone.View.extend({
     const url = `guilds/${this.guild_id}/memberships`;
     Helper.fetch(url, {
       method: "POST",
+      headers: Helper.current_user_header(),
       body: {
         user: {
           id: App.current_user.id,

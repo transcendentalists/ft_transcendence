@@ -7,14 +7,12 @@ export let WarRequestDetailModalView = Backbone.View.extend({
   events: {
     "click .war-request-accept-button": "acceptWarRequest",
     "click .war-request-decline-button": "declineWarRequest",
-    "click .right.floated.grey.icon": "hide"
+    "click .right.floated.grey.icon": "hide",
   },
 
   initialize: function (options) {
     this.parent = options.parent;
     this.war_request = this.parent.war_request;
-    this.war_request_id = this.war_request.id;
-    this.challenger_guild_id = this.war_request.challenger.id;
     $("#war-request-detail-modal-view").modal("setting", {
       closable: false,
     });
@@ -25,9 +23,10 @@ export let WarRequestDetailModalView = Backbone.View.extend({
    */
 
   acceptWarRequest: function () {
-    const accept_war_request_url = `guilds/${this.challenger_guild_id}/war`;
+    const accept_war_request_url = `guilds/${App.current_user.get("guild").id}/war`;
     Helper.fetch(accept_war_request_url, {
       method: "PATCH",
+      headers: Helper.current_user_header(),
       data: { status: "approved" },
       success_callback: () => {
         App.router.navigate("#/war");
@@ -37,9 +36,10 @@ export let WarRequestDetailModalView = Backbone.View.extend({
   },
 
   declineWarRequest: function () {
-    const decline_war_request_url = `guilds/${this.challenger_guild_id}/war_requests/${this.war_request_id}?status=canceled`;
+    const decline_war_request_url = `guilds/${App.current_user.get("guild").id}/war_requests/${this.war_request.id}?status=canceled`;
     Helper.fetch(decline_war_request_url, {
       method: "PATCH",
+      headers: Helper.current_user_header(),
       data: { status: "canceled" },
       success_callback: () => {
         this.parent.close();
@@ -60,7 +60,9 @@ export let WarRequestDetailModalView = Backbone.View.extend({
   },
 
   render: function () {
-    this.war_request["current_user_position"] = App.current_user.get("guild")?.position;
+    this.war_request["current_user_position"] = App.current_user.get(
+      "guild",
+    )?.position;
     this.$el.html(this.template(this.war_request));
     $("#war-request-detail-modal-view").modal("show");
     return this;

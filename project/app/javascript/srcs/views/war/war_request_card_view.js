@@ -11,8 +11,6 @@ export let WarRequestCardView = Backbone.View.extend({
 
   initialize: function (war_request) {
     this.war_request = war_request;
-    this.war_request_id = war_request.id;
-    this.challenger_guild_id = war_request.challenger.id;
     this.war_request_detail_modal_view = null;
   },
 

@@ -54,7 +54,9 @@ export let GroupChatMembers = Backbone.Collection.extend({
 
   letOutOfChatRoom: function (chat_room_member) {
     Helper.fetch(
-      `group_chat_rooms/${this.room_id}/memberships/${chat_room_member.id}`,
+      `group_chat_rooms/${this.room_id}/memberships/${chat_room_member.get(
+        "membership_id"
+      )}`,
       {
         method: "DELETE",
         headers: Helper.current_user_header(),

@@ -1,4 +1,5 @@
 import { App, Helper } from "srcs/internal";
+import { DualHelper } from "srcs/dual_helper";
 
 export let ChatRoomMemberMenuView = Backbone.View.extend({
   el: "#chat-room-member-menu-view",
@@ -45,17 +46,33 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
     }
   },
 
+  createFriend: function (user_id) {
+    let user = DualHelper.getUserModelInAppearanceCollections(user_id);
+    if (user !== undefined) {
+      this.friends.createFriendship(user);
+      this.online_users.remove(user);
+    } else {
+      Helper.fetch(`users/${user_id}?for=appearance`, {
+        success_callback: function (data) {
+          let user = new App.Model.User(data.user);
+          this.friends.createFriendship(user);
+        }.bind(this),
+      });
+    }
+  },
+
+  destroyFriend: function (friend_id) {
+    let friend = DualHelper.getUserModelInAppearanceCollections(friend_id);
+    this.friends.destroyFriendship(friend);
+  },
+
   toggleFriendship: function () {
     const user_id = this.member.id;
     const friend = this.friends.get(user_id);
 
-    if (friend == undefined) {
-      this.friends.createFriendship(user_id);
-      this.online_users.remove(user_id);
-    } else {
-      this.friends.destroyFriendship(user_id);
-      this.online_users.add(friend);
-    }
+    if (friend == undefined) this.createFriend(user_id);
+    else this.destroyFriend(user_id);
+    this.hide();
   },
 
   render: function (options) {

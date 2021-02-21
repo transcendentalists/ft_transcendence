@@ -119,7 +119,6 @@ class User < ApplicationRecord
     })
   end
 
-  private
 
   def make_user_data(status)
     user_data = {
@@ -130,6 +129,9 @@ class User < ApplicationRecord
       anagram: guild_membership&.guild&.anagram
     }
   end
+  
+  private
+
 
   def self.where_by_query(params)
     users = self.all

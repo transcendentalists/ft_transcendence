@@ -754,7 +754,7 @@ body {
   height: 100%;
 }
 
-.chat-room-left-area {
+#chat-room-left-area {
   position: fixed;
   height: 100vh;
   width: 220px;
@@ -763,7 +763,7 @@ body {
   left: 0;
 }
 
-.chat-room-right-area {
+#chat-room-right-area {
   padding-top: 3rem;
   padding-left: 2rem;
   width: calc(100vw - 440px);

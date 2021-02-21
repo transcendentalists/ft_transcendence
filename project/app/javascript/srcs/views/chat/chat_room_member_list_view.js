@@ -5,7 +5,7 @@ export let ChatRoomMemberListView = Backbone.View.extend({
 
   events: {
     "click .user-unit": "openMemberMenu",
-    mouseleave: "closeMemberMenu",
+    mouseleave: "hideMemberMenu",
   },
 
   initialize: function (options) {
@@ -29,13 +29,13 @@ export let ChatRoomMemberListView = Backbone.View.extend({
     this.chat_member_menu_view.render(options);
   },
 
-  closeMemberMenu: function (event) {
+  hideMemberMenu: function (event) {
     if (
       event.target.id != "chat-room-member-list-view" &&
-      event.target.id != "chat-room-message-list-view"
+      event.target.id != "chat-room-right-area"
     )
       return;
-    this.chat_member_menu_view.hide();
+    if (this.chat_member_menu_view) this.chat_member_menu_view.hide();
   },
 
   render: function () {

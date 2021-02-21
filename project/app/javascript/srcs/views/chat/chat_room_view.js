@@ -6,6 +6,7 @@ export let ChatRoomView = Backbone.View.extend({
   className: "flex-container column-direction",
   events: {
     "click .submit.button": "send",
+    "mouseenter #chat-room-right-area": "hideMemberMenu",
   },
 
   initialize: function (room_id) {
@@ -17,6 +18,11 @@ export let ChatRoomView = Backbone.View.extend({
     this.chat_room_members = null;
     this.current_user_membership = null;
     this.channel = null;
+  },
+
+  hideMemberMenu: function (event) {
+    if (this.chat_room_member_list_view)
+      this.chat_room_member_list_view.hideMemberMenu(event);
   },
 
   send: function () {

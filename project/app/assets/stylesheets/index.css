@@ -605,8 +605,12 @@ body {
   width: 7rem;
 }
 
-#guild-index-view .guild-profile-view {
+#guild-index-view .my-guild-header {
   margin-bottom: 1.5rem;
+}
+
+#guild-index-view .guild-profile-view {
+  margin-bottom: 4rem;
 }
 
 #guild-index-view .guild-profile-view .stat {
@@ -629,8 +633,12 @@ body {
   width: 7rem;
 }
 
-#guild-index-view .war-request-card-list {
+#guild-index-view .war-request-header {
   margin-bottom: 1.5rem;
+}
+
+#guild-index-view .war-request-card-list {
+  margin-bottom: 4rem;
 }
 
 #guild-index-view .war-request-card .stat {
@@ -642,19 +650,19 @@ body {
   margin-top: -1rem;
 }
 
-#guild-index-view .war-request.buttons {
+#guild-index-view .war-request-detail-button {
   margin-left: auto;
-}
-
-#guild-index-view .war-request .ui.button {
   margin-top: 1rem;
   height: 2.5rem;
   width: 7rem;
 }
 
 #guild-index-view .guild-ranking-header {
-  margin-top: 2rem;
   margin-bottom: 1.5rem;
+}
+
+#guild-index-view .guild-ranking-list {
+  margin-bottom: 4rem;
 }
 
 #war-request-detail-modal-view > div.header > i {

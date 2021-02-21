@@ -1,6 +1,6 @@
 <script type="text/template" id="guild-index-view-template">
 
-  <h1 class="ui header">My Guild</h1>
+  <h1 class="my-guild-header ui header">My Guild</h1>
   <%% if (current_user_guild !== null) { %>
     <div class="guild-profile-view ui text container">
       <div class="current-user-guild guild-profile-card ui segment flex-container center-aligned"></div>
@@ -9,7 +9,7 @@
     <span>소속된 길드가 없습니다.</span>
   <%% } %>
 
-  <h1 class="ui header">War Request</h1>
+  <h1 class="war-request-header ui header">War Request</h1>
   <%% if (current_user_guild !== null) { %>
     <div class="war-request-card-list ui text container"> </div>
     </div>

@@ -20,10 +20,10 @@ export let GuildIndexView = Backbone.View.extend({
 
   renderGuildProfileCardView: function (data) {
     this.guild_profile_card_view = new App.View.GuildProfileCardView(
-      data.guild.id,
+      data.guild.id
     );
     this.guild_profile_card_view
-      .setElement(this.$(".current-user-guild.profile-card"))
+      .setElement(this.$(".current-user-guild.guild-profile-card"))
       .render(data.guild);
   },
 
@@ -44,7 +44,7 @@ export let GuildIndexView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(
-      this.template({ current_user_guild: this.current_user_guild }),
+      this.template({ current_user_guild: this.current_user_guild })
     );
     if (this.current_user_guild) {
       Helper.fetch(this.current_user_guild_profile_url, {

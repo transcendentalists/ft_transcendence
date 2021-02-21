@@ -2,7 +2,7 @@ import { App, Helper } from "srcs/internal";
 
 export let GuildProfileCardView = Backbone.View.extend({
   template: _.template($("#guild-profile-card-template").html()),
-  className: "ui segment profile-card flex-container center-aligned",
+  className: "ui segment guild-profile-card flex-container center-aligned",
 
   events: {
     "click .guild-show-button": "showGuild",
@@ -20,7 +20,9 @@ export let GuildProfileCardView = Backbone.View.extend({
   },
 
   leaveGuild: function () {
-    const url = `guilds/${this.guild_id}/memberships/${App.current_user.get("guild").membership_id}`;
+    const url = `guilds/${this.guild_id}/memberships/${
+      App.current_user.get("guild").membership_id
+    }`;
     Helper.fetch(url, {
       method: "DELETE",
       headers: Helper.current_user_header(),

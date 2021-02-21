@@ -573,6 +573,28 @@ body {
    GUILD INDEX VIEW
    ========================================================================== */
 
+.guild-profile-card .content {
+  margin-left: 2rem;
+  margin-top: -1rem;
+}
+
+.guild-profile-card .name {
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.guild-profile-card .stat {
+  margin-left: 1rem;
+}
+
+#guild-index-view .small.image {
+  margin-bottom: 0;
+  width: 150px !important;
+  height: 150px !important;
+  min-width: 150px;
+  min-height: 150px;
+}
+
 #guild-index-view {
   margin-top: 8rem;
 }
@@ -581,6 +603,10 @@ body {
   margin-left: auto;
   height: 2.5rem;
   width: 7rem;
+}
+
+#guild-index-view .guild-profile-view {
+  margin-bottom: 1.5rem;
 }
 
 #guild-index-view .guild-profile-view .stat {
@@ -603,9 +629,9 @@ body {
   width: 7rem;
 }
 
-/* #guild-index-view .war-request-card-list {
-  margin: 5% 0;
-} */
+#guild-index-view .war-request-card-list {
+  margin-bottom: 1.5rem;
+}
 
 #guild-index-view .war-request-card .stat {
   margin-left: 1rem;
@@ -628,7 +654,7 @@ body {
 
 #guild-index-view .guild-ranking-header {
   margin-top: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 #war-request-detail-modal-view > div.header > i {

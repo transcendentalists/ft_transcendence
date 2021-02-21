@@ -36,8 +36,8 @@ class Api::GroupChatRoomsController < ApplicationController
     return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", 404) if group_chat_room.nil?
 
     if group_chat_room.locked?
-      return render_error("EMPTY PASSWORD", "Password가 입력되지 않았습니다.", 401) unless is_password_entered?
-      return render_error("INVALID PASSWORD", "Password가 일치하지 않습니다.", 403) unless is_valid_password?(group_chat_room)
+      return render_error("EMPTY PASSWORD", "Password가 입력되지 않았습니다.", 401) unless password_entered?
+      return render_error("INVALID PASSWORD", "Password가 일치하지 않습니다.", 403) unless valid_password?(group_chat_room)
     end
 
     # TODO: 웹 관리자일 때의 처리 추가 필요
@@ -91,12 +91,12 @@ class Api::GroupChatRoomsController < ApplicationController
     end
   end
 
-  def is_password_entered?
+  def password_entered?
     !request.headers['Authorization'].nil?
   end
 
-  def is_valid_password?(group_chat_room)
-    group_chat_room.is_valid_password?(request.headers['Authorization'])
+  def valid_password?(group_chat_room)
+    group_chat_room.valid_password?(request.headers['Authorization'])
   end
 
   def update_chat_room_params

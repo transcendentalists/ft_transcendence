@@ -65,7 +65,7 @@ class GroupChatRoom < ApplicationRecord
     !self.password.blank?
   end
 
-  def is_valid_password?(input_password)
+  def valid_password?(input_password)
     BCrypt::Password::new(self.password) == input_password
   end
 

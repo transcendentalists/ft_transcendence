@@ -28,7 +28,6 @@ export let ChatRoomMenuView = Backbone.View.extend({
   changePasswordRequest: function (password) {
     Helper.fetch(`group_chat_rooms/${this.room_id}`, {
       method: "PATCH",
-      headers: Helper.current_user_header(),
       body: {
         group_chat_room: {
           password: password,

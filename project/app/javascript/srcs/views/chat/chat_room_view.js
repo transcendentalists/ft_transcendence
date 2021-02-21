@@ -131,7 +131,7 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   tryToEnterChatRoom: function (password = null) {
-    let headers = Helper.current_user_header();
+    let headers = {};
     if (password !== null) headers.Authorization = password;
 
     Helper.fetch(`group_chat_rooms/${this.room_id}`, {

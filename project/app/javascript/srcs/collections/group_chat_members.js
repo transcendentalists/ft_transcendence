@@ -21,7 +21,6 @@ export let GroupChatMembers = Backbone.Collection.extend({
   ) {
     Helper.fetch(this.url(member.get("membership_id")), {
       method: "PATCH",
-      headers: Helper.current_user_header(),
       body: {
         admin_id: App.current_user.id,
         member_id: member.id,
@@ -59,7 +58,6 @@ export let GroupChatMembers = Backbone.Collection.extend({
       )}`,
       {
         method: "DELETE",
-        headers: Helper.current_user_header(),
         successCallBack: function () {
           this.remove(chat_room_member);
         }.bind(this),

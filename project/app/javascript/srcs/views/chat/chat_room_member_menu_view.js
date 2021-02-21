@@ -32,7 +32,7 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
       case "toggle-friend":
         return this.toggleFriendship();
       case "battle":
-        return;
+        return App.current_user.dualRequestTo(member);
       case "give-admin-position":
         return this.chat_members.giveAdminPosition(params);
       case "remove-admin-position":

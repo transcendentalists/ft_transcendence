@@ -35,7 +35,7 @@ class Api::GroupChatRoomsController < ApplicationController
     group_chat_room = GroupChatRoom.find_by_id(params[:id])
     return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", 404) if group_chat_room.nil?
 
-    if group_chat_room.is_locked?
+    if group_chat_room.locked?
       return render_error("EMPTY PASSWORD", "Password가 입력되지 않았습니다.", 401) unless is_password_entered?
       return render_error("INVALID PASSWORD", "Password가 일치하지 않습니다.", 403) unless is_valid_password?(group_chat_room)
     end
@@ -47,13 +47,6 @@ class Api::GroupChatRoomsController < ApplicationController
     if membership.nil?
       return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다.", 403)
     end
-
-    # if group_chat_room.memberships.find_by_user_id(@current_user.id).nil?
-    #   membership = group_chat_room.join(@current_user)
-    #   if membership.nil?
-    #     return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다." 403)
-    #   end
-    # end
 
     render json: { 
       group_chat_room: group_chat_room.for_chat_room_format,

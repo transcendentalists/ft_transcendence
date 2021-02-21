@@ -20,7 +20,7 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   send: function () {
-    let msg = this.$el.find($(".reply-field")).val();
+    let msg = this.$el.find(".reply-field").val();
     if (msg == "") return;
     if (this.channel == null) return;
     $(".reply-field").val("");

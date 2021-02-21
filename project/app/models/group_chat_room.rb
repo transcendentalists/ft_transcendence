@@ -13,7 +13,7 @@ class GroupChatRoom < ApplicationRecord
       {
         id: chat_room.id,
         title: chat_room.title,
-        locked: chat_room.is_locked?,
+        locked: chat_room.locked?,
         owner: chat_room.owner.for_chat_room_format,
         max_member_count: chat_room.max_member_count,
         current_member_count: chat_room.active_member_count,
@@ -30,7 +30,7 @@ class GroupChatRoom < ApplicationRecord
       {
         id: chat_room.id,
         title: chat_room.title,
-        locked: chat_room.is_locked?,
+        locked: chat_room.locked?,
         owner: chat_room.owner.for_chat_room_format,
         max_member_count: chat_room.max_member_count,
         current_member_count: chat_room.active_member_count,
@@ -61,7 +61,7 @@ class GroupChatRoom < ApplicationRecord
     end
   end
 
-  def is_locked?
+  def locked?
     !self.password.blank?
   end
 

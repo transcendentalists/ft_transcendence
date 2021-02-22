@@ -133,7 +133,6 @@ export let App = {
     this.current_user.logout();
     this.current_user = new CurrentUser();
     this.router.navigate("#/sessions/new");
-    this.resources = { chat_bans: new App.Collection.ChatBans() };
   },
 
   Model: {

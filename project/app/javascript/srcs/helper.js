@@ -36,7 +36,6 @@ export let Helper = {
       data = await response.json();
     } catch (err) {}
 
-    console.log(data);
     if (!success && fail_callback) return fail_callback(data);
     if (success && success_callback) return success_callback(data);
 

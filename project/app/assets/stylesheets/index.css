@@ -636,6 +636,7 @@ body {
 }
 
 #guild-index-view .war-request-header {
+  margin-top: 4rem;
   margin-bottom: 1.5rem;
 }
 
@@ -660,6 +661,7 @@ body {
 }
 
 #guild-index-view .guild-ranking-header {
+  margin-top: 4rem;
   margin-bottom: 1.5rem;
 }
 

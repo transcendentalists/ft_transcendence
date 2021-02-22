@@ -63,7 +63,6 @@ User.create([
   {name: 'test43', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test43@sdfgmail.com', image_url: '/assets/kristy.png', point: 17},
   {name: 'test44', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test44@gmail.com', image_url: '/assets/sanam1.png', point: 18},
   {name: 'test45', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test45@gmail.com', image_url: '/assets/kristy.png', point: 19},
-  
 ])
 
 Friendship.create([
@@ -133,7 +132,7 @@ WarRequest.create([
   {rule_id: 2, bet_point: 40, start_date: DateTime.new(2021,1,15,21), end_date: DateTime.new(2021,1,25,23), war_time: Time.new(1,1,1,9), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 10, status: "pending"},
   {rule_id: 3, bet_point: 50, start_date: DateTime.new(2021,1,16,21), end_date: DateTime.new(2021,1,26,23), war_time: Time.new(1,1,1,19), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
   {rule_id: 3, bet_point: 50, start_date: DateTime.new(2021,2,17,19), end_date: DateTime.new(2021,1,26,23), war_time: Time.new(1,1,1,19), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
-    
+
     #  없는 Rule Id
   {rule_id: 100, bet_point: 60, start_date: DateTime.new(2021,3,16,21), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,20), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 5, status: "pending"},
 
@@ -293,7 +292,7 @@ GuildMembership.create([
   {user_id: 1, guild_id: 1, position: "owner"},
   {user_id: 2, guild_id: 2, position: "owner"},
   {user_id: 3, guild_id: 3, position: "owner"},
-  
+
   {user_id: 4, guild_id: 4, position: "owner"},
   {user_id: 5, guild_id: 5, position: "owner"},
   {user_id: 6, guild_id: 6, position: "owner"},
@@ -328,11 +327,11 @@ GuildMembership.create([
   # {user_id: 33, guild_id: 11, position: "member"},
 
   {user_id: 34, guild_id: 10, position: "member"},
-  {user_id: 35, guild_id: 3, position: "member"},
-  {user_id: 36, guild_id: 7, position: "member"},
-  {user_id: 37, guild_id: 6, position: "member"},
-  {user_id: 38, guild_id: 3, position: "member"},
-  {user_id: 39, guild_id: 5, position: "member"},
+  {user_id: 35, guild_id: 1, position: "member"},
+  {user_id: 36, guild_id: 1, position: "member"},
+  {user_id: 37, guild_id: 1, position: "member"},
+  {user_id: 38, guild_id: 1, position: "member"},
+  {user_id: 39, guild_id: 1, position: "member"},
   {user_id: 40, guild_id: 4, position: "member"},
   {user_id: 41, guild_id: 3, position: "member"},
   {user_id: 42, guild_id: 2, position: "member"},
@@ -350,7 +349,7 @@ GuildMembership.create([
   {user_id: 54, guild_id: 3, position: "member"},
   {user_id: 55, guild_id: 2, position: "member"},
   {user_id: 56, guild_id: 1, position: "member"},
-  
+
 ])
 
 GuildInvitation.create([

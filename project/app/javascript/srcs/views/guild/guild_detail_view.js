@@ -16,7 +16,7 @@ export let GuildDetailView = Backbone.View.extend({
     this.is_last_page = false;
     this.guild_profile_card_view = null;
     this.guild_member_ranking_view = null;
-    this.war_history_view = null;
+    this.war_history_list_view = null;
     this.current_user_guild_profile_url = `guilds/${this.guild_id}?for=profile`;
     this.guild_member_profile_url = `guilds/${this.guild_id}?for=guild_detail&page=${this.page}`;
     this.war_history_url = `guilds/${this.guild_id}/wars`;
@@ -38,10 +38,10 @@ export let GuildDetailView = Backbone.View.extend({
   },
 
   renderGuildProfileCard: function (data) {
+    data.guild.is_detail_view = true;
     this.guild_profile_card_view = new App.View.GuildProfileCardView(
       data.guild
     );
-    data.guild.is_detail_view = true;
     this.guild_profile_card_view
       .setElement(this.$(".guild.profile-card"))
       .render();
@@ -85,6 +85,8 @@ export let GuildDetailView = Backbone.View.extend({
 
   close: function () {
     if (this.guild_profile_card_view) this.guild_profile_card_view.close();
+    if (this.guild_member_ranking_view) this.guild_member_ranking_view.close();
+    if (this.war_history_list_view) this.war_history_list_view.close();
     this.remove();
   },
 });

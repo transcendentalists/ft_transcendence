@@ -43,10 +43,10 @@ class Api::GroupChatRoomsController < ApplicationController
     # TODO: 웹 관리자일 때의 처리 추가 필요
     membership = group_chat_room.memberships.find_by_user_id(@current_user.id)
     membership = group_chat_room.join(@current_user) if membership.nil?
-    membership = membership.restore if membership&.ghost?
-    if membership.nil?
-      return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다.", 403)
-    end
+    return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다.", 403) if membership.nil?
+    return render_error("FORBIDDEN", "아직 입장이 불가합니다.", 403) if membership.banned?
+
+    membership.restore if membership&.ghost?
 
     render json: { 
       group_chat_room: group_chat_room.for_chat_room_format,

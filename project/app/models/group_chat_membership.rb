@@ -2,6 +2,10 @@ class GroupChatMembership < ApplicationRecord
   belongs_to :user
   belongs_to :room, class_name: "GroupChatRoom", foreign_key: "group_chat_room_id"
 
+  def current_user?(user)
+    self.user_id == user.id
+  end
+
   def requested_by_myself?(current_user)
     self.user_id == current_user.id
   end
@@ -32,6 +36,10 @@ class GroupChatMembership < ApplicationRecord
       
   def ghost?
     self.position == "ghost"
+  end
+
+  def banned?
+    !self.ban_ends_at.nil? && self.ban_ends_at > Time.now
   end
 
   def restore
@@ -70,5 +78,13 @@ class GroupChatMembership < ApplicationRecord
       }
     )
     self
+  end
+
+  def set_ban_time_from_now(args)
+    defaults = { hour: 0, min: 0, sec: 0 }
+
+    time = defaults.merge(args)
+    ban_time = time[:hour].hours + time[:min].minutes + time[:sec].seconds
+    self.update(ban_ends_at: Time.now + ban_time)
   end
 end

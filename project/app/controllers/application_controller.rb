@@ -16,4 +16,14 @@ class ApplicationController < ActionController::Base
       }
     }, :status => status_code
   end
+
+  def check_headers_and_find_current_user
+    if !request.headers['HTTP_CURRENT_USER']
+      return render_error("NOT VALID HEADERS", "필요한 요청 Header가 없습니다.", 400)
+    end
+    @current_user = User.find_by_id(request.headers['HTTP_CURRENT_USER'])
+    if @current_user.nil?
+      return render_error("NOT VALID HEADERS", "요청 Header의 값이 유효하지 않습니다.", 400)
+    end
+  end
 end

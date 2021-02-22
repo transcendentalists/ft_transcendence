@@ -69,28 +69,13 @@ class Api::GroupChatRoomsController < ApplicationController
     head :no_content, status: 204
   end
 
+  # TODO: web_admin이 이 메서드를 사용할 예정
   def destroy
-    # group_chat_room = GroupChatRooms.find_by_id(params[:id])
-    # if group_chat_room.is_user_authorized_to_destroy(@current_user)
-    #   group_chat_room.destroy
-    # else
-    #   return render_error("UNAUTHORIZED", "삭제 권한이 없습니다.", 403)
-    # end
     render plain: "group chat room destroy"
   end
 
   private
   
-  def check_headers_and_find_current_user
-    if !request.headers['HTTP_CURRENT_USER']
-      return render_error("NOT VALID HEADERS", "필요한 요청 Header가 없습니다.", 400)
-    end
-    @current_user = User.find_by_id(request.headers['HTTP_CURRENT_USER'])
-    if @current_user.nil?
-      return render_error("NOT VALID HEADERS", "요청 Header의 값이 유효하지 않습니다.", 400)
-    end
-  end
-
   def password_entered?
     !request.headers['Authorization'].nil?
   end

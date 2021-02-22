@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_13_093146) do
+ActiveRecord::Schema.define(version: 2021_02_22_090631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2021_02_13_093146) do
     t.boolean "mute", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "ban_ends_at", precision: 6
     t.index ["group_chat_room_id"], name: "index_group_chat_memberships_on_group_chat_room_id"
     t.index ["user_id"], name: "index_group_chat_memberships_on_user_id"
   end

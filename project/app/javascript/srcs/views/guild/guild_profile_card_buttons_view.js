@@ -24,15 +24,14 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
     }`;
     Helper.fetch(url, {
       method: "DELETE",
-      headers: Helper.current_user_header(),
       success_callback: () => {
         App.current_user.set("guild", null);
-        App.router.navigate("#/guilds", true);
+        App.router.navigate("#/guilds/page/1", true);
       },
-      fail_callback: () => {
+      fail_callback: (data) => {
         Helper.info({
-          subject: "탈퇴 실패",
-          description: "이미 탈퇴되었거나 존재하지 않는 길드입니다.",
+          subject: data.error.type,
+          description: data.error.msg,
         });
       },
     });
@@ -42,7 +41,6 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
     const url = `guilds/${this.guild_id}/memberships`;
     Helper.fetch(url, {
       method: "POST",
-      headers: Helper.current_user_header(),
       body: {
         user: {
           id: App.current_user.id,
@@ -51,7 +49,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
       },
       success_callback: (data) => {
         App.current_user.set("guild", data.guildMembership);
-        App.router.navigate("#/guilds", true);
+        App.router.navigate("#/guilds/page/1", true);
       },
       fail_callback: (data) => {
         Helper.info({
@@ -63,7 +61,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
   },
 
   createWarRequest: function () {
-    App.router.navigate("#/guilds/war_request/new?enemy_id=" + this.guild_id);
+    App.router.navigate(`#/guilds/war_request/new?enemy_id=${this.guild_id}`);
   },
 
   render: function (data) {

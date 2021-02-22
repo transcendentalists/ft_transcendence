@@ -59,8 +59,6 @@ export let GuildDetailView = Backbone.View.extend({
   },
 
   renderWarHistory: function (data) {
-    console.log(data);
-    window.data = data;
     this.war_history_list_view = new App.View.WarHistoryListView();
     this.war_history_list_view
       .setElement(this.$(".war-history-list"))

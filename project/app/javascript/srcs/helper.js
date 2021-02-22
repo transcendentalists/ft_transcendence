@@ -1,11 +1,6 @@
 import { App } from "srcs/internal";
 
 export let Helper = {
-  current_user_header: function (headers = {}) {
-    headers.current_user = App.current_user.id;
-    return headers;
-  },
-
   fetch: async function (url, hash_args = {}) {
     let params = {
       method: hash_args.hasOwnProperty("method") ? hash_args["method"] : "GET",
@@ -13,6 +8,7 @@ export let Helper = {
       headers: {
         "X-CSRF-Token": this.getToken(),
         "Content-Type": "application/json",
+        current_user: App.current_user?.id,
       },
     };
     const success_callback = hash_args.hasOwnProperty("success_callback")

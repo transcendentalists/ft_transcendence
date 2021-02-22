@@ -5,7 +5,7 @@ class Guild < ApplicationRecord
   has_many :requests, through: :war_statuses
   has_many :users, through: :memberships, source: :user
   has_many :invitations, class_name: 'GuildInvitation'
-  scope :for_guild_index, -> { order(point: :desc).map.with_index { |guild, index| guild&.profile(index) } }
+  scope :for_guild_index, -> (page) { order(point: :desc).page(page.to_i).map.with_index { |guild, index| guild&.profile(index, page.to_i) } }
 
   scope :for_guild_detail, -> (guild_id, page) {
     find_by_id(guild_id).users.order(point: :desc, name: :asc).page(page).map { |user| 
@@ -13,10 +13,10 @@ class Guild < ApplicationRecord
     }
   }
 
-  def profile(index = nil)
+  def profile(index = nil, page = nil)
     guild = self.to_simple
     guild[:num_of_member] = self.memberships.count
-    index.nil? ? guild[:rank] = Guild.order(point: :desc).index(self) + 1 : guild[:rank] = index + 1
+    index.nil? ? guild[:rank] = Guild.order(point: :desc).index(self) + 1 : guild[:rank] = (10 * (page - 1)) + index + 1
     guild[:owner] = self.owner.name
     guild
   end

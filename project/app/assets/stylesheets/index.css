@@ -659,10 +659,12 @@ body {
 .guild-profile-card .name {
   font-weight: 900;
   font-size: 1.5rem;
+  width: 11rem; /* 길드이름 10자제한 둘 것 */
 }
 
 .guild-profile-card .stat {
   margin-left: 1rem;
+  width: 13rem; /* Anagram 5자 + 3자리수랭크 + 포지션(member 등) 까지 커버가능 */
 }
 
 #guild-index-view .small.image {
@@ -712,6 +714,7 @@ body {
 }
 
 #guild-index-view .war-request-header {
+  margin-top: 4rem;
   margin-bottom: 1.5rem;
 }
 
@@ -736,11 +739,16 @@ body {
 }
 
 #guild-index-view .guild-ranking-header {
+  margin-top: 4rem;
   margin-bottom: 1.5rem;
 }
 
 #guild-index-view .guild-ranking-list {
   margin-bottom: 4rem;
+}
+
+#guild-index-view .guild-rank-page-buttons {
+  margin-bottom: 1rem;
 }
 
 #war-request-detail-modal-view > div.header > i {

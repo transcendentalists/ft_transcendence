@@ -49,8 +49,10 @@ export let Router = Backbone.Router.extend({
   },
 
   guildsController: function (param, page = 1) {
-    if (param === null) this.redirect_to(App.View.GuildIndexView);
-    else if (param === "new") this.redirect_to(App.View.GuildCreateView, param);
+    if (param === "page") {
+      this.redirect_to(App.View.GuildIndexView, page);
+    } else if (param === "new")
+      this.redirect_to(App.View.GuildCreateView, param);
     else this.redirect_to(App.View.GuildDetailView, page);
   },
 

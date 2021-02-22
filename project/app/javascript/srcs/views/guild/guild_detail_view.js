@@ -17,6 +17,9 @@ export let GuildDetailView = Backbone.View.extend({
     this.guild_profile_card_view = null;
     this.guild_member_ranking_view = null;
     this.war_history_view = null;
+    this.current_user_guild_profile_url = `guilds/${this.guild_id}?for=profile`;
+    this.guild_member_profile_url = `guilds/${this.guild_id}?for=guild_detail&page=${this.page}`;
+    this.war_history_url = `guilds/${this.guild_id}/wars`;
   },
 
   parseGuildId: function () {
@@ -34,14 +37,7 @@ export let GuildDetailView = Backbone.View.extend({
     App.router.navigate("#/guilds/" + this.guild_id + "/" + (this.page + 1));
   },
 
-  fetchAndRenderGuildProfileCardView: function () {
-    this.fetchAndRender(
-      "guilds/" + this.guild_id + "?for=profile&user_id=" + App.current_user.id,
-      this.renderGuildProfileCardView.bind(this)
-    );
-  },
-
-  renderGuildProfileCardView: function (data) {
+  renderGuildProfileCard: function (data) {
     this.guild_profile_card_view = new App.View.GuildProfileCardView(
       data.guild.id
     );
@@ -51,15 +47,8 @@ export let GuildDetailView = Backbone.View.extend({
       .render(data.guild);
   },
 
-  fetchAndRenderGuildMemberRankingView: function () {
-    this.fetchAndRender(
-      "guilds/" + this.guild_id + "?for=guild_detail&page=" + this.page,
-      this.renderGuildMemberRankingView.bind(this)
-    );
-  },
-
-  renderGuildMemberRankingView: function (data) {
-    data.guild_members.my_guild_id = App.current_user.getGuildId();
+  renderGuildMemberRanking: function (data) {
+    data.guild_members.my_guild_id = App.current_user.get("guild")?.id;
     if (data.guild_members.length < 10) this.is_last_page = true;
     this.guild_member_ranking_view = new App.View.GuildMemberRankingView(
       this.guild_id
@@ -69,63 +58,29 @@ export let GuildDetailView = Backbone.View.extend({
       .render(data.guild_members);
   },
 
-  fetchAndRenderWarHistoryView: function () {
-    this.fetchAndRender(
-      "guilds/" + this.guild_id + "/wars",
-      this.renderWarHistoryListView.bind(this)
-    );
-  },
-
-  renderWarHistoryListView: function (data) {
+  renderWarHistory: function (data) {
+    console.log(data);
+    window.data = data;
     this.war_history_list_view = new App.View.WarHistoryListView();
     this.war_history_list_view
       .setElement(this.$(".war-history-list"))
       .render(data.wars);
   },
 
-  // renderWarHistory: function () {
-  //   this.war_history_view = new App.View.WarHistoryListView(this.user_id);
-
-  //   // api/guilds/:guild_id/wars(.:format)?recent=:count&status=:status
-
-  //   // api/wars#index -> query
-  //   // api/guilds/:id/wars?recent=:count&status=:status
-
-  //   const war_history_url =
-  //     "guilds/" + this.guild_id + "/wars?recent=4&status=completed";
-
-  //   Helper.fetch(war_history_url, {
-  //     success_callback: function (war_history_list) {
-  //       this.war_history_view
-  //         .setElement(this.$(".war-history-list-view"))
-  //         .render(war_history_list);
-  //     }.bind(this),
-  //   });
-  // },
-
-  fetchAndRender: function (url, success_callback) {
-    Helper.fetch(url, {
-      success_callback: success_callback,
-    });
-  },
-
   render: function () {
     this.$el.html(this.template());
 
-    this.fetchAndRenderGuildProfileCardView();
-    this.fetchAndRenderGuildMemberRankingView();
-    this.fetchAndRenderWarHistoryView();
+    Helper.fetch(this.current_user_guild_profile_url, {
+      success_callback: this.renderGuildProfileCard.bind(this),
+    });
 
-    // const guild_member_profile_url =
-    //   "guilds/" + this.guild_id + "/guild_memberships?for=profile";
-    // Helper.fetch(guild_member_profile_url, {
-    //   success_callback: this.renderMyRatingCallback.bind(this),
-    // });
+    Helper.fetch(this.guild_member_profile_url, {
+      success_callback: this.renderGuildMemberRanking.bind(this),
+    });
 
-    // const war_history_url = "users/?for=ladder_index&page=" + this.page;
-    // Helper.fetch(war_history_url, {
-    //   success_callback: this.renderUserRankingCallback.bind(this),
-    // });
+    Helper.fetch(this.war_history_url, {
+      success_callback: this.renderWarHistory.bind(this),
+    });
 
     return this;
   },

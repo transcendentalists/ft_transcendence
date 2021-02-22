@@ -1,27 +1,40 @@
 <script type="text/template" id="invite-view-template">
   <div class="content">
     <div class="header">
-      Kristy
+      <%%= profile.name %>
       <div class="right floated image">
-        <img class="ui avatar image" src="assets/kristy.png">
+        <img class="ui avatar image" src="<%%= profile.image_url %>">
       </div>
     </div>
     <div class="meta">
       <span class="category">
-        GAM
+        <%%= profile.guild ? profile.guild.anagram : "소속된 길드가 없습니다." %>
       </span>
     </div>
+    <div class="ui divider"></div>
+    <a class="ui large teal label">
+      <i class="slack hash icon"></i>
+      <%%= rule_name %>
+    </a>
+    <a class="ui large teal label">
+      <i class="heart outline icon"></i>
+      <%%= target_score %>
+    </a>
+    <div class="ui divider"></div>
     <div class="description">
       <p>
-        yohlee님이 대전을 신청하셨습니다.
+        <%%= profile.name + "님이 대전을 신청하셨습니다." %>
       </p>
     </div>
   </div>
   <div class="extra content">
     <div class="ui centered grid">
-      <div class="computer only row">
-        <button class="ui red basic button">
-          Cancel (5)
+      <div class="row fluid">
+        <button class="ui green basic button" data-invite-value="approve">
+          Approve
+        </button>
+        <button class="ui red basic button" data-invite-value="decline">
+          Cancel
         </button>
       </div>
     </div>

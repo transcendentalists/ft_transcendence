@@ -14,11 +14,13 @@ export let NavBarView = Backbone.View.extend({
   },
 
   render: function () {
+    $("[data-nav-value=home]").addClass("active");
     this.$el.show();
     return this;
   },
 
   close: function () {
+    $(".ui.top.fixed.menu a.active").removeClass("active");
     this.$el.hide();
   },
 });

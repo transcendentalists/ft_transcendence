@@ -1,6 +1,11 @@
 import { App } from "srcs/internal";
 
 export let Helper = {
+  current_user_header: function (headers = {}) {
+    headers.current_user = App.current_user.id;
+    return headers;
+  },
+
   fetch: async function (url, hash_args = {}) {
     let params = {
       method: hash_args.hasOwnProperty("method") ? hash_args["method"] : "GET",
@@ -100,6 +105,22 @@ export let Helper = {
       data.description = "알려줄 내용을 설명해주세요.";
 
     App.appView.info_modal_view.render(data);
+  },
+
+  /*
+   ** url 의 hash 뒤에 붙는 query 문을 파싱할 때 사용하는 함수
+   ** /#/matches?match_type=dual&match_id=10 -> {match_type: "dual", match_id, "10"}
+   */
+  parseHashQuery: function () {
+    let hash = window.location.hash.split("?");
+    if (hash.length == 1) return {};
+    let query = hash[1];
+    let result = query.split("&").reduce(function (res, item) {
+      let parts = item.split("=");
+      res[parts[0]] = parts[1];
+      return res;
+    }, {});
+    return result;
   },
 
   getMessageTime: function (timestamp) {

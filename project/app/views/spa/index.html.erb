@@ -22,7 +22,9 @@
   <%= render partial: 'spa/persist/appearance/user_list_unit' %>
   <%= render partial: 'spa/persist/appearance/user_menu' %>
   <%= render partial: 'spa/persist/invite_view' %>
+  <%= render partial: 'spa/persist/request_view' %>
   <%= render partial: 'spa/persist/input_modal_view' %>
+  <%= render partial: 'spa/persist/rule_modal_view' %>
   <%= render partial: 'spa/persist/info_modal_view' %>
   <%= render partial: 'spa/persist/alert_modal_view' %>
 
@@ -43,6 +45,7 @@
   <%= render partial: 'spa/guild/guild_index_view' %>
   <%= render partial: 'spa/guild/guild_detail_view' %>
   <%= render partial: 'spa/guild/guild_ranking_view' %>
+  <%= render partial: 'spa/guild/guild_create_view' %>
 
   <%= render partial: "spa/guild/guild_profile_card_view" %>
   <%= render partial: "spa/guild/guild_profile_card_buttons_view" %>
@@ -52,20 +55,22 @@
 
   <%= render partial: 'spa/war/war_request_card_view' %>
   <%= render partial: 'spa/war/war_history_view' %>
+  <%= render partial: 'spa/war/war_request_detail_modal_view' %>
   <%= render partial: "spa/ladder/ladder_index_view" %>
   <%= render partial: "spa/ladder/my_rating_view" %>
   <%= render partial: "spa/ladder/user_ranking_view" %>
   
   <%= render partial: "spa/chat/chat_index_view" %>
-  <%= render partial: "spa/chat/chat_room_card_view" %>
-  <%= render partial: "spa/chat/chat_room_create_view" %>
+  <%= render partial: "spa/chat/chat_room_card_view" %> <%= render partial: "spa/chat/chat_room_create_view" %>
 
   <%= javascript_pack_tag 'app' %>
 </div>
 
 <div id="invite-view" class="ui raised card hide-tablet"></div>
+<div id="request-view" class="ui raised card hide-tablet"></div>
 <div id="direct-chat-view" class="ui raised card hide-tablet"></div>
 <div id="input-modal-view" class="ui tiny modal transition"></div>
+<div id="rule-modal-view" class="ui tiny modal transition"></div>
 <div id="alert-modal-view" class="ui tiny modal transition"></div>
 <div id="info-modal-view" class="ui tiny modal transition"></div>
 <div id="image-upload-modal-view" class="ui tiny modal transition"></div>

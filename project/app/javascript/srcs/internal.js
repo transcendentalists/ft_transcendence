@@ -28,7 +28,9 @@ import { InfoModalView } from "./views/persist/info_modal_view";
 import { InputModalView } from "./views/persist/input_modal_view";
 import { ImageUploadModalView } from "./views/persist/image_upload_modal_view";
 import { InviteView } from "./views/persist/invite_view";
+import { RequestView } from "./views/persist/request_view";
 import { NavBarView } from "./views/persist/nav_bar_view";
+import { RuleModalView } from "./views/persist/rule_modal_view";
 
 /** error view */
 import { ErrorView } from "./views/error/error_view";
@@ -96,6 +98,7 @@ import { WarIndexView } from "./views/war/war_index_view";
 import { WarCreateView } from "./views/war/war_create_view";
 import { WarHistoryListView } from "./views/war/war_history_list_view";
 import { WarHistoryView } from "./views/war/war_history_view";
+import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_view";
 
 /* CHANNEL */
 import { ConnectAppearanceChannel } from "channels/appearance_channel";
@@ -108,6 +111,8 @@ import { ConnectNotificationChannel } from "channels/notification_channel";
 /* CONFIGURATION AND UTIL */
 import { Helper } from "./helper";
 export { Helper } from "./helper";
+import { DualHelper } from "./dual_helper";
+export { DualHelper } from "./dual_helper";
 import { Router } from "./router";
 import { AppView } from "./views/app_view";
 
@@ -164,7 +169,9 @@ export let App = {
     InputModalView,
     ImageUploadModalView,
     InviteView,
+    RequestView,
     NavBarView,
+    RuleModalView,
 
     UserIndexView,
     UserIndexButtonsView,
@@ -187,10 +194,11 @@ export let App = {
     GuildMemberRankingView,
     GuildMemberListButtonsView,
 
-    WarRequestCardListView,
-    WarRequestCardView,
     WarHistoryListView,
     WarHistoryView,
+    WarRequestCardListView,
+    WarRequestCardView,
+    WarRequestDetailModalView,
     GuildInvitationView,
     GuildInvitationListView,
     LadderIndexView,

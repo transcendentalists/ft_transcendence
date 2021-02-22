@@ -2,7 +2,7 @@ class War < ApplicationRecord
   belongs_to :request, class_name: "WarRequest", :foreign_key => "war_request_id"
   has_many :matches, as: :eventable
   scope :for_guild_detail, -> (guild_id) do
-    Guild.find_by_id(guild_id).requests.where(status: "completed").order(end_date: :desc).limit(5).map { |request|
+    Guild.find_by_id(guild_id).requests.where(status: "approved").order(end_date: :desc).limit(5).map { |request|
       my_guild_status = request.war_statuses.where(guild_id: guild_id).first
       enemy_guild_status = request.war_statuses.where.not(guild_id: guild_id).first
       {

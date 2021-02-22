@@ -13,16 +13,9 @@ export let GuildIndexView = Backbone.View.extend({
     this.guild_profile_card_view = null;
     this.war_request_card_list_view = null;
     this.guild_ranking_view = null;
-  },
-
-  fetchAndRenderGuildProfileCardView: function () {
-    this.fetchAndRender(
-      "guilds/" +
-        this.current_user_guild.id +
-        "?for=profile&user_id=" +
-        App.current_user.id,
-      this.renderGuildProfileCardView.bind(this)
-    );
+    this.current_user_guild_profile_url = `guilds/${this.current_user_guild?.id}?for=profile`;
+    this.war_requests_url = `guilds/${this.current_user_guild?.id}/war_requests?for=guild_index`;
+    this.guild_ranking_url = "guilds?for=guild_index";
   },
 
   renderGuildProfileCardView: function (data) {
@@ -31,15 +24,8 @@ export let GuildIndexView = Backbone.View.extend({
     );
     data.guild.is_detail_view = false;
     this.guild_profile_card_view
-      .setElement(this.$(".current-user-guild.profile-card"))
+      .setElement(this.$(".current-user-guild.guild-profile-card"))
       .render(data.guild);
-  },
-
-  fetchAndRenderWarRequestCardListView: function () {
-    this.fetchAndRender(
-      "guilds/" + this.current_user_guild.id + "/war_requests?for=guild_index",
-      this.renderWarRequestCardListView.bind(this)
-    );
   },
 
   renderWarRequestCardListView: function (data) {
@@ -49,25 +35,12 @@ export let GuildIndexView = Backbone.View.extend({
       .render(data.war_requests);
   },
 
-  fetchAndRenderGuildRankingCardListView: function () {
-    this.fetchAndRender(
-      "guilds?for=guild_index",
-      this.renderGuildRankingCardListView.bind(this)
-    );
-  },
-
   renderGuildRankingCardListView: function (data) {
-    data.guilds.my_guild_id = App.current_user.getGuildId();
+    data.guilds.my_guild_id = App.current_user.get("guild")?.id;
     this.guild_ranking_view = new App.View.GuildRankingView();
     this.guild_ranking_view
       .setElement(this.$(".guild-ranking-list"))
       .render(data.guilds);
-  },
-
-  fetchAndRender: function (url, success_callback) {
-    Helper.fetch(url, {
-      success_callback: success_callback,
-    });
   },
 
   render: function () {
@@ -75,10 +48,16 @@ export let GuildIndexView = Backbone.View.extend({
       this.template({ current_user_guild: this.current_user_guild })
     );
     if (this.current_user_guild) {
-      this.fetchAndRenderGuildProfileCardView();
-      this.fetchAndRenderWarRequestCardListView();
+      Helper.fetch(this.current_user_guild_profile_url, {
+        success_callback: this.renderGuildProfileCardView.bind(this),
+      });
+      Helper.fetch(this.war_requests_url, {
+        success_callback: this.renderWarRequestCardListView.bind(this),
+      });
     }
-    this.fetchAndRenderGuildRankingCardListView();
+    Helper.fetch(this.guild_ranking_url, {
+      success_callback: this.renderGuildRankingCardListView.bind(this),
+    });
     return this;
   },
 

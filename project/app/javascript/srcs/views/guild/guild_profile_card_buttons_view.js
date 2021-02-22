@@ -10,16 +10,16 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
     "click #war-request-create-button": "createWarRequest",
   },
 
-  initialize: function (guild_id) {
-    this.guild_id = guild_id;
+  initialize: function (guild) {
+    this.guild = guild;
   },
 
   showGuild: function () {
-    App.router.navigate(`#/guilds/${this.guild_id}/1`);
+    App.router.navigate(`#/guilds/${this.guild.id}/1`);
   },
 
   leaveGuild: function () {
-    const url = `guilds/${this.guild_id}/memberships/${
+    const url = `guilds/${this.guild.id}/memberships/${
       App.current_user.get("guild").membership_id
     }`;
     Helper.fetch(url, {
@@ -38,7 +38,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
   },
 
   joinGuild: function () {
-    const url = `guilds/${this.guild_id}/memberships`;
+    const url = `guilds/${this.guild.id}/memberships`;
     Helper.fetch(url, {
       method: "POST",
       body: {
@@ -61,11 +61,19 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
   },
 
   createWarRequest: function () {
-    App.router.navigate(`#/guilds/war_request/new?enemy_id=${this.guild_id}`);
+    App.router.navigate(`#/guilds/war_request/new?enemy_id=${this.guild.id}`);
   },
 
-  render: function (data) {
-    this.$el.html(this.template(data));
+  render: function () {
+    const current_user_guild_id = App.current_user.get("guild")?.id;
+    const current_user_guild_position = App.current_user.get("guild")?.position;
+    this.$el.html(
+      this.template({
+        guild: this.guild,
+        current_user_guild_id: current_user_guild_id,
+        current_user_guild_position: current_user_guild_position,
+      })
+    );
     return this;
   },
 

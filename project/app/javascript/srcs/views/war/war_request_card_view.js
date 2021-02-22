@@ -15,10 +15,9 @@ export let WarRequestCardView = Backbone.View.extend({
   },
 
   showWarRequestDetail: function () {
-    this.war_request_detail_modal_view = new App.View.WarRequestDetailModalView(
+    App.appView.main_view.current_view.war_request_detail_modal_view = new App.View.WarRequestDetailModalView(
       { parent: this }
-    );
-    this.war_request_detail_modal_view.render();
+    ).render();
   },
 
   render: function () {
@@ -32,9 +31,6 @@ export let WarRequestCardView = Backbone.View.extend({
   },
 
   close: function () {
-    if (this.war_request_detail_modal_view) {
-      this.war_request_detail_modal_view.close();
-    }
     this.remove();
   },
 });

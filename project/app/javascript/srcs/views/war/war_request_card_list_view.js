@@ -14,13 +14,14 @@ export let WarRequestCardListView = Backbone.View.extend({
   },
 
   render: function (war_requests) {
-    if (!war_requests.length) this.$el.html("<span>요청받은 전쟁이 없습니다.</span>");
+    if (!war_requests.length)
+      this.$el.html("<span>요청받은 전쟁이 없습니다.</span>");
     war_requests.forEach(this.addOne, this);
     return this;
   },
 
   close: function () {
-    this.child_views.forEach(child_view => child_view.close());
+    this.child_views.forEach((child_view) => child_view.close());
     this.child_views = [];
     this.remove();
   },

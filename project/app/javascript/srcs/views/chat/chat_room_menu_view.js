@@ -50,9 +50,11 @@ export let ChatRoomMenuView = Backbone.View.extend({
     App.router.navigate("#/chatrooms");
   },
 
-  leaveFromChatRoom: function () {
-    this.chat_room_members.letOutOfChatRoom(this.current_user_as_room_member);
-    App.router.navigate("#/");
+  leaveFromChatRoom: async function () {
+    await this.chat_room_members.letOutOfChatRoom(
+      this.current_user_as_room_member
+    );
+    App.router.navigate("#/chatrooms");
   },
 
   showAuthorizedButtonsToOwner: function () {

@@ -83,7 +83,7 @@ export let ChatRoomView = Backbone.View.extend({
     );
   },
 
-  enterToChatRoom: function (data) {
+  enterChatRoom: function (data) {
     this.$el.html(this.template());
 
     this.readyToRenderChatRoom(data);
@@ -100,7 +100,7 @@ export let ChatRoomView = Backbone.View.extend({
       subject: "입장 검사",
       description: "룸 입장을 위해 비밀번호를 입력해주세요.",
       success_callback: function (password) {
-        this.tryToEnterChatRoom(password);
+        this.tryEnteringChatRoom(password);
       }.bind(this),
       cancel_callback: function () {
         App.router.navigate("#/chatrooms");
@@ -130,13 +130,13 @@ export let ChatRoomView = Backbone.View.extend({
     }
   },
 
-  tryToEnterChatRoom: function (password = null) {
+  tryEnteringChatRoom: function (password = null) {
     let headers = {};
     if (password !== null) headers.Authorization = password;
 
     Helper.fetch(`group_chat_rooms/${this.room_id}`, {
       headers: headers,
-      success_callback: this.enterToChatRoom.bind(this),
+      success_callback: this.enterChatRoom.bind(this),
       fail_callback: this.enterFailCallback.bind(this),
     });
   },
@@ -154,7 +154,7 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   render: function () {
-    this.tryToEnterChatRoom();
+    this.tryEnteringChatRoom();
     return this;
   },
 

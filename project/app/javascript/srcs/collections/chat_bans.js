@@ -18,7 +18,7 @@ export let ChatBans = Backbone.Collection.extend({
     else return true;
   },
 
-  toggleChatBan: function (user_id) {
+  createOrDestroyChatBan: function (user_id) {
     if (user_id == App.current_user.id) return;
     if (this.findWhere({ banned_user_id: user_id }) == undefined)
       this.createChatBan(user_id);

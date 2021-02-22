@@ -29,7 +29,7 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
       case "direct-chat":
         return App.appView.direct_chat_view.render(member);
       case "toggle-ban":
-        return this.chat_bans.toggleChatBan(member.id);
+        return this.chat_bans.createOrDestroyChatBan(member.id);
       case "toggle-friend":
         return this.toggleFriendship();
       case "battle":

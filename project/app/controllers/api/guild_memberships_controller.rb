@@ -39,15 +39,8 @@ class Api::GuildMembershipsController < ApplicationController
 
   def destroy
     membership = GuildMembership.find_by_id(params[:id])
-    if membership.nil?
-      return render_error("길드 탈퇴 실패", "해당 유저의 길드 정보가 존재하지 않습니다.", 401)
-    end
-    if @current_user.guild_membership.guild_id != membership.guild_id || (
-      @current_user.id != membership.user_id &&
-      @current_user.guild_membership.position == "member"
-    )
-      return render_error("권한 에러", "접근 권한이 없습니다.", 401)
-    end
+    return render_error("길드 탈퇴 실패", "해당 유저의 길드 정보가 존재하지 않습니다.", 401) if membership.nil?
+    return render_error("권한 에러", "접근 권한이 없습니다.", 401) if !membership.can_be_destroyed_by?(@current_user)
     membership.destroy
     head :no_content, status: 204
   end

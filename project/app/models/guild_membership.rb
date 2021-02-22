@@ -11,4 +11,14 @@ class GuildMembership < ApplicationRecord
     guild
   end
 
+  def can_be_destroyed_by?(current_user)
+    if current_user.guild_membership.guild_id != self.guild_id || (
+      current_user.id != self.user_id &&
+      current_user.guild_membership.position == "member"
+    )
+      false
+    else true
+    end
+  end
+
 end

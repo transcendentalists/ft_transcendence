@@ -23,28 +23,32 @@ export let WarRequestDetailModalView = Backbone.View.extend({
    */
 
   acceptWarRequest: function () {
-    const accept_war_request_url = `guilds/${App.current_user.get("guild").id}/war`;
+    const accept_war_request_url = `guilds/${
+      App.current_user.get("guild").id
+    }/war_requests/${this.war_request.id}`;
     Helper.fetch(accept_war_request_url, {
       method: "PATCH",
       headers: Helper.current_user_header(),
-      data: { status: "approved" },
+      body: { status: "approved" },
       success_callback: () => {
-        App.router.navigate("#/war");
+        App.router.navigate("#/guilds/page/1");
       },
       fail_callback: () => {},
     });
   },
 
   declineWarRequest: function () {
-    const decline_war_request_url = `guilds/${App.current_user.get("guild").id}/war_requests/${this.war_request.id}?status=canceled`;
+    const decline_war_request_url = `guilds/${
+      App.current_user.get("guild").id
+    }/war_requests/${this.war_request.id}`;
     Helper.fetch(decline_war_request_url, {
       method: "PATCH",
       headers: Helper.current_user_header(),
-      data: { status: "canceled" },
+      body: { status: "canceled" },
       success_callback: () => {
         this.parent.close();
       },
-      fail_callback: data => {
+      fail_callback: (data) => {
         Helper.info({
           subject: data.error.type,
           description: data.error.msg,
@@ -61,7 +65,7 @@ export let WarRequestDetailModalView = Backbone.View.extend({
 
   render: function () {
     this.war_request["current_user_position"] = App.current_user.get(
-      "guild",
+      "guild"
     )?.position;
     this.$el.html(this.template(this.war_request));
     $("#war-request-detail-modal-view").modal("show");

@@ -1,7 +1,7 @@
 class Api::GuildsController < ApplicationController
   def index
     if params[:for] == "guild_index"
-      render :json => { guilds: Guild.for_guild_index }
+      render :json => { guilds: Guild.for_guild_index(params[:page]) }
     end
   end
 

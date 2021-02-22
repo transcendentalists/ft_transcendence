@@ -28,7 +28,7 @@ export let GuildProfileCardView = Backbone.View.extend({
       headers: Helper.current_user_header(),
       success_callback: () => {
         App.current_user.set("guild", null);
-        App.router.navigate("#/guilds", true);
+        App.router.navigate("#/guilds/page/1", true);
       },
       fail_callback: () => {
         Helper.info({
@@ -52,7 +52,7 @@ export let GuildProfileCardView = Backbone.View.extend({
       },
       success_callback: (data) => {
         App.current_user.set("guild", data.guildMembership);
-        App.router.navigate("#/guilds", true);
+        App.router.navigate("#/guilds/page/1", true);
       },
       fail_callback: (data) => {
         Helper.info({

@@ -11,7 +11,8 @@
 
   <h1 class="war-request-header ui header">War Request</h1>
   <%% if (current_user_guild !== null) { %>
-    <div class="war-request-card-list ui text container"> </div>
+    <div class="war-request-view ui text container">
+      <div class="war-request-card-list ui text container"> </div>
     </div>
   <%% } else { %>
     <span>소속된 길드가 없습니다.</span>
@@ -22,6 +23,14 @@
     <%% if (current_user_guild === null) { %>
       <button id="guild-create-button" class="ui teal mini button">길드 생성</button>
     <%% } %>
+  </div>
+  <div class="buttons flex-container space-between">
+    <button id="guild-page-before-button" class="ui button tiny teal">
+      before
+    </button>
+    <button id="guild-page-next-button" class="ui button tiny teal">
+      next
+    </button>
   </div>
   <div class="guild-ranking-list ui text container">
   </div>

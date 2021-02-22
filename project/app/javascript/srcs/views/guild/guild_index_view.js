@@ -6,16 +6,30 @@ export let GuildIndexView = Backbone.View.extend({
 
   events: {
     "click #guild-create-button": "createGuild",
+    "click #guild-page-before-button": "beforePage",
+    "click #guild-page-next-button": "nextPage",
   },
 
-  initialize: function () {
+  initialize: function (page) {
+    this.page = page ? +page : 1;
+    this.is_last_page = false;
     this.current_user_guild = App.current_user.get("guild");
     this.guild_profile_card_view = null;
     this.war_request_card_list_view = null;
     this.guild_ranking_view = null;
     this.current_user_guild_profile_url = `guilds/${this.current_user_guild?.id}?for=profile`;
     this.war_requests_url = `guilds/${this.current_user_guild?.id}/war_requests?for=guild_index`;
-    this.guild_ranking_url = "guilds?for=guild_index";
+    this.guild_ranking_url = `guilds?for=guild_index&page=${this.page}`;
+  },
+
+  beforePage: function () {
+    if (this.page === 1) return;
+    App.router.navigate("#/guilds/page/" + (this.page - 1));
+  },
+
+  nextPage: function () {
+    if (this.is_last_page === true) return;
+    App.router.navigate("#/guilds/page/" + (this.page + 1));
   },
 
   renderGuildProfileCardView: function (data) {
@@ -37,6 +51,7 @@ export let GuildIndexView = Backbone.View.extend({
   renderGuildRankingCardListView: function (data) {
     data.guilds.my_guild_id = App.current_user.get("guild")?.id;
     this.guild_ranking_view = new App.View.GuildRankingView();
+    if (data.guilds.length < 10) this.is_last_page = true;
     this.guild_ranking_view
       .setElement(this.$(".guild-ranking-list"))
       .render(data.guilds);

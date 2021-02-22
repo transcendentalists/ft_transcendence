@@ -658,6 +658,7 @@ body {
 }
 
 #guild-index-view .guild-ranking-header {
+  margin-top: 2rem;
   margin-bottom: 1.5rem;
 }
 

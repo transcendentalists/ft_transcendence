@@ -51,6 +51,7 @@ export let ChatRoomMenuView = Backbone.View.extend({
   },
 
   leaveFromChatRoom: async function () {
+    this.parent.channel.unsubscribe();
     await this.chat_room_members.letOutOfChatRoom(
       this.current_user_as_room_member
     );

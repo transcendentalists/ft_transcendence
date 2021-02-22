@@ -57,10 +57,6 @@ export let GroupChatMembers = Backbone.Collection.extend({
       )}`,
       {
         method: "DELETE",
-        success_callback: function () {
-          console.log("success_callback");
-          this.remove(chat_room_member);
-        }.bind(this),
       }
     );
   },

@@ -124,6 +124,7 @@ class GroupChatRoom < ApplicationRecord
         type: "join",
         user_id: user.id,
         user: user.for_chat_room_format.merge({
+          membership_id: membership.id,
           position: membership.position,
           mute: membership.mute
         })

@@ -18,10 +18,6 @@ export let WarRequestDetailModalView = Backbone.View.extend({
     });
   },
 
-  /**
-   ** war 생성 API 가 없음
-   */
-
   acceptWarRequest: function () {
     const accept_war_request_url = `guilds/${
       App.current_user.get("guild").id
@@ -29,11 +25,17 @@ export let WarRequestDetailModalView = Backbone.View.extend({
     Helper.fetch(accept_war_request_url, {
       method: "PATCH",
       headers: Helper.current_user_header(),
-      body: { status: "approved" },
+      body: { status: "progress" },
       success_callback: () => {
-        App.router.navigate("#/guilds/page/1");
+        App.router.navigate("#/war");
       },
-      fail_callback: () => {},
+      fail_callback: (data) => {
+        this.hide();
+        Helper.info({
+          subject: data.error.type,
+          description: data.error.msg,
+        });
+      },
     });
   },
 
@@ -49,6 +51,7 @@ export let WarRequestDetailModalView = Backbone.View.extend({
         this.parent.close();
       },
       fail_callback: (data) => {
+        this.hide();
         Helper.info({
           subject: data.error.type,
           description: data.error.msg,

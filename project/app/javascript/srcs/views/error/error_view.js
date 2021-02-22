@@ -17,8 +17,8 @@ export let ErrorView = Backbone.View.extend({
   },
 
   // TODO: 100번대 에러코드를 실제와 맞게 셋팅
-  initialize: function (error_code) {
-    this.error_hash = {
+  initialize: function (error_hash) {
+    this.error_set = {
       100: ["Undefined Route", "정의되지 않은 에러입니다."],
       101: ["Route Error", "요청하신 War 페이지를 찾을 수 없습니다."],
       102: ["Route Error", "요청하신 Tournament 페이지를 찾을 수 없습니다."],
@@ -33,18 +33,19 @@ export let ErrorView = Backbone.View.extend({
       500: ["Server Error", "잠시 후 다시 시도해주세요."],
     };
 
-    this.error_code = error_code;
-    if (!this.error_hash.hasOwnProperty(this.error_code))
+    this.error_hash = error_hash;
+    this.error_code = error_hash.error_code;
+    if (!this.error_set.hasOwnProperty(this.error_code))
       this.error_code = "100";
   },
 
   to_json: function () {
-    let data = this.error_hash[this.error_code];
+    let data = this.error_set[this.error_code];
 
     return {
       code: this.error_code,
-      subject: data[0],
-      description: data[1],
+      subject: this.error_hash.type || data[0],
+      description: this.error_hash.msg || data[1],
     };
   },
 

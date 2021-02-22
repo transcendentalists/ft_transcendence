@@ -118,13 +118,15 @@ export let ChatRoomView = Backbone.View.extend({
       return App.router.navigate("#/errors/500");
 
     const code = data.error.code;
+    const type = data.error.type;
+    const msg = data.error.msg;
     switch (code) {
       case 401:
         this.showPasswordInputModal();
         break;
       case 403:
       case 404:
-        return App.router.navigate("#/errors/" + code);
+        return App.router.navigate(`#/errors/${code}/${type}/${msg}`);
       default:
         return App.router.navigate("#/errors/500");
     }

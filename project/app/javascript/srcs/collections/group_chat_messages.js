@@ -1,4 +1,3 @@
-import { App, Helper } from "srcs/internal";
 import { ChatMessage } from "srcs/models/chat_message";
 
 export let GroupChatMessages = Backbone.Collection.extend({

@@ -1,5 +1,4 @@
-import { Helper } from "srcs/helper";
-import { App } from "../internal";
+import { App, Helper } from "srcs/internal";
 import { User } from "../models/user";
 
 export let GroupChatMembers = Backbone.Collection.extend({

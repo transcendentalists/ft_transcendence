@@ -29,7 +29,7 @@ export let ChatRoomView = Backbone.View.extend({
     let msg = this.$el.find(".reply-field").val();
     if (msg == "") return;
     if (this.channel == null) return;
-    $(".reply-field").val("");
+    this.$el.find(".reply-field").val("");
     this.channel.speak({
       image_url: App.current_user.get("image_url"),
       name: App.current_user.get("name"),
@@ -148,7 +148,7 @@ export let ChatRoomView = Backbone.View.extend({
       App.router.navigate("#/chatrooms");
       Helper.info({
         subject: "강제 퇴장",
-        description: "챗룸에서 강제 퇴장되었습니다ㅠㅠ",
+        description: "챗룸에서 강제 퇴장되었습니다.",
       });
     }
   },

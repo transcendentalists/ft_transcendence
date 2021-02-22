@@ -16,6 +16,7 @@ export let ErrorView = Backbone.View.extend({
     App.router.navigate("#/users/" + App.current_user.id);
   },
 
+  // TODO: 100번대 에러코드를 실제와 맞게 셋팅
   initialize: function (error_code) {
     this.error_hash = {
       100: ["Undefined Route", "정의되지 않은 에러입니다."],
@@ -26,7 +27,7 @@ export let ErrorView = Backbone.View.extend({
       105: ["Create Failed", "요청하신 ChatRoom을 만들 수 없습니다."],
       106: ["Input not entered", "아무런 정보가 입력되지 않았습니다."],
 
-      403: ["Invalid Authorization", "인증 정보가 일치하지 않습니다."],
+      403: ["Invalid Authorization", "접근할 권한이 없습니다."],
       404: ["Not Found", "요청하신 리소스를 찾을 수 없습니다."],
 
       500: ["Server Error", "잠시 후 다시 시도해주세요."],

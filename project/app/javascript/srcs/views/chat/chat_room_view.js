@@ -110,7 +110,7 @@ export let ChatRoomView = Backbone.View.extend({
 
   /**
    ** 401: 패스워드 필요
-   ** 403: 서버사이드 패스워드 유효성 검사 실패
+   ** 403: 서버사이드 패스워드 유효성 검사 실패, 챗룸 인원 초과, 챗룸 입장 금지
    ** 404: 챗룸 탐색 실패
    */
   enterFailCallback: function (data) {

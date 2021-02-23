@@ -23,11 +23,11 @@ class Api::WarRequestsController < ApplicationController
 
     if params[:status] == "progress"
       challenger_guild_id = war_request.war_statuses.find_by_position("challenger")&.guild.id
-      enemy_guild_id = war_request.war_statuses.find_by_position("enemy")&.guild.id 
+      enemy_guild_id = war_request.war_statuses.find_by_position("enemy")&.guild.id
       if !Guild.find_by_id(enemy_guild_id).requests.find_by_status("progress").nil?
-        return render_error("전쟁 승락 에러", "이미 진행중인 전쟁이 있습니다.", 404)
+        return render_error("전쟁 수락 에러", "이미 진행중인 전쟁이 있습니다.", 404)
       elsif !Guild.find_by_id(challenger_guild_id).requests.find_by_status("progress").nil?
-        return render_error("전쟁 승락 에러", "상대 길드가 전쟁을 진행 중입니다.", 404)
+        return render_error("전쟁 수락 에러", "상대 길드가 전쟁을 진행 중입니다.", 404)
       end
     end
 

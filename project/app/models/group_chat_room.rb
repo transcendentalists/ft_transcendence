@@ -140,6 +140,7 @@ class GroupChatRoom < ApplicationRecord
     new_owner = memberships.find_by_position("member") if new_owner.nil?
     self.update!(owner_id: new_owner.user_id)
     new_owner.update_position("owner")
+    new_owner.update_mute(false) if new_owner.mute?
   end
 
 end

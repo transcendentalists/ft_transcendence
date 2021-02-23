@@ -116,7 +116,7 @@ class GroupChatRoom < ApplicationRecord
 
   def join(user, position = "member")
     return nil if user.nil?
-    return nil if self.current_member_count == self.max_member_count
+    return nil if self.active_member_count == self.max_member_count
     membership = GroupChatMembership.create(user_id: user.id, group_chat_room_id: self.id, position: position)
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.id.to_s}",

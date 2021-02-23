@@ -43,6 +43,8 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def restore
+    room = GroupChatRoom.find_by_id(self.group_chat_room_id)
+    return nil if room.active_member_count == room.max_member_count
     self.update!(position: "member")
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.group_chat_room_id.to_s}",

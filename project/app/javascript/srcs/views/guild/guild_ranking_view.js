@@ -16,8 +16,12 @@ export let GuildRankingView = Backbone.View.extend({
   },
 
   render: function (guilds) {
-    this.$el.html(this.template());
-    guilds.forEach(this.addOne, this);
+    if (!guilds.length) {
+      this.$el.html("<span>존재하는 길드가 없습니다.</span>");
+    } else {
+      this.$el.html(this.template());
+      guilds.forEach(this.addOne, this);
+    }
     return this;
   },
 

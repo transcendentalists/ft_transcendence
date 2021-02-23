@@ -61,7 +61,7 @@ class GroupChatMembership < ApplicationRecord
       {
         type: "mute",
         user_id: self.user_id,
-        mute: self.mute
+        mute: self.reload.mute
       }
     )
     self

@@ -4,7 +4,7 @@ class GroupChatChannel < ApplicationCable::Channel
   end
 
   def speak(msg)
-    membership = GroupChatMembership.find_by_user_id(msg['user_id'])
+    membership = GroupChatMembership.find_by_group_chat_room_id_and_user_id(msg['room_id'], msg['user_id'])
     return if membership.nil? || membership.mute
 
     ChatMessage.create(

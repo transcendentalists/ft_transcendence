@@ -47,11 +47,8 @@ Rails.application.routes.draw do
     end
 
     resources :group_chat_rooms, only: %i[index create update show destroy] do
-      member do
-        post :join, to: 'group_chat_rooms#join'
-      end
       resources :chat_messages, only: %i[index create]
-      resources :group_chat_memberships, path: 'memberships', only: %i[index create update destroy]
+      resources :group_chat_memberships, path: 'memberships', only: %i[update destroy]
     end
 
     resources :direct_chat_rooms, only: [] do

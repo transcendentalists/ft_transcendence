@@ -21,9 +21,9 @@ export let DirectChatView = Backbone.View.extend({
   },
 
   send: function () {
-    let msg = $("#reply-field").val();
+    let msg = this.$el.find($(".reply-field")).val();
     if (msg == "") return;
-    $("#reply-field").val("");
+    this.$el.find($(".reply-field")).val("");
     this.chat_room.send({
       image_url: App.current_user.get("image_url"),
       name: App.current_user.get("name"),
@@ -46,7 +46,7 @@ export let DirectChatView = Backbone.View.extend({
     if (this.chat_room) this.chat_room.stop();
 
     this.chat_room = this.chat_room_list.find(
-      room => room.chat_user.get("id") == chat_user.get("id"),
+      (room) => room.chat_user.get("id") == chat_user.get("id")
     );
     if (this.chat_room == undefined) {
       this.chat_room = new App.View.DirectChatRoomView({
@@ -72,7 +72,7 @@ export let DirectChatView = Backbone.View.extend({
   },
 
   close: function () {
-    this.chat_room_list.forEach(chat_room => chat_room.close());
+    this.chat_room_list.forEach((chat_room) => chat_room.close());
     this.chat_room_list = [];
     this.chat_room = null;
     this.$el.hide();

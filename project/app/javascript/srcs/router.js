@@ -15,7 +15,7 @@ export let Router = Backbone.Router.extend({
     "matches(/:id)": "matchesController",
     "tournaments(/:param)": "tournamentsController",
     "admin(/:param1)(/:param2)": "adminController",
-    "errors/:id": "errorsController",
+    "errors/:id(/:type)(/:msg)": "errorsController",
     "*exception": "errorsController",
   },
 
@@ -95,8 +95,15 @@ export let Router = Backbone.Router.extend({
     } else return this.navigate("#/errors/104");
   },
 
-  errorsController(error_code) {
+  errorsController(error_code, type = "", msg = "") {
     if (error_code === null) this.navigate("errors/" + 100);
-    else this.redirect_to(App.View.ErrorView, error_code);
+    else {
+      let error_hash = {
+        error_code: error_code,
+        type: type,
+        msg: msg,
+      };
+      this.redirect_to(App.View.ErrorView, error_hash);
+    }
   },
 });

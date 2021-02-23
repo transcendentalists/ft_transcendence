@@ -13,6 +13,8 @@ import { Users } from "./collections/users";
 import { Friends } from "./collections/friends";
 import { ChatBans } from "./collections/chat_bans";
 import { ChatMessages } from "./collections/chat_messages";
+import { GroupChatMessages } from "./collections/group_chat_messages";
+import { GroupChatMembers } from "./collections/group_chat_members";
 
 /* VIEW */
 
@@ -64,12 +66,18 @@ import { DirectChatRoomView } from "./views/chat/direct_chat_room_view";
 import { DirectChatMessageListView } from "./views/chat/direct_chat_message_list_view";
 import { ChatMessageView } from "./views/chat/chat_message_view";
 
+/** chat views */
 import { ChatIndexView } from "./views/chat/chat_index_view";
 import { ChatRoomCardListView } from "./views/chat/chat_room_card_list_view";
 import { ChatRoomCardView } from "./views/chat/chat_room_card_view";
 import { ChatRoomCreateView } from "./views/chat/chat_room_create_view";
-
 import { ChatRoomView } from "./views/chat/chat_room_view";
+import { ChatRoomMemberListView } from "./views/chat/chat_room_member_list_view";
+import { ChatRoomMemberUnitView } from "./views/chat/chat_room_member_unit_view";
+import { GroupChatMessageListView } from "./views/chat/group_chat_message_list_view";
+import { ChatRoomMemberMenuView } from "./views/chat/chat_room_member_menu_view";
+import { ChatRoomMenuView } from "./views/chat/chat_room_menu_view";
+
 import { UserProfileCardView } from "./views/user/user_profile_card_view";
 import { LiveIndexView } from "./views/live/live_index_view";
 
@@ -116,6 +124,9 @@ import consumer from "channels/consumer";
 export let App = {
   initialize: function () {
     Helper.fetch("session", { method: "DELETE" });
+    this.resources = {
+      chat_bans: new App.Collection.ChatBans(),
+    };
     this.appView = new AppView();
     this.router = new Router();
     this.mainView = App.appView.main_view;
@@ -149,6 +160,8 @@ export let App = {
     Friends,
     ChatBans,
     ChatMessages,
+    GroupChatMessages,
+    GroupChatMembers,
   },
   View: {
     SignInView,
@@ -176,9 +189,14 @@ export let App = {
     ChatIndexView,
     ChatRoomCardListView,
     ChatRoomCardView,
-
     ChatRoomView,
+    ChatRoomMenuView,
+    ChatRoomMemberListView,
+    ChatRoomMemberUnitView,
+    ChatRoomMemberMenuView,
     ChatRoomCreateView,
+    GroupChatMessageListView,
+
     GuildIndexView,
     GuildDetailView,
     GuildCreateView,

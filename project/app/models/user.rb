@@ -99,7 +99,7 @@ class User < ApplicationRecord
 
   def to_simple
     permitted = %w[id name status two_factor_auth image_url]
-    data = attributes.filter { |field, _value| permitted.include?(field) }
+    data = attributes.filter { |field, value| permitted.include?(field) }
   end
 
   def friends_list(params)
@@ -111,7 +111,14 @@ class User < ApplicationRecord
     ActionCable.server.broadcast('appearance_channel', make_user_data(status))
   end
 
-  private
+
+  def for_chat_room_format
+    hash_key_format = [:id, :name, :status, :image_url]
+    self.slice(*hash_key_format).merge({
+      anagram: guild_membership&.guild&.anagram
+    })
+  end
+
 
   def make_user_data(status)
     user_data = {
@@ -122,6 +129,9 @@ class User < ApplicationRecord
       anagram: guild_membership&.guild&.anagram
     }
   end
+  
+  private
+
 
   def self.where_by_query(params)
     users = self.all

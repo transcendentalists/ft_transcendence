@@ -1,14 +1,19 @@
+import { App } from "srcs/internal";
+
 export let InputModalView = Backbone.View.extend({
   template: _.template($("#input-modal-view-template").html()),
   el: "#input-modal-view",
 
   initialize: function () {
     this.data = null;
+    $("#input-modal-view.tiny.modal").modal("setting", {
+      closable: false,
+    });
   },
 
   events: {
     "click .green.button": "send",
-    "click .cancel.button": "close",
+    "click .cancel.button": "cancel",
   },
 
   render: function (data) {
@@ -17,6 +22,11 @@ export let InputModalView = Backbone.View.extend({
     this.$el.html(this.template(data));
     $("#input-modal-view.tiny.modal").modal("show");
     return this;
+  },
+
+  cancel: function () {
+    if (this.data.cancel_callback != undefined) this.data.cancel_callback();
+    this.close();
   },
 
   close: function () {

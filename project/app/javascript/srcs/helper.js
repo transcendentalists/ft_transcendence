@@ -8,6 +8,7 @@ export let Helper = {
       headers: {
         "X-CSRF-Token": this.getToken(),
         "Content-Type": "application/json",
+        current_user: App.current_user?.id,
       },
     };
     const success_callback = hash_args.hasOwnProperty("success_callback")
@@ -50,7 +51,11 @@ export let Helper = {
   },
 
   isUserChatBanned: function (user_id) {
-    return App.appView.appearance_view.chat_bans.isUserChatBanned(user_id);
+    return App.resources.chat_bans.isUserChatBanned(user_id);
+  },
+
+  isUserFriend: function (user_id) {
+    return App.appView.appearance_view.friends.get(user_id) !== undefined;
   },
 
   isCurrentUser: function (user_id) {

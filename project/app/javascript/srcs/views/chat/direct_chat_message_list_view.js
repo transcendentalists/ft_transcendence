@@ -1,5 +1,4 @@
-import { App } from "srcs/internal";
-import { Helper } from "../../helper";
+import { App, Helper } from "srcs/internal";
 
 export let DirectChatMessageListView = Backbone.View.extend({
   el: "#direct-chat-view .comments",

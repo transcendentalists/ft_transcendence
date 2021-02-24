@@ -34,15 +34,11 @@ class WarRequest < ApplicationRecord
   end
 
   def enemy
-    self.war_statuses.find_by_position("challenger")&.guild
-  end
-
-  def challenger
     self.war_statuses.find_by_position("enemy")&.guild
   end
 
-  def accept
-    War.create(war_request_id: self.id, status: "pending")
+  def challenger
+    self.war_statuses.find_by_position("challenger")&.guild
   end
 
   private

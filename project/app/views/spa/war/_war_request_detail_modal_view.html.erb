@@ -41,7 +41,7 @@
       </tr>
       <tr>
         <td>워 타임</td>
-        <td><%%= war_time %>:00 ~ <%%= +war_time + 1 %>:00</td>
+        <td><%%= war_time %>:00 ~ <%%= (+war_time < 9 ? '0' : '') + (+war_time + 1) %>:00</td>
       </tr>
       <tr>
         <td>시작일</td>

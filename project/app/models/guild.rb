@@ -27,6 +27,18 @@ class Guild < ApplicationRecord
   end
 
   def in_war?
-    self.wars.find_by_status(["progress", "pending"])
+    !self.wars.find_by_status(["progress", "pending"]).nil?
   end
+
+  def cancel_rest_of_war_request
+    self.requests.where(status: "pending").update_all(status: "canceled")
+  end
+
+  def accept(war_request)
+    war_request.update(status: "accepted")
+    war_request.enemy.cancel_rest_of_war_request
+    war_request.challenger.cancel_rest_of_war_request
+    War.create(war_request_id: war_request.id, status: "pending")
+  end
+  
 end

@@ -29,10 +29,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
         App.router.navigate("#/guilds/page/1", true);
       },
       fail_callback: (data) => {
-        Helper.info({
-          subject: data.error.type,
-          description: data.error.msg,
-        });
+        Helper.info({ error: data.error })
       },
     });
   },
@@ -52,10 +49,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
         App.router.navigate("#/guilds/page/1", true);
       },
       fail_callback: (data) => {
-        Helper.info({
-          subject: data.error.type,
-          description: data.error.msg,
-        });
+        Helper.info({ error: data.error })
       },
     });
   },

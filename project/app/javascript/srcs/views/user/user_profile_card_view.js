@@ -11,22 +11,29 @@ export let UserProfileCardView = Backbone.View.extend({
 
   initialize: function () {
     this.guild_member_list_buttons_view = null;
+    this.user = null;
+  },
+
+  refresh: function (guild) {
+    this.user.guild = guild;
+    this.guild_member_list_buttons_view.close();
+    this.render(this.user);
   },
 
   render: function (data) {
-    this.$el.html(this.template(data));
-    if (data.guild_detail) {
-      window.da = data;
-      this.guild_member_list_buttons_view = new App.View.GuildMemberListButtonsView();
+    this.user = data;
+    this.$el.html(this.template(this.user));
+    if (this.user.guild_detail) {
+      this.guild_member_list_buttons_view = new App.View.GuildMemberListButtonsView({ parent: this });
       this.guild_member_list_buttons_view
         .setElement(this.$("#guild-member-list-buttons-view"))
-        .render(data);
+        .render(this.user);
     }
     return this;
   },
 
   close: function () {
-    this.$el.empty();
+    this.user = null;
     this.remove();
   },
 });

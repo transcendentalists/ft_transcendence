@@ -9,65 +9,56 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
     "click #officer-dismiss-button": "dismissOfficer",
   },
 
-  initialize: function () {
+  initialize: function (option) {
+    this.parent = option.parent;
     this.assign_button = false;
     this.ban_button = false;
     this.dismiss_button = false;
   },
 
   assignOfficer: function () {
-    const assign_officer_url =
-      "guilds/" + this.guild_id + "/memberships/" + this.membership_id;
+    const assign_officer_url = `guilds/${this.guild_id}/memberships/${this.membership_id}`;
     Helper.fetch(assign_officer_url, {
       method: "PATCH",
       body: {
         position: "officer",
       },
-      success_callback: () => {
-        App.router.navigate("#/guilds/" + this.guild_id + "/1", true);
+      success_callback: (data) => {
+        this.parent.refresh(data.guildMembership);
       },
       fail_callback: (data) => {
-        Helper.info({
-          subject: data.error.type,
-          description: data.error.msg,
-        });
+        Helper.info({ error: data.error });
       },
     });
   },
 
+  // 관리자한테 길드탈퇴버튼 보임
+
   dismissOfficer: function () {
-    const dismiss_officer_url =
-      "guilds/" + this.guild_id + "/memberships/" + this.membership_id;
+    const dismiss_officer_url = `guilds/${this.guild_id}/memberships/${this.membership_id}`;
     Helper.fetch(dismiss_officer_url, {
       method: "PATCH",
       body: {
         position: "member",
       },
-      success_callback: () => {
-        App.router.navigate("#/guilds/" + this.guild_id + "/1", true);
+      success_callback: (data) => {
+        this.parent.refresh(data.guildMembership);
       },
       fail_callback: (data) => {
-        Helper.info({
-          subject: data.error.type,
-          description: data.error.msg,
-        });
+        Helper.info({ error: data.error });
       },
     });
   },
 
   banMember: function () {
-    const ban_member_url =
-      "guilds/" + this.guild_id + "/memberships/" + this.membership_id;
+    const ban_member_url = `guilds/${this.guild_id}/memberships/${this.membership_id}`;
     Helper.fetch(ban_member_url, {
       method: "DELETE",
       success_callback: () => {
-        App.router.navigate("#/guilds/" + this.guild_id + "/1", true);
+        this.parent.close();
       },
-      fail_callback: () => {
-        Helper.info({
-          subject: data.error.type,
-          description: data.error.msg,
-        });
+      fail_callback: (data) => {
+        Helper.info({ error: data.error })
       },
     });
   },
@@ -132,6 +123,7 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
   },
 
   close: function () {
+    this.parent = null;
     this.remove();
   },
 });

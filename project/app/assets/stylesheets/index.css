@@ -582,12 +582,14 @@ body {
 .guild-profile-card .name {
   font-weight: 900;
   font-size: 1.5rem;
-  width: 11rem; /* 길드이름 10자제한 둘 것 */
+}
+
+.guild-profile-card .content-header {
+  width: 24rem; /* 길드이름 10자 + Anagram 5자 + 3자리수랭크 + 포지션(member 등) */
 }
 
 .guild-profile-card .stat {
   margin-left: 1rem;
-  width: 13rem; /* Anagram 5자 + 3자리수랭크 + 포지션(member 등) 까지 커버가능 */
 }
 
 #guild-index-view .small.image {

@@ -25,16 +25,12 @@ export let GuildProfileCardView = Backbone.View.extend({
     }`;
     Helper.fetch(url, {
       method: "DELETE",
-      headers: Helper.current_user_header(),
       success_callback: () => {
         App.current_user.set("guild", null);
         App.router.navigate("#/guilds/page/1", true);
       },
       fail_callback: (data) => {
-        Helper.info({
-          subject: data.error.type,
-          description: data.error.msg,
-        });
+        Helper.info({ error: data.error });
       },
     });
   },
@@ -43,7 +39,6 @@ export let GuildProfileCardView = Backbone.View.extend({
     const url = `guilds/${this.guild.id}/memberships`;
     Helper.fetch(url, {
       method: "POST",
-      headers: Helper.current_user_header(),
       body: {
         user: {
           id: App.current_user.id,
@@ -55,10 +50,7 @@ export let GuildProfileCardView = Backbone.View.extend({
         App.router.navigate("#/guilds/page/1", true);
       },
       fail_callback: (data) => {
-        Helper.info({
-          subject: data.error.type,
-          description: data.error.msg,
-        });
+        Helper.info({ error: data.error });
       },
     });
   },

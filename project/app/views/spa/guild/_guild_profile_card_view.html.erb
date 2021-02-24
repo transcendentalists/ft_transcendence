@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="row">
-      <%%= '길드 오너: ' + guild.owner %>
+      <%%= '길드 마스터: ' + guild.owner %>
     </div>
     <div class="row">
       <%%= '길드원 수: ' + guild.num_of_member %>
@@ -24,11 +24,11 @@
     <button class="guild-show-button ui button mini teal">
       길드보기
     </button>
-    <%% if (current_user_guild_id == guild.id && current_user_guild_position != "owner") { %>
+    <%% if (current_user_guild_id == guild.id && current_user_guild_position != "master") { %>
     <button class="guild-leave-button ui button mini red">
       길드탈퇴
     </button>
-    <%% } if (current_user_guild_id != guild.id && current_user_guild_position == "owner") { %>
+    <%% } if (current_user_guild_id != guild.id && current_user_guild_position == "master") { %>
     <button class="war-request-create-button ui button mini red">
       전쟁제안
     </button>

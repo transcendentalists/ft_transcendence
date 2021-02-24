@@ -2,7 +2,7 @@ class WarRequest < ApplicationRecord
   belongs_to :rule
   has_one :war, dependent: :destroy
   has_many :war_statuses, dependent: :destroy
-  validates :status, inclusion: { in: ["pending", "progress", "canceled", "completed"] }
+  validates :status, inclusion: { in: ["pending", "accepted", "canceled"] }
   validates :rule_id, inclusion: { in: 1..7 }
   validates :target_match_score, inclusion: { in: [3, 5, 7, 10] }
   validate :end_date_after_start_date
@@ -31,6 +31,18 @@ class WarRequest < ApplicationRecord
     else
       return true
     end
+  end
+
+  def enemy
+    self.war_statuses.find_by_position("challenger")&.guild
+  end
+
+  def challenger
+    self.war_statuses.find_by_position("enemy")&.guild
+  end
+
+  def accept
+    War.create(war_request_id: self.id, status: "pending")
   end
 
   private

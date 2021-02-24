@@ -3,10 +3,10 @@
   <div class="content flex-container column-direction">
     <div class="row flex-container baseline">
       <div class="name"><%%= war_request.challenger.name %></div>
-      <div class="stat"> <strong><%%= war_request.challenger.anagram %></strong> | <%%= war_request.challenger.rank %> 위</div>
+      <div class="stat"> <strong><%%= war_request.challenger.anagram %></strong> | <%%= war_request.challenger.rank %>위</div>
     </div>
     <div class="row">
-      <%%= '현재 오너: ' + war_request.challenger.owner %>
+      <%%= '마스터: ' + war_request.challenger.owner %>
   </div>
     <div class="row">
       <%%= '길드원 수: ' + war_request.challenger.num_of_member %>
@@ -15,7 +15,7 @@
       <%%= '배팅 포인트: ' + war_request.bet_point %>
     </div>
     <div class="row">
-      <%%= '워 타임: ' + war_request.war_time + ':00 ~ ' + ++war_request.war_time + ':00' %>
+      <%%= '워 타임: ' + war_request.war_time + ':00 ~ ' + (+war_request.war_time + 1) + ':00' %>
     </div>
   </div>
   <button class="war-request-detail-button ui button mini teal">

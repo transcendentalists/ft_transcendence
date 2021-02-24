@@ -17,7 +17,6 @@ export let GuildIndexView = Backbone.View.extend({
     this.guild_profile_card_view = null;
     this.war_request_card_list_view = null;
     this.guild_ranking_view = null;
-    this.war_request_detail_modal_view = null;
     this.current_user_guild_profile_url = `guilds/${this.current_user_guild?.id}?for=profile`;
     this.war_requests_url = `guilds/${this.current_user_guild?.id}/war_requests?for=guild_index`;
     this.guild_ranking_url = `guilds?for=guild_index&page=${this.page}`;
@@ -85,8 +84,6 @@ export let GuildIndexView = Backbone.View.extend({
     if (this.war_request_card_list_view)
       this.war_request_card_list_view.close();
     if (this.guild_ranking_view) this.guild_ranking_view.close();
-    if (this.war_request_detail_modal_view)
-      this.war_request_detail_modal_view.close();
     this.remove();
   },
 });

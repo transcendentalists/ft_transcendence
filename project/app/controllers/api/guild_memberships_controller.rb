@@ -14,7 +14,7 @@ class Api::GuildMembershipsController < ApplicationController
         guild_id: params[:guild_id],
         position: params[:position],
       )
-    return(render_error('길드 가입 실패', '유효하지 않은 정보가 포함되어 있습니다.', 404) unless guild_membership.valid?
+    return render_error('길드 가입 실패', '유효하지 않은 정보가 포함되어 있습니다.', 404) unless guild_membership.valid?
     render json: { guildMembership: guild_membership.profile }
   end
 

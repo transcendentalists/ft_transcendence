@@ -3,6 +3,7 @@ class Guild < ApplicationRecord
   has_many :memberships, class_name: 'GuildMembership'
   has_many :war_statuses
   has_many :requests, through: :war_statuses
+  has_many :wars, through: :requests
 
   has_many :users, through: :memberships, source: :user
   has_many :invitations, class_name: 'GuildInvitation'
@@ -19,5 +20,9 @@ class Guild < ApplicationRecord
   def to_simple
     permitted = %w[id name anagram owner_id point image_url]
     data = self.attributes.filter { |field, value| permitted.include?(field) }
+  end
+
+  def in_war?
+    self.wars.find_by_status(["progress", "pending"])
   end
 end

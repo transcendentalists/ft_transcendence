@@ -2,7 +2,7 @@ class GuildMembership < ApplicationRecord
   belongs_to :user
   belongs_to :guild
 
-  validates :position, inclusion: { in: ["owner", "officer", "member"] }
+  validates :position, inclusion: { in: ["master", "officer", "member"] }
 
   def profile
     guild = self.guild.to_simple

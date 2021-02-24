@@ -1,7 +1,7 @@
 <script type="text/template" id="war-request-detail-modal-view-template">
   <div class="header">
     War Request Detail
-    <i class="right floated close grey icon"></i>
+    <i class="war-request-close-button right floated close grey icon"></i>
   </div>
   <div class="content">
 
@@ -22,34 +22,26 @@
       <tr>
         <td>래더 포함여부</td>
         <td>
-          <%% if (include_ladder) { %>
-            Yes
-          <%% } else { %>
-            No
-          <%% } %>
+          <%%= include_ladder ? 'Yes' : 'No' %>
         </td>
       </tr>
       <tr>
         <td>토너먼트 포함여부</td>
         <td>
-          <%% if (include_tournament) { %>
-            Yes
-          <%% } else { %>
-            No
-          <%% } %>
+          <%%= include_tournament ? 'Yes' : 'No' %>
         </td>
       </tr>
       <tr>
         <td>타겟 매치 스코어</td>
-        <td><%%= target_match_score %></td>
+        <td><%%= target_match_score %>점</td>
       </tr>
       <tr>
-        <td>최대 미응답수</td>
-        <td><%%= max_no_reply_count %></td>
+        <td>최대 미응답 수</td>
+        <td><%%= max_no_reply_count %>회</td>
       </tr>
       <tr>
-        <td>워타임</td>
-        <td><%%= war_time %>:00 ~ <%%= ++war_time %>:00</td>
+        <td>워 타임</td>
+        <td><%%= war_time %>:00 ~ <%%= +war_time + 1 %>:00</td>
       </tr>
       <tr>
         <td>시작일</td>

@@ -16,7 +16,7 @@ class Api::WarRequestsController < ApplicationController
 
   def update
     war_request = WarRequest.find_by_id(params[:id])
-    return render_error("전쟁 요청 검색 에러", "요청하신 전쟁 요청이 존재하지 않습니다.", 404) if war_request.nil?
+    return render_error("전쟁 제안 검색 에러", "요청하신 전쟁 제안이 존재하지 않습니다.", 404) if war_request.nil?
     return render_error("권한 에러", "접근 권한이 없습니다.", 401) unless war_request.can_be_updated_by(@current_user)
 
     if params[:status] == "progress"

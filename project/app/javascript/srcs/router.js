@@ -8,7 +8,7 @@ export let Router = Backbone.Router.extend({
     "sessions/new": "sessionsController",
     "users(/:param)": "usersController",
     "chatrooms(/:param)": "chatRoomsController",
-    "guilds(/:param)": "guildsController",
+    "guilds(/:param)(/:page)": "guildsController",
     "ladder(/:page)": "ladderController",
     "lives(/:matchtype)": "livesController",
     "war(/:new)": "warController",
@@ -48,10 +48,12 @@ export let Router = Backbone.Router.extend({
     else this.redirect_to(App.View.ChatRoomView, param);
   },
 
-  guildsController: function (param) {
-    if (param === null) this.redirect_to(App.View.GuildIndexView);
-    else if (param === "new") this.redirect_to(App.View.GuildCreateView, param);
-    else this.redirect_to(App.View.GuildDetailView, param);
+  guildsController: function (param, page = 1) {
+    if (param === "page") {
+      this.redirect_to(App.View.GuildIndexView, page);
+    } else if (param === "new")
+      this.redirect_to(App.View.GuildCreateView, param);
+    else this.redirect_to(App.View.GuildDetailView, page);
   },
 
   ladderController: function (page = 1) {

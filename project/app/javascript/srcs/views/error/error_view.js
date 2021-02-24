@@ -3,7 +3,7 @@
  * 어디에서든 App.router.navigate(error_code)로 리다이렉트 가능
  */
 
-import { App } from "../../internal";
+import { App } from "srcs/internal";
 
 export let ErrorView = Backbone.View.extend({
   template: _.template($("#error-view-template").html()),

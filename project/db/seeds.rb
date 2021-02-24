@@ -7,17 +7,63 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 User.create([
-  {name: 'sanam1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'simian114@gmail.com', image_url: 'assets/sanam1.png', point: 1, two_factor_auth: false},
-  {name: 'yohlee1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'yohan9612@naver.com', image_url: 'assets/yohlee1.png', point: 2, two_factor_auth: false},
-  {name: 'eunhkim1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim1.png', point: 3, two_factor_auth: false},
-  {name: 'iwoo1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo1.png', point: 4, two_factor_auth: false},
-  {name: 'jujeong1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 5, two_factor_auth: false},
-  {name: 'iwoo2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'injun.woo30001@gmail.com', image_url: '/assets/iwoo2.png', point: 7, two_factor_auth: false},
-  {name: 'yohlee2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'yohan9613@yonsei.ac.kr', image_url: '/assets/yohlee2.png', point: 8},
-  {name: 'sanam2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'simian115@gmail.com', image_url: '/assets/sanam2.png', point: 9},
-  {name: 'eunhkim2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'valhalla.host2@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 10},
-  {name: 'jujeong2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'juhyeonjeong93@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 10},
-  {name: 'test', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'juhyeonjeong94@gmail.com', image_url: '/assets/kristy.png', point: 11},
+  {name: 'sanam1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'simian114@gmail.com', image_url: 'assets/sanam1.png', point: 123, two_factor_auth: false},
+  {name: 'yohlee1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'yohan9612@naver.com', image_url: 'assets/yohlee1.png', point: 122, two_factor_auth: false},
+  {name: 'eunhkim1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim1.png', point: 33, two_factor_auth: false},
+  {name: 'iwoo1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo1.png', point: 42, two_factor_auth: false},
+  {name: 'jujeong1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 90, two_factor_auth: false},
+  {name: 'iwoo2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'injun.woo30001@gmail.com', image_url: '/assets/iwoo2.png', point: 78, two_factor_auth: false},
+  {name: 'yohlee2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'yohan9613@yonsei.ac.kr', image_url: '/assets/yohlee2.png', point: 83},
+  {name: 'sanam2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'simian115@gmail.com', image_url: '/assets/sanam2.png', point: 92},
+  {name: 'eunhkim2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'valhalla.host2@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 20},
+  {name: 'jujeong2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'juhyeonjeong93@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 40},
+  {name: 'test', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'juhyeonjeong94@gmail.com', image_url: '/assets/kristy.png', point: 14},
+  {name: 'test1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test1@gmail.com', image_url: '/assets/yohlee1.png', point: 15},
+  {name: 'test2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test2@gmail.com', image_url: '/assets/kristy.png', point: 12},
+  {name: 'test3', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test3@gmail.com', image_url: '/assets/iwoo2.png', point: 13},
+  {name: 'test4', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test4@gmail.com', image_url: '/assets/sanam2.png', point: 14},
+  {name: 'test5', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test5@gmail.com', image_url: '/assets/kristy.png', point: 15},
+  {name: 'test6', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test6@gmail.com', image_url: '/assets/jujeong1.png', point: 16},
+  {name: 'test7', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test7@gmail.com', image_url: '/assets/kristy.png', point: 17},
+  {name: 'test8', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test8@gmail.com', image_url: '/assets/jujeong1.png', point: 18},
+  {name: 'test9', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test9@gmail.com', image_url: '/assets/sanam2.png', point: 19},
+  {name: 'test10', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test10@gmail.com', image_url: '/assets/yohlee1.png', point: 11},
+  {name: 'test11', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test11@gmail.com', image_url: '/assets/kristy.png', point: 12},
+  {name: 'test12', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test12@gmail.com', image_url: '/assets/jujeong1.png', point: 13},
+  {name: 'test13', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test13@gmail.com', image_url: '/assets/iwoo2.png', point: 14},
+  {name: 'test14', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test14@gmail.com', image_url: '/assets/kristy.png', point: 15},
+  {name: 'test15', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test15@gmail.com', image_url: '/assets/kristy.png', point: 16},
+  {name: 'test16', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test16@gmail.com', image_url: '/assets/kristy.png', point: 17},
+  {name: 'test17', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test17@gmail.com', image_url: '/assets/kristy.png', point: 18},
+  {name: 'test18', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test18@gmail.com', image_url: '/assets/iwoo2.png', point: 19},
+  {name: 'test19', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test19@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 11},
+  {name: 'test20', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test20@gmail.com', image_url: '/assets/kristy.png', point: 12},
+  {name: 'test21', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test21@gmail.com', image_url: '/assets/kristy.png', point: 13},
+  {name: 'test22', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'tessdfjt4@gmail.com', image_url: '/assets/eunhkim1.png', point: 14},
+  {name: 'test23', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'tsdes1t5@gmail.com', image_url: '/assets/iwoo2.png', point: 15},
+  {name: 'test24', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test126@gmail.com', image_url: '/assets/kristy.png', point: 16},
+  {name: 'test25', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test7zzzh@sdfgmail.com', image_url: '/assets/kristy.png', point: 17},
+  {name: 'test26', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test1238@gmail.com', image_url: '/assets/jujeong1.png', point: 18},
+  {name: 'test27', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test1239@gmail.com', image_url: '/assets/kristy.png', point: 19},
+  {name: 'test28', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test28@gmail.com', image_url: '/assets/jujeong1.png', point: 11},
+  {name: 'test29', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test29@gmail.com', image_url: '/assets/kristy.png', point: 12},
+  {name: 'test30', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test30@gmail.com', image_url: '/assets/sanam1.png', point: 13},
+  {name: 'test31', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test31@gmail.com', image_url: '/assets/kristy.png', point: 14},
+  {name: 'test32', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test32@gmail.com', image_url: '/assets/eunhkim1.png', point: 15},
+  {name: 'test33', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test33@gmail.com', image_url: '/assets/kristy.png', point: 16},
+  {name: 'test34', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test34@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 17},
+  {name: 'test35', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test35@gmail.com', image_url: '/assets/sanam1.png', point: 18},
+  {name: 'test36', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test36@gmail.com', image_url: '/assets/kristy.png', point: 19},
+  {name: 'test37', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test37@gmail.com', image_url: '/assets/sanam1.png', point: 11},
+  {name: 'test38', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test38@gmail.com', image_url: '/assets/kristy.png', point: 12},
+  {name: 'test39', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test39@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 13},
+  {name: 'test40', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test40@gmail.com', image_url: '/assets/kristy.png', point: 14},
+  {name: 'test41', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test41@gmail.com', image_url: '/assets/eunhkim1.png', point: 15},
+  {name: 'test42', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test42@gmail.com', image_url: '/assets/kristy.png', point: 16},
+  {name: 'test43', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test43@sdfgmail.com', image_url: '/assets/kristy.png', point: 17},
+  {name: 'test44', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test44@gmail.com', image_url: '/assets/sanam1.png', point: 18},
+  {name: 'test45', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'test45@gmail.com', image_url: '/assets/kristy.png', point: 19},
+  
 ])
 
 Friendship.create([
@@ -38,19 +84,61 @@ Rule.create([
 ])
 
 Guild.create([
-  {owner_id: 1, name: "gun of 42seoul", anagram: "GUN", image_url: "assets/gun.png"},
-  {owner_id: 2, name: "gon of 42seoul", anagram: "GON", image_url: "assets/gon.png"},
-  {owner_id: 3, name: "gam of 42seoul", anagram: "GAM", image_url: "assets/gam.png"},
-  {owner_id: 4, name: "lee of 42seoul", anagram: "LEE", image_url: "assets/lee.png"},
+  {owner_id: 1, name: "gun42seoul", anagram: "@GUNA", image_url: "assets/gun.png"},
+  {owner_id: 2, name: "gon42seoul", anagram: "@GONA", image_url: "assets/gon.png"},
+  {owner_id: 3, name: "gam42seoul", anagram: "@GAMA", image_url: "assets/gam.png"},
+  {owner_id: 4, name: "lee42seoul", anagram: "@LEEA", image_url: "assets/lee.png"},
+  {owner_id: 5, name: "142seoul", anagram: "@ABCD", image_url: "assets/lee.png"},
+  {owner_id: 6, name: "2", anagram: "@TWOM", image_url: "assets/lee.png"},
+  {owner_id: 7, name: "abcd", anagram: "@THEE", image_url: "assets/lee.png"},
+  {owner_id: 8, name: "12eoul", anagram: "@EEEE", image_url: "assets/lee.png"},
+  {owner_id: 9, name: "seoul", anagram: "@SOUL", image_url: "assets/lee.png"},
+  {owner_id: 10, name: "123123", anagram: "@HANE", image_url: "assets/lee.png"},
+  {owner_id: 11, name: "42seoul", anagram: "@HANA", image_url: "assets/lee.png"},
 ])
 
 WarRequest.create([
-  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,1,14,8), end_date: DateTime.new(2021,1,24,8), war_time: Time.new, max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,3,21,14), end_date: DateTime.new(2021,3,24,16), war_time: Time.new(1,1,1,10), max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
+  {rule_id: 2, bet_point: 20, start_date: DateTime.new(2021,3,22,15), end_date: DateTime.new(2021,3,24,17), war_time: Time.new(1,1,1,1), max_no_reply_count: 5, include_ladder: false, include_tournament: true, target_match_score: 5, status: "pending"},
+  {rule_id: 3, bet_point: 30, start_date: DateTime.new(2021,3,23,16), end_date: DateTime.new(2021,3,24,18), war_time: Time.new(1,1,1,12), max_no_reply_count: 1, include_ladder: true, include_tournament: false, target_match_score: 7, status: "pending"},
+  {rule_id: 4, bet_point: 40, start_date: DateTime.new(2021,3,24,17), end_date: DateTime.new(2021,3,24,19), war_time: Time.new(1,1,1,19), max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 5, bet_point: 50, start_date: DateTime.new(2021,3,10,18), end_date: DateTime.new(2021,3,20,20), war_time: Time.new(1,1,1,10), max_no_reply_count: 60, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
+  {rule_id: 6, bet_point: 60, start_date: DateTime.new(2021,3,12,19), end_date: DateTime.new(2021,3,22,21), war_time: Time.new(1,1,1,12), max_no_reply_count: 20, include_ladder: true, include_tournament: true, target_match_score: 5, status: "pending"},
+  {rule_id: 7, bet_point: 70, start_date: DateTime.new(2021,3,14,20), end_date: DateTime.new(2021,3,24,22), war_time: Time.new(1,1,1,10), max_no_reply_count: 2, include_ladder: true, include_tournament: true, target_match_score: 7, status: "pending"},
+  {rule_id: 1, bet_point: 80, start_date: DateTime.new(2021,3,16,10), end_date: DateTime.new(2021,3,16,20), war_time: Time.new(1,1,1,11), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 10, status: "pending"},
+  {rule_id: 2, bet_point: 80, start_date: DateTime.new(2021,3,16,12), end_date: DateTime.new(2021,3,16,14), war_time: Time.new(1,1,1,2), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
+  {rule_id: 3, bet_point: 80, start_date: DateTime.new(2021,3,16,14), end_date: DateTime.new(2021,3,16,22), war_time: Time.new(1,1,1,5), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 5, status: "pending"},
+  {rule_id: 4, bet_point: 80, start_date: DateTime.new(2021,3,16,16), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,9), max_no_reply_count: 12, include_ladder: true, include_tournament: false, target_match_score: 7, status: "pending"},
+  {rule_id: 5, bet_point: 80, start_date: DateTime.new(2021,3,16,18), end_date: DateTime.new(2021,3,26,24), war_time: Time.new(1,1,1,10), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 10, status: "pending"},
+  {rule_id: 6, bet_point: 10, start_date: DateTime.new(2021,3,16,20), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,11), max_no_reply_count: 12, include_ladder: true, include_tournament: false, target_match_score: 3, status: "canceled"},
+  {rule_id: 7, bet_point: 20, start_date: DateTime.new(2021,3,16,21), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,14), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 5, status: "canceled"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,4,14,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,11), max_no_reply_count: 12, include_ladder: true, include_tournament: false, target_match_score: 3, status: "canceled"},
+  {rule_id: 2, bet_point: 20, start_date: DateTime.new(2021,4,15,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,14), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
+  {rule_id: 3, bet_point: 10, start_date: DateTime.new(2021,4,16,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,11), max_no_reply_count: 12, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
+  {rule_id: 4, bet_point: 20, start_date: DateTime.new(2021,4,17,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,14), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
+
+  # 예외처리 확인용
+  #  start_date, end_date가 지났거나 end_date가 start_date보다 빠를 때
+  {rule_id: 1, bet_point: 30, start_date: DateTime.new(2021,1,14,21), end_date: DateTime.new(2021,1,24,23), war_time: Time.new(1,1,1,2), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 7, status: "pending"},
+  {rule_id: 2, bet_point: 40, start_date: DateTime.new(2021,1,15,21), end_date: DateTime.new(2021,1,25,23), war_time: Time.new(1,1,1,9), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 10, status: "pending"},
+  {rule_id: 3, bet_point: 50, start_date: DateTime.new(2021,1,16,21), end_date: DateTime.new(2021,1,26,23), war_time: Time.new(1,1,1,19), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
+  {rule_id: 3, bet_point: 50, start_date: DateTime.new(2021,2,17,19), end_date: DateTime.new(2021,1,26,23), war_time: Time.new(1,1,1,19), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
+    
+    #  없는 Rule Id
+  {rule_id: 100, bet_point: 60, start_date: DateTime.new(2021,3,16,21), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,20), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 5, status: "pending"},
+
+    #  이상한 Target Match Score
+  {rule_id: 5, bet_point: 10, start_date: DateTime.new(2021,3,16,21), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,22), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 777, status: "pending"},
+
+    #  status 이상한거
+  {rule_id: 6, bet_point: 20, start_date: DateTime.new(2021,3,16,21), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,4), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 10, status: "seed is not defined"},
 ])
 
 War.create([
-  {war_request_id: 1},
-  {war_request_id: 2},
+  {war_request_id: 1, status: "progress"},
+  {war_request_id: 16, status: "completed"},
+  {war_request_id: 17, status: "completed"},
+  {war_request_id: 18, status: "pending"},
 ])
 
 Match.create([
@@ -199,9 +287,64 @@ DirectChatMembership.create([
 ])
 
 GuildMembership.create([
-  {user_id: 1, guild_id: 1, position: "owner"},
-  {user_id: 2, guild_id: 2, position: "owner"},
-  {user_id: 3, guild_id: 3, position: "owner"},
+  {user_id: 1, guild_id: 1, position: "master"},
+  {user_id: 2, guild_id: 2, position: "master"},
+  {user_id: 3, guild_id: 3, position: "master"},
+  {user_id: 4, guild_id: 4, position: "master"},
+  {user_id: 5, guild_id: 5, position: "master"},
+  {user_id: 6, guild_id: 6, position: "master"},
+  {user_id: 7, guild_id: 7, position: "master"},
+  {user_id: 8, guild_id: 8, position: "master"},
+  {user_id: 9, guild_id: 9, position: "master"},
+  {user_id: 10, guild_id: 10, position: "master"},
+  {user_id: 11, guild_id: 10, position: "master"},
+
+  {user_id: 12, guild_id: 1, position: "officer"},
+  {user_id: 13, guild_id: 2, position: "officer"},
+  {user_id: 14, guild_id: 3, position: "officer"},
+  {user_id: 15, guild_id: 4, position: "officer"},
+  {user_id: 16, guild_id: 5, position: "officer"},
+  {user_id: 17, guild_id: 6, position: "officer"},
+  {user_id: 18, guild_id: 7, position: "officer"},
+  {user_id: 19, guild_id: 8, position: "officer"},
+  {user_id: 20, guild_id: 9, position: "officer"},
+  {user_id: 21, guild_id: 10, position: "officer"},
+  {user_id: 22, guild_id: 11, position: "officer"},
+  {user_id: 23, guild_id: 1, position: "officer"},
+  {user_id: 24, guild_id: 3, position: "member"},
+  {user_id: 25, guild_id: 3, position: "member"},
+  {user_id: 26, guild_id: 4, position: "member"},
+  {user_id: 27, guild_id: 5, position: "member"},
+  {user_id: 28, guild_id: 6, position: "member"},
+  {user_id: 29, guild_id: 10, position: "member"},
+  {user_id: 30, guild_id: 8, position: "member"},
+  {user_id: 31, guild_id: 8, position: "member"},
+  {user_id: 32, guild_id: 9, position: "member"},
+  {user_id: 33, guild_id: 11, position: "member"},
+  {user_id: 34, guild_id: 10, position: "member"},
+  {user_id: 35, guild_id: 3, position: "member"},
+  {user_id: 36, guild_id: 7, position: "member"},
+  {user_id: 37, guild_id: 6, position: "member"},
+  {user_id: 38, guild_id: 3, position: "member"},
+  {user_id: 39, guild_id: 5, position: "member"},
+  {user_id: 40, guild_id: 4, position: "member"},
+  {user_id: 41, guild_id: 3, position: "member"},
+  {user_id: 42, guild_id: 2, position: "member"},
+  {user_id: 43, guild_id: 1, position: "member"},
+  {user_id: 44, guild_id: 11, position: "member"},
+  {user_id: 45, guild_id: 11, position: "member"},
+  {user_id: 46, guild_id: 10, position: "member"},
+  {user_id: 47, guild_id: 9, position: "member"},
+  {user_id: 48, guild_id: 8, position: "member"},
+  {user_id: 49, guild_id: 8, position: "member"},
+  {user_id: 50, guild_id: 7, position: "member"},
+  {user_id: 51, guild_id: 6, position: "member"},
+  {user_id: 52, guild_id: 5, position: "member"},
+  {user_id: 53, guild_id: 4, position: "member"},
+  {user_id: 54, guild_id: 3, position: "member"},
+  {user_id: 55, guild_id: 2, position: "member"},
+  {user_id: 56, guild_id: 1, position: "member"},
+  
 ])
 
 GuildInvitation.create([
@@ -227,11 +370,48 @@ TournamentMembership.create([
   {user_id: 4, tournament_id: 1},
 ])
 
-
-
 WarStatus.create([
-  {guild_id: 1, war_request_id: 1, position: "challenger"},
-  {guild_id: 2, war_request_id: 1, position: "enemy"},
+  # war progress 상태
+  {guild_id: 8, war_request_id: 1, position: "challenger"},
+  {guild_id: 9, war_request_id: 1, position: "enemy"},
+  # request pending 상태
+  # 1번이 워 리퀘스트(아무거나)를 수락하면 3 4 번 길드의 리퀘스트에 1번길드가 보낸 요청(9, 10번 리퀘)이 없어야함.
+  # 1번이 워 리퀘스트를 수락하면 나머지 리퀘스트들이 canceled로 처리된다.
+  {guild_id: 3, war_request_id: 2, position: "challenger"},
+  {guild_id: 1, war_request_id: 2, position: "enemy"},
+  {guild_id: 4, war_request_id: 3, position: "challenger"},
+  {guild_id: 1, war_request_id: 3, position: "enemy"},
+  {guild_id: 5, war_request_id: 4, position: "challenger"},
+  {guild_id: 1, war_request_id: 4, position: "enemy"},
+  {guild_id: 6, war_request_id: 5, position: "challenger"},
+  {guild_id: 1, war_request_id: 5, position: "enemy"},
+  {guild_id: 3, war_request_id: 6, position: "challenger"},
+  {guild_id: 2, war_request_id: 6, position: "enemy"},
+  {guild_id: 4, war_request_id: 7, position: "challenger"},
+  {guild_id: 2, war_request_id: 7, position: "enemy"},
+  {guild_id: 5, war_request_id: 8, position: "challenger"},
+  {guild_id: 2, war_request_id: 8, position: "enemy"},
+  {guild_id: 1, war_request_id: 9, position: "challenger"},
+  {guild_id: 3, war_request_id: 9, position: "enemy"},
+  {guild_id: 1, war_request_id: 10, position: "challenger"},
+  {guild_id: 4, war_request_id: 10, position: "enemy"},
+  {guild_id: 2, war_request_id: 11, position: "challenger"},
+  {guild_id: 5, war_request_id: 11, position: "enemy"},
+  {guild_id: 2, war_request_id: 12, position: "challenger"},
+  {guild_id: 6, war_request_id: 12, position: "enemy"},
+  # request canceled 상태
+  {guild_id: 1, war_request_id: 13, position: "challenger"},
+  {guild_id: 5, war_request_id: 13, position: "enemy"},
+  {guild_id: 1, war_request_id: 14, position: "challenger"},
+  {guild_id: 6, war_request_id: 14, position: "enemy"},
+  {guild_id: 3, war_request_id: 15, position: "challenger"},
+  {guild_id: 1, war_request_id: 15, position: "enemy"},
+  # war completed 상태
+  {guild_id: 3, war_request_id: 16, position: "challenger"},
+  {guild_id: 4, war_request_id: 16, position: "enemy"},
+  {guild_id: 5, war_request_id: 17, position: "challenger"},
+  {guild_id: 1, war_request_id: 17, position: "enemy"},
+  # war pending 상태
+  {guild_id: 10, war_request_id: 18, position: "challenger"},
+  {guild_id: 11, war_request_id: 18, position: "enemy"},
 ])
-
-

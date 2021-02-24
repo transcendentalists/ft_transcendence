@@ -78,13 +78,9 @@ import { GroupChatMessageListView } from "./views/chat/group_chat_message_list_v
 import { ChatRoomMemberMenuView } from "./views/chat/chat_room_member_menu_view";
 import { ChatRoomMenuView } from "./views/chat/chat_room_menu_view";
 
-import { GuildIndexView } from "./views/guild/guild_index_view";
-import { GuildDetailView } from "./views/guild/guild_detail_view";
-import { GuildCreateView } from "./views/guild/guild_create_view";
 import { UserProfileCardView } from "./views/user/user_profile_card_view";
 import { LiveIndexView } from "./views/live/live_index_view";
-import { WarIndexView } from "./views/war/war_index_view";
-import { WarCreateView } from "./views/war/war_create_view";
+
 import { TournamentIndexView } from "./views/tournament/tournament_index_view";
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
 import { AdminUserIndexView } from "./views/admin/admin_user_index_view";
@@ -92,6 +88,20 @@ import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
 import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
 import { AdminGuildDetailView } from "./views/admin/admin_guild_detail_view";
+
+/** guild views */
+import { GuildIndexView } from "./views/guild/guild_index_view";
+import { GuildDetailView } from "./views/guild/guild_detail_view";
+import { GuildCreateView } from "./views/guild/guild_create_view";
+import { GuildProfileCardView } from "./views/guild/guild_profile_card_view";
+import { GuildRankingView } from "./views/guild/guild_ranking_view";
+
+/** war views */
+import { WarRequestCardListView } from "./views/war/war_request_card_list_view";
+import { WarRequestCardView } from "./views/war/war_request_card_view";
+import { WarIndexView } from "./views/war/war_index_view";
+import { WarCreateView } from "./views/war/war_create_view";
+import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_view";
 
 /* CHANNEL */
 import { ConnectAppearanceChannel } from "channels/appearance_channel";
@@ -190,6 +200,11 @@ export let App = {
     GuildIndexView,
     GuildDetailView,
     GuildCreateView,
+    GuildProfileCardView,
+    GuildRankingView,
+    WarRequestCardListView,
+    WarRequestCardView,
+    WarRequestDetailModalView,
     GuildInvitationView,
     GuildInvitationListView,
     LadderIndexView,

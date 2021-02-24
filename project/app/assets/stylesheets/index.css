@@ -571,6 +571,116 @@ body {
 }
 
 /* ==========================================================================
+   GUILD INDEX VIEW
+   ========================================================================== */
+
+.guild-profile-card .content {
+  margin-left: 2rem;
+  margin-top: -1rem;
+}
+
+.guild-profile-card .name {
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.guild-profile-card .content-header {
+  width: 24rem; /* 길드이름 10자 + Anagram 5자 + 3자리수랭크 + 포지션(member 등) */
+}
+
+.guild-profile-card .stat {
+  margin-left: 1rem;
+}
+
+#guild-index-view .small.image {
+  margin-bottom: 0;
+  width: 150px !important;
+  height: 150px !important;
+  min-width: 150px;
+  min-height: 150px;
+}
+
+#guild-index-view {
+  margin-top: 8rem;
+}
+
+#guild-index-view #guild-create-button {
+  margin-left: auto;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-index-view .my-guild-header {
+  margin-bottom: 1.5rem;
+}
+
+#guild-index-view .guild-profile-view {
+  margin-bottom: 4rem;
+}
+
+#guild-index-view .guild-profile-view .stat {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+#guild-index-view .guild-ranking-list .stat {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+#guild-index-view .guild-profile.buttons {
+  margin-left: auto;
+}
+
+#guild-index-view .guild-profile .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-index-view .war-request-header {
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+#guild-index-view .war-request-card-list {
+  margin-bottom: 4rem;
+}
+
+#guild-index-view .war-request-card .stat {
+  margin-left: 1rem;
+}
+
+#guild-index-view .war-request-card .content {
+  margin-left: 2rem;
+  margin-top: -1rem;
+}
+
+#guild-index-view .war-request-detail-button {
+  margin-left: auto;
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-index-view .guild-ranking-header {
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+#guild-index-view .guild-ranking-list {
+  margin-bottom: 4rem;
+}
+
+#guild-index-view .guild-rank-page-buttons {
+  margin-bottom: 1rem;
+}
+
+#war-request-detail-modal-view > div.header > i {
+  cursor: pointer;
+}
+
+/* ==========================================================================
    LADDER INDEX VIEW
    ========================================================================== */
 

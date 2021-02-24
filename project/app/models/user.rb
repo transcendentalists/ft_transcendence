@@ -93,6 +93,7 @@ class User < ApplicationRecord
     end
 
     stat[:guild] = self.in_guild.to_simple
+    stat[:guild][:membership_id] = self.guild_membership.id
     stat[:guild][:position] = self.guild_membership.position
     stat
   end

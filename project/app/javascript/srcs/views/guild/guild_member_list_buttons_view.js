@@ -32,8 +32,6 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
     });
   },
 
-  // 관리자한테 길드탈퇴버튼 보임
-
   dismissOfficer: function () {
     const dismiss_officer_url = `guilds/${this.guild_id}/memberships/${this.membership_id}`;
     Helper.fetch(dismiss_officer_url, {
@@ -63,31 +61,33 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
     });
   },
 
-  render: function (data) {
-    this.guild_id = data.guild.id;
-    this.membership_id = data.guild.membership_id;
+  render: function (member) {
+    const current_user_guild_id = App.current_user.get("guild")?.id;
+    const current_user_guild_position = App.current_user.get("guild")?.position;
+    this.guild_id = member.guild.id;
+    this.membership_id = member.guild.membership_id;
 
-    if (data.guild_detail.current_user_guild_id == data.guild_detail.id) {
-      if (data.id != App.current_user.id) {
+    if (current_user_guild_id == member.guild.id) {
+      if (member.id != App.current_user.id) {
         if (
-          data.guild_detail.current_user_guild_position == "master" &&
-          data.guild.position == "member"
+          current_user_guild_position == "master" &&
+          member.guild.position == "member"
         ) {
           this.assign_button = true;
         }
         if (
-          data.guild_detail.current_user_guild_position == "master" &&
-          data.guild.position == "officer"
+          current_user_guild_position == "master" &&
+          member.guild.position == "officer"
         ) {
           this.dismiss_button = true;
         }
-        if (data.guild_detail.current_user_guild_position != "member") {
+        if (current_user_guild_position != "member") {
           this.ban_button = true;
           if (
-            (data.guild_detail.current_user_guild_position == "officer" &&
-              data.guild.position == "master") ||
-            (data.guild_detail.current_user_guild_position == "master" &&
-              data.guild.position == "master")
+            (current_user_guild_position == "officer" &&
+              member.guild.position == "master") ||
+            (current_user_guild_position == "master" &&
+              member.guild.position == "master")
           )
             this.ban_button = false;
         }

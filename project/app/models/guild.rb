@@ -27,9 +27,7 @@ class Guild < ApplicationRecord
   end
 
   def cancel_rest_of_war_request
-    self.requests.where(status: "pending").each do |request|
-      request.update(status: "canceled")
-    end
+    self.requests.where(status: "pending").update_all(status: "canceled")
   end
 
   def accept(war_request)

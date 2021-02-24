@@ -1,11 +1,6 @@
 import { App } from "srcs/internal";
 
 export let Helper = {
-  current_user_header: function (headers = {}) {
-    headers.current_user = App.current_user.id;
-    return headers;
-  },
-
   fetch: async function (url, hash_args = {}) {
     let params = {
       method: hash_args.hasOwnProperty("method") ? hash_args["method"] : "GET",
@@ -104,11 +99,15 @@ export let Helper = {
   info: function (data) {
     if (data == undefined || data == null) return this.callModalError();
 
-    if (!data.hasOwnProperty("subject"))
-      data.subject = "알려줄 내용의 제목을 설정해주세요";
-    if (!data.hasOwnProperty("description"))
-      data.description = "알려줄 내용을 설명해주세요.";
-
+    if (data.hasOwnProperty("error")) {
+      data.subject = data.error.type;
+      data.description = data.error.msg;
+    } else {
+      if (!data.hasOwnProperty("subject"))
+        data.subject = "알려줄 내용의 제목을 설정해주세요";
+      if (!data.hasOwnProperty("description"))
+        data.description = "알려줄 내용을 설명해주세요.";
+    }
     App.appView.info_modal_view.render(data);
   },
 

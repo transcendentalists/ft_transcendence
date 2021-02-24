@@ -17,18 +17,20 @@ export let UserProfileCardView = Backbone.View.extend({
   refresh: function (guild) {
     this.user.guild = guild;
     this.guild_member_list_buttons_view.close();
-    this.render(this.user);
+    this.render(this.user, true);
   },
 
-  render: function (data) {
-    this.user = data;
+  renderGuildMemberButtons: function () {
+    this.guild_member_list_buttons_view = new App.View.GuildMemberListButtonsView({ parent: this });
+    this.guild_member_list_buttons_view
+      .setElement(this.$("#guild-member-list-buttons-view"))
+      .render(this.user);
+  },
+  
+  render: function (user, guild_detail = false) {
+    this.user = user;
     this.$el.html(this.template(this.user));
-    if (this.user.guild_detail) {
-      this.guild_member_list_buttons_view = new App.View.GuildMemberListButtonsView({ parent: this });
-      this.guild_member_list_buttons_view
-        .setElement(this.$("#guild-member-list-buttons-view"))
-        .render(this.user);
-    }
+    if (guild_detail) this.renderGuildMemberButtons();
     return this;
   },
 

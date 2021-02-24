@@ -22,7 +22,7 @@ export let WarRequestDetailModalView = Backbone.View.extend({
     }/war_requests/${this.war_request.id}`;
     Helper.fetch(accept_war_request_url, {
       method: "PATCH",
-      body: { status: "progress" },
+      body: { status: "accepted" },
       success_callback: () => {
         App.router.navigate("#/war");
         this.close();

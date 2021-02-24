@@ -15,7 +15,7 @@ export let WarRequestCardListView = Backbone.View.extend({
 
   render: function (war_requests) {
     if (!war_requests.length)
-      this.$el.html("<span>요청받은 전쟁이 없습니다.</span>");
+      this.$el.html("<span>제안받은 전쟁이 없습니다.</span>");
     war_requests.forEach(this.addOne, this);
     return this;
   },

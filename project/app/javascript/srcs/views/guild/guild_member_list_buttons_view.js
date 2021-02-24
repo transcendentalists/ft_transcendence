@@ -73,21 +73,19 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
   },
 
   render: function (data) {
-    // data: guild_detail
-    // console.log(data);
     this.guild_id = data.guild.id;
     this.membership_id = data.guild.membership_id;
 
     if (data.guild_detail.current_user_guild_id == data.guild_detail.id) {
       if (data.id != App.current_user.id) {
         if (
-          data.guild_detail.current_user_guild_position == "owner" &&
+          data.guild_detail.current_user_guild_position == "master" &&
           data.guild.position == "member"
         ) {
           this.assign_button = true;
         }
         if (
-          data.guild_detail.current_user_guild_position == "owner" &&
+          data.guild_detail.current_user_guild_position == "master" &&
           data.guild.position == "officer"
         ) {
           this.dismiss_button = true;
@@ -96,9 +94,9 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
           this.ban_button = true;
           if (
             (data.guild_detail.current_user_guild_position == "officer" &&
-              data.guild.position == "owner") ||
-            (data.guild_detail.current_user_guild_position == "owner" &&
-              data.guild.position == "owner")
+              data.guild.position == "master") ||
+            (data.guild_detail.current_user_guild_position == "master" &&
+              data.guild.position == "master")
           )
             this.ban_button = false;
         }
@@ -115,10 +113,10 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
     return this;
   },
 
-  isOwner: function (data) {
+  isMaster: function (data) {
     return (
       this.isMember(data) &&
-      data.guild_detail.current_user_guild_position == "owner"
+      data.guild_detail.current_user_guild_position == "master"
     );
   },
 

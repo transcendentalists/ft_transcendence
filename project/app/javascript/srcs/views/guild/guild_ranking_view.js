@@ -10,6 +10,7 @@ export let GuildRankingView = Backbone.View.extend({
   },
 
   addOne: function (guild) {
+    guild.is_detail_view = false;
     let child_view = new App.View.GuildProfileCardView(guild);
     this.child_views.push(child_view);
     this.$("#guild-profile-card-list").append(child_view.render().$el);

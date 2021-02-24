@@ -14,6 +14,10 @@ class Api::GuildsController < ApplicationController
     return render_error("길드 검색 에러", "요청하신 길드의 정보가 없습니다.", 404) if guild.nil?
     if params[:for] == "profile"
       render :json => { guild: guild.profile }
+    elsif params[:for] == "guild_detail"
+      render :json => { guild_members: Guild.for_guild_detail(params[:id], params[:page]) }
+    else
+      render plain: "This is " + guild.id.to_s + " 's guilds detail view"
     end
   end
 

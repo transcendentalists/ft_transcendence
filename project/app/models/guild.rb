@@ -3,11 +3,15 @@ class Guild < ApplicationRecord
   has_many :memberships, class_name: 'GuildMembership'
   has_many :war_statuses
   has_many :requests, through: :war_statuses
-  has_many :wars, through: :requests
-
   has_many :users, through: :memberships, source: :user
   has_many :invitations, class_name: 'GuildInvitation'
   scope :for_guild_index, -> (page) { order(point: :desc).page(page).map.with_index { |guild, index| guild.profile(index, page) } }
+
+  scope :for_guild_detail, -> (guild_id, page) {
+    find_by_id(guild_id).users.order(point: :desc, name: :asc).page(page).map { |user| 
+      user.profile
+    }
+  }
 
   def profile(index = nil, page = nil)
     guild = self.to_simple

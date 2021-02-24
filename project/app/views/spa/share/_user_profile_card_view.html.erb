@@ -1,7 +1,6 @@
 <script type="text/template" id="user-profile-card-template">
   <img class="ui circular small image" src="<%%= image_url %>">
   <div class="content flex-container column-direction">
-
     <div class="row flex-container baseline">
       <div class="name"><%%= name %></div>
       <div class="rank"> <strong><%%= title %></strong> | <%%= rank %>위</div>
@@ -15,6 +14,6 @@
     <div class="row profile-trophy">
       토너먼트<i class="trophy icon yellow"></i> <%%= achievement.gold %>개<i class="trophy icon grey"></i> <%%= achievement.silver %> 개   <i class="trophy icon brown"></i> <%%= achievement.bronze %>개
     </div>
-
   </div>
+  <div id="guild-member-list-buttons-view" class="content flex-container column-direction"></div>
 </script>

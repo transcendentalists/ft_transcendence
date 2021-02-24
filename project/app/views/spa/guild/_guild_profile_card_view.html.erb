@@ -20,22 +20,6 @@
       <%%= '길드 포인트: ' + guild.point %>
     </div>
   </div>
-  <div class="guild-profile buttons content flex-container column-direction">
-    <button class="guild-show-button ui button mini teal">
-      길드보기
-    </button>
-    <%% if (current_user_guild_id == guild.id && current_user_guild_position != "master") { %>
-    <button class="guild-leave-button ui button mini red">
-      길드탈퇴
-    </button>
-    <%% } if (current_user_guild_id != guild.id && current_user_guild_position == "master") { %>
-    <button class="war-request-create-button ui button mini red">
-      전쟁제안
-    </button>
-    <%% } if (!current_user_guild_id) { %>
-    <button class="guild-join-button ui button mini purple">
-      길드가입
-    </button>
-    <%% } %>
-  </div>
+
+  <div id="guild-profile-card-buttons-view" class="guild-profile buttons content flex-container column-direction">
 </script>

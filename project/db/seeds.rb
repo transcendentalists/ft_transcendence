@@ -84,21 +84,31 @@ Rule.create([
 ])
 
 Guild.create([
-  {owner_id: 1, name: "gun42seoul", anagram: "@GUNA", image_url: "assets/gun.png"},
-  {owner_id: 2, name: "gon42seoul", anagram: "@GONA", image_url: "assets/gon.png"},
-  {owner_id: 3, name: "gam42seoul", anagram: "@GAMA", image_url: "assets/gam.png"},
-  {owner_id: 4, name: "lee42seoul", anagram: "@LEEA", image_url: "assets/lee.png"},
-  {owner_id: 5, name: "142seoul", anagram: "@ABCD", image_url: "assets/lee.png"},
-  {owner_id: 6, name: "2", anagram: "@TWOM", image_url: "assets/lee.png"},
-  {owner_id: 7, name: "abcd", anagram: "@THEE", image_url: "assets/lee.png"},
-  {owner_id: 8, name: "12eoul", anagram: "@EEEE", image_url: "assets/lee.png"},
-  {owner_id: 9, name: "seoul", anagram: "@SOUL", image_url: "assets/lee.png"},
-  {owner_id: 10, name: "123123", anagram: "@HANE", image_url: "assets/lee.png"},
-  {owner_id: 11, name: "42seoul", anagram: "@HANA", image_url: "assets/lee.png"},
+  {owner_id: 1, name: "gun of 42seoul", anagram: "GUN", image_url: "assets/gun.png"},
+  {owner_id: 2, name: "gon of 42seoul", anagram: "GON", image_url: "assets/gon.png"},
+  {owner_id: 3, name: "gam of 42seoul", anagram: "GAM", image_url: "assets/gam.png"},
+  {owner_id: 4, name: "lee of 42seoul", anagram: "LEE", image_url: "assets/lee.png"},
+  {owner_id: 5, name: "1 of 42seoul", anagram: "1o4", image_url: "assets/lee.png"},
+  {owner_id: 6, name: "2", anagram: "TWO", image_url: "assets/lee.png"},
+  {owner_id: 7, name: "333333ul", anagram: "thee", image_url: "assets/lee.png"},
+  {owner_id: 8, name: "121l2112ee of 42seoul", anagram: "121EE", image_url: "assets/lee.png"},
+  {owner_id: 9, name: "seoul", anagram: "SEOUL", image_url: "assets/lee.png"},
+  {owner_id: 10, name: "4444444444444", anagram: "@4", image_url: "assets/lee.png"},
+  {owner_id: 11, name: "5 of 42seoul", anagram: "@5", image_url: "assets/lee.png"},
+  # 긴 길드이름
+  {owner_id: 12, name: "6 of 42sdsadaaaiodaseoul", anagram: "@6aa", image_url: "assets/lee.png"},
+  # 5자 이상 anagram
+  {owner_id: 13, name: "7 of 42seoul", anagram: "@61231231a", image_url: "assets/lee.png"},
+  # owner_id 중복
+  {owner_id: 1, name: "7 of 42seoul", anagram: "@7", image_url: "assets/lee.png"},
+  # anagram 중복
+  {owner_id: 13, name: "GUN", anagram: "@7", image_url: "assets/lee.png"},
+  # name 중복
+  {owner_id: 17, name: "gun of 42seoul", anagram: "@7", image_url: "assets/lee.png"},
 ])
 
 WarRequest.create([
-  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,3,21,14), end_date: DateTime.new(2021,3,24,16), war_time: Time.new(1,1,1,10), max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
+  {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,3,21,14), end_date: DateTime.new(2021,3,24,16), war_time: Time.new(1,1,1,10), max_no_reply_count: 10, include_ladder: true, include_tournament: true, target_match_score: 3, status: "progress"},
   {rule_id: 2, bet_point: 20, start_date: DateTime.new(2021,3,22,15), end_date: DateTime.new(2021,3,24,17), war_time: Time.new(1,1,1,1), max_no_reply_count: 5, include_ladder: false, include_tournament: true, target_match_score: 5, status: "pending"},
   {rule_id: 3, bet_point: 30, start_date: DateTime.new(2021,3,23,16), end_date: DateTime.new(2021,3,24,18), war_time: Time.new(1,1,1,12), max_no_reply_count: 1, include_ladder: true, include_tournament: false, target_match_score: 7, status: "pending"},
   {rule_id: 4, bet_point: 40, start_date: DateTime.new(2021,3,24,17), end_date: DateTime.new(2021,3,24,19), war_time: Time.new(1,1,1,19), max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
@@ -113,9 +123,9 @@ WarRequest.create([
   {rule_id: 6, bet_point: 10, start_date: DateTime.new(2021,3,16,20), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,11), max_no_reply_count: 12, include_ladder: true, include_tournament: false, target_match_score: 3, status: "canceled"},
   {rule_id: 7, bet_point: 20, start_date: DateTime.new(2021,3,16,21), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,14), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 5, status: "canceled"},
   {rule_id: 1, bet_point: 10, start_date: DateTime.new(2021,4,14,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,11), max_no_reply_count: 12, include_ladder: true, include_tournament: false, target_match_score: 3, status: "canceled"},
-  {rule_id: 2, bet_point: 20, start_date: DateTime.new(2021,4,15,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,14), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
-  {rule_id: 3, bet_point: 10, start_date: DateTime.new(2021,4,16,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,11), max_no_reply_count: 12, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
-  {rule_id: 4, bet_point: 20, start_date: DateTime.new(2021,4,17,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,14), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
+  {rule_id: 2, bet_point: 20, start_date: DateTime.new(2021,4,15,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,14), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 5, status: "completed"},
+  {rule_id: 3, bet_point: 10, start_date: DateTime.new(2021,4,16,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,11), max_no_reply_count: 12, include_ladder: true, include_tournament: false, target_match_score: 3, status: "completed"},
+  {rule_id: 4, bet_point: 20, start_date: DateTime.new(2021,4,17,21), end_date: DateTime.new(2021,4,26,23), war_time: Time.new(1,1,1,14), max_no_reply_count: 12, include_ladder: false, include_tournament: true, target_match_score: 5, status: "completed"},
 
   # 예외처리 확인용
   #  start_date, end_date가 지났거나 end_date가 start_date보다 빠를 때
@@ -135,10 +145,12 @@ WarRequest.create([
 ])
 
 War.create([
-  {war_request_id: 1, status: "progress"},
-  {war_request_id: 16, status: "completed"},
-  {war_request_id: 17, status: "completed"},
-  {war_request_id: 18, status: "pending"},
+  {war_request_id: 1},
+  {war_request_id: 2},
+  {war_request_id: 3},
+  {war_request_id: 4},
+  {war_request_id: 5},
+  {war_request_id: 6},
 ])
 
 Match.create([
@@ -359,8 +371,13 @@ GuildInvitation.create([
 ])
 
 Tournament.create([
-  {rule_id: 1, title: "tototototo", start_date: DateTime.new(2021,1,14,8), tournament_time: Time.new},
-  {rule_id: 1, title: "xoxoxoxoxo", start_date: DateTime.new(2021,1,14,8), tournament_time: Time.new},
+  {rule_id: 1, title: "tournament_1", start_date: DateTime.new(2021,4,20), tournament_time: Time.new(2000, 1, 1, 14, 00, 0)},
+  {rule_id: 1, title: "tournament_2", start_date: DateTime.new(2021,5,30), tournament_time: Time.new(2000, 1, 1, 14, 00, 0)},
+  {rule_id: 1, title: "tournament_3", start_date: DateTime.new(2021,2,23), tournament_time: Time.new(2000, 1, 1, 1, 30, 0)},
+  {rule_id: 1, title: "tournament_4", start_date: DateTime.new(2021,2,24), tournament_time: Time.new(2000, 1, 1, 20, 00, 0)},
+  {rule_id: 1, title: "5", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 22, 30, 0)},
+  {rule_id: 1, title: "tournament_6_with_long_long_long_long_long_long_long_long_title", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 18, 30, 0)},
+  {rule_id: 1, title: "tournament_7", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 18, 30, 0), status: "completed"},
 ])
 
 TournamentMembership.create([
@@ -368,50 +385,74 @@ TournamentMembership.create([
   {user_id: 2, tournament_id: 1},
   {user_id: 3, tournament_id: 1},
   {user_id: 4, tournament_id: 1},
+  {user_id: 5, tournament_id: 1},
+  {user_id: 6, tournament_id: 1},
+  {user_id: 7, tournament_id: 1},
+  {user_id: 8, tournament_id: 1},
+
+  {user_id: 1, tournament_id: 2},
+  {user_id: 2, tournament_id: 2},
+  {user_id: 3, tournament_id: 2},
+  {user_id: 4, tournament_id: 2},
+  {user_id: 5, tournament_id: 2},
+  {user_id: 6, tournament_id: 2},
+  {user_id: 7, tournament_id: 2},
+
+  {user_id: 1, tournament_id: 3},
+  {user_id: 1, tournament_id: 4},
+  {user_id: 1, tournament_id: 5},
+  {user_id: 1, tournament_id: 6},
 ])
 
 WarStatus.create([
-  # war progress 상태
-  {guild_id: 8, war_request_id: 1, position: "challenger"},
-  {guild_id: 9, war_request_id: 1, position: "enemy"},
-  # request pending 상태
-  # 1번이 워 리퀘스트(아무거나)를 수락하면 3 4 번 길드의 리퀘스트에 1번길드가 보낸 요청(9, 10번 리퀘)이 없어야함.
-  # 1번이 워 리퀘스트를 수락하면 나머지 리퀘스트들이 canceled로 처리된다.
+  {guild_id: 1, war_request_id: 1, position: "challenger"},
+  {guild_id: 2, war_request_id: 1, position: "enemy"},
   {guild_id: 3, war_request_id: 2, position: "challenger"},
-  {guild_id: 1, war_request_id: 2, position: "enemy"},
-  {guild_id: 4, war_request_id: 3, position: "challenger"},
-  {guild_id: 1, war_request_id: 3, position: "enemy"},
-  {guild_id: 5, war_request_id: 4, position: "challenger"},
-  {guild_id: 1, war_request_id: 4, position: "enemy"},
-  {guild_id: 6, war_request_id: 5, position: "challenger"},
+  {guild_id: 4, war_request_id: 2, position: "enemy"},
+  {guild_id: 1, war_request_id: 3, position: "challenger"},
+  {guild_id: 4, war_request_id: 3, position: "enemy"},
+  {guild_id: 6, war_request_id: 4, position: "challenger"},
+  {guild_id: 4, war_request_id: 4, position: "enemy"},
+  {guild_id: 2, war_request_id: 5, position: "challenger"},
   {guild_id: 1, war_request_id: 5, position: "enemy"},
   {guild_id: 3, war_request_id: 6, position: "challenger"},
-  {guild_id: 2, war_request_id: 6, position: "enemy"},
+  {guild_id: 1, war_request_id: 6, position: "enemy"},
   {guild_id: 4, war_request_id: 7, position: "challenger"},
-  {guild_id: 2, war_request_id: 7, position: "enemy"},
-  {guild_id: 5, war_request_id: 8, position: "challenger"},
+  {guild_id: 1, war_request_id: 7, position: "enemy"},
+  {guild_id: 3, war_request_id: 8, position: "challenger"},
   {guild_id: 2, war_request_id: 8, position: "enemy"},
-  {guild_id: 1, war_request_id: 9, position: "challenger"},
-  {guild_id: 3, war_request_id: 9, position: "enemy"},
-  {guild_id: 1, war_request_id: 10, position: "challenger"},
+  {guild_id: 4, war_request_id: 9, position: "challenger"},
+  {guild_id: 2, war_request_id: 9, position: "enemy"},
+  {guild_id: 3, war_request_id: 10, position: "challenger"},
   {guild_id: 4, war_request_id: 10, position: "enemy"},
-  {guild_id: 2, war_request_id: 11, position: "challenger"},
-  {guild_id: 5, war_request_id: 11, position: "enemy"},
-  {guild_id: 2, war_request_id: 12, position: "challenger"},
-  {guild_id: 6, war_request_id: 12, position: "enemy"},
-  # request canceled 상태
-  {guild_id: 1, war_request_id: 13, position: "challenger"},
-  {guild_id: 5, war_request_id: 13, position: "enemy"},
-  {guild_id: 1, war_request_id: 14, position: "challenger"},
-  {guild_id: 6, war_request_id: 14, position: "enemy"},
-  {guild_id: 3, war_request_id: 15, position: "challenger"},
+  {guild_id: 4, war_request_id: 11, position: "challenger"},
+  {guild_id: 3, war_request_id: 11, position: "enemy"},
+  {guild_id: 1, war_request_id: 12, position: "challenger"},
+  {guild_id: 3, war_request_id: 12, position: "enemy"},
+  {guild_id: 2, war_request_id: 13, position: "challenger"},
+  {guild_id: 1, war_request_id: 13, position: "enemy"},
+  {guild_id: 3, war_request_id: 14, position: "challenger"},
+  {guild_id: 4, war_request_id: 14, position: "enemy"},
+  {guild_id: 5, war_request_id: 15, position: "challenger"},
   {guild_id: 1, war_request_id: 15, position: "enemy"},
-  # war completed 상태
-  {guild_id: 3, war_request_id: 16, position: "challenger"},
+  {guild_id: 2, war_request_id: 16, position: "challenger"},
   {guild_id: 4, war_request_id: 16, position: "enemy"},
-  {guild_id: 5, war_request_id: 17, position: "challenger"},
-  {guild_id: 1, war_request_id: 17, position: "enemy"},
-  # war pending 상태
-  {guild_id: 10, war_request_id: 18, position: "challenger"},
-  {guild_id: 11, war_request_id: 18, position: "enemy"},
+  {guild_id: 2, war_request_id: 17, position: "challenger"},
+  {guild_id: 3, war_request_id: 17, position: "enemy"},
+  {guild_id: 1, war_request_id: 18, position: "challenger"},
+  {guild_id: 3, war_request_id: 18, position: "enemy"},
+  {guild_id: 4, war_request_id: 19, position: "challenger"},
+  {guild_id: 1, war_request_id: 19, position: "enemy"},
+  {guild_id: 4, war_request_id: 20, position: "challenger"},
+  {guild_id: 1, war_request_id: 20, position: "enemy"},
+  {guild_id: 3, war_request_id: 21, position: "challenger"},
+  {guild_id: 1, war_request_id: 21, position: "enemy"},
+  {guild_id: 4, war_request_id: 22, position: "challenger"},
+  {guild_id: 1, war_request_id: 22, position: "enemy"},
+  {guild_id: 5, war_request_id: 23, position: "challenger"},
+  {guild_id: 1, war_request_id: 23, position: "enemy"},
+  {guild_id: 6, war_request_id: 24, position: "challenger"},
+  {guild_id: 1, war_request_id: 24, position: "enemy"},
+  {guild_id: 7, war_request_id: 25, position: "challenger"},
+  {guild_id: 1, war_request_id: 25, position: "enemy"},
 ])

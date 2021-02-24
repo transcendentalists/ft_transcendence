@@ -33,6 +33,14 @@ class WarRequest < ApplicationRecord
     end
   end
 
+  def enemy
+    self.war_statuses.find_by_position("challenger")&.guild
+  end
+
+  def challenger
+    self.war_statuses.find_by_position("enemy")&.guild
+  end
+
   private
   def start_date_after_now
     if start_date.past?

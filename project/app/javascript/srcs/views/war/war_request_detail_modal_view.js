@@ -61,6 +61,7 @@ export let WarRequestDetailModalView = Backbone.View.extend({
 
   close: function () {
     $("#war-request-detail-modal-view").modal("hide");
+    this.parent.war_request_detail_modal_view = null;
     this.remove();
   },
 });

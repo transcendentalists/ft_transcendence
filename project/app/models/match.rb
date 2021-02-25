@@ -30,5 +30,9 @@ class Match < ApplicationRecord
     self.update(status: "canceled")
     self.scorecards.each { |card| card.update(result: "canceled") }
   end
+
+  # def enemy_of(current_user)
+  #   self.users.where(id: current_user.id)
+  # end
 end
 

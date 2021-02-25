@@ -130,7 +130,7 @@ class User < ApplicationRecord
       anagram: guild_membership&.guild&.anagram
     }
   end
-  
+
   private
 
 

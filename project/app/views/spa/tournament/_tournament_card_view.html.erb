@@ -1,3 +1,27 @@
 <script type="text/template" id="tournament-card-view-template">
-  <div>tournament card</div>
+  <div class="flex-container information-container">
+    <div class="information-element">
+      <i class="user icon"></i><span><%%= registered_user_count %>/<%%= max_user_count%>명</span>
+    </div>
+    <div class="information-element">
+      <i class="gift icon"></i><span><%%= incentive.gift || (incentive.title + '칭호') %></span>
+    </div>
+    <div class="information-element">
+      <i class="flag icon"></i><span><%%= target_match_score%>점</span>
+    </div>
+    <div class="information-element">
+      <i class="map icon"></i><span><%%= rule.name %></span>
+    </div>
+  </div>
+  <div class="flex-container content">
+    <div class="title"><%%= title %></div>
+    <div class="start-time">
+      <%%= start_date.substr(5, 2) + "월 " + start_date.substr(8, 2) + "일 " + tournament_time.substr(12, 2) + ":00 시작" %>
+    </div>
+  </div>
+  <%% if (registered_user_count < max_user_count) { %>
+    <div data-tournament-id="<%%= id %>" class="ui fluid button">참여하기</div>
+  <%% } else { %>
+    <div class="ui fluid disabled button">정원초과</div>
+  <%% } %>
 </script>

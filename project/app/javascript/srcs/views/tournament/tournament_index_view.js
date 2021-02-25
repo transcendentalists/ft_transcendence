@@ -4,6 +4,7 @@ import { Helper } from "srcs/helper";
 export let TournamentIndexView = Backbone.View.extend({
   template: _.template($("#tournament-index-view-template").html()),
   id: "tournament-index-view",
+  className: "flex-container column-direction center-aligned top-margin",
 
   initialize: function () {
     this.my_tournaments = null;

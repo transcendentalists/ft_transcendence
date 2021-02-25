@@ -163,8 +163,13 @@ Match.create([
   {rule_id: 5, status: "completed", eventable_type: "war", eventable_id: 3, match_type: "war"},
   {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 4, match_type: "war"},
   {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 5, match_type: "war"},
-  {rule_id: 1, status: "completed", eventable_type: "tournament", eventable_id: 1, match_type: "tournament"},
-  {rule_id: 1, status: "completed", eventable_type: "tournament", eventable_id: 2, match_type: "tournament"},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament"},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament"},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament"},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament"},
+  {rule_id: 1, status: "progress", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament"},
+  {rule_id: 1, status: "progress", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament"},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament"},
 ])
 
 Scorecard.create([

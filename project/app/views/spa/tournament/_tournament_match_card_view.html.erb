@@ -1,0 +1,20 @@
+<script type="text/template" id="tournament-match-card-view-template">
+  <div class="title">
+    <%%= title + ' ' + (tournament_round == 2 ? "결승" : (tournament_round + "강")) %>
+  </div>
+  <div class="enemy flex-container center-aligned">
+    <span class="vs-icon">VS</span>
+    <img src="<%%= enemy.image_url %>" alt="" class="ui mini circular image">
+    <div class="name"><%%= enemy.name %></div>
+  </div>
+  <div class="match-start-time">
+    <%%= start_datetime.substr(5, 2) + "월 " + start_datetime.substr(8, 2) + "일 " + start_datetime.substr(12, 2) + ":00 시작" %>
+  </div>
+
+  <%% if (can_play_at_now) { %>
+    <div data-match-id="<%%= id %>" class="ui fluid button">참여하기</div>
+  <%% } else { %>
+    <div class="ui fluid disabled button">경기대기</div>
+  <%% } %>
+
+</script>

@@ -5,7 +5,7 @@ class GuildMembership < ApplicationRecord
   validates :position, inclusion: { in: ["master", "officer", "member"] }
 
   def profile
-    guild = self.guild.to_simple
+    guild = self.guild&.to_simple
     guild['membership_id'] = self.id
     guild['position'] = self.position
     guild

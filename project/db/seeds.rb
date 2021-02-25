@@ -318,12 +318,7 @@ GuildMembership.create([
   {user_id: 8, guild_id: 8, position: "master"},
   {user_id: 9, guild_id: 9, position: "master"},
   {user_id: 10, guild_id: 10, position: "master"},
-  {user_id: 11, guild_id: 10, position: "officer"},
-
-  {user_id: 12, guild_id: 1, position: "officer"},
-  {user_id: 13, guild_id: 2, position: "officer"},
-  {user_id: 14, guild_id: 3, position: "officer"},
-  {user_id: 15, guild_id: 4, position: "officer"},
+  {user_id: 11, guild_id: 11, position: "master"},
   {user_id: 16, guild_id: 5, position: "officer"},
   {user_id: 17, guild_id: 6, position: "officer"},
   {user_id: 18, guild_id: 7, position: "officer"},

@@ -372,9 +372,9 @@ GuildInvitation.create([
 
 Tournament.create([
   {rule_id: 1, title: "tournament_1", start_date: DateTime.new(2021,4,20), tournament_time: Time.new(2000, 1, 1, 14, 00, 0)},
-  {rule_id: 1, title: "tournament_2", start_date: DateTime.new(2021,5,30), tournament_time: Time.new(2000, 1, 1, 14, 00, 0)},
-  {rule_id: 1, title: "tournament_3", start_date: DateTime.new(2021,2,23), tournament_time: Time.new(2000, 1, 1, 1, 30, 0)},
-  {rule_id: 1, title: "tournament_4", start_date: DateTime.new(2021,2,24), tournament_time: Time.new(2000, 1, 1, 20, 00, 0)},
+  {rule_id: 1, title: "tournament_2", start_date: DateTime.new(2021,5,30), tournament_time: Time.new(2000, 1, 1, 14, 00, 0), target_match_score: 5},
+  {rule_id: 1, title: "tournament_3", start_date: DateTime.new(2021,2,23), tournament_time: Time.new(2000, 1, 1, 1, 30, 0), target_match_score: 1},
+  {rule_id: 1, title: "tournament_4", start_date: DateTime.new(2021,2,24), tournament_time: Time.new(2000, 1, 1, 20, 00, 0), target_match_score: 10},
   {rule_id: 1, title: "5", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 22, 30, 0)},
   {rule_id: 1, title: "tournament_6_with_long_long_long_long_long_long_long_long_title", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 18, 30, 0)},
   {rule_id: 1, title: "tournament_7", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 18, 30, 0), status: "completed"},

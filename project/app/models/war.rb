@@ -4,8 +4,9 @@ class War < ApplicationRecord
   has_many :guilds, through: :request
   has_many :war_statuses, through: :request
   validates :status, inclusion: { in: ["pending", "progress", "completed"] }
-  scope :for_war_history, -> (guild_id) do
-    Guild.find_by_id(guild_id).wars.where(status: "completed").order(updated_at: :desc).limit(5).map { |war|
+
+  def self.for_war_history(guild_id)
+    self.where(status: "completed").order(updated_at: :desc).limit(5).map { |war|
       enemy_guild = war.enemy_guild(guild_id)
       current_guild_point = war.current_guild_point(guild_id).to_i
       {

@@ -403,8 +403,8 @@ TournamentMembership.create([
   {user_id: 6, tournament_id: 2},
   {user_id: 7, tournament_id: 2},
 
-  {user_id: 1, tournament_id: 3},
-  {user_id: 1, tournament_id: 4},
+  {user_id: 1, tournament_id: 3, status: "completed"},
+  {user_id: 1, tournament_id: 4, status: "completed"},
   {user_id: 1, tournament_id: 5},
   {user_id: 1, tournament_id: 6},
 ])

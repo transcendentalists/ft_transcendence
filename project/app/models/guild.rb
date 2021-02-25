@@ -3,12 +3,13 @@ class Guild < ApplicationRecord
   has_many :memberships, class_name: 'GuildMembership'
   has_many :war_statuses
   has_many :requests, through: :war_statuses
+  has_many :wars, through: :requests
   has_many :users, through: :memberships, source: :user
   has_many :invitations, class_name: 'GuildInvitation'
   scope :for_guild_index, -> (page) { order(point: :desc).page(page).map.with_index { |guild, index| guild.profile(index, page) } }
 
   def for_member_ranking(page)
-    self.users.order(point: :desc, name: :asc).page(page).map { |user| 
+    self.users.order(point: :desc, name: :asc).page(page).map { |user|
       user.profile
     }
   end
@@ -40,5 +41,5 @@ class Guild < ApplicationRecord
     war_request.challenger.cancel_rest_of_war_request
     War.create(war_request_id: war_request.id, status: "pending")
   end
-  
+
 end

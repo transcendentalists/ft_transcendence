@@ -1,15 +1,23 @@
 <script type="text/template" id="war-history-view-template">
   <div class="ui fluid buttons">
-    <div class="ui left <%%= war_result == "승" ? 'positive' : '' %> button">
-      <%%= my_guild_point %>
+    <%% if (war_result == "승") { %>
+      <div class="ui left positive button">
+    <%% } else { %>
+      <div class="ui left button">
+    <%% } %>
+      <%%= current_guild_point %>
     </div>
     <div class="or" data-text=<%%= war_result %>></div>
-    <div class="ui right <%%= war_result == "승" ? '' : 'red' %> button">
-      <%%= enemy_guild_point %>
+    <%% if (war_result == "패") { %>
+      <div class="ui right red button">
+    <%% } else { %>
+      <div class="ui right button">
+    <%% } %>
+      <%%= enemy.point %>
     </div>
   </div>
   <div class="enemy flex-container center-aligned">
-    <img class="ui mini circular image" src="<%%= enemy_guild_profile.image_url %>">
-    <div><%%= enemy_guild_profile.anagram %></div>
+    <img class="ui mini circular image" src="<%%= enemy.profile.image_url %>">
+    <div><%%= enemy.profile.anagram %></div>
   </div>
 </script>

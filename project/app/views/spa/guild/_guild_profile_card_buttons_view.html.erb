@@ -1,19 +1,19 @@
 <script type="text/template" id="guild-profile-card-buttons-view-template">
 
-  <%% if (!guild.is_detail_view) { %>
-  <button id="guild-show-button" class="ui button mini teal">
+  <%% if (!is_detail_view) { %>
+  <button class="guild-show-button ui button mini teal">
     길드보기
   </button>
   <%% } if (current_user_guild_id == guild.id && current_user_guild_position != "master") { %>
-  <button id="guild-leave-button" class="ui button mini red">
+  <button class="guild-leave-button ui button mini red">
     길드탈퇴
   </button>
   <%% } if (current_user_guild_id != guild.id && current_user_guild_position == "master") { %>
-  <button id="war-request-create-button" class="ui button mini red">
+  <button class="war-request-create-button ui button mini red">
     전쟁제안
   </button>
   <%% } if (!current_user_guild_id) { %>
-  <button id="guild-join-button" class="ui button mini purple">
+  <button class="guild-join-button ui button mini purple">
     길드가입
   </button>
   <%% } %>

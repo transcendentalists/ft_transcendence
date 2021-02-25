@@ -4,10 +4,10 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
   template: _.template($("#guild-profile-card-buttons-view-template").html()),
 
   events: {
-    "click #guild-show-button": "showGuild",
-    "click #guild-leave-button": "leaveGuild",
-    "click #guild-join-button": "joinGuild",
-    "click #war-request-create-button": "createWarRequest",
+    "click .guild-show-button": "showGuild",
+    "click .guild-leave-button": "leaveGuild",
+    "click .guild-join-button": "joinGuild",
+    "click .war-request-create-button": "createWarRequest",
   },
 
   initialize: function (guild) {
@@ -29,7 +29,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
         App.router.navigate("#/guilds/page/1", true);
       },
       fail_callback: (data) => {
-        Helper.info({ error: data.error })
+        Helper.info({ error: data.error });
       },
     });
   },
@@ -49,7 +49,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
         App.router.navigate("#/guilds/page/1", true);
       },
       fail_callback: (data) => {
-        Helper.info({ error: data.error })
+        Helper.info({ error: data.error });
       },
     });
   },
@@ -58,7 +58,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
     App.router.navigate(`#/guilds/war_request/new?enemy_id=${this.guild.id}`);
   },
 
-  render: function () {
+  render: function (is_detail_view) {
     const current_user_guild_id = App.current_user.get("guild")?.id;
     const current_user_guild_position = App.current_user.get("guild")?.position;
     this.$el.html(
@@ -66,6 +66,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
         guild: this.guild,
         current_user_guild_id: current_user_guild_id,
         current_user_guild_position: current_user_guild_position,
+        is_detail_view: is_detail_view,
       })
     );
     return this;

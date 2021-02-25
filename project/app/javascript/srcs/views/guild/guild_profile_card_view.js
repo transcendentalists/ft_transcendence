@@ -4,9 +4,10 @@ export let GuildProfileCardView = Backbone.View.extend({
   template: _.template($("#guild-profile-card-template").html()),
   className: "ui segment guild-profile-card flex-container center-aligned",
 
-  initialize: function (guild) {
+  initialize: function (guild, is_detail_view = false) {
     this.guild = guild;
     this.buttons_view = null;
+    this.is_detail_view = is_detail_view;
   },
 
   render: function () {
@@ -22,7 +23,7 @@ export let GuildProfileCardView = Backbone.View.extend({
     this.buttons_view = new App.View.GuildProfileCardButtonsView(this.guild);
     this.buttons_view
       .setElement(this.$("#guild-profile-card-buttons-view"))
-      .render();
+      .render(this.is_detail_view);
     return this;
   },
 

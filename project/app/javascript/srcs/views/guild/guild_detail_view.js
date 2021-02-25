@@ -20,6 +20,7 @@ export let GuildDetailView = Backbone.View.extend({
     this.current_user_guild_profile_url = `guilds/${this.guild_id}?for=profile`;
     this.guild_member_profile_url = `guilds/${this.guild_id}?for=member_ranking&page=${this.page}`;
     this.war_history_url = `guilds/${this.guild_id}/wars`;
+    App.current_user.fetch({ data: { for: "profile" } });
   },
 
   parseGuildId: function () {
@@ -38,9 +39,9 @@ export let GuildDetailView = Backbone.View.extend({
   },
 
   renderGuildProfileCard: function (data) {
-    data.guild.is_detail_view = true;
     this.guild_profile_card_view = new App.View.GuildProfileCardView(
-      data.guild
+      data.guild,
+      true
     );
     this.guild_profile_card_view
       .setElement(this.$(".current-user-guild.guild-profile-card"))

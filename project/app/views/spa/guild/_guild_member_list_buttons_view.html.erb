@@ -1,15 +1,15 @@
 <script type="text/template" id="guild-member-list-buttons-view-template">
 
-  <%% if (assign_button) { %>
-    <button id="officer-assign-button" class="ui button mini teal">
+  <%% if (officer_assign_button) { %>
+    <button class="officer-assign-button ui button mini teal">
       관리자 임명
     </button>
-  <%% } if (dismiss_button) { %>
-    <button id="officer-dismiss-button" class="ui button mini purple">
+  <%% } if (officer_dismiss_button) { %>
+    <button class="officer-dismiss-button ui button mini purple">
       관리자 해임
     </button>
   <%% } if (ban_button) { %>
-    <button id="member-ban-button" class="ui button mini red">
+    <button class="member-ban-button ui button mini red">
       길드원 제명
     </button>
   <%% } %>

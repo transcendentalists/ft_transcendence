@@ -8,11 +8,6 @@ class Tournament < ApplicationRecord
     tournaments.map { |tournament|
       stat = tournament.to_simple
       stat.merge({
-        target_match_score: tournament.target_match_score,
-        incentive: {
-          title: tournament.incentive_title,
-          gift: tournament.incentive_gift,
-        },
         rule: {
           id: tournament.rule_id,
           name: tournament.rule.name
@@ -23,9 +18,9 @@ class Tournament < ApplicationRecord
   end
 
   def to_simple
-    permitted = %w[id title max_user_count registered_user_count
-                  start_date tournament_time status target_match_score 
-                  incentive rule current_user_next_match]
+    permitted = %w[id title max_user_count registered_user_count start_date 
+                    tournament_time incentive_title incentive_gift status
+                    target_match_score]
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
   end
 
@@ -49,13 +44,13 @@ class Tournament < ApplicationRecord
     nil
   end
 
-  # def next_enemy(current_user)
-  #   matches = self.matches.where(status: "pending")
-  #   return nil if matches.nil?
+  def next_enemy(current_user)
+    matches = self.matches.where(status: "pending")
+    return nil if matches.nil?
 
-  #   matches.each { |match|
-  #     enemy = match.enemy_of(current_user)
-  #     return enemy unless enemy.nil?
-  #   }
-  # end
+    matches.each { |match|
+      enemy = match.enemy_of(current_user)
+      return enemy unless enemy.nil?
+    }
+  end
 end

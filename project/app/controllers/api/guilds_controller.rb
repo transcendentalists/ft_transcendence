@@ -1,4 +1,6 @@
 class Api::GuildsController < ApplicationController
+  before_action :check_headers_and_find_current_user, only: [ :create ]
+
   def index
     if params[:for] == "guild_index"
       render json: { guilds: Guild.for_guild_index(params[:page].to_i) }
@@ -6,7 +8,24 @@ class Api::GuildsController < ApplicationController
   end
 
   def create
-    render plain: "post /api/guilds#create"
+    return render_error("길드 생성 실패", "이미 소속된 길드가 있습니다.", 400) if @current_user.in_guild
+    guild = Guild.create(
+      name: params[:name],
+      anagram: '@' + params[:anagram],
+      owner_id: @current_user.id,
+    )
+    return render_error("길드 생성 실패", "입력하신 정보가 중복이거나 유효하지 않습니다.", 400) if guild.nil? || !guild.valid?
+    if params.has_key?(:file)
+      guild.image.purge if guild.image.attached?
+      guild.image.attach(params[:file])
+      guild.image_url = url_for(guild.image)
+      guild.save
+    else
+      return render_error("올바르지 않은 요청", "이미지를 찾을 수 없습니다.", 404)
+    end
+    guild_membership = guild.create_membership(@current_user.id, "master")
+    return render_error("길드 멤버십 생성 실패", "길드가 없거나 잘못된 요청입니다.", 400) if guild_membership.nil?
+    render json: { guild: guild_membership.profile }
   end
 
   def show

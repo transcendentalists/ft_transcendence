@@ -7,6 +7,10 @@ class Guild < ApplicationRecord
   has_many :users, through: :memberships, source: :user
   has_many :invitations, class_name: 'GuildInvitation'
   scope :for_guild_index, -> (page) { order(point: :desc).page(page).map.with_index { |guild, index| guild.profile(index, page) } }
+  has_one_attached :image
+  validates :name, :owner_id, :anagram, uniqueness: true
+  validates :name, length: 1..10, allow_blank: true
+  validates :anagram, length: { is: 5 }, allow_blank: false
 
   def for_member_ranking(page)
     self.users.order(point: :desc, name: :asc).page(page).map { |user|
@@ -42,4 +46,7 @@ class Guild < ApplicationRecord
     War.create(war_request_id: war_request.id, status: "pending")
   end
 
+  def create_membership(user_id, position)
+    GuildMembership.create(user_id: user_id, guild_id: self.id, position: position)
+  end
 end

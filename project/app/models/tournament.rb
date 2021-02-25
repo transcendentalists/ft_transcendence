@@ -3,9 +3,11 @@ class Tournament < ApplicationRecord
   has_many :matches, as: :eventable
   has_many :memberships, class_name: "TournamentMembership"
   has_many :users, through: :memberships, source: :user
-  scope :list_not_completed, -> (current_user) do
-    tournaments = self.where.not(status: "completed")
-    tournaments.map { |tournament|
+  scope :for_tournament_index, -> (current_user) do
+    where.not(status: "completed")    
+    .reject{|tournament|
+      !tournament.memberships.where(user_id: current_user.id, status: "completed").empty?
+    }.map { |tournament|
       stat = tournament.to_simple
       stat.merge({
         rule: {
@@ -14,6 +16,14 @@ class Tournament < ApplicationRecord
         },
         current_user_next_match: tournament.next_match_of(current_user)
       })
+    }
+  end
+
+  def self.dummy_enemy
+    {
+      id: -1,
+      name: "?",
+      image_url: "assets/default_avatar.png",
     }
   end
 
@@ -28,29 +38,40 @@ class Tournament < ApplicationRecord
     membership = self.memberships.find_by_user_id(current_user.id)
     return nil if membership.nil? || membership.completed?
 
-    # membership은 있는데 scorecard가 아직 없다..
-    # enemy = {
-    #   id: self.next_enemy(current_user)&.id || -1,
-    #   name: self.next_enemy(current_user)&.name || "?",
-    #   image_url: self.next_enemy(current_user)&.image_url || "assets/default_avatar.png",
-    #   anagram: self.next_enemy(current_user)&.anagram || "?"
-    # }
-
-    # {
-    #   enemy: enemy,
-    #   # start_datetime: self.matches.where(status: "pending").start_datetime
-    #   tournament_round: membership.result
-    # }
-    nil
+    match = current_user.matches.where(status: "pending", eventable_type: "Tournament", eventable_id: self.id).first
+    if match.nil?
+      {
+        enemy: self.class.dummy_enemy,
+        start_datetime: self.status == "pending" ? self.first_match_datetime : self.tomorrow_match_datetime,
+        tournament_round: self.status == "pending" ? self.max_user_count : self.tomorrow_round
+      }
+    else
+      {
+        enemy: match.enemy_of(current_user).to_simple,
+        start_datetime: match.start_time,
+        tournament_round: self.today_round
+      }
+    end
   end
 
-  def next_enemy(current_user)
-    matches = self.matches.where(status: "pending")
-    return nil if matches.nil?
-
-    matches.each { |match|
-      enemy = match.enemy_of(current_user)
-      return enemy unless enemy.nil?
-    }
+  def first_match_datetime
+    d = self.start_date.to_date
+    t = self.tournament_time
+    DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec).in_time_zone('Seoul')
   end
+
+  def tomorrow_match_datetitme
+    Time.zone.now.tomorrow.change({ hour: self.tournament_time.hour, min: 0, sec: 0})
+  end
+
+  def tomorrow_round
+    num_of_progress = self.memberships.where(status: "progress").count / 2 + 1
+    [2,4,8,16,32].find { |round| round >= num_of_progress }
+  end
+
+  def today_round
+    num_of_progress = self.memberships.where(status: "progress").count
+    [2,4,8,16,32].find { |round| round >= num_of_progress } 
+  end
+
 end

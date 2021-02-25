@@ -4,7 +4,7 @@ class Api::TournamentsController < ApplicationController
   def index
     tournaments = {}
     if params[:for] == "tournament_index"
-      tournaments = Tournament.list_not_completed(@current_user)
+      tournaments = Tournament.for_tournament_index(@current_user)
     else
       tournaments = Tournament.all
     end

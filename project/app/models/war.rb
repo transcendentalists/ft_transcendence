@@ -11,14 +11,7 @@ class War < ApplicationRecord
       {
         current_guild_point: current_guild_point,
         enemy: enemy_guild.guild_stat,
-        war_result:
-          if current_guild_point > enemy_guild.point.to_i
-            "승"
-          elsif current_guild_point < enemy_guild.point.to_i
-            "패"
-          else
-            "무"
-          end
+        war_result: current_guild_point > enemy_guild.point.to_i ? "승" : current_guild_point == enemy_guild.point.to_i ? "무" : "패"
       }
     }
   end

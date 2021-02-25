@@ -4,16 +4,20 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
   template: _.template($("#guild-member-list-buttons-view-template").html()),
 
   events: {
-    "click #officer-assign-button": "assignOfficer",
-    "click #member-ban-button": "banMember",
-    "click #officer-dismiss-button": "dismissOfficer",
+    "click .officer-assign-button": "assignOfficer",
+    "click .member-ban-button": "banMember",
+    "click .officer-dismiss-button": "dismissOfficer",
   },
 
   initialize: function (option) {
     this.parent = option.parent;
-    this.assign_button = false;
+    this.guild_id = null;
+    this.membership_id = null;
     this.ban_button = false;
-    this.dismiss_button = false;
+    this.officer_assign_button = false;
+    this.officer_dismiss_button = false;
+    this.current_user_guild_position = null;
+    this.member_guild_position = null;
   },
 
   assignOfficer: function () {
@@ -56,70 +60,72 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
         this.parent.close();
       },
       fail_callback: (data) => {
-        Helper.info({ error: data.error })
+        Helper.info({ error: data.error });
       },
     });
   },
 
+  officerAssignButton: function () {
+    if (
+      this.isMaster(this.current_user_guild_position) &&
+      this.isMember(this.member_guild_position)
+    ) {
+      this.officer_assign_button = true;
+    }
+  },
+
+  officerDismissButton: function () {
+    if (
+      this.isMaster(this.current_user_guild_position) &&
+      this.isOfficer(this.member_guild_position)
+    ) {
+      this.officer_dismiss_button = true;
+    }
+  },
+
+  banButton: function () {
+    if (!this.isMember(this.current_user_guild_position)) {
+      this.ban_button = true;
+      if (this.isMaster(this.member_guild_position)) this.ban_button = false;
+    }
+  },
+
+  setButtons: function (member) {
+    this.current_user_guild_position = App.current_user.get("guild")?.position;
+    this.member_guild_position = member.guild.position;
+    this.officerAssignButton();
+    this.officerDismissButton();
+    this.banButton();
+  },
+
   render: function (member) {
-    const current_user_guild_id = App.current_user.get("guild")?.id;
-    const current_user_guild_position = App.current_user.get("guild")?.position;
     this.guild_id = member.guild.id;
     this.membership_id = member.guild.membership_id;
-
-    if (current_user_guild_id == member.guild.id) {
-      if (member.id != App.current_user.id) {
-        if (
-          current_user_guild_position == "master" &&
-          member.guild.position == "member"
-        ) {
-          this.assign_button = true;
-        }
-        if (
-          current_user_guild_position == "master" &&
-          member.guild.position == "officer"
-        ) {
-          this.dismiss_button = true;
-        }
-        if (current_user_guild_position != "member") {
-          this.ban_button = true;
-          if (
-            (current_user_guild_position == "officer" &&
-              member.guild.position == "master") ||
-            (current_user_guild_position == "master" &&
-              member.guild.position == "master")
-          )
-            this.ban_button = false;
-        }
-      }
-    }
-
+    if (
+      App.current_user.get("guild")?.id == this.guild_id &&
+      !Helper.isCurrentUser(member.id)
+    )
+      this.setButtons(member);
     this.$el.html(
       this.template({
-        assign_button: this.assign_button,
-        dismiss_button: this.dismiss_button,
+        officer_assign_button: this.officer_assign_button,
+        officer_dismiss_button: this.officer_dismiss_button,
         ban_button: this.ban_button,
       })
     );
     return this;
   },
 
-  isMaster: function (data) {
-    return (
-      this.isMember(data) &&
-      data.guild_detail.current_user_guild_position == "master"
-    );
+  isMaster: function (position) {
+    return position == "master";
   },
 
-  isOfficer: function (data) {
-    return (
-      this.isMember(data) &&
-      data.guild_detail.current_user_guild_position == "officer"
-    );
+  isOfficer: function (position) {
+    return position == "officer";
   },
 
-  isMember: function (data) {
-    return data.guild_detail.current_user_guild_id == data.guild_detail.id;
+  isMember: function (position) {
+    return position == "member";
   },
 
   close: function () {

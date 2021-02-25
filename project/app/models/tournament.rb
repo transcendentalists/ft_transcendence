@@ -57,7 +57,7 @@ class Tournament < ApplicationRecord
   def first_match_datetime
     d = self.start_date.to_date
     t = self.tournament_time
-    DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec).in_time_zone('Seoul')
+    DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec, t.zone)
   end
 
   def tomorrow_match_datetitme

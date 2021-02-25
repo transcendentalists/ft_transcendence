@@ -642,6 +642,32 @@ body {
   width: 7rem;
 }
 
+#guild-detail-view .war-history-view {
+  align-items: stretch;
+  height: 33px;
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .war-history-list .ui.fluid.buttons {
+  width: 38rem;
+}
+
+#guild-detail-view .war-history-view .enemy {
+  width: 7rem;
+  margin-left: 1rem;
+}
+
+#guild-detail-view .war-history-view .ui.fluid.buttons .ui.button {
+  width: 8rem;
+}
+
+#guild-detail-view .war-history-view .enemy > img {
+  width: 25px !important;
+  height: 25px !important;
+  min-width: 25px;
+  margin-right: 0.3rem;
+}
+
 /* ==========================================================================
      GUILD INDEX VIEW
      ========================================================================== */

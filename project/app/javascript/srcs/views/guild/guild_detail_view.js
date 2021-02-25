@@ -43,7 +43,7 @@ export let GuildDetailView = Backbone.View.extend({
       data.guild
     );
     this.guild_profile_card_view
-      .setElement(this.$(".guild.profile-card"))
+      .setElement(this.$(".current-user-guild.guild-profile-card"))
       .render();
   },
 

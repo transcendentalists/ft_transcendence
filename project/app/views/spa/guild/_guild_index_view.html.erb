@@ -2,7 +2,7 @@
 
   <h1 class="my-guild-header ui header">My Guild</h1>
   <%% if (current_user_guild !== null) { %>
-    <div class="guild-profile-view ui text container">
+    <div class="guild-profile-view">
       <div class="current-user-guild guild-profile-card ui segment flex-container center-aligned"></div>
     </div>
   <%% } else { %>
@@ -11,7 +11,7 @@
 
   <h1 class="war-request-header ui header">War Request</h1>
   <%% if (current_user_guild !== null) { %>
-    <div class="war-request-card-list ui text container"> </div>
+    <div class="war-request-card-list"> </div>
   <%% } else { %>
     <span>소속된 길드가 없습니다.</span>
   <%% } %>
@@ -22,15 +22,16 @@
       <button id="guild-create-button" class="ui teal mini button">길드 생성</button>
     <%% } %>
   </div>
-  <div class="ui text container">
+  <div>
     <div class="guild-rank-page-buttons flex-container space-between">
-    <button id="guild-page-before-button" class="ui button tiny teal">
-      before
-    </button>
-    <button id="guild-page-next-button" class="ui button tiny teal">
-      next
-    </button>
+      <button id="guild-page-before-button" class="ui button tiny teal">
+        before
+      </button>
+      <button id="guild-page-next-button" class="ui button tiny teal">
+        next
+      </button>
+    </div>
   </div>
-    <div class="guild-ranking-list"></div>
+  <div class="guild-ranking-list"></div>
 
 </script>

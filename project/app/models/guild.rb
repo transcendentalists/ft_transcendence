@@ -8,7 +8,7 @@ class Guild < ApplicationRecord
   has_many :invitations, class_name: 'GuildInvitation'
   scope :for_guild_index, -> (page) { order(point: :desc).page(page).map.with_index { |guild, index| guild.profile(index, page) } }
 
-  def for_member_ranking(page)
+  def for_member_list(page)
     self.users.order(point: :desc, name: :asc).page(page).map { |user|
       user.profile
     }

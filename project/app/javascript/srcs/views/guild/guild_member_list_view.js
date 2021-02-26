@@ -1,8 +1,8 @@
 import { App } from "srcs/internal";
 
-export let GuildMemberRankingView = Backbone.View.extend({
-  template: _.template($("#guild-member-ranking-view-template").html()),
-  id: "guild-member-ranking-view",
+export let GuildMemberListView = Backbone.View.extend({
+  template: _.template($("#guild-member-list-view-template").html()),
+  id: "guild-member-list-view",
   className: "ui text container",
 
   initialize: function (guild_id) {

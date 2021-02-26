@@ -16,10 +16,10 @@ export let GuildDetailView = Backbone.View.extend({
     this.guild_id = guild_id;
     this.is_last_page = false;
     this.guild_profile_card_view = null;
-    this.guild_member_ranking_view = null;
+    this.guild_member_list_view = null;
     this.war_history_list_view = null;
     this.current_user_guild_profile_url = `guilds/${this.guild_id}?for=profile`;
-    this.guild_members_profile_url = `guilds/${this.guild_id}/memberships?for=member_ranking&page=${this.page}`;
+    this.guild_members_profile_url = `guilds/${this.guild_id}/memberships?for=member_list&page=${this.page}`;
     this.war_history_url = `guilds/${this.guild_id}/wars`;
     App.current_user.fetch({ data: { for: "profile" } });
   },
@@ -43,14 +43,14 @@ export let GuildDetailView = Backbone.View.extend({
       .render();
   },
 
-  renderGuildMemberRanking: function (data) {
+  renderGuildMemberList: function (data) {
     const guild_memberships = data.guild_memberships;
     if (guild_memberships.length < 10) this.is_last_page = true;
-    this.guild_member_ranking_view = new App.View.GuildMemberRankingView(
+    this.guild_member_list_view = new App.View.GuildMemberListView(
       this.guild_id
     );
-    this.guild_member_ranking_view
-      .setElement(this.$(".member-ranking-list"))
+    this.guild_member_list_view
+      .setElement(this.$(".member-list"))
       .render(guild_memberships);
   },
 
@@ -69,7 +69,7 @@ export let GuildDetailView = Backbone.View.extend({
     });
 
     Helper.fetch(this.guild_members_profile_url, {
-      success_callback: this.renderGuildMemberRanking.bind(this),
+      success_callback: this.renderGuildMemberList.bind(this),
     });
 
     Helper.fetch(this.war_history_url, {
@@ -81,7 +81,7 @@ export let GuildDetailView = Backbone.View.extend({
 
   close: function () {
     if (this.guild_profile_card_view) this.guild_profile_card_view.close();
-    if (this.guild_member_ranking_view) this.guild_member_ranking_view.close();
+    if (this.guild_member_list_view) this.guild_member_list_view.close();
     if (this.war_history_list_view) this.war_history_list_view.close();
     this.remove();
   },

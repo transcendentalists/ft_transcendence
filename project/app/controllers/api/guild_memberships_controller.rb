@@ -4,7 +4,7 @@ class Api::GuildMembershipsController < ApplicationController
   def index
     guild = Guild.find_by_id(params[:guild_id])
     return render_error("길드 검색 에러", "요청하신 길드의 정보가 없습니다.", 404) if guild.nil?
-    if params[:for] == "member_ranking"
+    if params[:for] == "member_list"
       guild_memberships = GuildMembership.for_members_ranking(params[:guild_id], params[:page])
     end
     render json: { guild_memberships: guild_memberships }

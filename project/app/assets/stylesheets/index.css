@@ -598,7 +598,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-#guild-detail-view .member-ranking-list {
+#guild-detail-view .member-list {
   margin-bottom: 4rem;
 }
 
@@ -614,7 +614,7 @@ body {
   margin-right: 1rem;
 }
 
-#guild-detail-view .member-ranking-list .stat {
+#guild-detail-view .member-list .stat {
   margin-right: 1rem;
 }
 

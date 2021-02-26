@@ -7,21 +7,26 @@ class War < ApplicationRecord
 
   def self.for_war_history(guild_id)
     self.where(status: "completed").order(updated_at: :desc).limit(5).map { |war|
-      enemy_guild = war.enemy_guild(guild_id)
-      current_guild_point = war.current_guild_point(guild_id).to_i
+      war_statuses = war.war_statuses
+      opponent_guild_war_status = war_statuses.opponent_guild_war_status(guild_id)
+      current_guild_war_status = war_statuses.current_guild_war_status(guild_id)
       {
-        current_guild_point: current_guild_point,
-        enemy: enemy_guild.guild_stat,
-        war_result: current_guild_point > enemy_guild.point.to_i ? "승" : current_guild_point == enemy_guild.point.to_i ? "무" : "패"
+        point_of_current_guild: current_guild_war_status.point,
+        point_of_opponent_guild: opponent_guild_war_status.point,
+        opponent_guild_profile: opponent_guild_war_status.guild.profile,
+        war_result: war_result(current_guild_war_status, opponent_guild_war_status)
       }
     }
   end
 
-  def current_guild_point(guild_id)
-    self.war_statuses.find_by_guild_id(guild_id).point
+  def self.war_result(current_guild_war_status, opponent_guild_war_status)
+    if current_guild_war_status.point > opponent_guild_war_status.point
+      "승"
+    elsif current_guild_war_status.point == opponent_guild_war_status.point
+      current_guild_war_status.enemy? ? "승" : "패"
+    else
+      "패"
+    end
   end
 
-  def enemy_guild(guild_id)
-    self.war_statuses.where.not(guild_id: guild_id).first
-  end
 end

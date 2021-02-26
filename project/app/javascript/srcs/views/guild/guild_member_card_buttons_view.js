@@ -1,6 +1,6 @@
 import { App, Helper } from "srcs/internal";
 
-export let GuildMemberListButtonsView = Backbone.View.extend({
+export let GuildMemberCardButtonsView = Backbone.View.extend({
   template: _.template($("#guild-member-list-buttons-view-template").html()),
 
   events: {
@@ -66,11 +66,13 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
   },
 
   setOfficerAssignButton: function () {
-    if (this.isMember(this.member_guild_position)) this.officer_assign_button = true;
+    if (this.isMember(this.member_guild_position))
+      this.officer_assign_button = true;
   },
 
   setOfficerDismissButton: function () {
-    if ( this.isOfficer(this.member_guild_position) ) this.officer_dismiss_button = true;
+    if (this.isOfficer(this.member_guild_position))
+      this.officer_dismiss_button = true;
   },
 
   setMemberBanButton: function () {
@@ -81,7 +83,7 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
     this.current_user_guild_position = App.current_user.get("guild")?.position;
     this.member_guild_position = member.guild.position;
 
-    if (this.isMember(this.current_user_guild_position)) return ;
+    if (this.isMember(this.current_user_guild_position)) return;
     if (!this.isOfficer(this.current_user_guild_position)) {
       this.setOfficerAssignButton();
       this.setOfficerDismissButton();

@@ -16,7 +16,7 @@ export let GuildMemberProfileCardView = Backbone.View.extend({
   },
 
   renderGuildMemberButtons: function () {
-    this.guild_member_profile_card_buttons_view = new App.View.GuildMemberListButtonsView(
+    this.guild_member_profile_card_buttons_view = new App.View.GuildMemberCardButtonsView(
       { parent: this }
     );
     this.guild_member_profile_card_buttons_view
@@ -37,7 +37,8 @@ export let GuildMemberProfileCardView = Backbone.View.extend({
 
   close: function () {
     this.member = null;
-    if (this.guild_member_profile_card_buttons_view) this.guild_member_profile_card_buttons_view.close();
+    if (this.guild_member_profile_card_buttons_view)
+      this.guild_member_profile_card_buttons_view.close();
     this.remove();
   },
 });

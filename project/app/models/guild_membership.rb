@@ -4,6 +4,26 @@ class GuildMembership < ApplicationRecord
 
   validates :position, inclusion: { in: ["master", "officer", "member"] }
 
+  def self.priority_order
+    self.order(
+      # A Relational Algebra
+      Arel.sql(<<-SQL.squish
+      CASE
+        WHEN position = 'master' THEN '1'
+        WHEN position = 'officer' THEN '2'
+        WHEN position = 'member' THEN '3'
+      END
+    SQL
+    )
+  )
+  end
+
+  def self.for_members_ranking(guild_id, page)
+    self.where(guild_id: guild_id).priority_order.page(page).map { |membership|
+      membership.user.profile
+    }
+  end
+
   def profile
     guild = self.guild.to_simple
     guild['membership_id'] = self.id

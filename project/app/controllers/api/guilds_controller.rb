@@ -14,8 +14,6 @@ class Api::GuildsController < ApplicationController
     return render_error("길드 검색 에러", "요청하신 길드의 정보가 없습니다.", 404) if guild.nil?
     if params[:for] == "profile"
       guild_data = guild.profile
-    elsif params[:for] == "member_ranking"
-      guild_data = guild.for_member_ranking(params[:page])
     else
       return render_error("올바르지 않은 요청", "요청하신 정보가 없습니다.", 400)
     end

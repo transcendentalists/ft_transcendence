@@ -13,11 +13,11 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
     this.parent = option.parent;
     this.guild_id = null;
     this.membership_id = null;
-    this.ban_button = false;
-    this.officer_assign_button = false;
-    this.officer_dismiss_button = false;
     this.current_user_guild_position = null;
     this.member_guild_position = null;
+    this.member_ban_button = false;
+    this.officer_assign_button = false;
+    this.officer_dismiss_button = false;
   },
 
   assignOfficer: function () {
@@ -65,52 +65,39 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
     });
   },
 
-  officerAssignButton: function () {
-    if (
-      this.isMaster(this.current_user_guild_position) &&
-      this.isMember(this.member_guild_position)
-    ) {
-      this.officer_assign_button = true;
-    }
+  setOfficerAssignButton: function () {
+    if (this.isMember(this.member_guild_position)) this.officer_assign_button = true;
   },
 
-  officerDismissButton: function () {
-    if (
-      this.isMaster(this.current_user_guild_position) &&
-      this.isOfficer(this.member_guild_position)
-    ) {
-      this.officer_dismiss_button = true;
-    }
+  setOfficerDismissButton: function () {
+    if ( this.isOfficer(this.member_guild_position) ) this.officer_dismiss_button = true;
   },
 
-  banButton: function () {
-    if (!this.isMember(this.current_user_guild_position)) {
-      this.ban_button = true;
-      if (this.isMaster(this.member_guild_position)) this.ban_button = false;
-    }
+  setMemberBanButton: function () {
+    this.member_ban_button = true;
   },
 
   setButtons: function (member) {
     this.current_user_guild_position = App.current_user.get("guild")?.position;
     this.member_guild_position = member.guild.position;
-    this.officerAssignButton();
-    this.officerDismissButton();
-    this.banButton();
+
+    if (this.isMember(this.current_user_guild_position)) return ;
+    if (!this.isOfficer(this.current_user_guild_position)) {
+      this.setOfficerAssignButton();
+      this.setOfficerDismissButton();
+    }
+    if (!this.isMaster(this.member_guild_position)) this.setMemberBanButton();
   },
 
   render: function (member) {
     this.guild_id = member.guild.id;
     this.membership_id = member.guild.membership_id;
-    if (
-      App.current_user.get("guild")?.id == this.guild_id &&
-      !Helper.isCurrentUser(member.id)
-    )
-      this.setButtons(member);
+    this.setButtons(member);
     this.$el.html(
       this.template({
         officer_assign_button: this.officer_assign_button,
         officer_dismiss_button: this.officer_dismiss_button,
-        ban_button: this.ban_button,
+        member_ban_button: this.member_ban_button,
       })
     );
     return this;

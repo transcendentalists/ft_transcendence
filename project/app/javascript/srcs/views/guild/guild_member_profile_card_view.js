@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let GuildMemberProfileCardView = Backbone.View.extend({
   template: _.template($("#guild-member-profile-card-template").html()),
@@ -6,6 +6,7 @@ export let GuildMemberProfileCardView = Backbone.View.extend({
 
   initialize: function () {
     this.member = null;
+    this.guild_member_profile_card_buttons_view = null;
   },
 
   refresh: function (guild) {
@@ -26,13 +27,17 @@ export let GuildMemberProfileCardView = Backbone.View.extend({
   render: function (member) {
     this.member = member;
     this.$el.html(this.template(this.member));
-    this.renderGuildMemberButtons();
+    if (
+      App.current_user.get("guild")?.id == this.member.guild.id &&
+      !Helper.isCurrentUser(this.member.id)
+    )
+      this.renderGuildMemberButtons();
     return this;
   },
 
   close: function () {
     this.member = null;
-    this.guild_member_profile_card_buttons_view.close();
+    if (this.guild_member_profile_card_buttons_view) this.guild_member_profile_card_buttons_view.close();
     this.remove();
   },
 });

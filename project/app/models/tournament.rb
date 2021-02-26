@@ -75,4 +75,62 @@ class Tournament < ApplicationRecord
     [2,4,8,16,32].find { |round| round >= num_of_progress } 
   end
 
+  def update_progress_memberships_result(result)
+    self.memberships.where(status: "progress").update_all(result: result)
+  end
+
+  def update_progress_memberships_status(status)
+    self.memberships.where(status: "progress").update_all(result: status)
+  end
+
+  # 서버 재시작 후 해제된 모든 토너먼트의 스케쥴 재설정(수동 실행 필요)
+  def self.retry_set_schedule
+    all.each { |tournament| tournament.set_next_schedule }
+  end
+
+  def set_next_schedule
+    return if ["completed", "canceled"].include?(self.status)
+
+    if Time.now < self.start_date
+      self.set_schedule_until_start_date
+    elsif Time.zone.now.hour >= self.tournament_time.hour
+      self.set_schedule_until_operation_time
+    else
+      self.set_schedule_until_tournament_time
+    end
+  end
+
+  def set_schedule_until_operation_time
+    TournamentJob.set(wait_until: Date.tomorrow.midnight.change(minute: 5)).perform_later(self)
+  end
+
+  def set_schedule_until_tournament_time
+    TournamentJob.set(wait_until: Date.today.midnight.change(hour: self.tournament_time.hour)).perform_later(self)
+  end
+
+  def set_schedule_until_start_date
+    TournamentJob.set(wait_until: self.start_date).perform_later(self)
+  end
+
+  def start
+    status = self.memberships.count < 8 ? "canceled" : "progress"
+    self.update(status: status)
+    self.memberships.each { |membership| membership.update(status: status)}
+  end
+
+  def canceled?
+    self.status == "canceled"
+  end
+
+  def winner
+    self.memberships.where(result: "gold")&.user
+  end
+
+  def complete
+    if !self.winner.nil? && !self.incentive_title
+      self.winner.update(title: self.incentive_title)
+    end
+    self.update(status: "completed")
+  end
+
 end

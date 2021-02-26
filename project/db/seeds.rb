@@ -167,9 +167,9 @@ Match.create([
   {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-01 10pm')},
   {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-01 10pm')},
   {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-01-01 1am')},
-  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-01-01 1am')},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament", match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-05-01 5am')},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament", match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2020-01-01 5am')},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-01-01 1am')},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-05-01 5am')},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2020-01-01 5am')},
 ])
 
 Scorecard.create([

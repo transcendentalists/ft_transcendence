@@ -40,7 +40,7 @@ export let TournamentIndexView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(this.template());
-    Helper.fetch("tournaments", {
+    Helper.fetch("tournaments?for=tournament_index", {
       success_callback: this.renderTournamentsCallBack.bind(this),
     });
     return this;

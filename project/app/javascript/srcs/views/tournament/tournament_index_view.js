@@ -35,7 +35,9 @@ export let TournamentIndexView = Backbone.View.extend({
     }
 
     if (this.open_tournaments.length > 0) {
-      this.open_tournaments_view = new App.View.TournamentCardListView();
+      this.open_tournaments_view = new App.View.TournamentCardListView({
+        parent: this,
+      });
       this.open_tournaments_view
         .setElement(this.$("#open-tournaments-view"))
         .render(this.open_tournaments);

@@ -49,14 +49,9 @@ class TournamentJob < ApplicationJob
   def operate_this_round_matches
     self.update_mebership_result if @today_round <= 4
     self.update_membership_status
-    self.this_round_matches.each do |match|
-      cards = match.scorecards
-      case match.status
-      when "pending"
-      when "progress"
-      when "canceled"
-      when "completed"
-      end
+    self.this_round_matches.where(status: ["progress", "pending"]).each do |match|
+      match.update(status: "canceled")
+      match.scorecards.update_all(result: "canceled")
     end
   end
 

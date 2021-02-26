@@ -10,6 +10,7 @@ class Tournament < ApplicationRecord
     }.map { |tournament|
       stat = tournament.to_simple
       stat.merge({
+        registered_user_count: tournament.memberships.count,
         rule: {
           id: tournament.rule_id,
           name: tournament.rule.name

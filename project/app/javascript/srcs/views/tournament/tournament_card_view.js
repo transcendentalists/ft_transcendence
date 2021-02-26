@@ -5,7 +5,7 @@ export let TournamentCardView = Backbone.View.extend({
   className: "tournament-card flex-container column-direction center-aligned",
 
   events: {
-    ".register.button click": "registerTournament",
+    "click .register.button": "registerTournament",
   },
 
   url: function (tournament_id) {
@@ -18,7 +18,7 @@ export let TournamentCardView = Backbone.View.extend({
 
     Helper.fetch(this.url(tournament_id), {
       method: "POST",
-      success_callback: (data) => this.moveToMyTournamentsView(data),
+      success_callback: (data) => this.moveCardToMyTournamentsView(data),
       fail_callback: (data) => {
         Helper.info({ error: data.error });
       },
@@ -34,9 +34,11 @@ export let TournamentCardView = Backbone.View.extend({
     return this;
   },
 
-  moveToMyTournamentsView: function (data) {
-    this.parent.parent.my_tournaments_view.addOne(data);
-    this.close();
+  moveCardToMyTournamentsView: function (data) {
+    this.parent.moveCardToMyTournamentsView({
+      data: data,
+      tournament_card_view: this,
+    });
   },
 
   close: function () {

@@ -44,14 +44,14 @@ export let GuildDetailView = Backbone.View.extend({
   },
 
   renderGuildMemberRanking: function (data) {
-    const guild_members = data.guild_members_profile;
-    if (guild_members.length < 10) this.is_last_page = true;
+    const guild_memberships = data.guild_memberships;
+    if (guild_memberships.length < 10) this.is_last_page = true;
     this.guild_member_ranking_view = new App.View.GuildMemberRankingView(
       this.guild_id
     );
     this.guild_member_ranking_view
       .setElement(this.$(".member-ranking-list"))
-      .render(guild_members);
+      .render(guild_memberships);
   },
 
   renderWarHistory: function (data) {

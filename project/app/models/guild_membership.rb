@@ -31,23 +31,24 @@ class GuildMembership < ApplicationRecord
   end
 
   def can_be_destroyed_by?(current_user)
-    if current_user.guild_membership.guild_id != self.guild_id || (
-      current_user.id != self.user_id &&
-      current_user.guild_membership.position == "member"
-    )
-      false
-    else true
-    end
+    return false if self.master?
+    return true if self.requested_by_me?(current_user.id)
+    return false unless current_user.member_of_guild?(self.guild_id)
+    return false if current_user.guild_membership.position == "member"
+    true
   end
 
   def can_be_updated_by?(current_user)
-    if current_user.guild_membership.guild_id != self.guild_id || (
-      current_user.id != self.user_id &&
-      current_user.guild_membership.position == "member"
-    ) || self.position == "master"
-      false
-    else true
-    end
+    return false if self.master?
+    return false unless current_user.member_of_guild?(self.guild_id)
+    true
   end
 
+  def requested_by_me?(user_id)
+    self.user_id == user_id
+  end
+
+  def master?
+    self.position == "master"
+  end
 end

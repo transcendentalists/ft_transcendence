@@ -5,7 +5,6 @@ export let GuildMemberProfileCardView = Backbone.View.extend({
   className: "ui segment profile-card flex-container center-aligned",
 
   initialize: function () {
-    this.guild_member_profile_card_buttons_view = null;
     this.member = null;
   },
 

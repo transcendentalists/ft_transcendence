@@ -6,7 +6,6 @@ class GuildMembership < ApplicationRecord
 
   def self.priority_order
     self.order(
-      # A Relational Algebra
       Arel.sql(<<-SQL.squish
       CASE
         WHEN position = 'master' THEN '1'

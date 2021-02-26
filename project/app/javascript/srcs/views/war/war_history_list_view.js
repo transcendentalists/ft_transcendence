@@ -16,8 +16,7 @@ export let WarHistoryListView = Backbone.View.extend({
   render: function (war_history_list) {
     if (!war_history_list.length)
       this.$el.html("<span>워 히스토리가 쌓이기를 기다리고 있습니다.</span>");
-    if (war_history_list.length == 0) return;
-    war_history_list.forEach(this.addOne, this);
+    else war_history_list.forEach(this.addOne, this);
     return this;
   },
 

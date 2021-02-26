@@ -154,22 +154,22 @@ War.create([
 ])
 
 Match.create([
-  {rule_id: 6, status: "completed", match_type: "dual"},
-  {rule_id: 1, status: "completed", match_type: "dual"},
-  {rule_id: 2, status: "completed", match_type: "ladder"},
-  {rule_id: 4, status: "completed", match_type: "ladder"},
+  {rule_id: 6, status: "completed", match_type: "dual" },
+  {rule_id: 1, status: "completed", match_type: "dual" },
+  {rule_id: 2, status: "completed", match_type: "ladder" },
+  {rule_id: 4, status: "completed", match_type: "ladder" },
   {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 1, match_type: "war"},
   {rule_id: 3, status: "completed", eventable_type: "war", eventable_id: 2, match_type: "war"},
   {rule_id: 5, status: "completed", eventable_type: "war", eventable_id: 3, match_type: "war"},
   {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 4, match_type: "war"},
   {rule_id: 1, status: "completed", eventable_type: "war", eventable_id: 5, match_type: "war"},
-  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament"},
-  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament"},
-  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament"},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament"},
-  {rule_id: 1, status: "progress", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament"},
-  {rule_id: 1, status: "progress", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament"},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament"},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-01 10pm')},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-01 10pm')},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-01 10pm')},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-01-01 1am')},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-01-01 1am')},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament", match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-05-01 5am')},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament", match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2020-01-01 5am')},
 ])
 
 Scorecard.create([

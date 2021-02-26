@@ -626,7 +626,7 @@ body {
   margin-left: auto;
 }
 
-#guild-detail-view #guild-member-list-buttons-view {
+#guild-detail-view .guild-member-card-buttons-view {
   margin-left: auto;
 }
 

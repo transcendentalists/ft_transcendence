@@ -20,7 +20,7 @@ export let GuildMemberProfileCardView = Backbone.View.extend({
       { parent: this }
     );
     this.guild_member_profile_card_buttons_view
-      .setElement(this.$("#guild-member-list-buttons-view"))
+      .setElement(this.$(".guild-member-card-buttons-view"))
       .render(this.member);
   },
 

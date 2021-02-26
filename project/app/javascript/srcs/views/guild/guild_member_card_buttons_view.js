@@ -1,7 +1,7 @@
 import { App, Helper } from "srcs/internal";
 
 export let GuildMemberCardButtonsView = Backbone.View.extend({
-  template: _.template($("#guild-member-list-buttons-view-template").html()),
+  template: _.template($("#guild-member-card-buttons-view-template").html()),
 
   events: {
     "click .officer-assign-button": "assignOfficer",

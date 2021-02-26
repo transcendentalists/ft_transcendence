@@ -7,8 +7,8 @@ export let TournamentIndexView = Backbone.View.extend({
   className: "flex-container column-direction center-aligned top-margin",
 
   initialize: function () {
-    this.my_tournaments = null;
-    this.open_tournaments = null;
+    this.my_tournaments = [];
+    this.open_tournaments = [];
     this.my_tournaments_view = null;
     this.open_tournaments_view = null;
   },
@@ -27,15 +27,19 @@ export let TournamentIndexView = Backbone.View.extend({
   renderTournamentsCallBack: function (data) {
     this.parseTournamentsData(data);
 
-    this.my_tournaments_view = new App.View.TournamentMatchCardListView();
-    this.my_tournaments_view
-      .setElement(this.$("#my-tournaments-view"))
-      .render(this.my_tournaments);
+    if (this.my_tournaments.length > 0) {
+      this.my_tournaments_view = new App.View.TournamentMatchCardListView();
+      this.my_tournaments_view
+        .setElement(this.$("#my-tournaments-view"))
+        .render(this.my_tournaments);
+    }
 
-    this.open_tournaments_view = new App.View.TournamentCardListView();
-    this.open_tournaments_view
-      .setElement(this.$("#open-tournaments-view"))
-      .render(this.open_tournaments);
+    if (this.open_tournaments.length > 0) {
+      this.open_tournaments_view = new App.View.TournamentCardListView();
+      this.open_tournaments_view
+        .setElement(this.$("#open-tournaments-view"))
+        .render(this.open_tournaments);
+    }
   },
 
   render: function () {

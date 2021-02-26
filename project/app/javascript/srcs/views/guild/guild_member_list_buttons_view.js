@@ -9,8 +9,8 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
     "click .officer-dismiss-button": "dismissOfficer",
   },
 
-  initialize: function (option) {
-    this.parent = option.parent;
+  initialize: function (options) {
+    this.parent = options.parent;
     this.guild_id = null;
     this.membership_id = null;
     this.current_user_guild_position = null;

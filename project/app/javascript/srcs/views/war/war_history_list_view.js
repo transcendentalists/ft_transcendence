@@ -3,13 +3,12 @@ import { App, Helper } from "srcs/internal";
 export let WarHistoryListView = Backbone.View.extend({
   el: ".war-history-list",
 
-  initialize: function (guild_id) {
-    this.guild_id = guild_id;
+  initialize: function () {
     this.child_views = [];
   },
 
   addOne: function (war_history) {
-    let child_view = new App.View.WarHistoryView(this.guild_id);
+    let child_view = new App.View.WarHistoryView();
     this.child_views.push(child_view);
     this.$el.append(child_view.render(war_history).$el);
   },

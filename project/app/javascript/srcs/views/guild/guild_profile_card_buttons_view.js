@@ -10,8 +10,8 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
     "click .war-request-create-button": "createWarRequest",
   },
 
-  initialize: function (guild) {
-    this.guild = guild;
+  initialize: function (options) {
+    this.guild = options.guild;
   },
 
   showGuild: function () {

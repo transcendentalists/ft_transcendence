@@ -35,9 +35,9 @@ export let GuildDetailView = Backbone.View.extend({
   },
 
   renderGuildProfileCard: function (data) {
-    this.guild_profile_card_view = new App.View.GuildProfileCardView(
-      data.guild
-    );
+    this.guild_profile_card_view = new App.View.GuildProfileCardView({
+      guild: data.guild
+    });
     this.guild_profile_card_view
       .setElement(this.$(".current-user-guild.guild-profile-card"))
       .render();
@@ -46,9 +46,9 @@ export let GuildDetailView = Backbone.View.extend({
   renderGuildMemberList: function (data) {
     const guild_memberships = data.guild_memberships;
     if (guild_memberships.length < 10) this.is_last_page = true;
-    this.guild_member_list_view = new App.View.GuildMemberListView(
-      this.guild_id
-    );
+    this.guild_member_list_view = new App.View.GuildMemberListView({
+      guild_id: this.guild_id
+    });
     this.guild_member_list_view
       .setElement(this.$(".member-list"))
       .render(guild_memberships);

@@ -4,7 +4,7 @@ class Tournament < ApplicationRecord
   has_many :memberships, class_name: "TournamentMembership"
   has_many :users, through: :memberships, source: :user
   scope :for_tournament_index, -> (current_user) do
-    where.not(status: "completed")    
+    where.not(status: ["completed", "canceled"])
     .reject{|tournament|
       !tournament.memberships.where(user_id: current_user.id, status: "completed").empty?
     }.map { |tournament|

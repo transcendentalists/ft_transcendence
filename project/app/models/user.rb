@@ -20,7 +20,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
   validates :name, :email, uniqueness: true
-  
+
   def login(verification: false)
     return self if two_factor_auth && !verification
 
@@ -130,9 +130,8 @@ class User < ApplicationRecord
       anagram: guild_membership&.guild&.anagram
     }
   end
-  
-  private
 
+  private
 
   def self.where_by_query(params)
     users = self.all

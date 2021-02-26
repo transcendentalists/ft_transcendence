@@ -28,7 +28,7 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
         position: "officer",
       },
       success_callback: (data) => {
-        this.parent.refresh(data.guildMembership);
+        this.parent.refresh(data.guild_membership);
       },
       fail_callback: (data) => {
         Helper.info({ error: data.error });
@@ -44,7 +44,7 @@ export let GuildMemberListButtonsView = Backbone.View.extend({
         position: "member",
       },
       success_callback: (data) => {
-        this.parent.refresh(data.guildMembership);
+        this.parent.refresh(data.guild_membership);
       },
       fail_callback: (data) => {
         Helper.info({ error: data.error });

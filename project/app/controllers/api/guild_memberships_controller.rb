@@ -7,7 +7,7 @@ class Api::GuildMembershipsController < ApplicationController
     if params[:for] == "member_ranking"
       members_profile = GuildMembership.for_members_ranking(params[:guild_id], params[:page])
     end
-    render json: { guildMembersProfile: members_profile }
+    render json: { guild_members_profile: members_profile }
   end
 
   def create
@@ -20,7 +20,7 @@ class Api::GuildMembershipsController < ApplicationController
         position: params[:position],
       )
     return render_error('가입 실패', '유효하지 않은 정보가 포함되어 있습니다.', 404) unless guild_membership.valid?
-    render json: { guildMembership: guild_membership.profile }
+    render json: { guild_membership: guild_membership.profile }
   end
 
   def update
@@ -28,7 +28,7 @@ class Api::GuildMembershipsController < ApplicationController
     return render_error('변경 실패', '길드에 존재하지 않는 멤버입니다.', 404) if guild_membership.nil?
     return render_error('권한 에러', '접근 권한이 없습니다.', 401) unless guild_membership.can_be_updated_by?(@current_user)
     guild_membership.update(position: params[:position])
-    render json: { guildMembership: guild_membership.profile }
+    render json: { guild_membership: guild_membership.profile }
   end
 
   def destroy

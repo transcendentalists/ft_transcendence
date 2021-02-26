@@ -648,6 +648,16 @@ body {
   margin-bottom: 1.5rem;
 }
 
+#guild-detail-view .war-history-view .bet-point {
+  width: 7rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+#guild-detail-view .war-history-view .icon {
+  margin: 0em 0.2em 0em 0em;
+}
+
 #guild-detail-view .war-history-list .ui.fluid.buttons {
   width: 42rem;
 }

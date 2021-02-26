@@ -1,4 +1,14 @@
 <script type="text/template" id="war-history-view-template">
+
+  <div class="ui label positive bet-point">
+    <%% if (war_result == "승") { %>
+      <i class="large angle double up icon green"></i>
+    <%% } else { %>
+      <i class="large angle double down icon red"></i>
+    <%% } %>
+    <%%= bet_point %>
+  </div>
+
   <div class="ui fluid buttons">
     <%% if (war_result == "승") { %>
       <div class="ui left positive button">

@@ -14,7 +14,8 @@ class War < ApplicationRecord
         point_of_current_guild: current_guild_war_status.point,
         point_of_opponent_guild: opponent_guild_war_status.point,
         opponent_guild_profile: opponent_guild_war_status.guild.profile,
-        war_result: war_result(current_guild_war_status, opponent_guild_war_status)
+        war_result: war_result(current_guild_war_status, opponent_guild_war_status),
+        bet_point: war.request.bet_point
       }
     }
   end

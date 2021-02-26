@@ -72,7 +72,7 @@ class User < ApplicationRecord
     stat = {}
     stat[:win_count], stat[:lose_count] = data['win'] ? data['win'] : 0, data['lose'] ? data['lose'] : 0
     stat[:tier] = self.tier
-    stat[:rank] = User.order(point: :desc, name: :asc).index(self) + 1
+    stat[:rank] = User.order(point: :desc).index(self) + 1
     return stat
   end
 

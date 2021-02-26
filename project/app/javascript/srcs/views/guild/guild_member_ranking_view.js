@@ -11,10 +11,10 @@ export let GuildMemberRankingView = Backbone.View.extend({
   },
 
   addOne: function (member) {
-    let child_view = new App.View.UserProfileCardView();
+    let child_view = new App.View.GuildMemberProfileCardView();
     this.child_views.push(child_view);
     this.$("#guild-member-profile-card-list").append(
-      child_view.render(member, true).$el
+      child_view.render(member).$el
     );
   },
 

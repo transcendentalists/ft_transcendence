@@ -32,15 +32,15 @@ class GuildMembership < ApplicationRecord
 
   def can_be_destroyed_by?(current_user)
     return false if self.master?
-    return true if self.requested_by_me?(current_user.id)
-    return false unless self.is_guild_of?(current_user)
+    return true if self.user_id == current_user.id
+    return false unless self.guild_id == current_user.in_guild&.id
     return false if current_user.guild_membership.position == "member"
     true
   end
 
   def can_be_updated_by?(current_user)
     return false if self.master?
-    return false unless self.is_guild_of?(current_user)
+    return false unless self.guild_id == current_user.in_guild&.id
     return false if current_user.guild_membership.position != "master"
     true
   end

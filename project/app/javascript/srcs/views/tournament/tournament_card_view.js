@@ -10,7 +10,6 @@ export let TournamentCardView = Backbone.View.extend({
   },
 
   close: function () {
-    this.$el.empty();
     this.remove();
   },
 });

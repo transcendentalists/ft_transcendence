@@ -131,10 +131,6 @@ class User < ApplicationRecord
     }
   end
 
-  def member_of_guild?(guild_id)
-    return self.in_guild&.id == guild_id
-  end
-
   private
 
   def self.where_by_query(params)

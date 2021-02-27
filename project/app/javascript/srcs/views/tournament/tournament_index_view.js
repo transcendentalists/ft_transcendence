@@ -1,5 +1,4 @@
-import { App } from "srcs/internal";
-import { Helper } from "srcs/helper";
+import { App, Helper } from "srcs/internal";
 
 export let TournamentIndexView = Backbone.View.extend({
   template: _.template($("#tournament-index-view-template").html()),

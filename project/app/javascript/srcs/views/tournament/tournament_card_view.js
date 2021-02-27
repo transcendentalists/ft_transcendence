@@ -5,6 +5,10 @@ export let TournamentCardView = Backbone.View.extend({
   initialize: function () {},
 
   render: function (data) {
+    const present = new Date();
+    const start = new Date(data.start_date);
+    data.can_register_at_now =
+      present.toLocaleDateString() != start.toLocaleDateString();
     this.$el.html(this.template(data));
     return this;
   },

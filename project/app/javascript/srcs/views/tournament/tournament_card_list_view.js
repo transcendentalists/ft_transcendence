@@ -12,7 +12,7 @@ export let TournamentCardListView = Backbone.View.extend({
   },
 
   render: function (tournaments) {
-    this.$el.html("");
+    this.$el.empty();
     tournaments.forEach(this.addOne, this);
     return this;
   },

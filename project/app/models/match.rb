@@ -38,5 +38,13 @@ class Match < ApplicationRecord
   def enemy_of(current_user)
     self.users.where.not(id: current_user.id).first
   end
+
+  def canceled?
+    self.status == "canceled"
+  end
+
+  def completed?
+    self.status == "completed"
+  end
 end
 

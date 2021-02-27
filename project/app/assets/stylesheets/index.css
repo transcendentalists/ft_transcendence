@@ -980,7 +980,7 @@ body {
   margin-bottom: 3rem;
 }
 
-#tournament-index-view .header:nth-child(3) {
+#tournament-index-view .header.open-tournaments {
   margin-top: 3rem;
 }
 

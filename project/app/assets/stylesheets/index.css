@@ -968,11 +968,10 @@ body {
    ========================================================================== */
 
 #tournament-index-view {
-  padding-left: 2vw;
-  padding-right: 2vw;
   max-width: 1024px;
   min-width: 740px;
   margin-bottom: 8rem;
+  padding-left: 10rem;
 }
 
 #tournament-index-view .header {

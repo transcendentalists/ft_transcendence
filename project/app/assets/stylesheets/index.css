@@ -652,6 +652,7 @@ body {
   width: 7rem;
   text-align: center;
   font-size: 1rem;
+  margin-right: 1rem;
 }
 
 #guild-detail-view .war-history-view .icon {
@@ -659,7 +660,7 @@ body {
 }
 
 #guild-detail-view .war-history-list .ui.fluid.buttons {
-  width: 42rem;
+  width: 34rem;
 }
 
 #guild-detail-view .war-history-view .enemy {

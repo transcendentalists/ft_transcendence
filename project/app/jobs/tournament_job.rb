@@ -2,11 +2,12 @@ class TournamentJob < ApplicationJob
   queue_as :default
   # after_perform { |job| job.arguments.first.set_next_schedule }
 
-  def perform(tournament)
+  def perform(tournament, options = { now: Time.zone.now })
     @tournament = tournament
     @today_round = tournament.today_round
+    @now = options[:now]
 
-    if Time.zone.now.hour == 0
+    if @now.hour == 0
       self.operate_tournament
     else
       self.operate_match
@@ -14,7 +15,7 @@ class TournamentJob < ApplicationJob
   end
 
   def this_round_matches
-    @tournament.matches.where('DATE(start_time) = ?', Date.yesterday)
+    @tournament.matches.where('DATE(start_time) = ?', @now.yesterday.to_date)
   end
 
   def this_round_scorecards
@@ -59,7 +60,7 @@ class TournamentJob < ApplicationJob
   end
 
   def operate_tournament
-    if Date.today == @tournament.start_date.to_date
+    if @now.to_date == @tournament.start_date.to_date
       @tournament.start
       return if @tournament.canceled?
     else

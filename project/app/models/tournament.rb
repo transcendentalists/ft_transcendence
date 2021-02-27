@@ -106,12 +106,16 @@ class Tournament < ApplicationRecord
     self.status == "canceled"
   end
 
+  def progress?
+    self.status == "progress"
+  end
+
   def winner
-    self.memberships.where(result: "gold")&.user
+    self.memberships.find_by_result("gold")&.user
   end
 
   def complete
-    if !self.winner.nil? && !self.incentive_title
+    if !self.winner.nil? && self.incentive_title
       self.winner.update(title: self.incentive_title)
     end
     self.update(status: "completed")

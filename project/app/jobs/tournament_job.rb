@@ -55,7 +55,7 @@ class TournamentJob < ApplicationJob
     if @today_round == 4
       @tournament.update_progress_memberships(result: "bronze")
     else
-      match = self.last_match
+      match = @tournament.last_match
       if match.completed?
         @tournament.memberships.find_by_user_id(match.winner.id).update(result: "gold")
         @tournament.memberships.find_by_user_id(match.loser.id).update(result: "silver")
@@ -92,10 +92,10 @@ class TournamentJob < ApplicationJob
       start_time: @now.change(hour: @tournament.tournament_time.hour),
       target_score: @tournament.target_match_score,
     })
-    card_entry = {left: left_membership_id, right: right_membership_id}
+    card_entry = {'left': left_membership_id, 'right': right_membership_id}
     card_entry.each do |side, mid|
       Scorecard.create(
-        user_id: TournamentMembership.find(mid),
+        user_id: TournamentMembership.find(mid).user.id,
         match_id: match.id,
         side: side
       )

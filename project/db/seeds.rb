@@ -161,13 +161,12 @@ Match.create([
   {rule_id: 5, status: "completed", eventable_type: "War", eventable_id: 2, match_type: "war"},
   {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 2, match_type: "war"},
   {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 2, match_type: "war"},
-  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-01 10pm')},
-  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-01 10pm')},
-  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-01 10pm')},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-01-01 1am')},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-01-01 1am')},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-05-01 5am')},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 4, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2020-01-01 5am')},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-02-27 3pm')},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-02-27 3pm')},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-02-27 3pm')},
+  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2020-02-27 3pm')},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-02-28 3pm')},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-02-28 3pm')},
 ])
 
 Scorecard.create([
@@ -182,7 +181,6 @@ Scorecard.create([
   {user_id: 2, score: 2, result: "lose", match_id: 9, side: "right"},
   {user_id: 2, score: 1, result: "lose", match_id: 10, side: "left"},
   {user_id: 2, score: 0, result: "lose", match_id: 11, side: "right"},
-
   {user_id: 1, score: 2, result: "lose", match_id: 1, side: "right"},
   {user_id: 3, score: 1, result: "lose", match_id: 2, side: "right"},
   {user_id: 4, score: 0, result: "lose", match_id: 3, side: "right"},
@@ -194,6 +192,19 @@ Scorecard.create([
   {user_id: 10, score: 1, result: "win",  match_id: 9, side: "left"},
   {user_id: 8, score: 2, result: "win",  match_id: 10, side: "right"},
   {user_id: 1, score: 0, result: "win", match_id: 11, side: "left"},
+
+  {user_id: 1, score: 0, result: "lose", match_id: 15, side: "right"},
+  {user_id: 2, score: 0, result: "win", match_id: 15, side: "left"},
+  {user_id: 3, score: 0, result: "lose", match_id: 16, side: "right"},
+  {user_id: 4, score: 0, result: "win", match_id: 16, side: "left"},
+  {user_id: 5, score: 0, result: "lose", match_id: 17, side: "right"},
+  {user_id: 6, score: 0, result: "win", match_id: 17, side: "left"},
+  {user_id: 7, score: 0, result: "lose", match_id: 18, side: "right"},
+  {user_id: 8, score: 0, result: "win", match_id: 18, side: "left"},
+  {user_id: 2, score: 0, result: "wait", match_id: 19, side: "left"},
+  {user_id: 4, score: 0, result: "wait", match_id: 19, side: "right"},
+  {user_id: 6, score: 0, result: "wait", match_id: 20, side: "left"},
+  {user_id: 8, score: 0, result: "wait", match_id: 20, side: "right"},
 ])
 
 GroupChatRoom.create([
@@ -373,38 +384,38 @@ GuildInvitation.create([
 ])
 
 Tournament.create([
-  {rule_id: 1, title: "tournament_1", start_date: DateTime.new(2021,4,20), tournament_time: Time.new(2000, 1, 1, 14, 00, 0)},
-  {rule_id: 1, title: "tournament_2", start_date: DateTime.new(2021,5,30), tournament_time: Time.new(2000, 1, 1, 14, 00, 0), target_match_score: 5},
-  {rule_id: 1, title: "tournament_3", start_date: DateTime.new(2021,2,23), tournament_time: Time.new(2000, 1, 1, 1, 30, 0), target_match_score: 1},
-  {rule_id: 1, title: "tournament_4", start_date: DateTime.new(2021,2,24), tournament_time: Time.new(2000, 1, 1, 20, 00, 0), target_match_score: 10},
-  {rule_id: 1, title: "5", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 22, 30, 0)},
-  {rule_id: 1, title: "tournament_6", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 18, 30, 0)},
-  {rule_id: 1, title: "tournament_7", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 18, 30, 0), status: "canceled"},
-  {rule_id: 1, title: "tournament_8", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 18, 30, 0), status: "canceled"},
+  {rule_id: 1, title: "tournament_1", start_date: DateTime.new(2021,1,20), tournament_time: Time.new(2000, 1, 1, 14, 00, 0), status: "canceled"},
+  {rule_id: 1, title: "tournament_2", start_date: DateTime.new(2021,2,10), tournament_time: Time.new(2000, 1, 1, 14, 00, 0), target_match_score: 5, status: "completed"},
+  {rule_id: 1, title: "tournament_3", start_date: DateTime.new(2021,2,27), tournament_time: Time.new(2000, 1, 1, 15, 30, 0), target_match_score: 3, status: "progress"},
+  {rule_id: 1, title: "tournament_4", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 16, 00, 0), target_match_score: 10},
+  {rule_id: 1, title: "5", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 17, 30, 0)},
+  {rule_id: 1, title: "tournament_6", start_date: DateTime.new(2021,3,02), tournament_time: Time.new(2000, 1, 1, 17, 30, 0)},
+  {rule_id: 1, title: "tournament_7", start_date: DateTime.new(2021,3,02), tournament_time: Time.new(2000, 1, 1, 18, 30, 0), status: "canceled"},
+  {rule_id: 1, title: "tournament_8", start_date: DateTime.new(2021,3,03), tournament_time: Time.new(2000, 1, 1, 18, 30, 0)},
 ])
 
 TournamentMembership.create([
-  {user_id: 1, tournament_id: 1},
-  {user_id: 2, tournament_id: 1},
-  {user_id: 3, tournament_id: 1},
-  {user_id: 4, tournament_id: 1},
-  {user_id: 5, tournament_id: 1},
-  {user_id: 6, tournament_id: 1},
-  {user_id: 7, tournament_id: 1},
-  {user_id: 8, tournament_id: 1},
-
-  {user_id: 1, tournament_id: 2},
-  {user_id: 2, tournament_id: 2},
-  {user_id: 3, tournament_id: 2},
-  {user_id: 4, tournament_id: 2},
-  {user_id: 5, tournament_id: 2},
-  {user_id: 6, tournament_id: 2},
-  {user_id: 7, tournament_id: 2},
-
   {user_id: 1, tournament_id: 3, status: "completed"},
-  {user_id: 1, tournament_id: 4, status: "completed"},
+  {user_id: 2, tournament_id: 3, status: "progress"},
+  {user_id: 3, tournament_id: 3, status: "completed"},
+  {user_id: 4, tournament_id: 3, status: "progress"},
+  {user_id: 5, tournament_id: 3, status: "completed"},
+  {user_id: 6, tournament_id: 3, status: "progress"},
+  {user_id: 7, tournament_id: 3, status: "completed"},
+  {user_id: 8, tournament_id: 3, status: "progress"},
+
+  {user_id: 1, tournament_id: 4},
+  {user_id: 2, tournament_id: 4},
+  {user_id: 3, tournament_id: 4},
+  {user_id: 4, tournament_id: 4},
+  {user_id: 5, tournament_id: 4},
+  {user_id: 6, tournament_id: 4},
+  {user_id: 7, tournament_id: 4},
+
   {user_id: 1, tournament_id: 5},
-  {user_id: 1, tournament_id: 6},
+  {user_id: 2, tournament_id: 5},
+  {user_id: 3, tournament_id: 6},
+  {user_id: 4, tournament_id: 6},
 ])
 
 WarStatus.create([

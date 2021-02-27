@@ -120,7 +120,7 @@ class Tournament < ApplicationRecord
 
   # 서버 재시작 후 해제된 모든 토너먼트의 스케쥴 재설정(개발 완료 후 주석해제 필요)
   def self.retry_set_schedule
-    # all.each { |tournament| tournament.set_next_schedule }
+    # where(status: ["pending", "progress"].each { |tournament| tournament.set_next_schedule }
   end
 
   def set_next_schedule

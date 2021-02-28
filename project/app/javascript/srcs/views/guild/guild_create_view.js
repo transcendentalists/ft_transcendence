@@ -17,9 +17,10 @@ export let GuildCreateView = Backbone.View.extend({
     this.image = null;
   },
 
-  cancel: function () {
-    this.close();
-    App.router.navigate("#/guilds/page/1");
+  render: function () {
+    this.$el.html(this.template());
+    this.$(".ui.negative.message").hide();
+    return this;
   },
 
   renderWarning: function (msg) {
@@ -30,6 +31,34 @@ export let GuildCreateView = Backbone.View.extend({
       })
     );
     this.$(".ui.negative.message").show();
+  },
+
+  submit: function () {
+    this.parseGuildParams();
+    if (this.checkValidParams()) this.createGuild();
+  },
+
+  parseGuildParams: function () {
+    this.name = $("input[name=name]").val();
+    this.anagram = $("input[name=anagram]").val();
+    this.image = this.$("input[type=file]")[0].files[0];
+  },
+
+  checkValidParams: function () {
+    if (this.image == undefined) {
+      this.renderWarning("이미지가 설정되어 있지 않습니다.");
+    } else if (
+      !["image/png", "image/jpeg", "image/png", "image/jpg"].includes(
+        this.image.type
+      )
+    ) {
+      this.renderWarning("지원하지 않는 이미지 포맷입니다.");
+    } else if (this.image.size >= 1000000) {
+      this.renderWarning("이미지 사이즈가 큽니다.");
+    } else {
+      return true;
+    }
+    return false;
   },
 
   appendFormData() {
@@ -65,38 +94,9 @@ export let GuildCreateView = Backbone.View.extend({
     }
   },
 
-  checkValidParams: function () {
-    if (this.image == undefined) {
-      this.renderWarning("이미지가 설정되어 있지 않습니다.");
-    } else if (
-      !["image/png", "image/jpeg", "image/png", "image/jpg"].includes(
-        this.image.type
-      )
-    ) {
-      this.renderWarning("지원하지 않는 이미지 포맷입니다.");
-    } else if (this.image.size >= 1000000) {
-      this.renderWarning("이미지 사이즈가 큽니다.");
-    } else {
-      return true;
-    }
-    return false;
-  },
-
-  parseGuildParams: function () {
-    this.name = $("input[name=name]").val();
-    this.anagram = $("input[name=anagram]").val();
-    this.image = this.$("input[type=file]")[0].files[0];
-  },
-
-  submit: function () {
-    this.parseGuildParams();
-    if (this.checkValidParams()) this.createGuild();
-  },
-
-  render: function () {
-    this.$el.html(this.template());
-    this.$(".ui.negative.message").hide();
-    return this;
+  cancel: function () {
+    this.close();
+    App.router.navigate("#/guilds/page/1");
   },
 
   close: function () {

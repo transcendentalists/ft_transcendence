@@ -39,8 +39,8 @@ export let GuildCreateView = Backbone.View.extend({
   },
 
   parseGuildParams: function () {
-    this.name = $("input[name=name]").val();
-    this.anagram = $("input[name=anagram]").val();
+    this.name = this.$("input[name=name]").val();
+    this.anagram = this.$("input[name=anagram]").val();
     this.image = this.$("input[type=file]")[0].files[0];
   },
 

@@ -8,15 +8,9 @@ class Tournament < ApplicationRecord
     .reject{|tournament|
       !tournament.memberships.where(user_id: current_user.id, status: "completed").empty?
     }.map { |tournament|
-      stat = tournament.to_simple
-      stat.merge({
-        registered_user_count: tournament.memberships.count,
-        rule: {
-          id: tournament.rule_id,
-          name: tournament.rule.name
-        },
-        current_user_next_match: tournament.next_match_of(current_user)
-      })
+      stat = tournament.profile
+      stat[:current_user_next_match] = tournament.next_match_of(current_user)
+      stat
     }
   end
 
@@ -33,6 +27,17 @@ class Tournament < ApplicationRecord
                     tournament_time incentive_title incentive_gift status
                     target_match_score]
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
+  end
+
+  def profile
+    stat = self.to_simple
+    stat.merge({
+      registered_user_count: self.memberships.count,
+      rule: {
+        id: self.rule_id,
+        name: self.rule.name
+      },
+    })
   end
 
   def enroll(user)

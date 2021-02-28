@@ -12,7 +12,11 @@ class Api::TournamentMembershipsController < ApplicationController
       return render_error('토너먼트 등록 실패', msg, 500)
     end
 
-    render json: { tournament_match: tournament_membership.next_match }
+    render json: {
+      tournament_match: tournament.profile.merge({
+        current_user_next_match: tournament_membership.next_match
+      })
+    }
   end
 
 end

@@ -9,7 +9,7 @@ class Api::GuildsController < ApplicationController
 
   def create
     return render_error("길드 생성 실패", "이미 소속된 길드가 있습니다.", 400) if @current_user.in_guild
-    guild = Guild.create(
+    guild = Guild.new(
       name: params[:name],
       anagram: '@' + params[:anagram],
       owner_id: @current_user.id,

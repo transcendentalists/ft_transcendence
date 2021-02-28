@@ -35,7 +35,7 @@ export let GuildCreateView = Backbone.View.extend({
 
   submit: function () {
     this.parseGuildParams();
-    if (this.checkValidParams()) this.createGuild();
+    if (this.checkValidOfParams()) this.createGuild();
   },
 
   parseGuildParams: function () {
@@ -44,7 +44,7 @@ export let GuildCreateView = Backbone.View.extend({
     this.image = this.$("input[type=file]")[0].files[0];
   },
 
-  checkValidParams: function () {
+  checkValidOfParams: function () {
     if (this.image == undefined) {
       this.renderWarning("이미지가 설정되어 있지 않습니다.");
     } else if (

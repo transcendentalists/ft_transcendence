@@ -15,6 +15,9 @@ export let TournamentMatchCardView = Backbone.View.extend({
 
   initialize: function () {},
 
+  /**
+   ** 경기 시간이 10분(600,000ms) 내로 남았을 경우 참여가능
+   */
   render: function (data) {
     let content = data.current_user_next_match;
     content.title = data.title;
@@ -28,7 +31,6 @@ export let TournamentMatchCardView = Backbone.View.extend({
   },
 
   close: function () {
-    this.$el.empty();
     this.remove();
   },
 });

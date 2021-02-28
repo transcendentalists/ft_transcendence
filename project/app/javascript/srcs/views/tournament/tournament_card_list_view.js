@@ -7,9 +7,11 @@ export let TournamentCardListView = Backbone.View.extend({
   },
 
   addOne: function (tournament) {
-    let child_view = new App.View.TournamentCardView({ parent: this });
-    this.child_views.push(child_view);
-    this.$el.append(child_view.render(tournament).$el);
+    let tournament_card_view = new App.View.TournamentCardView({
+      parent: this,
+    });
+    this.child_views.push(tournament_card_view);
+    this.$el.append(tournament_card_view.render(tournament).$el);
   },
 
   showDefaultMessage: function () {
@@ -24,7 +26,7 @@ export let TournamentCardListView = Backbone.View.extend({
   },
 
   render: function (tournaments) {
-    this.$el.html("");
+    this.$el.empty();
     tournaments.forEach(this.addOne, this);
     return this;
   },

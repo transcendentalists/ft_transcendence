@@ -9,8 +9,22 @@ class Guild < ApplicationRecord
   scope :for_guild_index, -> (page) { order(point: :desc).page(page).map.with_index { |guild, index| guild.profile(index, page) } }
   has_one_attached :image
   validates :name, :owner_id, :anagram, uniqueness: true
-  validates :name, length: 1..10, allow_blank: true
-  validates :anagram, length: { is: 5 }, allow_blank: false
+  validates :name, length: 4..10, allow_blank: true
+  validate :check_anagram
+
+  def check_anagram
+    errors.add(:anagram) unless (2..5).include?(anagram.length)
+    errors.add(:anagram) unless anagram.match(/^@[A-Za-z]/)
+    sorted_anagram = anagram.chars.sort.join.downcase
+    sorted_anagram.slice!(0)
+    sorted_name = name.chars.sort.join
+    sorted_name.each_char do |ch|
+      if ch == sorted_anagram.first
+        sorted_anagram.slice!(0)
+      end
+    end
+    return errors.add(:anagram) unless sorted_anagram.empty?
+  end
 
   def for_member_ranking(page)
     self.users.order(point: :desc, name: :asc).page(page).map { |user|

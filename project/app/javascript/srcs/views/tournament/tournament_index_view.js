@@ -19,7 +19,9 @@ export let TournamentIndexView = Backbone.View.extend({
     );
     this.open_tournaments = _.filter(
       data.tournaments,
-      (tournament) => tournament.current_user_next_match === null
+      (tournament) =>
+        tournament.current_user_next_match === null &&
+        tournament.status == "pending"
     );
   },
 

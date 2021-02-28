@@ -7,11 +7,11 @@ class Api::TournamentMembershipsController < ApplicationController
 
     begin
       tournament_membership = tournament.enroll(@current_user)
-    rescue
-      return render_error('토너먼트 등록 실패', '토너먼트 등록에 실패했습니다.', 500)
+    rescue => e
+      msg = (e.message == "StandardError") ? '토너먼트 등록에 실패했습니다.' : e.message
+      return render_error('토너먼트 등록 실패', msg, 500)
     end
 
-    return render_error('토너먼트 등록 실패', '토너먼트 등록에 실패했습니다.', 500) unless tournament_membership.persisted?
     render json: { tournament_match: tournament_membership.next_match }
   end
 

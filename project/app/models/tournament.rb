@@ -35,11 +35,11 @@ class Tournament < ApplicationRecord
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
   end
 
-  def next_match_of(current_user)
-    membership = self.memberships.find_by_user_id(current_user.id)
+  def next_match_of(user)
+    membership = self.memberships.find_by_user_id(user.id)
     return nil if membership.nil? || membership.completed?
 
-    match = current_user.matches.where(status: "pending", eventable_type: "Tournament", eventable_id: self.id).first
+    match = user.matches.where(status: "pending", eventable_type: "Tournament", eventable_id: self.id).first
     if match.nil?
       {
         enemy: self.class.dummy_enemy,
@@ -48,7 +48,7 @@ class Tournament < ApplicationRecord
       }
     else
       {
-        enemy: match.enemy_of(current_user).to_simple,
+        enemy: match.enemy_of(user).to_simple,
         start_datetime: match.start_time,
         tournament_round: self.today_round
       }

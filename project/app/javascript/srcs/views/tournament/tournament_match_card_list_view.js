@@ -1,4 +1,4 @@
-import { App, Helper } from "srcs/internal";
+import { App } from "srcs/internal";
 
 export let TournamentMatchCardListView = Backbone.View.extend({
   initialize: function () {
@@ -6,13 +6,13 @@ export let TournamentMatchCardListView = Backbone.View.extend({
   },
 
   addOne: function (tournament_match) {
-    let child_view = new App.View.TournamentMatchCardView();
-    this.child_views.push(child_view);
-    this.$el.append(child_view.render(tournament_match).$el);
+    let tournament_match_card_view = new App.View.TournamentMatchCardView();
+    this.child_views.push(tournament_match_card_view);
+    this.$el.append(tournament_match_card_view.render(tournament_match).$el);
   },
 
   render: function (tournament_matches) {
-    this.$el.html("");
+    this.$el.empty();
     tournament_matches.forEach(this.addOne, this);
     return this;
   },

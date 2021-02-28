@@ -8,7 +8,7 @@ class Api::TournamentsController < ApplicationController
     else
       tournaments = Tournament.all
     end
-    render :json => { tournaments: tournaments }
+    render json: { tournaments: tournaments }
   end
 
   def create

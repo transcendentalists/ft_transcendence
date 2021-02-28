@@ -7,6 +7,7 @@ export let TournamentCardListView = Backbone.View.extend({
   },
 
   addOne: function (tournament) {
+    if (this.child_views.length == 0) this.$el.empty();
     let tournament_card_view = new App.View.TournamentCardView({
       parent: this,
     });

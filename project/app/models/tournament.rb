@@ -35,6 +35,19 @@ class Tournament < ApplicationRecord
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
   end
 
+  def enroll(user)
+    if Time.zone.now > self.start_date.midnight
+      raise "등록 기간 초과"
+    elsif self.memberships.count == self.max_user_count
+      raise "정원 마감"
+    end
+
+    TournamentMembership.create!(
+      user_id: user.id,
+      tournament_id: self.id,
+    )
+  end
+
   def next_match_of(user)
     membership = self.memberships.find_by_user_id(user.id)
     return nil if membership.nil? || membership.completed?

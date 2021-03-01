@@ -122,7 +122,7 @@ WarRequest.create([
   {rule_id: 2, bet_point: 40, start_date: DateTime.new(2021,1,15,21), end_date: DateTime.new(2021,1,25,23), war_time: Time.new(1,1,1,9), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 10, status: "pending"},
   {rule_id: 3, bet_point: 50, start_date: DateTime.new(2021,1,16,21), end_date: DateTime.new(2021,1,26,23), war_time: Time.new(1,1,1,19), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
   {rule_id: 3, bet_point: 50, start_date: DateTime.new(2021,2,17,19), end_date: DateTime.new(2021,1,26,23), war_time: Time.new(1,1,1,19), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
-    
+
     #  없는 Rule Id
   {rule_id: 100, bet_point: 60, start_date: DateTime.new(2021,3,16,21), end_date: DateTime.new(2021,3,26,23), war_time: Time.new(1,1,1,20), max_no_reply_count: 12, include_ladder: false, include_tournament: false, target_match_score: 5, status: "pending"},
 
@@ -147,10 +147,10 @@ War.create([
 ])
 
 Match.create([
-  {rule_id: 6, status: "completed", match_type: "dual" },
-  {rule_id: 1, status: "completed", match_type: "dual" },
-  {rule_id: 2, status: "completed", match_type: "ladder" },
-  {rule_id: 4, status: "completed", match_type: "ladder" },
+  {rule_id: 6, status: "completed", match_type: "dual"},
+  {rule_id: 1, status: "completed", match_type: "dual"},
+  {rule_id: 2, status: "completed", match_type: "ladder"},
+  {rule_id: 4, status: "completed", match_type: "ladder"},
   {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 1, match_type: "war"},
   {rule_id: 3, status: "completed", eventable_type: "War", eventable_id: 1, match_type: "war"},
   {rule_id: 5, status: "completed", eventable_type: "War", eventable_id: 1, match_type: "war"},
@@ -193,6 +193,13 @@ Scorecard.create([
   {user_id: 8, score: 2, result: "win",  match_id: 10, side: "right"},
   {user_id: 1, score: 0, result: "win", match_id: 11, side: "left"},
 
+  {user_id: 1, score: 1, result: "win", match_id: 12, side: "left"},
+  {user_id: 1, score: 2, result: "win", match_id: 13, side: "left"},
+  {user_id: 1, score: 3, result: "win", match_id: 14, side: "left"},
+  {user_id: 10, score: 0, result: "lose", match_id: 12, side: "right"},
+  {user_id: 10, score: 0, result: "lose", match_id: 13, side: "right"},
+  {user_id: 10, score: 0, result: "lose", match_id: 14, side: "right"},
+
   {user_id: 1, score: 0, result: "lose", match_id: 15, side: "right"},
   {user_id: 2, score: 0, result: "win", match_id: 15, side: "left"},
   {user_id: 3, score: 0, result: "lose", match_id: 16, side: "right"},
@@ -214,7 +221,7 @@ GroupChatRoom.create([
   {owner_id: 2, room_type: "public", title: "room 4", channel_code: "XXX-XXX-XX4" },
   {owner_id: 3, room_type: "public", title: "room 5", channel_code: "XXX-XXX-XX5", password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO"},
   {owner_id: 3, room_type: "public", title: "room 6", channel_code: "XXX-XXX-XX6" },
-  
+
   {owner_id: 1, room_type: "private", title: "room 7", channel_code: "XXX-XXX-XX7", password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO"},
   {owner_id: 1, room_type: "private", title: "room 8", channel_code: "XXX-XXX-XX8" },
   {owner_id: 2, room_type: "private", title: "room 9", channel_code: "XXX-XXX-XX9", password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO"},
@@ -324,6 +331,10 @@ GuildMembership.create([
   {user_id: 9, guild_id: 9, position: "master"},
   {user_id: 10, guild_id: 10, position: "master"},
   {user_id: 11, guild_id: 10, position: "officer"},
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
   {user_id: 12, guild_id: 1, position: "officer"},
   {user_id: 13, guild_id: 2, position: "officer"},
   {user_id: 14, guild_id: 3, position: "officer"},
@@ -369,7 +380,7 @@ GuildMembership.create([
   {user_id: 54, guild_id: 3, position: "member"},
   {user_id: 55, guild_id: 2, position: "member"},
   {user_id: 56, guild_id: 1, position: "member"},
-  
+
 ])
 
 GuildInvitation.create([

@@ -102,13 +102,19 @@ import { GuildIndexView } from "./views/guild/guild_index_view";
 import { GuildDetailView } from "./views/guild/guild_detail_view";
 import { GuildCreateView } from "./views/guild/guild_create_view";
 import { GuildProfileCardView } from "./views/guild/guild_profile_card_view";
+import { GuildProfileCardButtonsView } from "./views/guild/guild_profile_card_buttons_view";
 import { GuildRankingView } from "./views/guild/guild_ranking_view";
+import { GuildMemberListView } from "./views/guild/guild_member_list_view";
+import { GuildMemberCardButtonsView } from "./views/guild/guild_member_card_buttons_view";
+import { GuildMemberProfileCardView } from "./views/guild/guild_member_profile_card_view";
 
 /** war views */
 import { WarRequestCardListView } from "./views/war/war_request_card_list_view";
 import { WarRequestCardView } from "./views/war/war_request_card_view";
 import { WarIndexView } from "./views/war/war_index_view";
 import { WarCreateView } from "./views/war/war_create_view";
+import { WarHistoryListView } from "./views/war/war_history_list_view";
+import { WarHistoryView } from "./views/war/war_history_view";
 import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_view";
 
 /* CHANNEL */
@@ -204,12 +210,18 @@ export let App = {
     ChatRoomMemberMenuView,
     ChatRoomCreateView,
     GroupChatMessageListView,
-
     GuildIndexView,
     GuildDetailView,
     GuildCreateView,
     GuildProfileCardView,
+    GuildProfileCardButtonsView,
     GuildRankingView,
+    GuildMemberListView,
+    GuildMemberCardButtonsView,
+    GuildMemberProfileCardView,
+
+    WarHistoryListView,
+    WarHistoryView,
     WarRequestCardListView,
     WarRequestCardView,
     WarRequestDetailModalView,

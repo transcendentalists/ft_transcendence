@@ -9,8 +9,8 @@ export let WarRequestCardView = Backbone.View.extend({
     "click .war-request-detail-button": "showWarRequestDetail",
   },
 
-  initialize: function (war_request) {
-    this.war_request = war_request;
+  initialize: function (options) {
+    this.war_request = options.war_request;
     this.war_request_detail_modal_view = null;
   },
 

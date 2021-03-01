@@ -1,7 +1,11 @@
+import { App, Helper } from "srcs/internal";
+
 export let GuildCreateView = Backbone.View.extend({
   // template: _.template($("#guild-create-view-template").html()),
 
-  render: function () {},
+
+  render: function () {
+  },
 
   close: function () {
     this.remove();

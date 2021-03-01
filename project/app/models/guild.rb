@@ -8,22 +8,19 @@ class Guild < ApplicationRecord
   has_many :invitations, class_name: 'GuildInvitation'
   scope :for_guild_index, -> (page) { order(point: :desc).page(page).map.with_index { |guild, index| guild.profile(index, page) } }
   has_one_attached :image
-  validates :name, :owner_id, :anagram, uniqueness: true
-  validates :name, length: 4..10, allow_blank: true
+  validates :name, :owner_id, :anagram, uniqueness: { message: "길드 이름은 중복될 수 없습니다." }
+  validates :name, length: { in: 1..10, too_long: '길드 이름은 최대 10자까지 가능합니다.' } , allow_blank: true
   validate :check_anagram
 
   def check_anagram
-    errors.add(:anagram) unless (2..5).include?(anagram.length)
-    errors.add(:anagram) unless anagram.match(/^@[A-Za-z]/)
-    sorted_anagram = anagram.chars.sort.join.downcase
-    sorted_anagram.slice!(0)
-    sorted_name = name.chars.sort.join
-    sorted_name.each_char do |ch|
-      if ch == sorted_anagram.first
-        sorted_anagram.slice!(0)
-      end
+    return errors.add(:anagram, :invalid, message: "아나그램은 1글자에서 4글자로 입력해 주시길 바랍니다.") unless (2..5).include?(anagram.length)
+    return errors.add(:anagram, :invalid, message: "아나그램에 특수문자가 포함될 수 없습니다.") unless anagram.match(/^@[A-Za-z0-9]/)
+    anagram_downcase = anagram.downcase
+    anagram_downcase.slice!(0)
+    name.each_char do |name_char|
+      anagram_downcase.slice!(0) if name_char.downcase == anagram_downcase.first
     end
-    return errors.add(:anagram) unless sorted_anagram.empty?
+    return errors.add(:anagram, :invalid, message: "아나그램은 길드 이름에 포함된 단어로 구성되어야 합니다.") unless anagram_downcase.empty?
   end
 
   def for_member_ranking(page)

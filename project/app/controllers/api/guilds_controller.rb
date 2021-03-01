@@ -14,7 +14,12 @@ class Api::GuildsController < ApplicationController
       anagram: '@' + params[:anagram],
       owner_id: @current_user.id,
     )
-    return render_error("길드 생성 실패", "입력하신 정보가 중복이거나 유효하지 않습니다.", 400) if guild.nil? || !guild.valid?
+    return render_error("길드 생성 실패", "길드 생성에 실패하였습니다.", 400) if guild.nil?
+    unless guild.valid?
+      error_attribute_name = guild.errors.attribute_names[0]
+      return render_error("길드 생성 실패", guild.errors[error_attribute_name], 400) 
+    end
+    guild.save
     if params.has_key?(:file)
       guild.image.purge if guild.image.attached?
       guild.image.attach(params[:file])

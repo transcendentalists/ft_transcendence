@@ -23,7 +23,11 @@ class Match < ApplicationRecord
   end
 
   def winner
-    self.scorecards.find_by_result("win")
+    self.scorecards.find_by_result("win")&.user
+  end
+
+  def loser
+    self.scorecards.find_by_result("lose")&.user
   end
 
   def cancel
@@ -33,6 +37,14 @@ class Match < ApplicationRecord
 
   def enemy_of(user)
     self.users.where.not(id: user.id).first
+  end
+
+  def canceled?
+    self.status == "canceled"
+  end
+
+  def completed?
+    self.status == "completed"
   end
 end
 

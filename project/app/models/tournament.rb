@@ -3,6 +3,7 @@ class Tournament < ApplicationRecord
   has_many :matches, as: :eventable
   has_many :memberships, class_name: "TournamentMembership"
   has_many :users, through: :memberships, source: :user
+  has_many :scorecards, through: :matches, as: :eventable
   scope :for_tournament_index, -> (current_user) do
     where.not(status: ["completed", "canceled"])
     .reject{|tournament|
@@ -11,14 +12,6 @@ class Tournament < ApplicationRecord
       stat = tournament.profile
       stat[:current_user_next_match] = tournament.next_match_of(current_user)
       stat
-    }
-  end
-
-  def self.dummy_enemy
-    {
-      id: -1,
-      name: "상대 미정",
-      image_url: "assets/default_avatar.png",
     }
   end
 
@@ -49,12 +42,33 @@ class Tournament < ApplicationRecord
       raise StandardError.new("토너먼트가 등록이 불가능한 상태입니다.")
     elsif !self.memberships.find_by_user_id(user.id).nil?
       raise StandardError.new("이미 등록한 토너먼트입니다.")
+    elsif self.overlapped_schedule?(user)
+      raise StandardError.new("다른 토너먼트 스케쥴과 중복됩니다.")
     end
 
     TournamentMembership.create!(
       user_id: user.id,
       tournament_id: self.id,
     )
+  end
+
+  def match_hour
+    self.tournament_time.hour
+  end
+
+  def expected_end_date
+    self.start_date + ([8,16,32].find_index(self.max_user_count) + 2).days
+  end
+
+  def overlapped_schedule?(user)
+    !user.tournament_memberships.where(status: ["pending", "progress"]).find { |membership|
+      tournament = membership.tournament
+      return false if tournament.match_hour != self.match_hour
+      (self.start_date.to_i..self.expected_end_date.to_i).each do |date|
+        return true if date.between?(tournament.start_date, tournament.expected_end_date)
+      end
+      false
+    }.nil?
   end
 
   def next_match_of(user)
@@ -84,17 +98,105 @@ class Tournament < ApplicationRecord
   end
 
   def tomorrow_match_datetitme
-    Time.zone.now.tomorrow.change({ hour: self.tournament_time.hour, min: 0, sec: 0})
+    Time.zone.now.tomorrow.change({ hour: self.tournament_time.hour })
+  end
+
+  def today_match_datetime
+    Time.zone.now.change({ hour: self.tournament_time.hour })
   end
 
   def tomorrow_round
-    num_of_progress = self.memberships.where(status: "progress").count / 2 + 1
+    num_of_progress = self.progress_memberships.count / 2 + 1
     [2,4,8,16,32].find { |round| round >= num_of_progress }
   end
 
   def today_round
-    num_of_progress = self.memberships.where(status: "progress").count
+    num_of_progress = self.progress_memberships.count
     [2,4,8,16,32].find { |round| round >= num_of_progress } 
   end
 
+  def last_match
+    self.matches.order(start_time: :desc).first
+  end
+
+  def progress_memberships
+    self.memberships.where(status: "progress")
+  end
+
+  def update_progress_memberships(params)
+    self.progress_memberships.update_all(params)
+  end
+
+  def first_date?(datetime)
+    datetime.to_date == self.start_date.to_date
+  end
+
+  def start
+    status = self.memberships.count < 8 ? "canceled" : "progress"
+    self.update(status: status)
+    self.memberships.update_all(status: status)
+  end
+
+  def canceled?
+    self.status == "canceled"
+  end
+
+  def progress?
+    self.status == "progress"
+  end
+
+  def winner
+    self.memberships.find_by_result("gold")&.user
+  end
+
+  def complete
+    if !self.winner.nil? && self.incentive_title
+      self.winner.update(title: self.incentive_title)
+    end
+    self.update(status: "completed")
+    self.progress_memberships.update_all(status: "completed")
+  end
+
+  # 서버 재시작 후 해제된 모든 토너먼트의 스케쥴 재설정(개발 완료 후 주석해제 필요)
+  def self.retry_set_schedule
+    where(status: ["pending", "progress"]).each { |tournament| tournament.set_next_schedule }
+  end
+
+  def set_next_schedule
+    return if ["completed", "canceled"].include?(self.status)
+
+    if Time.zone.now < self.start_date
+      self.set_schedule_at_start_date
+    elsif self.match_operation_executed?
+      self.set_schedule_at_operation_time
+    else
+      self.set_schedule_at_tournament_time
+    end
+  end
+
+  private
+
+  def match_operation_executed?
+    Time.zone.now.hour >= self.tournament_time.hour
+  end
+
+  def set_schedule_at_operation_time
+    TournamentJob.set(wait_until: Date.tomorrow.midnight.change(minute: 5)).perform_later(self)
+  end
+
+  def set_schedule_at_tournament_time
+    TournamentJob.set(wait_until: Date.today.midnight.change(hour: self.tournament_time.hour)).perform_later(self)
+  end
+
+  def set_schedule_at_start_date
+    TournamentJob.set(wait_until: self.start_date).perform_later(self)
+  end
+
+  def dummy_enemy
+    {
+      id: -1,
+      name: "상대 미정",
+      image_url: "assets/default_avatar.png",
+    }
+  end
 end

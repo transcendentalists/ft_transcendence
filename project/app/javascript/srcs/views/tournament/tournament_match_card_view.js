@@ -2,6 +2,17 @@ export let TournamentMatchCardView = Backbone.View.extend({
   template: _.template($("#tournament-match-card-view-template").html()),
   className: "tournament-match-card",
 
+  events: {
+    "click .play.button": "play",
+  },
+
+  play: function (event) {
+    let match_id = event.target.getAttribute("data-match-id");
+    if (isNaN(match_id)) return;
+
+    App.router.navigate(`#/matches?match_type=tournament&match_id=${match_id}`);
+  },
+
   initialize: function () {},
 
   /**

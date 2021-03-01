@@ -3,13 +3,12 @@ import { App, Helper } from "srcs/internal";
 export let WarHistoryListView = Backbone.View.extend({
   el: ".war-history-list",
 
-  initialize: function (guild_id) {
-    this.guild_id = guild_id;
+  initialize: function () {
     this.child_views = [];
   },
 
   addOne: function (war_history) {
-    let child_view = new App.View.WarHistoryView(this.guild_id);
+    let child_view = new App.View.WarHistoryView();
     this.child_views.push(child_view);
     this.$el.append(child_view.render(war_history).$el);
   },
@@ -17,8 +16,7 @@ export let WarHistoryListView = Backbone.View.extend({
   render: function (war_history_list) {
     if (!war_history_list.length)
       this.$el.html("<span>워 히스토리가 쌓이기를 기다리고 있습니다.</span>");
-    if (war_history_list.length == 0) return;
-    war_history_list.forEach(this.addOne, this);
+    else war_history_list.forEach(this.addOne, this);
     return this;
   },
 

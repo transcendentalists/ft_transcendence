@@ -622,7 +622,7 @@ body {
   margin-bottom: 1.5rem;
 }
 
-#guild-detail-view .member-ranking-list {
+#guild-detail-view .member-list {
   margin-bottom: 4rem;
 }
 
@@ -638,11 +638,11 @@ body {
   margin-right: 1rem;
 }
 
-#guild-detail-view .member-ranking-list .stat {
+#guild-detail-view .member-list .stat {
   margin-right: 1rem;
 }
 
-#guild-detail-view .member-rank-page-buttons {
+#guild-detail-view .member-list-page-buttons {
   margin-bottom: 1rem;
 }
 
@@ -650,7 +650,7 @@ body {
   margin-left: auto;
 }
 
-#guild-detail-view #guild-member-list-buttons-view {
+#guild-detail-view .guild-member-card-buttons-view {
   margin-left: auto;
 }
 
@@ -672,8 +672,19 @@ body {
   margin-bottom: 1.5rem;
 }
 
+#guild-detail-view .war-history-view .bet-point {
+  width: 7rem;
+  text-align: center;
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+
+#guild-detail-view .war-history-view .icon {
+  margin: 0em 0.2em 0em 0em;
+}
+
 #guild-detail-view .war-history-list .ui.fluid.buttons {
-  width: 42rem;
+  width: 34rem;
 }
 
 #guild-detail-view .war-history-view .enemy {

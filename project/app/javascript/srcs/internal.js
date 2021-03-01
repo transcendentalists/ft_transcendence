@@ -96,8 +96,9 @@ import { GuildCreateView } from "./views/guild/guild_create_view";
 import { GuildProfileCardView } from "./views/guild/guild_profile_card_view";
 import { GuildProfileCardButtonsView } from "./views/guild/guild_profile_card_buttons_view";
 import { GuildRankingView } from "./views/guild/guild_ranking_view";
-import { GuildMemberRankingView } from "./views/guild/guild_member_ranking_view";
-import { GuildMemberListButtonsView } from "./views/guild/guild_member_list_buttons_view";
+import { GuildMemberListView } from "./views/guild/guild_member_list_view";
+import { GuildMemberCardButtonsView } from "./views/guild/guild_member_card_buttons_view";
+import { GuildMemberProfileCardView } from "./views/guild/guild_member_profile_card_view";
 
 /** war views */
 import { WarRequestCardListView } from "./views/war/war_request_card_list_view";
@@ -207,8 +208,9 @@ export let App = {
     GuildProfileCardView,
     GuildProfileCardButtonsView,
     GuildRankingView,
-    GuildMemberRankingView,
-    GuildMemberListButtonsView,
+    GuildMemberListView,
+    GuildMemberCardButtonsView,
+    GuildMemberProfileCardView,
 
     WarHistoryListView,
     WarHistoryView,

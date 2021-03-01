@@ -10,12 +10,12 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
     "click .war-request-create-button": "createWarRequest",
   },
 
-  initialize: function (guild) {
-    this.guild = guild;
+  initialize: function (options) {
+    this.guild = options.guild;
   },
 
   showGuild: function () {
-    App.router.navigate(`#/guilds/${this.guild.id}/1`);
+    App.router.navigate(`#/guilds/${this.guild.id}?page=1`);
   },
 
   leaveGuild: function () {
@@ -26,7 +26,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
       method: "DELETE",
       success_callback: () => {
         App.current_user.set("guild", null);
-        App.router.navigate("#/guilds/page/1", true);
+        App.router.navigate("#/guilds?page=1", true);
       },
       fail_callback: (data) => {
         Helper.info({ error: data.error });
@@ -45,8 +45,8 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
         position: "member",
       },
       success_callback: (data) => {
-        App.current_user.set("guild", data.guildMembership);
-        App.router.navigate("#/guilds/page/1", true);
+        App.current_user.set("guild", data.guild_membership);
+        App.router.navigate(`#/guilds/${App.current_user.get("guild").id}?page=1`, true);
       },
       fail_callback: (data) => {
         Helper.info({ error: data.error });
@@ -58,7 +58,12 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
     App.router.navigate(`#/guilds/war_request/new?enemy_id=${this.guild.id}`);
   },
 
-  render: function (is_detail_view) {
+  isInGuildIndex: function () {
+    const url = Backbone.history.getFragment().split("?")[0];
+    return url == "guilds" ? true : false;
+  },
+
+  render: function () {
     const current_user_guild_id = App.current_user.get("guild")?.id;
     const current_user_guild_position = App.current_user.get("guild")?.position;
     this.$el.html(
@@ -66,7 +71,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
         guild: this.guild,
         current_user_guild_id: current_user_guild_id,
         current_user_guild_position: current_user_guild_position,
-        is_detail_view: is_detail_view,
+        guild_show_button: this.isInGuildIndex(),
       })
     );
     return this;

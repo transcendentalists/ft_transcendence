@@ -20,7 +20,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
   validates :name, :email, uniqueness: true
-  
+
   def login(verification: false)
     return self if two_factor_auth && !verification
 
@@ -72,7 +72,7 @@ class User < ApplicationRecord
     stat = {}
     stat[:win_count], stat[:lose_count] = data['win'] ? data['win'] : 0, data['lose'] ? data['lose'] : 0
     stat[:tier] = self.tier
-    stat[:rank] = User.order(point: :desc, name: :asc).index(self) + 1
+    stat[:rank] = User.order(point: :desc).index(self) + 1
     return stat
   end
 
@@ -130,9 +130,8 @@ class User < ApplicationRecord
       anagram: guild_membership&.guild&.anagram
     }
   end
-  
-  private
 
+  private
 
   def self.where_by_query(params)
     users = self.all

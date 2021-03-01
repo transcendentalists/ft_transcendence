@@ -23,7 +23,7 @@ class Guild < ApplicationRecord
     return errors.add(:anagram, :invalid, message: "아나그램은 길드 이름에 포함된 단어로 구성되어야 합니다.") unless anagram_downcase.empty?
   end
 
-  def for_member_ranking(page)
+  def for_member_list(page)
     self.users.order(point: :desc, name: :asc).page(page).map { |user|
       user.profile
     }

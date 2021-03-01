@@ -4,6 +4,9 @@ class Tournament < ApplicationRecord
   has_many :memberships, class_name: "TournamentMembership"
   has_many :users, through: :memberships, source: :user
   has_many :scorecards, through: :matches, as: :eventable
+
+  validates :max_user_count, inclusion: [8, 16, 32]
+
   scope :for_tournament_index, -> (current_user) do
     where.not(status: ["completed", "canceled"])
     .reject{|tournament|
@@ -172,6 +175,11 @@ class Tournament < ApplicationRecord
     else
       self.set_schedule_at_tournament_time
     end
+  end
+
+  def self.can_be_created_by(current_user)
+    web_admin_auth_level = 4
+    ApplicationRecord.position_grade[current_user.position] >= web_admin_auth_level
   end
 
   private

@@ -8,6 +8,7 @@ class ApplicationRecord < ActiveRecord::Base
       "owner" => 3, 
       "admin" => 2, 
       "member" => 1,
+      "user" => 1,
       "ghost" => 0
     }
   end

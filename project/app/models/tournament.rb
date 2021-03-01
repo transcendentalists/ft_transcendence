@@ -5,7 +5,11 @@ class Tournament < ApplicationRecord
   has_many :users, through: :memberships, source: :user
   has_many :scorecards, through: :matches, as: :eventable
 
+  validates :title, length: { minimum: 1, maximum: 20 }
+  validates :incentive_title, length: { maximum: 20 }
+  validates :incentive_gift, length: { maximum: 20 }, allow_nil: true
   validates :max_user_count, inclusion: [8, 16, 32]
+  validates :target_match_score, inclusion: [3, 5, 7, 10]
 
   scope :for_tournament_index, -> (current_user) do
     where.not(status: ["completed", "canceled"])
@@ -17,6 +21,7 @@ class Tournament < ApplicationRecord
       stat
     }
   end
+
 
   def to_simple
     permitted = %w[id title max_user_count registered_user_count start_date 
@@ -180,6 +185,26 @@ class Tournament < ApplicationRecord
   def self.can_be_created_by(current_user)
     web_admin_auth_level = 4
     ApplicationRecord.position_grade[current_user.position] >= web_admin_auth_level
+  end
+
+  def self.create_by(params)
+    start_date = DateTime.parse(params[:start_date])
+    return nil if start_date <= DateTime.current.midnight
+    return nil unless params[:tournament_time] >= 9 && params[:tournament_time] <= 22
+
+    tournament_time = Time.zone.now + params[:tournament_time].hours
+
+    tournament_hash = {
+      title: params[:title],
+      rule_id: params[:rule_id],
+      max_user_count: params[:max_user_count],
+      start_date: start_date,
+      tournament_time: tournament_time,
+      incentive_gift: params[:incentive_gift],
+      target_match_score: params[:target_match_score]
+    }
+    tournament_hash.merge!({ incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
+    self.create(tournament_hash)
   end
 
   private

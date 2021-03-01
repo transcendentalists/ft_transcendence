@@ -75,7 +75,7 @@ export let GuildCreateView = Backbone.View.extend({
 
     if (success) {
       App.current_user.set("guild", response.guild);
-      App.router.navigate("#/guilds/page/1");
+      App.router.navigate("#/guilds?page=1");
     } else {
       Helper.info({ error: response.error });
     }
@@ -91,7 +91,7 @@ export let GuildCreateView = Backbone.View.extend({
 
   cancel: function () {
     this.close();
-    App.router.navigate("#/guilds/page/1");
+    App.router.navigate("#/guilds?page=1");
   },
 
   showAnagramDefinition: function () {

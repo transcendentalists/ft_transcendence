@@ -15,14 +15,6 @@ class Tournament < ApplicationRecord
     }
   end
 
-  def self.dummy_enemy
-    {
-      id: -1,
-      name: "상대 미정",
-      image_url: "assets/default_avatar.png",
-    }
-  end
-
   def to_simple
     permitted = %w[id title max_user_count registered_user_count start_date 
                     tournament_time incentive_title incentive_gift status
@@ -72,10 +64,8 @@ class Tournament < ApplicationRecord
     !user.tournament_memberships.where(status: ["pending", "progress"]).find { |membership|
       tournament = membership.tournament
       return false if tournament.match_hour != self.match_hour
-      date = self.start_date
-      while (date <= self.expected_end_date)
+      (self.start_date.to_i..self.expected_end_date.to_i).each do |date|
         return true if date.between?(tournament.start_date, tournament.expected_end_date)
-        date += 1.day
       end
       false
     }.nil?
@@ -169,31 +159,44 @@ class Tournament < ApplicationRecord
 
   # 서버 재시작 후 해제된 모든 토너먼트의 스케쥴 재설정(개발 완료 후 주석해제 필요)
   def self.retry_set_schedule
-    # where(status: ["pending", "progress"].each { |tournament| tournament.set_next_schedule }
+    where(status: ["pending", "progress"].each { |tournament| tournament.set_next_schedule }
   end
 
   def set_next_schedule
     return if ["completed", "canceled"].include?(self.status)
 
     if Time.zone.now < self.start_date
-      self.set_schedule_until_start_date
-    elsif Time.zone.now.hour >= self.tournament_time.hour
-      self.set_schedule_until_operation_time
+      self.set_schedule_at_start_date
+    elsif self.match_operation_executed?
+      self.set_schedule_at_operation_time
     else
-      self.set_schedule_until_tournament_time
+      self.set_schedule_at_tournament_time
     end
   end
 
-  def set_schedule_until_operation_time
+  private
+
+  def match_operation_executed?
+    Time.zone.now.hour >= self.tournament_time.hour
+  end
+
+  def set_schedule_at_operation_time
     TournamentJob.set(wait_until: Date.tomorrow.midnight.change(minute: 5)).perform_later(self)
   end
 
-  def set_schedule_until_tournament_time
+  def set_schedule_at_tournament_time
     TournamentJob.set(wait_until: Date.today.midnight.change(hour: self.tournament_time.hour)).perform_later(self)
   end
 
-  def set_schedule_until_start_date
+  def set_schedule_at_start_date
     TournamentJob.set(wait_until: self.start_date).perform_later(self)
   end
 
+  def dummy_enemy
+    {
+      id: -1,
+      name: "상대 미정",
+      image_url: "assets/default_avatar.png",
+    }
+  end
 end

@@ -1,12 +1,14 @@
 class TournamentJob < ApplicationJob
   queue_as :default
-  # after_perform { |job| job.arguments.first.set_next_schedule }
+  after_perform { |job| job.arguments.first.set_next_schedule }
 
   def perform(tournament, options = { now: Time.zone.now })
     @tournament = tournament
     @today_round = tournament.today_round
     @now = options[:now]
 
+    # 자정이면, 경기 결산 및 신규 경기 생성 등 토너먼트 운영 
+    # 자정이 아니라면, 경기 운영(경기 시작/취소)
     if @now.hour == 0
       self.operate_tournament
     else
@@ -55,6 +57,7 @@ class TournamentJob < ApplicationJob
     if @today_round == 4
       @tournament.update_progress_memberships(result: "bronze")
     else
+      # 결승전
       match = @tournament.last_match
       if match.completed?
         @tournament.memberships.find_by_user_id(match.winner.id).update(result: "gold")
@@ -93,15 +96,16 @@ class TournamentJob < ApplicationJob
       target_score: @tournament.target_match_score,
     })
     card_entry = {'left': left_membership_id, 'right': right_membership_id}
-    card_entry.each do |side, mid|
+    card_entry.each do |side, membership_id|
       Scorecard.create(
-        user_id: TournamentMembership.find(mid).user.id,
+        user_id: TournamentMembership.find(membership_id).user.id,
         match_id: match.id,
         side: side
       )
     end
   end
 
+  # Tournament play branch에서 작업 예정
   def operate_match
   end
 end

@@ -9,28 +9,13 @@ export let GuildCreateView = Backbone.View.extend({
   events: {
     "click .guild-create-button": "submit",
     "click .guild-create-cancel-button": "cancel",
+    "click .anagram-definition-icon": "showAnagramDefinition",
   },
 
   initialize: function () {
     this.name = null;
     this.anagram = null;
     this.image = null;
-  },
-
-  render: function () {
-    this.$el.html(this.template());
-    this.$(".ui.negative.message").hide();
-    return this;
-  },
-
-  renderWarning: function (msg) {
-    this.$(".ui.negative.message").html(
-      this.warning_message_template({
-        type: "업로드 에러",
-        msg: msg,
-      })
-    );
-    this.$(".ui.negative.message").show();
   },
 
   submit: function () {
@@ -61,12 +46,14 @@ export let GuildCreateView = Backbone.View.extend({
     return false;
   },
 
-  appendFormData() {
-    let form_data = new FormData();
-    form_data.append("name", this.name);
-    form_data.append("anagram", this.anagram);
-    form_data.append("file", this.image);
-    return form_data;
+  renderWarning: function (msg) {
+    this.$(".ui.negative.message").html(
+      this.warning_message_template({
+        type: "업로드 에러",
+        msg: msg,
+      })
+    );
+    this.$(".ui.negative.message").show();
   },
 
   createGuild: async function () {
@@ -94,9 +81,31 @@ export let GuildCreateView = Backbone.View.extend({
     }
   },
 
+  appendFormData() {
+    let form_data = new FormData();
+    form_data.append("name", this.name);
+    form_data.append("anagram", this.anagram);
+    form_data.append("file", this.image);
+    return form_data;
+  },
+
   cancel: function () {
     this.close();
     App.router.navigate("#/guilds/page/1");
+  },
+
+  showAnagramDefinition: function () {
+    Helper.info({
+      subject: "아나그램이란?",
+      description:
+        "아나그램은 길드 이름에 포함된 글자들을 사용하여 만들어지는 어구입니다.",
+    });
+  },
+
+  render: function () {
+    this.$el.html(this.template());
+    this.$(".ui.negative.message").hide();
+    return this;
   },
 
   close: function () {

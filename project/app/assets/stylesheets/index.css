@@ -1063,3 +1063,12 @@ body {
 #tournament-index-view .tournament-card .start-time {
   padding-right: 1rem;
 }
+
+/* ==========================================================================
+   TOURNAMENT CREATE VIEW
+   ========================================================================== */
+
+#tournament-create-view {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}

@@ -85,7 +85,6 @@ import { TournamentCardView } from "./views/tournament/tournament_card_view";
 import { TournamentCardListView } from "./views/tournament/tournament_card_list_view";
 import { TournamentMatchCardView } from "./views/tournament/tournament_match_card_view";
 import { TournamentMatchCardListView } from "./views/tournament/tournament_match_card_list_view";
-
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
 
 import { UserProfileCardView } from "./views/user/user_profile_card_view";

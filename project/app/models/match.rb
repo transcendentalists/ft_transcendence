@@ -19,7 +19,14 @@ class Match < ApplicationRecord
   end
 
   def start
-    self.update(status: "progress", start_time: Time.now())
+    return if self.status != "pending"
+    
+    if self.match_type == "tournament"
+      return self.cancel if self.scorecards.where(status: "ready").count != 2
+      self.update(status: "progress")
+    else 
+      self.update(status: "progress", start_time: Time.now())
+    end
   end
 
   def winner
@@ -45,6 +52,37 @@ class Match < ApplicationRecord
 
   def completed?
     self.status == "completed"
+  end
+
+  def completed_or_canceled?
+    self.canceled? || self.completed?
+  end
+
+  def canceled_or_canceled?
+    self.completed_or_canceled?
+  end
+
+  def player?(user)
+    !self.users.where(id: user.id).empty?
+  end
+
+  def scorecard_of(user)
+    self.scorecards.find_by_user_id(user.id)
+  end
+
+  def tournament?
+    self.match_type == "tournament"
+  end
+
+  def early_time?
+    !self.start_time.nil? && Time.zone.now < self.start_time
+  end
+
+  def ready?
+    if self.tournament? && self.early_time?
+      false
+    elsif self.scorecards.count < 2 || !self.scorecards.reload.where(result: "wait")reload.find_by_result("wait").nil?
+
   end
 end
 

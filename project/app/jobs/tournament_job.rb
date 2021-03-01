@@ -103,5 +103,6 @@ class TournamentJob < ApplicationJob
   end
 
   def operate_match
+    @tournament.matches.where(status: "pending").each { |match| match.start }
   end
 end

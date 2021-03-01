@@ -100,8 +100,8 @@ body {
 }
 
 /* ==========================================================================
-                                PERSIST VIEW
-   ========================================================================== */
+                                  PERSIST VIEW
+     ========================================================================== */
 
 @media (max-width: 1024px) {
   .hide-tablet {
@@ -110,7 +110,7 @@ body {
 }
 
 /* SIGN IN VIEW
-   ========================================================================== */
+     ========================================================================== */
 
 #sign-in-view {
   width: 300px;
@@ -139,7 +139,7 @@ body {
 }
 
 /* INVITE VIEW
-   ========================================================================== */
+     ========================================================================== */
 
 @media (max-width: 885px) {
   #invite-view {
@@ -168,7 +168,7 @@ body {
 }
 
 /* DIRECT CHAT VIEW
-   ========================================================================== */
+     ========================================================================== */
 
 @media (max-width: 740px) {
   #direct-chat-view {
@@ -257,7 +257,7 @@ body {
 }
 
 /* ERROR VIEW
-   ========================================================================== */
+     ========================================================================== */
 
 #error-view {
   height: 100%;
@@ -331,8 +331,8 @@ body {
 }
 
 /* ==========================================================================
-   APPEARANCE VIEW
-   ========================================================================== */
+     APPEARANCE VIEW
+     ========================================================================== */
 
 #appearance-view {
   position: fixed;
@@ -409,7 +409,7 @@ body {
 }
 
 /* IMAGE UPLOAD MODAL VIEW
-   ========================================================================== */
+     ========================================================================== */
 
 #image-upload-modal-view .grid.container {
   margin-top: 1rem;
@@ -421,11 +421,11 @@ body {
 }
 
 /* ==========================================================================
-   SHARE VIEW
-   ========================================================================== */
+     SHARE VIEW
+     ========================================================================== */
 
 /* PROFILE VIEW
-   ========================================================================== */
+     ========================================================================== */
 
 .profile-trophy > i {
   margin-left: 0.5rem;
@@ -439,6 +439,10 @@ body {
 .profile-card .content {
   margin-left: 2rem;
   margin-top: -1rem;
+}
+
+.profile-card .row.flex-container.baseline {
+  width: 24rem;
 }
 
 .profile-card .row:not(:first-child) {
@@ -455,8 +459,8 @@ body {
 }
 
 /* ==========================================================================
-   USER INDEX VIEW
-   ========================================================================== */
+     USER INDEX VIEW
+     ========================================================================== */
 
 #user-index-view {
   max-width: 740px;
@@ -571,8 +575,113 @@ body {
 }
 
 /* ==========================================================================
-   GUILD INDEX VIEW
-   ========================================================================== */
+     GUILD DETAIL VIEW
+     ========================================================================== */
+
+#guild-detail-view .small.image {
+  margin-bottom: 0;
+  width: 150px !important;
+  height: 150px !important;
+  min-width: 150px;
+  min-height: 150px;
+}
+
+#guild-detail-view .my-guild-header {
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .guild-profile-view {
+  margin-bottom: 4rem;
+}
+
+#guild-detail-view .member-list-header {
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .member-list {
+  margin-bottom: 4rem;
+}
+
+#guild-detail-view .war-history-header {
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .war-history-list {
+  margin-bottom: 4rem;
+}
+
+#guild-detail-view .guild-profile-view .stat {
+  margin-right: 1rem;
+}
+
+#guild-detail-view .member-list .stat {
+  margin-right: 1rem;
+}
+
+#guild-detail-view .member-list-page-buttons {
+  margin-bottom: 1rem;
+}
+
+#guild-detail-view #guild-profile-card-buttons-view {
+  margin-left: auto;
+}
+
+#guild-detail-view .guild-member-card-buttons-view {
+  margin-left: auto;
+}
+
+#guild-detail-view .guild-profile-card .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-detail-view .profile-card .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-detail-view .war-history-view {
+  align-items: stretch;
+  height: 33px;
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .war-history-view .bet-point {
+  width: 7rem;
+  text-align: center;
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+
+#guild-detail-view .war-history-view .icon {
+  margin: 0em 0.2em 0em 0em;
+}
+
+#guild-detail-view .war-history-list .ui.fluid.buttons {
+  width: 34rem;
+}
+
+#guild-detail-view .war-history-view .enemy {
+  width: 7rem;
+  margin-left: 1rem;
+}
+
+#guild-detail-view .war-history-view .ui.fluid.buttons .ui.button {
+  width: 8rem;
+}
+
+#guild-detail-view .war-history-view .enemy > img {
+  width: 25px !important;
+  height: 25px !important;
+  min-width: 25px;
+  margin-right: 0.3rem;
+}
+
+/* ==========================================================================
+     GUILD INDEX VIEW
+     ========================================================================== */
 
 .guild-profile-card .content {
   margin-left: 2rem;
@@ -619,12 +728,10 @@ body {
 }
 
 #guild-index-view .guild-profile-view .stat {
-  margin-left: 1rem;
   margin-right: 1rem;
 }
 
 #guild-index-view .guild-ranking-list .stat {
-  margin-left: 1rem;
   margin-right: 1rem;
 }
 
@@ -681,8 +788,8 @@ body {
 }
 
 /* ==========================================================================
-   LADDER INDEX VIEW
-   ========================================================================== */
+     LADDER INDEX VIEW
+     ========================================================================== */
 
 #ladder-index-view {
   margin-top: 8rem;
@@ -705,8 +812,8 @@ body {
 }
 
 /* ==========================================================================
-   GAME INDEX VIEW
-   ========================================================================== */
+     GAME INDEX VIEW
+     ========================================================================== */
 
 #game-index-view {
   background-image: url("/assets/game_index.jpg");
@@ -766,8 +873,8 @@ body {
 }
 
 /* ==========================================================================
-   CHAT INDEX VIEW
-   ========================================================================== */
+     CHAT INDEX VIEW
+     ========================================================================== */
 
 #chat-index-view {
   min-width: 740px;
@@ -853,8 +960,8 @@ body {
 }
 
 /* ==========================================================================
-   CHAT ROOM VIEW
-   ========================================================================== */
+     CHAT ROOM VIEW
+     ========================================================================== */
 
 #chat-room-view {
   position: absolute;

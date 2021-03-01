@@ -2,6 +2,7 @@ class WarRequest < ApplicationRecord
   belongs_to :rule
   has_one :war, dependent: :destroy
   has_many :war_statuses, dependent: :destroy
+  has_many :guilds, through: :war_statuses
   validates :status, inclusion: { in: ["pending", "accepted", "canceled"] }
   validates :rule_id, inclusion: { in: 1..7 }
   validates :target_match_score, inclusion: { in: [3, 5, 7, 10] }

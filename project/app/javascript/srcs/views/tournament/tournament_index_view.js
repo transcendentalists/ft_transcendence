@@ -19,27 +19,27 @@ export let TournamentIndexView = Backbone.View.extend({
     );
     this.open_tournaments = _.filter(
       data.tournaments,
-      (tournament) => tournament.current_user_next_match === null
+      (tournament) =>
+        tournament.current_user_next_match === null &&
+        tournament.status == "pending"
     );
   },
 
   renderTournamentsCallBack: function (data) {
     this.parseTournamentsData(data);
 
+    this.my_tournaments_view = new App.View.TournamentMatchCardListView().setElement(
+      this.$("#my-tournaments-view")
+    );
     if (this.my_tournaments.length > 0) {
-      this.my_tournaments_view = new App.View.TournamentMatchCardListView();
-      this.my_tournaments_view
-        .setElement(this.$("#my-tournaments-view"))
-        .render(this.my_tournaments);
+      this.my_tournaments_view.render(this.my_tournaments);
     }
 
+    this.open_tournaments_view = new App.View.TournamentCardListView({
+      parent: this,
+    }).setElement(this.$("#open-tournaments-view"));
     if (this.open_tournaments.length > 0) {
-      this.open_tournaments_view = new App.View.TournamentCardListView({
-        parent: this,
-      });
-      this.open_tournaments_view
-        .setElement(this.$("#open-tournaments-view"))
-        .render(this.open_tournaments);
+      this.open_tournaments_view.render(this.open_tournaments);
     }
   },
 

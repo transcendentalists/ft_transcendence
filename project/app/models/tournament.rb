@@ -9,22 +9,16 @@ class Tournament < ApplicationRecord
     .reject{|tournament|
       !tournament.memberships.where(user_id: current_user.id, status: "completed").empty?
     }.map { |tournament|
-      stat = tournament.to_simple
-      stat.merge({
-        registered_user_count: tournament.memberships.count,
-        rule: {
-          id: tournament.rule_id,
-          name: tournament.rule.name
-        },
-        current_user_next_match: tournament.next_match_of(current_user)
-      })
+      stat = tournament.profile
+      stat[:current_user_next_match] = tournament.next_match_of(current_user)
+      stat
     }
   end
 
   def self.dummy_enemy
     {
       id: -1,
-      name: "?",
+      name: "상대 미정",
       image_url: "assets/default_avatar.png",
     }
   end
@@ -34,6 +28,57 @@ class Tournament < ApplicationRecord
                     tournament_time incentive_title incentive_gift status
                     target_match_score]
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
+  end
+
+  def profile
+    stat = self.to_simple
+    stat.merge({
+      registered_user_count: self.memberships.count,
+      rule: {
+        id: self.rule_id,
+        name: self.rule.name
+      },
+    })
+  end
+
+  def enroll(user)
+    if Time.zone.now > self.start_date.midnight
+      raise StandardError.new("등록 기간을 초과했습니다.")
+    elsif self.memberships.count == self.max_user_count
+      raise StandardError.new("정원이 마감되었습니다.")
+    elsif self.status != "pending"
+      raise StandardError.new("토너먼트가 등록이 불가능한 상태입니다.")
+    elsif !self.memberships.find_by_user_id(user.id).nil?
+      raise StandardError.new("이미 등록한 토너먼트입니다.")
+    elsif self.overlapped_schedule?(user)
+      raise StandardError.new("다른 토너먼트 스케쥴과 중복됩니다.")
+    end
+
+    TournamentMembership.create!(
+      user_id: user.id,
+      tournament_id: self.id,
+    )
+  end
+
+  def match_hour
+    self.tournament_time.hour
+  end
+
+  def expected_end_date
+    self.start_date + ([8,16,32].find_index(self.max_user_count) + 2).days
+  end
+
+  def overlapped_schedule?(user)
+    !user.tournament_memberships.where(status: ["pending", "progress"]).find { |membership|
+      tournament = membership.tournament
+      return false if tournament.match_hour != self.match_hour
+      date = self.start_date
+      while (date <= self.expected_end_date)
+        return true if date.between?(tournament.start_date, tournament.expected_end_date)
+        date += 1.day
+      end
+      false
+    }.nil?
   end
 
   def next_match_of(user)

@@ -110,10 +110,8 @@ class GameChannel < ApplicationCable::Channel
 
   def unsubscribed
     if current_user.waiting_match?
-      p "waiting match"
       current_user.waiting_match.cancel
     elsif current_user.playing?
-      p "giveup"
       complete_by_giveup
     end
     current_user.update_status("online")

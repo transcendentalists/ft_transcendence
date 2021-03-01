@@ -578,9 +578,20 @@ body {
     GUILD CREATE VIEW
     ========================================================================== */
 
+#guild-create-view .anagram-header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0;
+}
+
+#guild-create-view .anagram-header > i {
+  margin-left: 0.3rem;
+}
+
 #guild-create-view .anagram-input {
   display: flex;
   align-items: baseline;
+  margin-bottom: 1rem;
 }
 
 #guild-create-view .anagram-input > span {

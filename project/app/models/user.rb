@@ -52,11 +52,16 @@ class User < ApplicationRecord
   end
 
   def waiting_match?
-    self.matches&.exists?(status: "pending")
+    return false if self.status != "playing"
+    !self.matches.where(status: "pending").find { |match|
+      matches.match_type != "tournament"
+    }.nil?
   end
 
   def waiting_match
-    self.matches&.find_by_status(:pending)
+    self.matches.where(status: "pending").find { |match|
+      matches.match_type != "tournament"
+    }
   end
 
   def enemy

@@ -56,14 +56,15 @@ class GameChannel < ApplicationCable::Channel
 
   # 게임의 승패에 따라 유저의 포인트를 업데이트
   def update_game_status
+    @match.update(status: "completed")
+    return if @match.match_type != "ladder"
     @match.users.each do |user|
-      if user == @match.winner
+      if user.id == @match.winner.id
         user.update(point: user.point + 20)
       else
         user.update(point: user.point + 5)
       end
     end
-    @match.update(status: "completed")
   end
 
   # 1) 게임이 정상적으로 종료된 경우에 스코어카드를 기준으로 승/패를 업데이트
@@ -82,13 +83,13 @@ class GameChannel < ApplicationCable::Channel
   # 게임을 '종료' 상태로 바꾸고 유저의 승패를 업데이트
   def complete_by_giveup
     @match = current_user.playing_match
-    return if @match.nil? or @match.status == "completed"
+    return if @match.nil? || @match.status == "completed"
 
     @match.scorecards.each do |card|
       card.update(result: card.user.id == current_user.id ? "lose" : "win")
     end
     winner_id = current_user.enemy
-    @match.update(status: "completed")
+    update_game_status
 
     send_complete_message("ENEMY_GIVEUP", winner_id)
   end
@@ -109,8 +110,10 @@ class GameChannel < ApplicationCable::Channel
 
   def unsubscribed
     if current_user.waiting_match?
+      p "waiting match"
       current_user.waiting_match.cancel
     elsif current_user.playing?
+      p "giveup"
       complete_by_giveup
     end
     current_user.update_status("online")

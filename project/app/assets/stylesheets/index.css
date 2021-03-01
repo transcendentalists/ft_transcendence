@@ -692,8 +692,8 @@ body {
   margin-top: 1rem;
 }
 
-#ladder-index-view #ladder-join-button {
-  margin-left: 2rem;
+#ladder-index-view .button {
+  margin-left: 0.5rem;
 }
 
 #ladder-index-view .user-ranking.ui.container {

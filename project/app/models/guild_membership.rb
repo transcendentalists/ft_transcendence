@@ -45,16 +45,8 @@ class GuildMembership < ApplicationRecord
     true
   end
 
-  def requested_by_me?(user_id)
-    self.user_id == user_id
-  end
-
   def master?
     self.position == "master"
-  end
-
-  def is_guild_of?(current_user)
-    current_user.in_guild&.id == self.guild_id
   end
 
 end

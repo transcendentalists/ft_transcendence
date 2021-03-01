@@ -115,8 +115,8 @@ export let GameIndexView = Backbone.View.extend({
    */
   recv: function (msg) {
     if (
-      msg.type == "START" ||
-      (msg.type == "ENTER" && App.current_user.id == msg["send_id"])
+      msg.type == "PLAY" ||
+      (msg.type == "WATCH" && App.current_user.id == msg["send_id"])
     ) {
       this.spec = msg;
       this.renderPlayerView(msg);
@@ -159,7 +159,7 @@ export let GameIndexView = Backbone.View.extend({
       this.right_player_view.render(data["right"]).$el
     );
 
-    if (data.type == "START") {
+    if (data.type == "PLAY") {
       this.$(".ui.active.loader").removeClass("active loader");
       this.$("#count-down-box").empty();
       this.countDown();

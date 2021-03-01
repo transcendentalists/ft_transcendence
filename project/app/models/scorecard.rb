@@ -5,4 +5,5 @@ class Scorecard < ApplicationRecord
 
   def ready
     self.update(result: "ready")
+  end
 end

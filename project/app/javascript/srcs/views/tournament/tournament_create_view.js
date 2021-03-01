@@ -41,6 +41,7 @@ export let TournamentCreateView = Backbone.View.extend({
         ).val())
     );
 
+    form_data = form_data.map((column) => (column == "" ? null : column));
     return form_data;
   },
 

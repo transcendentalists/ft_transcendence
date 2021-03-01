@@ -1,0 +1,173 @@
+<script type="text/template" id="war-create-view-template">
+  <h1 class="ui header">Rules of War</h1>
+  <form class="ui form">
+    <div class="field">
+      <label>상대 길드</label>
+      <div class="ui disabled input">
+        <input type="text" placeholder=<%%= opponent_guild_name %>>
+      </div>
+    </div>
+    <div class="field">
+      <label>배팅 포인트</label>
+      <select class="bet-point">
+        <option value="1000">1000 포인트</option>
+        <option value="2000">2000 포인트</option>
+        <option value="3000">3000 포인트</option>
+        <option value="4000">4000 포인트</option>
+        <option value="5000">5000 포인트</option>
+        <option value="6000">6000 포인트</option>
+        <option value="7000">7000 포인트</option>
+        <option value="8000">8000 포인트</option>
+        <option value="9000">9000 포인트</option>
+        <option value="10000">10000 포인트</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>전쟁 시작일</label>
+      <select class="war-start-date">
+        <option value="1"><%%= tomorrow %></option>
+        <option value="2"><%%= tomorrow + 1 %></option>
+        <option value="3"><%%= tomorrow + 2 %></option>
+        <option value="4"><%%= tomorrow + 3 %></option>
+        <option value="5"><%%= tomorrow + 4 %></option>
+        <option value="6"><%%= tomorrow + 5 %></option>
+        <option value="7"><%%= tomorrow + 6 %></option>
+      </select>
+    </div>
+    <div class="field">
+      <label>전쟁 기간</label>
+      <select class="war-duration">
+        <option value="1">1일</option>
+        <option value="2">2일</option>
+        <option value="3">3일</option>
+        <option value="4">4일</option>
+        <option value="5">5일</option>
+        <option value="6">6일</option>
+        <option value="7">7일</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>워타임(1 hours)</label>
+      <select class="war-time">
+        <option value="00">00:00 ~ 01:00</option>
+        <option value="01">01:00 ~ 02:00</option>
+        <option value="02">02:00 ~ 03:00</option>
+        <option value="03">03:00 ~ 04:00</option>
+        <option value="04">04:00 ~ 05:00</option>
+        <option value="05">05:00 ~ 06:00</option>
+        <option value="06">06:00 ~ 07:00</option>
+        <option value="07">07:00 ~ 08:00</option>
+        <option value="08">08:00 ~ 09:00</option>
+        <option value="09">09:00 ~ 10:00</option>
+        <option value="10">10:00 ~ 11:00</option>
+        <option value="11">11:00 ~ 12:00</option>
+        <option value="12">12:00 ~ 13:00</option>
+        <option value="13">13:00 ~ 14:00</option>
+        <option value="14">14:00 ~ 15:00</option>
+        <option value="15">15:00 ~ 16:00</option>
+        <option value="16">16:00 ~ 17:00</option>
+        <option value="17">17:00 ~ 18:00</option>
+        <option value="18">18:00 ~ 19:00</option>
+        <option value="19">19:00 ~ 20:00</option>
+        <option value="20">20:00 ~ 21:00</option>
+        <option value="21">21:00 ~ 22:00</option>
+        <option value="22">22:00 ~ 23:00</option>
+        <option value="23">23:00 ~ 00:00</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>최대 미응답수</label>
+      <select class="max-no-reply-count">
+        <option value="3">3회</option>
+        <option value="4">4회</option>
+        <option value="5">5회</option>
+        <option value="6">6회</option>
+        <option value="7">7회</option>
+        <option value="8">8회</option>
+        <option value="9">9회</option>
+        <option value="10">10회</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>포함 범위</label>
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" checked="checked">
+              <label>친선전</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" checked="checked">
+              <label>워배틀</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" name="include-ladder">
+              <label>승급전</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" name="include-tournament">
+              <label>토너먼트</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>경기 규칙</label>
+      <select class="rule">
+        <option value="1">Classic</option>
+        <option value="2">Invisible</option>
+        <option value="3">Dwindle</option>
+        <option value="4">Bound Wall</option>
+        <option value="5">Bound Paddle</option>
+        <option value="6">Accel Wall</option>
+        <option value="7">Accel Paddle</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>워배틀 승리 점수</label>
+      <div class="ui form">
+        <div class="inline fields">
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" name="target-match-score" checked="checked">
+              <label>3점</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" name="target-match-score">
+              <label>5점</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" name="target-match-score">
+              <label>7점</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" name="target-match-score">
+              <label>10점</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-cotnainer buttons">
+    <div>
+      <div class="war-create-button ui teal create button">전쟁제안</div>
+      <div class="war-create-cancel-button ui red cancel button">취소하기</div>
+    </div>
+  </form>
+  <div class="ui negative message"></div>
+
+</script>

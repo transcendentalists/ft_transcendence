@@ -66,13 +66,8 @@ export let GuildCreateView = Backbone.View.extend({
       },
       body: form_data,
     });
-    let response = {};
-    let success = false;
-    try {
-      response = await data.json();
-      success = Math.floor(data.status / 100) == 2;
-    } catch (err) {}
-
+    let response = await data.json();
+    let success = Math.floor(data.status / 100) == 2 ? true : false;
     if (success) {
       App.current_user.set("guild", response.guild);
       App.router.navigate("#/guilds?page=1");
@@ -81,7 +76,7 @@ export let GuildCreateView = Backbone.View.extend({
     }
   },
 
-  appendFormData() {
+  appendFormData: function () {
     let form_data = new FormData();
     form_data.append("name", this.name);
     form_data.append("anagram", this.anagram);

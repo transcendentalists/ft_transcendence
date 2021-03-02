@@ -8,9 +8,9 @@ export let GuildInvitationListView = Backbone.View.extend({
   },
 
   addOne: function (guild_invitation) {
-    let child_view = new App.View.GuildInvitationView();
-    this.child_views.push(child_view);
-    this.$el.append(child_view.render(guild_invitation).$el);
+    let guild_invitation_view = new App.View.GuildInvitationView();
+    this.child_views.push(guild_invitation_view);
+    this.$el.append(guild_invitation_view.render(guild_invitation).$el);
   },
 
   render: function (guild_invitations) {
@@ -25,7 +25,9 @@ export let GuildInvitationListView = Backbone.View.extend({
   },
 
   close: function () {
-    this.child_views.forEach((child_view) => child_view.close());
+    this.child_views.forEach((guild_invitation_view) =>
+      guild_invitation_view.close()
+    );
     this.child_views = [];
     this.remove();
   },

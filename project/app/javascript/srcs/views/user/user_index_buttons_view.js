@@ -14,7 +14,7 @@ export let UserIndexButtonsView = Backbone.View.extend({
     this.user_id = user.id;
     const current_user_guild = App.current_user.get("guild");
     this.is_current_user = Helper.isCurrentUser(this.user_id);
-    this.invite_possible =
+    this.invite_button =
       !this.is_current_user &&
       current_user_guild != null &&
       current_user_guild.position != "member" &&
@@ -86,7 +86,12 @@ export let UserIndexButtonsView = Backbone.View.extend({
       body: {
         invited_user_id: this.user_id,
       },
-      // success_callback: (data) => {},
+      success_callback: (data) => {
+        Helper.info({
+          subject: "길드 초대 성공",
+          description: "초대장을 전송했습니다.",
+        });
+      },
       fail_callback: (data) => {
         Helper.info({ error: data.error });
       },
@@ -97,7 +102,7 @@ export let UserIndexButtonsView = Backbone.View.extend({
     this.$el.html(
       this.template({
         is_current_user: this.is_current_user,
-        invite_possible: this.invite_possible,
+        invite_button: this.invite_button,
       })
     );
     if (App.current_user.two_factor_auth)

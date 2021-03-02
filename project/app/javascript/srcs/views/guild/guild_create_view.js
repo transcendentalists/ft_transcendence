@@ -30,7 +30,7 @@ export let GuildCreateView = Backbone.View.extend({
   },
 
   checkValidOfParams: function () {
-    if (this.image == undefined) {
+    if (this.image === undefined) {
       this.renderWarning("이미지가 설정되어 있지 않습니다.");
     } else if (
       !["image/png", "image/jpeg", "image/png", "image/jpg"].includes(
@@ -93,7 +93,8 @@ export let GuildCreateView = Backbone.View.extend({
     Helper.info({
       subject: "아나그램이란?",
       description:
-        "아나그램은 길드 이름에 포함된 글자들을 사용하여 만들어지는 어구입니다.",
+        "아나그램은 길드 이름에 포함된 글자들을 사용하여 만들어지는 어구입니다.<br>\
+        또한 아나그램은 길드 이름보다 짧아야 합니다.",
     });
   },
 

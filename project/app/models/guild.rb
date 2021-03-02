@@ -11,7 +11,8 @@ class Guild < ApplicationRecord
   validates :name, uniqueness: { message: "길드 이름은 중복될 수 없습니다." }
   validates :owner_id, uniqueness: { message: "유저는 하나의 길드만 만들 수 있습니다." }
   validates :anagram, uniqueness: { message: "길드 아나그램은 중복될 수 없습니다." }
-  validates :name, length: { in: 1..10, too_long: '길드 이름은 최대 10자까지 가능합니다.' } , allow_blank: true
+  validates :name, length: { in: 1..10, message: '길드 이름은 최대 10자까지 가능합니다.' }
+  validates :name, format: { with: /\A[A-Za-z0-9]+\z/, message: '길드 이름에 특수문자가 포함될 수 없습니다.' }
   validate :check_anagram
 
   def check_anagram
@@ -22,7 +23,7 @@ class Guild < ApplicationRecord
     name.each_char do |name_char|
       anagram_downcase.slice!(0) if name_char.downcase == anagram_downcase.first
     end
-    return errors.add(:anagram, :invalid, message: "아나그램은 길드 이름에 포함된 단어로 구성되어야 합니다.") unless anagram_downcase.empty?
+    return errors.add(:anagram, :invalid, message: "아나그램은 길드 이름보다 짧고 이름에 포함된 단어로 구성되어야 합니다.") unless anagram_downcase.empty?
   end
 
   def for_member_list(page)
@@ -60,6 +61,6 @@ class Guild < ApplicationRecord
   end
 
   def create_membership(user_id, position)
-    GuildMembership.create(user_id: user_id, guild_id: self.id, position: position)
+    GuildMembership.create!(user_id: user_id, guild_id: self.id, position: position)
   end
 end

@@ -101,7 +101,7 @@ class Tournament < ApplicationRecord
     match = user.matches.where(status: "pending", eventable_type: "Tournament", eventable_id: self.id).first
     if match.nil?
       {
-        enemy: self.class.dummy_enemy,
+        enemy: self.dummy_enemy,
         start_datetime: self.status == "pending" ? self.first_match_datetime : self.tomorrow_match_datetime,
         tournament_round: self.status == "pending" ? self.max_user_count : self.tomorrow_round
       }

@@ -58,7 +58,9 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
   },
 
   createWarRequest: function () {
-    App.router.navigate(`#/war/new?enemy_id=${this.guild.id}`);
+    App.router.navigate(
+      `#/war/new?enemy_id=${this.guild.id}&enemy_name=${this.guild.name}`
+    );
   },
 
   isInGuildIndex: function () {

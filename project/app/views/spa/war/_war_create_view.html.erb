@@ -4,7 +4,7 @@
     <div class="field">
       <label>상대 길드</label>
       <div class="ui disabled input">
-        <input type="text" placeholder=<%%= opponent_guild_name %>>
+        <input type="text" placeholder=<%%= enemy_guild_name %>>
       </div>
     </div>
     <div class="field">
@@ -24,15 +24,7 @@
     </div>
     <div class="field">
       <label>전쟁 시작일</label>
-      <select class="war-start-date">
-        <option value="1"><%%= tomorrow %></option>
-        <option value="2"><%%= tomorrow + 1 %></option>
-        <option value="3"><%%= tomorrow + 2 %></option>
-        <option value="4"><%%= tomorrow + 3 %></option>
-        <option value="5"><%%= tomorrow + 4 %></option>
-        <option value="6"><%%= tomorrow + 5 %></option>
-        <option value="7"><%%= tomorrow + 6 %></option>
-      </select>
+      <input class='war-start-date' type='date' value=<%%= tomorrow_date %> min=<%%= tomorrow_date %> max=<%%= max_date %> >
     </div>
     <div class="field">
       <label>전쟁 기간</label>
@@ -137,25 +129,25 @@
         <div class="inline fields">
           <div class="field">
             <div class="ui checkbox">
-              <input type="radio" name="target-match-score" checked="checked">
+              <input type="radio" name="target-match-score" value="3" checked="checked">
               <label>3점</label>
             </div>
           </div>
           <div class="field">
             <div class="ui checkbox">
-              <input type="radio" name="target-match-score">
+              <input type="radio" name="target-match-score" value="5">
               <label>5점</label>
             </div>
           </div>
           <div class="field">
             <div class="ui checkbox">
-              <input type="radio" name="target-match-score">
+              <input type="radio" name="target-match-score" value="7">
               <label>7점</label>
             </div>
           </div>
           <div class="field">
             <div class="ui checkbox">
-              <input type="radio" name="target-match-score">
+              <input type="radio" name="target-match-score" value="10">
               <label>10점</label>
             </div>
           </div>
@@ -168,6 +160,5 @@
       <div class="war-create-cancel-button ui red cancel button">취소하기</div>
     </div>
   </form>
-  <div class="ui negative message"></div>
 
 </script>

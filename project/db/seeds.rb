@@ -165,8 +165,8 @@ Match.create([
   {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-02-27 3pm')},
   {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-02-27 3pm')},
   {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2020-02-27 3pm')},
-  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-02-28 3pm')},
-  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-02-28 3pm')},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-10 3pm')},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-10 3pm')},
 ])
 
 Scorecard.create([
@@ -393,12 +393,15 @@ GuildInvitation.create([
 Tournament.create([
   {rule_id: 1, title: "tournament_1", start_date: DateTime.new(2021,1,20), tournament_time: Time.new(2000, 1, 1, 14, 00, 0), status: "canceled"},
   {rule_id: 1, title: "tournament_2", start_date: DateTime.new(2021,2,10), tournament_time: Time.new(2000, 1, 1, 14, 00, 0), target_match_score: 5, status: "completed"},
-  {rule_id: 1, title: "tournament_3", start_date: DateTime.new(2021,2,27), tournament_time: Time.new(2000, 1, 1, 15, 30, 0), target_match_score: 3, status: "progress"},
-  {rule_id: 1, title: "tournament_4", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 16, 00, 0), target_match_score: 10},
-  {rule_id: 1, title: "5", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 17, 30, 0)},
-  {rule_id: 1, title: "tournament_6", start_date: DateTime.new(2021,3,02), tournament_time: Time.new(2000, 1, 1, 17, 30, 0)},
-  {rule_id: 1, title: "tournament_7", start_date: DateTime.new(2021,3,02), tournament_time: Time.new(2000, 1, 1, 18, 30, 0), status: "canceled"},
-  {rule_id: 1, title: "tournament_8", start_date: DateTime.new(2021,3,03), tournament_time: Time.new(2000, 1, 1, 18, 30, 0)},
+  {rule_id: 1, title: "tournament_3", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 15, 30, 0), target_match_score: 3, status: "progress"},
+  {rule_id: 1, title: "tournament_4", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 16, 00, 0), target_match_score: 10, status: "progress"},
+  {rule_id: 1, title: "5", start_date: DateTime.new(2021,3,01), tournament_time: Time.new(2000, 1, 1, 17, 30, 0), status: "completed"},
+  {rule_id: 1, title: "tournament_6", start_date: DateTime.new(2021,3,07), tournament_time: Time.new(2000, 1, 1, 17, 30, 0)},
+  {rule_id: 1, title: "tournament_7", start_date: DateTime.new(2021,3,07), tournament_time: Time.new(2000, 1, 1, 18, 30, 0), status: "canceled"},
+  {rule_id: 1, title: "tournament_8", start_date: DateTime.new(2021,3,10), tournament_time: Time.new(2000, 1, 1, 18, 30, 0)},
+  {rule_id: 1, title: "tournament_9", start_date: DateTime.new(2021,3,11), tournament_time: Time.new(2000, 1, 1, 18, 30, 0)},
+  {rule_id: 1, title: "tournament_10", start_date: DateTime.new(2021,3,12), tournament_time: Time.new(2000, 1, 1, 18, 30, 0)},
+  {rule_id: 1, title: "tournament_11", start_date: DateTime.new(2021,3,12), tournament_time: Time.new(2000, 1, 1, 18, 30, 0)},
 ])
 
 TournamentMembership.create([
@@ -423,6 +426,10 @@ TournamentMembership.create([
   {user_id: 2, tournament_id: 5},
   {user_id: 3, tournament_id: 6},
   {user_id: 4, tournament_id: 6},
+
+  {user_id: 1, tournament_id: 8},
+  {user_id: 1, tournament_id: 9},
+  {user_id: 1, tournament_id: 10},
 ])
 
 WarStatus.create([

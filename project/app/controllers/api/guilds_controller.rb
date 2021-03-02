@@ -14,22 +14,17 @@ class Api::GuildsController < ApplicationController
       anagram: '@' + params[:anagram],
       owner_id: @current_user.id,
     )
-    return render_error("길드 생성 실패", "길드 생성에 실패하였습니다.", 400) if guild.nil?
     unless guild.valid?
       error_attribute_name = guild.errors.attribute_names[0]
       return render_error("길드 생성 실패", guild.errors[error_attribute_name], 400) 
     end
     guild.save
-    if params.has_key?(:file)
-      guild.image.purge if guild.image.attached?
-      guild.image.attach(params[:file])
-      guild.image_url = url_for(guild.image)
-      guild.save
-    else
-      return render_error("올바르지 않은 요청", "이미지를 찾을 수 없습니다.", 404)
-    end
     guild_membership = guild.create_membership(@current_user.id, "master")
-    return render_error("길드 멤버십 생성 실패", "길드가 없거나 잘못된 요청입니다.", 400) if guild_membership.nil?
+
+    if !image_attach(guild) || guild_membership.nil?
+      guild.destroy
+      return render_error("길드 생성 실패", "길드가 없거나 잘못된 요청입니다.", 400) 
+    end
     render json: { guild: guild_membership.profile }
   end
 
@@ -46,6 +41,19 @@ class Api::GuildsController < ApplicationController
 
   def update
     render plain: "You just updated " + params[:id] + " guild"
+  end
+
+  private
+  def image_attach(guild)
+    if params.has_key?(:file)
+      guild.image.purge if guild.image.attached?
+      guild.image.attach(params[:file])
+      guild.image_url = url_for(guild.image)
+      guild.save
+      true
+    else
+      false
+    end
   end
 
 end

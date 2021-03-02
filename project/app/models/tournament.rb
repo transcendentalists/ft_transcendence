@@ -201,7 +201,7 @@ class Tournament < ApplicationRecord
     end
   end
 
-  def self.can_be_created_by(current_user)
+  def self.can_be_created_by?(current_user)
     web_admin_auth_level = 4
     ApplicationRecord.position_grade[current_user.position] >= web_admin_auth_level
   end

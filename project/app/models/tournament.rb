@@ -219,7 +219,7 @@ class Tournament < ApplicationRecord
     tournament = self.new(tournament_hash)
 
     return nil unless tournament.valid?
-    tournament.save!
+    tournament.save
     tournament
   end
 

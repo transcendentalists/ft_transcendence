@@ -331,10 +331,6 @@ GuildMembership.create([
   {user_id: 9, guild_id: 9, position: "master"},
   {user_id: 10, guild_id: 10, position: "master"},
   {user_id: 11, guild_id: 10, position: "officer"},
-<<<<<<< HEAD
-=======
-
->>>>>>> develop
   {user_id: 12, guild_id: 1, position: "officer"},
   {user_id: 13, guild_id: 2, position: "officer"},
   {user_id: 14, guild_id: 3, position: "officer"},

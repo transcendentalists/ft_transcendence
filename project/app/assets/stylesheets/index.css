@@ -688,11 +688,11 @@ body {
   margin-top: 8rem;
 }
 
-#ladder-index-view .buttons {
-  margin-top: 1rem;
+#ladder-index-view .join-buttons {
+  margin-left: 1rem;
 }
 
-#ladder-index-view .button {
+#ladder-index-view .join-buttons .button {
   margin-left: 0.5rem;
 }
 
@@ -700,7 +700,8 @@ body {
   margin: 5% 0;
 }
 
-#user-ranking-view .ladder-index-header .buttons {
+#ladder-index-view .ladder-index-header .buttons {
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 

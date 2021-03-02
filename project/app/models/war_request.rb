@@ -3,9 +3,10 @@ class WarRequest < ApplicationRecord
   has_one :war, dependent: :destroy
   has_many :war_statuses, dependent: :destroy
   has_many :guilds, through: :war_statuses
-  validates :status, inclusion: { in: ["pending", "accepted", "canceled"] }
-  validates :rule_id, inclusion: { in: 1..7 }
-  validates :target_match_score, inclusion: { in: [3, 5, 7, 10] }
+  validates :status, inclusion: { in: ["pending", "accepted", "canceled"], message: "상태를 잘못 입력하셨습니다." }
+  validates :rule_id, inclusion: { in: 1..7, message: "요청하신 룰이 존재하지 않습니다." }
+  validates :target_match_score, inclusion: { in: [3, 5, 7, 10], message: "목표 점수를 잘못 입력하셨습니다." }
+  validates :max_no_reply_count, inclusion: { in: 3..10, message: "war-time 미응답 개수를 잘못 입력하셨습니다." }
   validate :end_date_after_start_date
   validate :start_date_after_now
 
@@ -45,13 +46,13 @@ class WarRequest < ApplicationRecord
   private
   def start_date_after_now
     if start_date.past?
-      errors.add(:start_date, "must be after now")
+      errors.add(:start_date, "전쟁 시작일은 미래여야합니다.")
     end
   end
 
   def end_date_after_start_date
     if end_date < start_date
-      errors.add(:end_date, "must be after the start date")
+      errors.add(:end_date, "전쟁 종료일은 시작일보다 미래여야 합니다.")
     end
   end
 end

@@ -1,5 +1,5 @@
 class Api::WarRequestsController < ApplicationController
-  before_action :check_headers_and_find_current_user, only: [ :update ]
+  before_action :check_headers_and_find_current_user, only: [ :update, :create ]
 
   def index
     if params[:for] == "guild_index"
@@ -9,9 +9,37 @@ class Api::WarRequestsController < ApplicationController
     end
   end
 
-  # TODO: 만약 현재 전쟁 진행중이면 전쟁제안은 하지 못한다.
+  # TODO: 트랜잭션으로 war_status까지 같이 만들어주기
   def create
-    render plain: params[:guild_id] + " guild's war requests created"
+    if !@current_user.guild_membership.master? ||
+      @current_user.in_guild.id != params[:guild_id]
+      return render_error("전쟁 요청 실패", "권한이 없습니다.", 401)
+    end
+    challenger_guild = @current_user.in_guild
+    enemy_guild = Guild.find_by_id(params[:enemy_guild_id])
+    return render_error("전쟁 요청 실패", "존재하지 않는 길드입니다.", 400) if enemy_guild.nil?
+    return render_error("전쟁 요청 실패", "진행 중인 전쟁이 있습니다.", 400) if enemy_guild.in_war? || challenger_guild.in_war?
+    enemy_guild.requests.where(status: "pending").each do |request|
+      return render_error("전쟁 요청 실패", "중복된 요청입니다.", 400) if request.challenger.id == challenger_guild.id
+    end
+    war_request = WarRequest.create(
+      rule_id: params[:rule_id],
+      bet_point: params[:bet_point],
+      start_date: Date.parse(params[:war_start_date]),
+      end_date: Date.parse(params[:war_start_date]) + params[:war_duration].to_i.days,
+      war_time: Time.new(1 ,1 ,1 , params[:war_time].to_i),
+      max_no_reply_count: params[:max_no_reply_count],
+      include_ladder: params[:include_ladder],
+      include_tournament: params[:include_tournament],
+      target_match_score: params[:target_match_score],
+    )
+    return render_error("전쟁 요청 실패", "잘못된 요청입니다.", 400) if war_request.nil?
+    unless war_request.valid?
+      error_message = war_request.errors[war_request.errors.attribute_names.first].first
+      return render_error("전쟁 요청 실패", error_message, 400) 
+    end
+    WarStatus.create(guild_id: @current_user.in_guild.id, war_request_id: war_request.id, position: "challenger")
+    WarStatus.create(guild_id: params[:enemy_guild_id], war_request_id: war_request.id, position: "enemy")
   end
 
   def update

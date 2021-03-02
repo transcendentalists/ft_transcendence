@@ -61,14 +61,18 @@ class Tournament < ApplicationRecord
   end
 
   def overlapped_schedule?(user)
-    !user.tournament_memberships.where(status: ["pending", "progress"]).find { |membership|
+    user.tournament_memberships.where(status: ["pending", "progress"]).each do |membership|
       tournament = membership.tournament
-      return false if tournament.match_hour != self.match_hour
-      (self.start_date.to_i..self.expected_end_date.to_i).each do |date|
+      next if tournament.match_hour != self.match_hour
+
+      date = self.start_date
+      end_date = self.expected_end_date
+      while date <= end_date
         return true if date.between?(tournament.start_date, tournament.expected_end_date)
+        date += 1.days
       end
-      false
-    }.nil?
+    end
+    false
   end
 
   def next_match_of(user)
@@ -97,7 +101,7 @@ class Tournament < ApplicationRecord
     DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec, t.zone)
   end
 
-  def tomorrow_match_datetitme
+  def tomorrow_match_datetime
     Time.zone.now.tomorrow.change({ hour: self.tournament_time.hour })
   end
 

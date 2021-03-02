@@ -100,83 +100,52 @@ describe "tournament test" do
   # end
 
 
-  it "cannot be create with invalid incentive_title length" do
-    start_date = DateTime.now + 1.days
-    tournament_time = Time.new(2000, 1, 1, 14, 00, 0)
-    incentive_title = "i"
-
-    (1..25).each do |n|
-      start_date = start_date + 10.days
-
-      tournament_hash = {
-        title: "title",
-        rule_id: 1, 
-        max_user_count: 32,
-        start_date: start_date,
-        tournament_time: tournament_time,
-        incentive_title: incentive_title,
-        incentive_gift: "nekarakube",
-        target_match_score: 5,
-        status: "pending"
-      }
-      
-      tournament = Tournament.create(tournament_hash)
-
-      if n <= 20
-        expect(tournament.persisted?).to eq(true)
-      else
-        expect(tournament.persisted?).to eq(false)
-      end
-
-      incentive_title = incentive_title + "i"
-    end
-  end
-
-
-  it "cannot be created with invalid incentive_gift length" do
-    start_date = DateTime.now + 1.days
-    tournament_time = Time.new(2000, 1, 1, 14, 00, 0)
-    incentive_gift = nil
-
-    (1..25).each do |n|
-      start_date = start_date + 10.days
-
-      tournament_hash = {
-        title: "title",
-        rule_id: 1, 
-        max_user_count: 32,
-        start_date: start_date,
-        tournament_time: tournament_time,
-        incentive_title: "super rookie",
-        incentive_gift: incentive_gift,
-        target_match_score: 5,
-        status: "pending"
-      }
-      
-      tournament = Tournament.create(tournament_hash)
-
-      if n <= 21
-        expect(tournament.persisted?).to eq(true)
-      else
-        expect(tournament.persisted?).to eq(false)
-      end
-
-      incentive_gift = "" if incentive_gift.nil?
-      incentive_gift = incentive_gift + "i"
-    end
-  end
-
-  # it "cannot be created with invalid start_date" do
-  #   start_date = DateTime.now - 1.days
+  # it "cannot be create with invalid incentive_title length" do
+  #   start_date = DateTime.now + 1.days
   #   tournament_time = Time.new(2000, 1, 1, 14, 00, 0)
-  #   incentive_gift = nil
+  #   incentive_title = "i"
 
-  #   (1..3).each do |n|
+  #   (1..25).each do |n|
+  #     start_date = start_date + 10.days
+
   #     tournament_hash = {
   #       title: "title",
   #       rule_id: 1, 
   #       max_user_count: 32,
-  #       start_date: start_date.strftime("%Y-%m-%d"),
+  #       start_date: start_date,
+  #       tournament_time: tournament_time,
+  #       incentive_title: incentive_title,
+  #       incentive_gift: "nekarakube",
+  #       target_match_score: 5,
+  #       status: "pending"
+  #     }
+      
+  #     tournament = Tournament.create(tournament_hash)
+
+  #     if n <= 20
+  #       expect(tournament.persisted?).to eq(true)
+  #     else
+  #       expect(tournament.persisted?).to eq(false)
+  #     end
+
+  #     incentive_title = incentive_title + "i"
+  #   end
+  # end
+
+
+  # it "cannot be created with invalid incentive_gift length" do
+  #   start_date = DateTime.now + 1.days
+  #   tournament_time = Time.new(2000, 1, 1, 14, 00, 0)
+  #   incentive_gift = nil
+
+  #   (1..25).each do |n|
+  #     start_date = start_date + 10.days
+
+  #     tournament_hash = {
+  #       title: "title",
+  #       rule_id: 1, 
+  #       max_user_count: 32,
+  #       start_date: start_date,
   #       tournament_time: tournament_time,
   #       incentive_title: "super rookie",
   #       incentive_gift: incentive_gift,
@@ -184,15 +153,77 @@ describe "tournament test" do
   #       status: "pending"
   #     }
       
-  #     tournament = Tournament.create_by(params)
+  #     tournament = Tournament.create(tournament_hash)
 
-  #     if n <= 2
-  #       expect(tournament.nil?).to eq(true)
+  #     if n <= 21
+  #       expect(tournament.persisted?).to eq(true)
   #     else
   #       expect(tournament.persisted?).to eq(false)
   #     end
 
-  #     start_date = start_date + 1.days
+  #     incentive_gift = "" if incentive_gift.nil?
+  #     incentive_gift = incentive_gift + "i"
   #   end
   # end
+
+  it "cannot be created with invalid start_date" do
+    start_date = DateTime.now - 1.days
+    tournament_time = Time.zone.now.change({hour: 14})
+    incentive_gift = nil
+
+    (1..3).each do |n|
+      tournament_hash = {
+        title: "title",
+        rule_id: 1, 
+        max_user_count: 32,
+        start_date: start_date.strftime("%Y-%m-%d"),
+        tournament_time: tournament_time,
+        incentive_title: "super rookie",
+        incentive_gift: incentive_gift,
+        target_match_score: 5,
+        status: "pending"
+      }
+      
+      tournament = Tournament.new(tournament_hash)
+
+      if n <= 2
+        expect(tournament.valid?).to eq(false)
+      else
+        expect(tournament.valid?).to eq(true)
+      end
+
+      start_date += 1.days
+    end
+  end
+
+
+  it "cannot be created with invalid tournament_time" do
+    start_date = DateTime.now + 1.days
+    incentive_gift = nil
+
+    (1..23).each do |n|
+      tournament_time = Time.zone.now.change({hour: n})
+      tournament_hash = {
+        title: "title",
+        rule_id: 1, 
+        max_user_count: 32,
+        start_date: start_date.strftime("%Y-%m-%d"),
+        tournament_time: tournament_time,
+        incentive_title: "super rookie",
+        incentive_gift: incentive_gift,
+        target_match_score: 5,
+        status: "pending"
+      }
+      
+      tournament = Tournament.new(tournament_hash)
+
+      if n < 9 || n > 22
+        expect(tournament.valid?).to eq(false)
+      else
+        expect(tournament.valid?).to eq(true)
+      end
+
+      start_date += 1.days
+    end
+  end
 end

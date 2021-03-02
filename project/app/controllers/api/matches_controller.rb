@@ -5,6 +5,10 @@ class Api::MatchesController < ApplicationController
       render json: { matches: match_history_list }
     elsif params[:war_id]
       render plain: 'This is war ' + params[:war_id] + "'s matches"
+    elsif params[:for] == "live"
+      render json: {
+        matches: Match.for_live(params[:match_type])
+      }
     else
       render plain: 'get /api/matches/index'
     end

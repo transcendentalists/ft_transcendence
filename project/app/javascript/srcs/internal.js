@@ -80,6 +80,8 @@ import { ChatRoomMenuView } from "./views/chat/chat_room_menu_view";
 
 import { UserProfileCardView } from "./views/user/user_profile_card_view";
 import { LiveIndexView } from "./views/live/live_index_view";
+import { LiveCardListView } from "./views/live/live_card_list_view";
+import { LiveCardView } from "./views/live/live_card_view";
 
 import { TournamentIndexView } from "./views/tournament/tournament_index_view";
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
@@ -224,6 +226,8 @@ export let App = {
     UserProfileCardView,
     MyRatingView,
     LiveIndexView,
+    LiveCardView,
+    LiveCardListView,
     WarIndexView,
     WarCreateView,
     GameIndexView,

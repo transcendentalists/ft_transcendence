@@ -18,6 +18,23 @@ class Match < ApplicationRecord
     }
   end
 
+  #TODO: where문 completed에서 progress로 변경
+  scope :for_live, -> (match_type) do
+    where(match_type: match_type == "ladder" ? ["ladder", "casual_ladder"] : match_type, status: "completed")
+    .order(created_at: :desc)
+    .map { |match|
+      {
+        id: match.id,
+        type: match.match_type,
+        match: match,
+        scorecards: match.scorecards,
+        users: match.users,
+        tournament: match.match_type == "tournament" ? match.eventable.profile : nil,
+        guilds: match.match_type == "war" ? match.eventable.guilds : nil,
+      }
+    }
+  end
+
   def start
     self.update(status: "progress", start_time: Time.now())
   end

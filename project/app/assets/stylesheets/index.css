@@ -1069,3 +1069,61 @@ body {
 #chat-room-view .chat-member-unit {
   display: block;
 }
+
+/* ==========================================================================
+     LIVE INDEX VIEW
+========================================================================== */
+
+#live-index-view {
+  min-width: 740px;
+  max-width: 1024px;
+  margin-bottom: 8rem;
+}
+
+#live-index-view .menu {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+#live-card-list-view {
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+#live-index-view .live-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 23rem;
+  min-width: 23rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  border: 1.5px solid #dad8d8;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 7px 5px -6px #777;
+  height: fit-content;
+  align-items: center;
+  height: 13rem;
+  justify-content: space-between;
+}
+
+#live-index-view .live-card .title {
+  line-height: 1.8;
+  font-weight: 700;
+  text-align: center;
+}
+
+#live-index-view .live-card .vs-icon {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+#live-index-view .live-card .name {
+  margin-left: 0.5rem;
+}
+
+#live-index-view .live-card .match-start-time {
+  font-size: 0.9rem;
+}

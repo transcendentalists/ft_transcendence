@@ -71,7 +71,7 @@ export let GameIndexView = Backbone.View.extend({
     this.channel = App.Channel.ConnectGameChannel(
       this.recv,
       this,
-      this.is_player ? data["match"]["id"] : data
+      this.is_player ? data.match.id : data
     );
     if (this.match_type == "dual" && this.challenger_id != null) {
       App.notification_channel.dualMatchHasCreated(
@@ -201,7 +201,7 @@ export let GameIndexView = Backbone.View.extend({
     this.$el.empty();
     this.$el.html(this.template());
     if (this.is_player) this.joinGame();
-    else this.subscribeChannel(this.match_id);
+    else this.subscribeGameChannelAndBroadcast(this.match_id);
     return this;
   },
 

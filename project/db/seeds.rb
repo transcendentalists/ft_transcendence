@@ -413,23 +413,6 @@ TournamentMembership.create([
   {user_id: 6, tournament_id: 3, status: "progress"},
   {user_id: 7, tournament_id: 3, status: "completed"},
   {user_id: 8, tournament_id: 3, status: "progress"},
-
-  {user_id: 1, tournament_id: 4},
-  {user_id: 2, tournament_id: 4},
-  {user_id: 3, tournament_id: 4},
-  {user_id: 4, tournament_id: 4},
-  {user_id: 5, tournament_id: 4},
-  {user_id: 6, tournament_id: 4},
-  {user_id: 7, tournament_id: 4},
-
-  {user_id: 1, tournament_id: 5},
-  {user_id: 2, tournament_id: 5},
-  {user_id: 3, tournament_id: 6},
-  {user_id: 4, tournament_id: 6},
-
-  {user_id: 1, tournament_id: 8},
-  {user_id: 1, tournament_id: 9},
-  {user_id: 1, tournament_id: 10},
 ])
 
 WarStatus.create([

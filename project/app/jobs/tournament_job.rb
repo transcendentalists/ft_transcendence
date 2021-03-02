@@ -1,7 +1,7 @@
 class TournamentJob < ApplicationJob
   queue_as :default
   # TODO: 서비스 배포시 주석해제
-  after_perform { |job| job.arguments.first.set_next_schedule }
+  # after_perform { |job| job.arguments.first.set_next_schedule }
 
   def perform(tournament, options = { now: Time.zone.now })
     @tournament = tournament

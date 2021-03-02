@@ -47,7 +47,7 @@ describe "tournament test" do
     expect_all_scorecards_count 12
   end
 
-  8인부터 32인 케이스 모두 체크시 시간이 45초 정도 소요되므로 적절히 변경하여 사용
+  # 8인부터 32인 케이스 모두 체크시 시간이 45초 정도 소요되므로 적절히 변경하여 사용
   it "경기에 빠짐없이 참여할 때의 토너먼트 운영" do
     (8..32).each do |users_count|
       create_tournament({ register: users_count })

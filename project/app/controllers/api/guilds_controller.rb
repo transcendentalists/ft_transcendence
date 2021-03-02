@@ -8,24 +8,31 @@ class Api::GuildsController < ApplicationController
   end
 
   def create
-    return render_error("길드 생성 실패", "이미 소속된 길드가 있습니다.", 400) if @current_user.in_guild
-    guild = Guild.new(
-      name: params[:name],
-      anagram: '@' + params[:anagram],
-      owner_id: @current_user.id,
-    )
-    unless guild.valid?
-      error_attribute_name = guild.errors.attribute_names[0]
-      return render_error("길드 생성 실패", guild.errors[error_attribute_name], 400) 
+    ActiveRecord::Base.transaction do
+      return render_error("길드 생성 실패", "이미 소속된 길드가 있습니다.", 400) if @current_user.in_guild
+      begin
+        guild = Guild.new(
+          name: params[:name],
+          anagram: '@' + params[:anagram],
+          owner_id: @current_user.id,
+        )
+        unless guild.valid?
+          error_attribute_name = guild.errors.attribute_names.first
+          raise ArgumentError.new guild.errors[error_attribute_name].first
+        end
+        guild.save!
+        guild_membership = guild.create_membership(@current_user.id, "master")
+        image_attach(guild)
+        render json: { guild: guild_membership.profile }
+      rescue => e
+        if e.class == ArgumentError
+          render_error("길드 생성 실패", e.message, 400)
+        else
+          render_error("길드 생성 실패", "잘못된 요청입니다.", 400)
+        end
+        raise ActiveRecord::Rollback
+      end
     end
-    guild.save
-    guild_membership = guild.create_membership(@current_user.id, "master")
-
-    if !image_attach(guild) || guild_membership.nil?
-      guild.destroy
-      return render_error("길드 생성 실패", "길드가 없거나 잘못된 요청입니다.", 400) 
-    end
-    render json: { guild: guild_membership.profile }
   end
 
   def show
@@ -49,10 +56,7 @@ class Api::GuildsController < ApplicationController
       guild.image.purge if guild.image.attached?
       guild.image.attach(params[:file])
       guild.image_url = url_for(guild.image)
-      guild.save
-      true
-    else
-      false
+      guild.save!
     end
   end
 

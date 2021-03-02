@@ -9,10 +9,6 @@ export let TournamentCreateView = Backbone.View.extend({
     "click .cancel.button": "cancel",
   },
 
-  redirectChatRoomCallback: function (data) {
-    App.router.navigate(`#/chatrooms/${data.group_chat_room.id}`);
-  },
-
   getFormData: function () {
     const input_field = [
       "title",
@@ -40,14 +36,16 @@ export let TournamentCreateView = Backbone.View.extend({
           `.${column} option:selected`
         ).val())
     );
-
-    form_data = form_data.map((column) => (column == "" ? null : column));
+    Object.keys(form_data).map(function (key) {
+      if (form_data[key] == "") form_data[key] = null;
+    });
     return form_data;
   },
 
   submit: function () {
     let form_data = this.getFormData();
     Helper.fetch("tournaments", {
+      method: "POST",
       body: {
         tournament: form_data,
       },
@@ -75,7 +73,6 @@ export let TournamentCreateView = Backbone.View.extend({
         min_date: this.getMinDate(),
       })
     );
-    this.$(".ui.negative.message").hide();
     return this;
   },
 

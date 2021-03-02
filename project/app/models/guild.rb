@@ -8,7 +8,9 @@ class Guild < ApplicationRecord
   has_many :invitations, class_name: 'GuildInvitation'
   scope :for_guild_index, -> (page) { order(point: :desc).page(page).map.with_index { |guild, index| guild.profile(index, page) } }
   has_one_attached :image
-  validates :name, :owner_id, :anagram, uniqueness: { message: "길드 이름은 중복될 수 없습니다." }
+  validates :name, uniqueness: { message: "길드 이름은 중복될 수 없습니다." }
+  validates :owner_id, uniqueness: { message: "유저는 하나의 길드만 만들 수 있습니다." }
+  validates :anagram, uniqueness: { message: "길드 아나그램은 중복될 수 없습니다." }
   validates :name, length: { in: 1..10, too_long: '길드 이름은 최대 10자까지 가능합니다.' } , allow_blank: true
   validate :check_anagram
 

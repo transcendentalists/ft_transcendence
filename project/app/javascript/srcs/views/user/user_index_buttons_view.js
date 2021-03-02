@@ -1,5 +1,4 @@
-import { App } from "srcs/internal";
-import { Helper } from "srcs/helper";
+import { App, Helper } from "srcs/internal";
 
 export let UserIndexButtonsView = Backbone.View.extend({
   el: "user-index-buttons-view",
@@ -11,12 +10,15 @@ export let UserIndexButtonsView = Backbone.View.extend({
     "click #guild-invite-button": "inviteGuild",
   },
 
-  initialize: function (user_id) {
-    this.user_id = user_id;
-    const guild = App.current_user.get("guild");
-    this.is_current_user = Helper.isCurrentUser(user_id);
+  initialize: function (user) {
+    this.user_id = user.id;
+    const current_user_guild = App.current_user.get("guild");
+    this.is_current_user = Helper.isCurrentUser(this.user_id);
     this.invite_possible =
-      !this.is_current_user && guild != null && guild.position != "member";
+      !this.is_current_user &&
+      current_user_guild != null &&
+      current_user_guild.position != "member" &&
+      user.get("guild") == null;
   },
 
   changeTwoFactorAuth: function () {
@@ -77,7 +79,19 @@ export let UserIndexButtonsView = Backbone.View.extend({
     });
   },
 
-  inviteGuild: function () {},
+  inviteGuild: function () {
+    const invite_url = `users/${App.current_user.id}/guild_invitations`;
+    Helper.fetch(invite_url, {
+      method: "POST",
+      body: {
+        invited_user_id: this.user_id,
+      },
+      // success_callback: (data) => {},
+      fail_callback: (data) => {
+        Helper.info({ error: data.error });
+      },
+    });
+  },
 
   render: function () {
     this.$el.html(

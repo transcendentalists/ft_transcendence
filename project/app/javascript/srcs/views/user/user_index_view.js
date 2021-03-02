@@ -14,6 +14,7 @@ export let UserIndexView = Backbone.View.extend({
       data: { for: "profile" },
       success: function (data) {
         this.user_profile_view.render(data.toJSON());
+        this.renderUserIndexButtons();
       }.bind(this),
     });
 
@@ -23,7 +24,7 @@ export let UserIndexView = Backbone.View.extend({
   },
 
   renderUserIndexButtons: function () {
-    this.buttons_view = new App.View.UserIndexButtonsView(this.user_id);
+    this.buttons_view = new App.View.UserIndexButtonsView(this.model);
     this.buttons_view.setElement(this.$("#user-index-buttons-view")).render();
   },
 
@@ -66,7 +67,6 @@ export let UserIndexView = Backbone.View.extend({
       this.template({ is_current_user: Helper.isCurrentUser(this.user_id) })
     );
 
-    this.renderUserIndexButtons();
     this.renderUserProfile();
     this.renderGuildInvitations();
     this.renderMatchHistory();

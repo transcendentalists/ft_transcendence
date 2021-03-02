@@ -34,7 +34,7 @@ class Tournament < ApplicationRecord
   end
 
   def enroll(user)
-    if Time.zone.now > self.start_date.midnight
+    if self.start_date.midnight.past?
       raise StandardError.new("등록 기간을 초과했습니다.")
     elsif self.memberships.count == self.max_user_count
       raise StandardError.new("정원이 마감되었습니다.")
@@ -169,7 +169,7 @@ class Tournament < ApplicationRecord
   def set_next_schedule
     return if ["completed", "canceled"].include?(self.status)
 
-    if Time.zone.now < self.start_date
+    if self.start_date.future?
       self.set_schedule_at_start_date
     elsif self.match_operation_executed?
       self.set_schedule_at_operation_time

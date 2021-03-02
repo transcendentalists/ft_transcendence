@@ -1,3 +1,17 @@
+class TournamentValidator < ActiveModel::Validator
+  def validate(record)
+    if record.start_date <= DateTime.current.midnight ||
+        invalid_tournament_time?(record.tournament_time)
+      record.errors.add :base, "토너먼트 생성은 내일 이후의 일정으로만 생성 가능합니다."
+    end
+  end
+
+  def invalid_tournament_time?(tournament_time)
+    playble_time = 9..22
+    !playble_time.include?(tournament_time.hour)
+  end
+end
+
 class Tournament < ApplicationRecord
   belongs_to :rule
   has_many :matches, as: :eventable
@@ -10,6 +24,7 @@ class Tournament < ApplicationRecord
   validates :incentive_gift, length: { maximum: 20 }, allow_nil: true
   validates :max_user_count, inclusion: [8, 16, 32]
   validates :target_match_score, inclusion: [3, 5, 7, 10]
+  validates_with TournamentValidator, field: [ :start_date, :tournament_time ]
 
   scope :for_tournament_index, -> (current_user) do
     where.not(status: ["completed", "canceled"])
@@ -188,12 +203,8 @@ class Tournament < ApplicationRecord
   end
 
   def self.create_by(params)
-    start_date = DateTime.parse(params[:start_date])
-    return nil if start_date <= DateTime.current.midnight
-    return nil unless params[:tournament_time] >= 9 && params[:tournament_time] <= 22
-
-    tournament_time = Time.zone.now + params[:tournament_time].hours
-
+    start_date = DateTime.strptime(params[:start_date], "%Y-%m-%d")
+    tournament_time = Time.zone.now.change({ hour: params[:tournament_time] })
     tournament_hash = {
       title: params[:title],
       rule_id: params[:rule_id],
@@ -204,7 +215,12 @@ class Tournament < ApplicationRecord
       target_match_score: params[:target_match_score]
     }
     tournament_hash.merge!({ incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
-    self.create(tournament_hash)
+
+    tournament = self.new(tournament_hash)
+
+    return nil unless tournament.valid?
+    tournament.save!
+    tournament
   end
 
   private

@@ -57,7 +57,7 @@ class Tournament < ApplicationRecord
   end
 
   def enroll(user)
-    if Time.zone.now > self.start_date.midnight
+    if self.start_date.midnight.past?
       raise StandardError.new("등록 기간을 초과했습니다.")
     elsif self.memberships.count == self.max_user_count
       raise StandardError.new("정원이 마감되었습니다.")
@@ -84,14 +84,18 @@ class Tournament < ApplicationRecord
   end
 
   def overlapped_schedule?(user)
-    !user.tournament_memberships.where(status: ["pending", "progress"]).find { |membership|
+    user.tournament_memberships.where(status: ["pending", "progress"]).each do |membership|
       tournament = membership.tournament
-      return false if tournament.match_hour != self.match_hour
-      (self.start_date.to_i..self.expected_end_date.to_i).each do |date|
+      next if tournament.match_hour != self.match_hour
+
+      date = self.start_date
+      end_date = self.expected_end_date
+      while date <= end_date
         return true if date.between?(tournament.start_date, tournament.expected_end_date)
+        date += 1.days
       end
-      false
-    }.nil?
+    end
+    false
   end
 
   def next_match_of(user)
@@ -120,7 +124,7 @@ class Tournament < ApplicationRecord
     DateTime.new(d.year, d.month, d.day, t.hour, t.min, t.sec, t.zone)
   end
 
-  def tomorrow_match_datetitme
+  def tomorrow_match_datetime
     Time.zone.now.tomorrow.change({ hour: self.tournament_time.hour })
   end
 
@@ -188,7 +192,7 @@ class Tournament < ApplicationRecord
   def set_next_schedule
     return if ["completed", "canceled"].include?(self.status)
 
-    if Time.zone.now < self.start_date
+    if self.start_date.future?
       self.set_schedule_at_start_date
     elsif self.match_operation_executed?
       self.set_schedule_at_operation_time

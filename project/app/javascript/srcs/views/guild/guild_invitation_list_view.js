@@ -7,15 +7,18 @@ export let GuildInvitationListView = Backbone.View.extend({
     this.child_views = [];
   },
 
-  addOne: function (user) {
+  addOne: function (guild_invitation) {
     let child_view = new App.View.GuildInvitationView();
     this.child_views.push(child_view);
-    this.$el.append(child_view.render(user).$el);
+    this.$el.append(child_view.render(guild_invitation).$el);
   },
 
   render: function (guild_invitations) {
-    if (!guild_invitations.hasOwnProperty("guild_invitations")) return;
-    if (guild_invitations["guild_invitations"].length == 0) return;
+    if (
+      !guild_invitations.hasOwnProperty("guild_invitations") ||
+      !guild_invitations["guild_invitations"].length
+    )
+      return;
     this.$el.empty();
     guild_invitations["guild_invitations"].forEach(this.addOne, this);
     return this;

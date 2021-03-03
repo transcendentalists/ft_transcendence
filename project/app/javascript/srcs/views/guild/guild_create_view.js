@@ -20,7 +20,7 @@ export let GuildCreateView = Backbone.View.extend({
 
   submit: function () {
     this.parseGuildParams();
-    if (this.checkValidOfParams()) this.createGuild();
+    if (this.checkValidOfImage()) this.createGuild();
   },
 
   parseGuildParams: function () {
@@ -29,20 +29,19 @@ export let GuildCreateView = Backbone.View.extend({
     this.image = this.$("input[type=file]")[0].files[0];
   },
 
-  checkValidOfParams: function () {
+  checkValidOfImage: function () {
+    let warning_message = null;
+    const allowed_image_format = ["image/png", "image/jpeg", "image/jpg"];
     if (this.image === undefined) {
-      this.renderWarning("이미지가 설정되어 있지 않습니다.");
-    } else if (
-      !["image/png", "image/jpeg", "image/png", "image/jpg"].includes(
-        this.image.type
-      )
-    ) {
-      this.renderWarning("지원하지 않는 이미지 포맷입니다.");
-    } else if (this.image.size >= 1000000) {
-      this.renderWarning("이미지 사이즈가 큽니다.");
+      warning_message = "이미지가 설정되어 있지 않습니다.";
+    } else if (!allowed_image_format.includes(this.image.type)) {
+      warning_message = "지원하지 않는 이미지 포맷입니다.";
+    } else if (this.image.size >= 1048576) {
+      warning_message = "이미지 사이즈는 1MB 미만여야합니다.";
     } else {
       return true;
     }
+    this.renderWarning(warning_message);
     return false;
   },
 
@@ -58,22 +57,20 @@ export let GuildCreateView = Backbone.View.extend({
 
   createGuild: async function () {
     const form_data = this.appendFormData();
-    let data = await fetch("api/guilds/", {
+    Helper.fetch("guilds", {
       method: "POST",
       headers: {
-        "X-CSRF-Token": Helper.getToken(),
-        current_user: App.current_user.id,
+        "Content-Type": "form-data",
       },
       body: form_data,
+      success_callback: (data) => {
+        App.current_user.set("guild", data.guild_membership);
+        App.router.navigate("#/guilds?page=1");
+      },
+      fail_callback: (data) => {
+        Helper.info({ error: data.error });
+      },
     });
-    let response = await data.json();
-    let success = Math.floor(data.status / 100) == 2 ? true : false;
-    if (success) {
-      App.current_user.set("guild", response.guild);
-      App.router.navigate("#/guilds?page=1");
-    } else {
-      Helper.info({ error: response.error });
-    }
   },
 
   appendFormData: function () {
@@ -85,7 +82,6 @@ export let GuildCreateView = Backbone.View.extend({
   },
 
   cancel: function () {
-    this.close();
     App.router.navigate("#/guilds?page=1");
   },
 
@@ -93,8 +89,8 @@ export let GuildCreateView = Backbone.View.extend({
     Helper.info({
       subject: "아나그램이란?",
       description:
-        "아나그램은 길드 이름에 포함된 글자들을 사용하여 만들어지는 어구입니다.<br>\
-        또한 아나그램은 길드 이름보다 짧아야 합니다.",
+        "아나그램은 길드 이름에 포함된 글자들만을 사용하여 만들어지는 어구입니다.<br>\
+        또한 아나그램은 길드 이름보다 같거나 짧아야 합니다.",
     });
   },
 

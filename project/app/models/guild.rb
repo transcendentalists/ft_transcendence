@@ -8,22 +8,25 @@ class Guild < ApplicationRecord
   has_many :invitations, class_name: 'GuildInvitation'
   scope :for_guild_index, -> (page) { order(point: :desc).page(page).map.with_index { |guild, index| guild.profile(index, page) } }
   has_one_attached :image
-  validates :name, uniqueness: { message: "길드 이름은 중복될 수 없습니다." }
+  validates :name, uniqueness: { message: "길드 이름은 중복될 수 없습니다." },
+                    length: { in: 1..10, message: "길드 이름은 최대 10자까지 가능합니다." },
+                    format: { with: /\A[A-Za-z0-9]+\z/, message: "길드 이름에 특수문자가 포함될 수 없습니다." }
   validates :owner_id, uniqueness: { message: "유저는 하나의 길드만 만들 수 있습니다." }
-  validates :anagram, uniqueness: { message: "길드 아나그램은 중복될 수 없습니다." }
-  validates :name, length: { in: 1..10, message: '길드 이름은 최대 10자까지 가능합니다.' }
-  validates :name, format: { with: /\A[A-Za-z0-9]+\z/, message: '길드 이름에 특수문자가 포함될 수 없습니다.' }
+  validates :anagram, length: { in: 2..5, message: "길드 아나그램은 최대 4자까지 가능합니다." },
+                      uniqueness: { message: "길드 아나그램은 중복될 수 없습니다." },
+                      format: { with: /\A@[A-Za-z0-9]+\z/, message: "아나그램에 특수문자가 포함될 수 없습니다." }
   validate :check_anagram
 
   def check_anagram
-    return errors.add(:anagram, :invalid, message: "아나그램은 1글자에서 4글자로 입력해 주시길 바랍니다.") unless (2..5).include?(anagram.length)
-    return errors.add(:anagram, :invalid, message: "아나그램에 특수문자가 포함될 수 없습니다.") unless anagram.match(/^@[A-Za-z0-9]/)
-    anagram_downcase = anagram.downcase
-    anagram_downcase.slice!(0)
-    name.each_char do |name_char|
-      anagram_downcase.slice!(0) if name_char.downcase == anagram_downcase.first
+    return errors.add(:anagram, message: "아나그램 또는 이름은 비어있을 수 없습니다.") if anagram.nil? || name.nil?
+    sorted_anagram = anagram[1..].chars.sort.join
+    sorted_name = name.chars.sort.join
+    sorted_name.each_char do |ch|
+      if sorted_anagram.first == ch
+        sorted_anagram.slice!(0)
+      end
     end
-    return errors.add(:anagram, :invalid, message: "아나그램은 길드 이름보다 짧고 이름에 포함된 단어로 구성되어야 합니다.") unless anagram_downcase.empty?
+    return errors.add(:anagram, message: "아나그램은 길드 이름보다 같거나 짧고 이름에 포함된 글자로 구성되어야 합니다.") unless sorted_anagram.empty?
   end
 
   def for_member_list(page)
@@ -58,9 +61,5 @@ class Guild < ApplicationRecord
     war_request.enemy.cancel_rest_of_war_request
     war_request.challenger.cancel_rest_of_war_request
     War.create(war_request_id: war_request.id, status: "pending")
-  end
-
-  def create_membership(user_id, position)
-    GuildMembership.create!(user_id: user_id, guild_id: self.id, position: position)
   end
 end

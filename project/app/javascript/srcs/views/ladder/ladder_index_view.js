@@ -1,5 +1,4 @@
-import { App } from "srcs/internal";
-import { Helper } from "../../helper";
+import { App, Helper } from "srcs/internal";
 
 export let LadderIndexView = Backbone.View.extend({
   template: _.template($("#ladder-index-view-template").html()),
@@ -8,7 +7,8 @@ export let LadderIndexView = Backbone.View.extend({
   events: {
     "click #ladder-page-before-button": "beforePage",
     "click #ladder-page-next-button": "nextPage",
-    "click #ladder-join-button": "gamePage",
+    "click #join-ladder-button": "joinLadder",
+    "click #join-casual-ladder-button": "joinCasualLadder",
   },
 
   initialize: function (page) {
@@ -28,16 +28,22 @@ export let LadderIndexView = Backbone.View.extend({
     App.router.navigate("#/ladder/" + (this.page + 1));
   },
 
+  alert: function () {
+    Helper.info({
+      subject: "래더 신청 불가능",
+      description: "다른 유저와 듀얼 신청 중에는 래더 신청이 불가능합니다.",
+    });
+  },
+
   //  승급전 참여 버튼 클릭시 게임 인덱스 뷰로 이동
-  gamePage: function () {
-    if (App.current_user.isWorking()) {
-      Helper.info({
-        subject: "래더 신청 불가능",
-        description: "다른 유저와 듀얼 신청 중에는 래더 신청이 불가능합니다.",
-      });
-      return;
-    }
+  joinLadder: function () {
+    if (App.current_user.isWorking()) return this.alert();
     App.router.navigate("#/matches?match_type=ladder");
+  },
+
+  joinCasualLadder: function () {
+    if (App.current_user.isWorking()) return this.alert();
+    App.router.navigate("#/matches?match_type=casual_ladder");
   },
 
   /**

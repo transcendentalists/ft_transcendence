@@ -2,20 +2,20 @@
   <h1 class="ui header">길드 생성하기</h1>
   <form class="ui form">
     <div class="field">
-      <label>길드 이름 (10자 이내)</label>
+      <label>길드 이름 (10자 이내, 영어, 숫자만 가능합니다.)</label>
       <input type="text" placeholder="길드의 이름을 입력해주세요." name="name">
     </div>
-    <div class="field anagram-header">
-      <label>아나그램 (4자 이내)</label>
-      <i class="anagram-definition-icon question circle outline icon link"></i>
-    </div>
-    <div class="anagram-input">
+    <div class="field">
+      <div class="anagram-input-header">
+        <label>아나그램 (4자 이내, 영어, 숫자만 가능합니다.)</label>
+        <i class="anagram-definition-icon question circle outline icon link"></i>
+      </div>
       <input type="text" placeholder="길드의 아나그램을 입력해주세요." name="anagram">
     </div>
     <div class="field">
-      <label>이미지업로드</label>
+      <label>이미지 업로드</label>
       <div class="flex-container image-name">
-        <input type="file" class="inputfile" id="embedpollfileinput">
+        <input type="file">
       </div>
     </div>
 

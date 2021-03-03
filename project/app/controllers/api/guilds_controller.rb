@@ -16,20 +16,16 @@ class Api::GuildsController < ApplicationController
           anagram: '@' + params[:anagram],
           owner_id: @current_user.id,
         )
-        unless guild.valid?
+        if guild.invalid?
           error_attribute_name = guild.errors.attribute_names.first
           raise ArgumentError.new guild.errors[error_attribute_name].first
         end
         guild.save!
-        guild_membership = guild.create_membership(@current_user.id, "master")
+        guild_membership = guild.memberships.create!({ user_id: @current_user.id, guild_id: guild.id, position: "master" })
         image_attach(guild)
-        render json: { guild: guild_membership.profile }
+        render json: { guild_membership: guild_membership.profile }
       rescue => e
-        if e.class == ArgumentError
-          render_error("길드 생성 실패", e.message, 400)
-        else
-          render_error("길드 생성 실패", "잘못된 요청입니다.", 400)
-        end
+        render_error("길드 생성 실패", e.class == ArgumentError ? e.message : "잘못된 요청입니다.", 400)
         raise ActiveRecord::Rollback
       end
     end

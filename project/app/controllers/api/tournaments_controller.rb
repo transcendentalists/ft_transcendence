@@ -17,8 +17,14 @@ class Api::TournamentsController < ApplicationController
     begin
       tournament = Tournament.create_by(create_params)
       render json: { tournament: tournament }
-    rescue => e
-      return render_error("INVALID TOURNAMENT", e.message, 400)
+    rescue Date::Error
+      return render_error("INVALID TOURNAMENT", "유효하지 않은 날짜입니다.", 400)
+    rescue ActiveRecord::RecordInvalid => e
+      key =  e.record.errors.attribute_names.first
+      error_message = e.record.errors.messages[key].first
+      return render_error("INVALID TOURNAMENT", error_message, 400)
+    rescue
+      return render_error("FAILED TO CREATE TOURNAMENT", "토너먼트 생성에 실패했습니다.", 400)
     end
   end
 

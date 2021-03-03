@@ -27,8 +27,11 @@ class Match < ApplicationRecord
         id: match.id,
         type: match.match_type,
         match: match,
-        scorecards: match.scorecards,
-        users: match.users,
+        rule: match.rule,
+        left_scorecard: match.scorecards[0],
+        right_scorecard: match.scorecards[1],
+        left_user: match.users[0],
+        right_user: match.users[1],
         tournament: match.match_type == "tournament" ? match.eventable.profile : nil,
         guilds: match.match_type == "war" ? match.eventable.guilds : nil,
       }

@@ -1103,7 +1103,7 @@ body {
   box-shadow: 0 7px 5px -6px #777;
   height: fit-content;
   align-items: center;
-  height: 13rem;
+  height: 15rem;
   justify-content: space-between;
 }
 
@@ -1126,4 +1126,15 @@ body {
 
 #live-index-view .live-card .match-start-time {
   font-size: 0.9rem;
+}
+
+#live-index-view .live-card .score {
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding-bottom: 0.5rem;
+}
+
+#live-index-view .live-card .score span {
+  font-size: 1rem;
+  font-weight: 400;
 }

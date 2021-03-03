@@ -23,7 +23,7 @@ class Match < ApplicationRecord
   end
 
   def winner
-    self.scorecards.find_by_result("win")
+    card = self.scorecards.reload.find_by_result("win")&.user
   end
 
   def cancel

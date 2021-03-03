@@ -249,7 +249,7 @@ class Tournament < ApplicationRecord
     puts "==========set_schedule_at_tournament_time=========="
     puts "id: #{self.id}"
     puts "title: #{self.title}"
-    puts "wait_until: #{Date.tomorrow.midnight.change({hour: self.tournament_time.hour})}"
+    puts "wait_until: #{Date.today.midnight.change({hour: self.tournament_time.hour})}"
     puts ""
     TournamentJob.set(wait_until: Date.today.midnight.change({hour: self.tournament_time.hour})).perform_later(self)
   end

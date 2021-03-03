@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_26_132433) do
+ActiveRecord::Schema.define(version: 2021_03_03_085458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -138,7 +138,7 @@ ActiveRecord::Schema.define(version: 2021_02_26_132433) do
     t.bigint "owner_id", null: false
     t.string "name", null: false
     t.string "anagram", null: false
-    t.string "image_url", default: "default_image_url"
+    t.string "image_url", default: "assets/default_guild.png"
     t.integer "point", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -222,6 +222,7 @@ ActiveRecord::Schema.define(version: 2021_02_26_132433) do
     t.integer "point", default: 0, null: false
     t.string "email", default: "marvin@ecole42.fr", null: false
     t.string "verification_code"
+    t.string "position", default: "user", null: false
   end
 
   create_table "war_requests", force: :cascade do |t|

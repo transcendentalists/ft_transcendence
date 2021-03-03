@@ -4,6 +4,14 @@ class Tournament < ApplicationRecord
   has_many :memberships, class_name: "TournamentMembership"
   has_many :users, through: :memberships, source: :user
   has_many :scorecards, through: :matches, as: :eventable
+
+  validates :title, length: { minimum: 1, maximum: 20, message: "토너먼트 타이틀은 최대 20글자까지 가능합니다." }
+  validates :incentive_title, length: { maximum: 20, message: "보상 타이틀은 최대 20글자까지 가능합니다."}
+  validates :incentive_gift, length: { maximum: 20, message: "상품명은 최대 20글자까지 가능합니다." }, allow_nil: true
+  validates :max_user_count, inclusion: {in: [8, 16, 32], message: "참여가능인원 수가 유효하지 않습니다."}
+  validates :target_match_score, inclusion: {in: [3, 5, 7, 10], message: "경기 목표 점수가 유효하지 않습니다." }
+  validates_with TournamentValidator, field: [ :start_date, :tournament_time ]
+
   scope :for_tournament_index, -> (current_user) do
     where.not(status: ["completed", "canceled"])
     .reject{|tournament|
@@ -14,6 +22,7 @@ class Tournament < ApplicationRecord
       stat
     }
   end
+
 
   def to_simple
     permitted = %w[id title max_user_count registered_user_count start_date 
@@ -176,6 +185,28 @@ class Tournament < ApplicationRecord
     else
       self.set_schedule_at_tournament_time
     end
+  end
+
+  def self.can_be_created_by?(current_user)
+    web_admin_auth_level = 4
+    ApplicationRecord.position_grade[current_user.position] >= web_admin_auth_level
+  end
+
+  def self.create_by(params)
+    start_date = DateTime.strptime(params[:start_date], "%Y-%m-%d")
+    tournament_time = Time.zone.now.change({ hour: params[:tournament_time] })
+    tournament_hash = {
+      title: params[:title],
+      rule_id: params[:rule_id],
+      max_user_count: params[:max_user_count],
+      start_date: start_date,
+      tournament_time: tournament_time,
+      incentive_gift: params[:incentive_gift],
+      target_match_score: params[:target_match_score]
+    }
+    tournament_hash.merge!({ incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
+
+    self.create!(tournament_hash)
   end
 
   private

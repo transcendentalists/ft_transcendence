@@ -7,12 +7,12 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 User.create([
-  {name: 'sanam1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'simian114@gmail.com', image_url: 'assets/sanam1.png', point: 123, two_factor_auth: false},
-  {name: 'yohlee1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'yohan9612@naver.com', image_url: 'assets/yohlee1.png', point: 122, two_factor_auth: false},
-  {name: 'eunhkim1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim1.png', point: 33, two_factor_auth: false},
-  {name: 'iwoo1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo1.png', point: 42, two_factor_auth: false},
-  {name: 'jujeong1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 90, two_factor_auth: false},
-  {name: 'iwoo2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'injun.woo30001@gmail.com', image_url: '/assets/iwoo2.png', point: 78, two_factor_auth: false},
+  {name: 'sanam1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'simian114@gmail.com', image_url: 'assets/sanam1.png', point: 123, two_factor_auth: false, position: "web_owner"},
+  {name: 'yohlee1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'yohan9612@naver.com', image_url: 'assets/yohlee1.png', point: 122, two_factor_auth: false, position: "web_owner"},
+  {name: 'eunhkim1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'valhalla.host@gmail.com', image_url: '/assets/eunhkim1.png', point: 33, two_factor_auth: false, position: "web_owner"},
+  {name: 'iwoo1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'injun.woo30000@gmail.com', image_url: '/assets/iwoo1.png', point: 42, two_factor_auth: false, position: "web_owner"},
+  {name: 'jujeong1', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO", email: 'juhyeonjeong92@gmail.com', image_url: '/assets/jujeong1.png', point: 90, two_factor_auth: false, position: "web_owner"},
+  {name: 'iwoo2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'injun.woo30001@gmail.com', image_url: '/assets/iwoo2.png', point: 78, two_factor_auth: false, position: "web_admin"},
   {name: 'yohlee2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'yohan9613@yonsei.ac.kr', image_url: '/assets/yohlee2.png', point: 83},
   {name: 'sanam2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'simian115@gmail.com', image_url: '/assets/sanam2.png', point: 92},
   {name: 'eunhkim2', password: "$2a$12$x9NXHNv4GY/11FVhqjmT/ObkTmund.GigvaOWR8QLCGlFQVTLkeWO",  email: 'valhalla.host2@gmail.com', image_url: '/assets/eunhkim2.jpg', point: 20},
@@ -83,17 +83,17 @@ Rule.create([
 ])
 
 Guild.create([
-  {owner_id: 1, name: "gun42seoul", anagram: "@GUNA", image_url: "assets/gun.png"},
-  {owner_id: 2, name: "gon42seoul", anagram: "@GONA", image_url: "assets/gon.png"},
-  {owner_id: 3, name: "gam42seoul", anagram: "@GAMA", image_url: "assets/gam.png"},
-  {owner_id: 4, name: "lee42seoul", anagram: "@LEEA", image_url: "assets/lee.png"},
-  {owner_id: 5, name: "142seoul", anagram: "@ABCD", image_url: "assets/lee.png"},
-  {owner_id: 6, name: "2", anagram: "@TWOM", image_url: "assets/lee.png"},
-  {owner_id: 7, name: "abcd", anagram: "@THEE", image_url: "assets/lee.png"},
-  {owner_id: 8, name: "12eoul", anagram: "@EEEE", image_url: "assets/lee.png"},
-  {owner_id: 9, name: "seoul", anagram: "@SOUL", image_url: "assets/lee.png"},
-  {owner_id: 10, name: "123123", anagram: "@HANE", image_url: "assets/lee.png"},
-  {owner_id: 11, name: "42seoul", anagram: "@HANA", image_url: "assets/lee.png"},
+  {owner_id: 1, name: "GUN42seoul", anagram: "@GUN4", image_url: "assets/gun.png"},
+  {owner_id: 2, name: "GON42seoul", anagram: "@GON4", image_url: "assets/gon.png"},
+  {owner_id: 3, name: "GAM42seoul", anagram: "@GAM4", image_url: "assets/gam.png"},
+  {owner_id: 4, name: "LEE42seoul", anagram: "@LEE4", image_url: "assets/lee.png"},
+  {owner_id: 5, name: "142seoul", anagram: "@142", image_url: "assets/lee.png"},
+  {owner_id: 6, name: "2", anagram: "@2", image_url: "assets/lee.png"},
+  {owner_id: 7, name: "abcd", anagram: "@ad", image_url: "assets/gun.png"},
+  {owner_id: 8, name: "12eoul", anagram: "@12e", image_url: "assets/gon.png"},
+  {owner_id: 9, name: "seoul", anagram: "@soul", image_url: "assets/gam.png"},
+  {owner_id: 10, name: "123123", anagram: "@123", image_url: "assets/lee.png"},
+  {owner_id: 11, name: "42seoul", anagram: "@42SE", image_url: "assets/gun.png"},
 ])
 
 WarRequest.create([
@@ -330,7 +330,7 @@ GuildMembership.create([
   {user_id: 8, guild_id: 8, position: "master"},
   {user_id: 9, guild_id: 9, position: "master"},
   {user_id: 10, guild_id: 10, position: "master"},
-  {user_id: 11, guild_id: 10, position: "officer"},
+  {user_id: 11, guild_id: 11, position: "master"},
   {user_id: 12, guild_id: 1, position: "officer"},
   {user_id: 13, guild_id: 2, position: "officer"},
   {user_id: 14, guild_id: 3, position: "officer"},

@@ -22,10 +22,10 @@ class Match < ApplicationRecord
     return if self.status != "pending"
     
     if self.match_type == "tournament"
-      return self.cancel if self.scorecards.where(status: "ready").count != 2
+      return self.cancel if self.scorecards.where(result: "ready").count != 2
       self.update(status: "progress")
     else 
-      self.update(status: "progress", start_time: Time.now())
+      self.update(status: "progress", start_time: Time.zone.now())
     end
 
     self.broadcast({type: "PLAY"})
@@ -40,7 +40,7 @@ class Match < ApplicationRecord
         left: left.profile, right: right.profile,
         target_score: self.target_score, rule: self.rule,
         send_id: options[:send_id] }
-    )    
+    )
   end
   
   def winner

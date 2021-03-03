@@ -206,11 +206,7 @@ class Tournament < ApplicationRecord
     }
     tournament_hash.merge!({ incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
 
-    tournament = self.new(tournament_hash)
-
-    raise "INVALID TOURNAMENT" unless tournament.valid?
-    tournament.save
-    tournament
+    self.create!(tournament_hash)
   end
 
   private

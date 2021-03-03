@@ -24,7 +24,8 @@ class Tournament < ApplicationRecord
   validates :incentive_gift, length: { maximum: 20 }, allow_nil: true
   validates :max_user_count, inclusion: [8, 16, 32]
   validates :target_match_score, inclusion: [3, 5, 7, 10]
-  validates_with TournamentValidator, field: [ :start_date, :tournament_time ]
+  # TODO: 실험 후 푸시전에 주석 풀기
+  # validates_with TournamentValidator, field: [ :start_date, :tournament_time ]
 
   scope :for_tournament_index, -> (current_user) do
     where.not(status: ["completed", "canceled"])
@@ -105,12 +106,14 @@ class Tournament < ApplicationRecord
     match = user.matches.where(status: "pending", eventable_type: "Tournament", eventable_id: self.id).first
     if match.nil?
       {
+        id: nil,
         enemy: self.dummy_enemy,
         start_datetime: self.status == "pending" ? self.first_match_datetime : self.tomorrow_match_datetime,
         tournament_round: self.status == "pending" ? self.max_user_count : self.tomorrow_round
       }
     else
       {
+        id: match.id,
         enemy: match.enemy_of(user).to_simple,
         start_datetime: match.start_time,
         tournament_round: self.today_round
@@ -234,14 +237,29 @@ class Tournament < ApplicationRecord
   end
 
   def set_schedule_at_operation_time
-    TournamentJob.set(wait_until: Date.tomorrow.midnight.change(minute: 5)).perform_later(self)
+    puts "===========set_schedule_at_operation_time=========="
+    puts "id: #{self.id}"
+    puts "title: #{self.title}"
+    puts "wait_until: #{Date.tomorrow.midnight.change({min: 5})}"
+    puts ""
+    TournamentJob.set(wait_until: Date.tomorrow.midnight.change({min: 5})).perform_later(self)
   end
 
   def set_schedule_at_tournament_time
-    TournamentJob.set(wait_until: Date.today.midnight.change(hour: self.tournament_time.hour)).perform_later(self)
+    puts "==========set_schedule_at_tournament_time=========="
+    puts "id: #{self.id}"
+    puts "title: #{self.title}"
+    puts "wait_until: #{Date.tomorrow.midnight.change({hour: self.tournament_time.hour})}"
+    puts ""
+    TournamentJob.set(wait_until: Date.today.midnight.change({hour: self.tournament_time.hour})).perform_later(self)
   end
 
   def set_schedule_at_start_date
+    puts "============set_schedule_at_start_date============="
+    puts "id: #{self.id}"
+    puts "title: #{self.title}"
+    puts "wait_until: #{self.start_date}"
+    puts ""
     TournamentJob.set(wait_until: self.start_date).perform_later(self)
   end
 

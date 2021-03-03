@@ -24,7 +24,6 @@ class Guild < ApplicationRecord
     sorted_name.each_char do |ch|
       if sorted_anagram.first == ch
         sorted_anagram.slice!(0)
-        p sorted_anagram
       end
     end
     return errors.add(:anagram, message: "아나그램은 길드 이름보다 같거나 짧고 이름에 포함된 단어로 구성되어야 합니다.") unless sorted_anagram.empty?

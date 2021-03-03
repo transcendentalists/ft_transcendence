@@ -242,30 +242,20 @@ class Tournament < ApplicationRecord
   end
 
   def set_schedule_at_operation_time
-    puts "===========set_schedule_at_operation_time=========="
-    puts "id: #{self.id}"
-    puts "title: #{self.title}"
-    puts "wait_until: #{Date.tomorrow.midnight.change({min: 5})}"
-    puts ""
-    TournamentJob.set(wait_until: Date.tomorrow.midnight.change({min: 5})).perform_later(self)
-  end
+    self.job_reservation(Date.tomorrow.midnight.change({min: 5}))
+=  end
 
   def set_schedule_at_tournament_time
-    puts "==========set_schedule_at_tournament_time=========="
-    puts "id: #{self.id}"
-    puts "title: #{self.title}"
-    puts "wait_until: #{Date.today.midnight.change({hour: self.tournament_time.hour})}"
-    puts ""
-    TournamentJob.set(wait_until: Date.today.midnight.change({hour: self.tournament_time.hour})).perform_later(self)
+    self.job_reservation(Date.today.midnight.change({hour: self.tournament_time.hour}))
   end
 
   def set_schedule_at_start_date
-    puts "============set_schedule_at_start_date============="
-    puts "id: #{self.id}"
-    puts "title: #{self.title}"
-    puts "wait_until: #{self.start_date}"
-    puts ""
-    TournamentJob.set(wait_until: self.start_date).perform_later(self)
+    self.job_reservation(self.start_date)
+  end
+
+  def job_reservation(until_time)
+    TournamentJob.set(wait_until: until_time).perform_later(self)
+    puts "* Job reservation: #{self.title}(id: #{self.id}) at #{until_time}"
   end
 
   def dummy_enemy

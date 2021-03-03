@@ -28,8 +28,8 @@ class Api::GuildInvitationsController < ApplicationController
 
   def destroy
     guild_invitation = GuildInvitation.find_by_id(params[:id])
-    return render_error("길드 초대 삭제 실패", "존재하지 않는 길드 초대입니다.", 400) if guild_invitation.nil?
-    return render_error("길드 초대 삭제 실패", "삭제 권한이 없습니다.", 400) if @current_user.id != guild_invitation.invited_user_id
+    return render_error("길드 초대 거부 실패", "존재하지 않는 길드 초대입니다.", 400) if guild_invitation.nil?
+    return render_error("길드 초대 거부 실패", "거부 권한이 없습니다.", 400) if @current_user.id != guild_invitation.invited_user_id
     guild_invitation.destroy
     head :no_content, status: 204
   end

@@ -19,6 +19,7 @@ export let LiveIndexView = Backbone.View.extend({
   },
 
   renderLiveCardList: function (data) {
+    if (!data.matches) return;
     this.live_card_list_view = new App.View.LiveCardListView();
     this.live_card_list_view.render(data.matches);
   },

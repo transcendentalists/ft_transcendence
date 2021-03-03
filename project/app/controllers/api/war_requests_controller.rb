@@ -15,22 +15,16 @@ class Api::WarRequestsController < ApplicationController
       return render_error("전쟁 요청 실패", "권한이 없습니다.", 401)
     end
     return render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400) unless check_format_of_start_date?(params[:war_start_date])
-    challenger_guild = @current_user.in_guild
-    enemy_guild = Guild.find_by_id(params[:enemy_guild_id])
-    return render_error("전쟁 요청 실패", "존재하지 않는 길드입니다.", 400) if enemy_guild.nil?
-    return render_error("전쟁 요청 실패", "진행 중인 전쟁이 있습니다.", 400) if enemy_guild.in_war? || challenger_guild.in_war?
-    enemy_guild.requests.where(status: "pending").each do |request|
-      return render_error("전쟁 요청 실패", "중복된 요청입니다.", 400) if request.challenger.id == challenger_guild.id
+    return render_error("전쟁 요청 실패", @error_message, 400) unless check_guild_condition(params)
+    ActiveRecord::Base.transaction do
+      begin
+        war_request = WarRequest.create_by(params)
+        war_request.create_war_statuses(params[:guild_id], params[:enemy_guild_id])
+      rescue => e
+        render_error("전쟁 요청 실패", e.class == ArgumentError ? e.message : "잘못된 요청입니다.", 400)
+        raise ActiveRecord::Rollback
+      end
     end
-    return render_error("전쟁 요청 실패", "길드 포인트가 부족합니다.", 400) if challenger_guild.point < params[:bet_point].to_i
-    war_request = WarRequest.create_by(params)
-    return render_error("전쟁 요청 실패", "잘못된 요청입니다.", 400) if war_request.nil?
-    unless war_request.valid?
-      error_message = war_request.errors[war_request.errors.attribute_names.first].first
-      return render_error("전쟁 요청 실패", error_message, 400) 
-    end
-    war_request.save
-    war_request.create_war_statuses(params[:guild_id], params[:enemy_guild_id])
   end
 
   def update
@@ -57,6 +51,27 @@ class Api::WarRequestsController < ApplicationController
       date = Date.parse(str)
     rescue
       return false
+    end
+    true
+  end
+
+  def check_guild_condition(params)
+    challenger_guild = @current_user.in_guild
+    enemy_guild = Guild.find_by_id(params[:enemy_guild_id])
+    @error_message = nil
+    if enemy_guild.nil?
+      @error_message = "존재하지 않는 길드입니다." 
+    elsif enemy_guild.in_war? || challenger_guild.in_war?
+      @error_message = "진행 중인 전쟁이 있습니다."
+    elsif challenger_guild.point < params[:bet_point].to_i
+      @error_message= "길드 포인트가 부족합니다." 
+    end
+    return false unless @error_message.nil?
+    enemy_guild.requests.where(status: "pending").each do |request|
+      if request.challenger.id == challenger_guild.id
+        @error_message = "중복된 요청입니다."
+        return false
+      end
     end
     true
   end

@@ -8,6 +8,7 @@ class WarRequest < ApplicationRecord
   validates :target_match_score, inclusion: { in: [3, 5, 7, 10], message: "목표 점수를 잘못 입력하셨습니다." }
   validates :max_no_reply_count, inclusion: { in: 3..10, message: "최대 미응답 개수를 잘못 입력하셨습니다." }
   validates :bet_point, inclusion: { in: (1000..10000).step(500), message: "배팅 포인트를 잘못 입력하셨습니다."}
+  validates :start_date, presence: { message: "시작일을 입력해주세요."}
   validate :start_date_after_now
   validate :start_date_after_max_end_date
   validate :end_date_after_start_date
@@ -38,12 +39,12 @@ class WarRequest < ApplicationRecord
   end
 
   def create_war_statuses(guild_id, enemy_guild_id)
-    WarStatus.create(guild_id: guild_id, war_request_id: self.id, position: "challenger")
-    WarStatus.create(guild_id: enemy_guild_id, war_request_id: self.id, position: "enemy")
+    WarStatus.create!(guild_id: guild_id, war_request_id: self.id, position: "challenger")
+    WarStatus.create!(guild_id: enemy_guild_id, war_request_id: self.id, position: "enemy")
   end
 
   def self.create_by(params)
-    self.new(
+    war_request = self.new(
       rule_id: params[:rule_id],
       bet_point: params[:bet_point],
       start_date: Date.parse(params[:war_start_date]),
@@ -54,6 +55,12 @@ class WarRequest < ApplicationRecord
       include_tournament: params[:include_tournament],
       target_match_score: params[:target_match_score],
     )
+    if war_request.invalid?
+      error_message = war_request.errors[war_request.errors.attribute_names.first].first
+      raise ArgumentError.new(error_message)
+    end
+    war_request.save!
+    war_request
   end
 
   def enemy
@@ -66,14 +73,14 @@ class WarRequest < ApplicationRecord
 
   private
   def start_date_after_max_end_date
-    errors.add(:start_date, "전쟁 시작일은 한달 이내로 설정해야 합니다.") if start_date > Date.today+ 31.days
+    errors.add(:start_date, "전쟁 시작일은 한달 이내로 설정해야 합니다.") if start_date && start_date > Date.today+ 31.days
   end
 
   def start_date_after_now
-    errors.add(:start_date, "전쟁 시작일은 미래여야 합니다.") if start_date.past?
+    errors.add(:start_date, "전쟁 시작일은 미래여야 합니다.") if start_date && start_date.past?
   end
 
   def end_date_after_start_date
-    errors.add(:end_date, "전쟁 종료일은 시작일보다 미래여야 합니다.") if end_date < start_date
+    errors.add(:end_date, "전쟁 종료일은 시작일보다 미래여야 합니다.") if start_date && end_date && end_date < start_date
   end
 end

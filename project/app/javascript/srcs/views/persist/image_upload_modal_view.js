@@ -22,7 +22,7 @@ export let ImageUploadModalView = Backbone.View.extend({
 
   uploadFile: function () {
     const image = this.$("input[type=file]")[0].files[0];
-    if (image == undefined) {
+    if (image === undefined) {
       this.renderWarning("이미지가 설정되어 있지 않습니다.");
     } else if (!["image/png", "image/jpeg", "image/png"].includes(image.type)) {
       this.renderWarning("지원하지 않는 이미지 포맷입니다.");

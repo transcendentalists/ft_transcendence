@@ -14,9 +14,12 @@ class Api::TournamentsController < ApplicationController
   def create
     return render_error("UNAUTHORIZATION", "토너먼트 생성 권한이 없습니다.", 403) unless Tournament.can_be_created_by?(@current_user)
 
-    tournament = Tournament.create_by(create_params)
-    return render_error("INVALID TOURNAMENT", "유효하지 않은 토너먼트 생성값입니다.", 400) if tournament.nil?
-    render json: { tournament: tournament }
+    begin
+      tournament = Tournament.create_by(create_params)
+      render json: { tournament: tournament }
+    rescue
+      return render_error("INVALID TOURNAMENT", "유효하지 않은 토너먼트 생성값입니다.", 400)
+    end
   end
 
   private

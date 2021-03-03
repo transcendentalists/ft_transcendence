@@ -7,7 +7,7 @@ class WarRequest < ApplicationRecord
   validates :rule_id, inclusion: { in: 1..7, message: "요청하신 룰이 존재하지 않습니다." }
   validates :target_match_score, inclusion: { in: [3, 5, 7, 10], message: "목표 점수를 잘못 입력하셨습니다." }
   validates :max_no_reply_count, inclusion: { in: 3..10, message: "최대 미응답 개수를 잘못 입력하셨습니다." }
-  validates :bet_point, inclusion: { in: [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000], message: "배팅 포인트를 잘못 입력하셨습니다."}
+  validates :bet_point, inclusion: { in: (1000..10000).step(500), message: "배팅 포인트를 잘못 입력하셨습니다."}
   validate :start_date_after_now
   validate :start_date_after_max_end_date
   validate :end_date_after_start_date

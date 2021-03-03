@@ -22,6 +22,7 @@ class Api::WarRequestsController < ApplicationController
     enemy_guild.requests.where(status: "pending").each do |request|
       return render_error("전쟁 요청 실패", "중복된 요청입니다.", 400) if request.challenger.id == challenger_guild.id
     end
+    return render_error("전쟁 요청 실패", "길드 포인트가 부족합니다.", 400) if challenger_guild.point < params[:bet_point].to_i
     war_request = WarRequest.create_by(params)
     return render_error("전쟁 요청 실패", "잘못된 요청입니다.", 400) if war_request.nil?
     unless war_request.valid?

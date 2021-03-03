@@ -83,17 +83,17 @@ Rule.create([
 ])
 
 Guild.create([
-  {owner_id: 1, name: "GUN42seoul", anagram: "@GUN4", image_url: "assets/gun.png"},
-  {owner_id: 2, name: "GON42seoul", anagram: "@GON4", image_url: "assets/gon.png"},
-  {owner_id: 3, name: "GAM42seoul", anagram: "@GAM4", image_url: "assets/gam.png"},
-  {owner_id: 4, name: "LEE42seoul", anagram: "@LEE4", image_url: "assets/lee.png"},
-  {owner_id: 5, name: "142seoul", anagram: "@142", image_url: "assets/lee.png"},
-  {owner_id: 6, name: "2", anagram: "@2", image_url: "assets/lee.png"},
-  {owner_id: 7, name: "abcd", anagram: "@ad", image_url: "assets/gun.png"},
-  {owner_id: 8, name: "12eoul", anagram: "@12e", image_url: "assets/gon.png"},
-  {owner_id: 9, name: "seoul", anagram: "@soul", image_url: "assets/gam.png"},
-  {owner_id: 10, name: "123123", anagram: "@123", image_url: "assets/lee.png"},
-  {owner_id: 11, name: "42seoul", anagram: "@42SE", image_url: "assets/gun.png"},
+  {owner_id: 1, name: "GUN42seoul", anagram: "@GUN4", image_url: "assets/gun.png", point: 200000},
+  {owner_id: 2, name: "GON42seoul", anagram: "@GON4", image_url: "assets/gon.png", point: 1000},
+  {owner_id: 3, name: "GAM42seoul", anagram: "@GAM4", image_url: "assets/gam.png", point: 2000},
+  {owner_id: 4, name: "LEE42seoul", anagram: "@LEE4", image_url: "assets/lee.png", point: 3000},
+  {owner_id: 5, name: "142seoul", anagram: "@142", image_url: "assets/lee.png", point: 4000},
+  {owner_id: 6, name: "2", anagram: "@2", image_url: "assets/lee.png", point: 5000},
+  {owner_id: 7, name: "abcd", anagram: "@ad", image_url: "assets/gun.png", point: 6000},
+  {owner_id: 8, name: "12eoul", anagram: "@12e", image_url: "assets/gon.png", point: 7000},
+  {owner_id: 9, name: "seoul", anagram: "@soul", image_url: "assets/gam.png", point: 8000},
+  {owner_id: 10, name: "123123", anagram: "@123", image_url: "assets/lee.png", point: 9000},
+  {owner_id: 11, name: "42seoul", anagram: "@42SE", image_url: "assets/gun.png", point: 10000},
 ])
 
 WarRequest.create([

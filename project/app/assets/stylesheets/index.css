@@ -76,7 +76,7 @@ body {
   margin-top: 8rem;
 }
 
-.create-view {
+.request-create-view {
   width: 400px;
   margin-top: 12rem;
   margin-bottom: 12rem;
@@ -86,15 +86,15 @@ body {
   box-shadow: 5px 10px 15px -8px #777;
 }
 
-.create-view .ui.header {
+.request-create-view .ui.header {
   margin-bottom: 3rem;
 }
 
-.crate-view .field {
+.request-crate-view .field {
   margin-bottom: 1rem;
 }
 
-.create-view .buttons {
+.request-create-view .buttons {
   text-align: center;
   margin-top: 2rem;
 }

@@ -24,7 +24,7 @@ class GuildMembership < ApplicationRecord
   end
 
   def profile
-    guild = self.guild.to_simple
+    guild = self.guild&.to_simple
     guild['membership_id'] = self.id
     guild['position'] = self.position
     guild

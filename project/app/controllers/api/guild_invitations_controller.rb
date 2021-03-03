@@ -13,15 +13,7 @@ class Api::GuildInvitationsController < ApplicationController
   def create
     user = User.find_by_id(params[:user_id])
     invited_user = User.find_by_id(params[:invited_user_id])
-
-    return render_error("Bad request", "유효하지 않은 요청입니다.", 400) if @current_user.id != user&.id
-    return render_error("길드 초대 실패", "당신은 가입된 길드가 없습니다.", 400) if user.in_guild.nil?
-    return render_error("길드 초대 실패", "당신은 초대 권한이 없습니다.", 400) if user.guild_membership.position == "member"
-    return render_error("길드 초대 실패", "해당 유저가 존재하지 않습니다.", 400) if invited_user.nil?
-    return render_error("길드 초대 실패", "해당 유저는 가입된 길드가 있습니다.", 400) unless invited_user.in_guild.nil?
-    guild_invitation = GuildInvitation.where(user_id: user.id, invited_user_id: invited_user.id, guild_id: user.in_guild.id).first
-    return render_error("길드 초대 실패", "당신이 보낸 길드 초대가 존재합니다.", 400) unless guild_invitation.nil?
-
+    return render_error("길드 초대 실패", @error_message, 400) unless valid_invite?(user, invited_user)
     guild_invitation = GuildInvitation.create(user_id: user.id, invited_user_id: invited_user.id, guild_id: user.in_guild.id)
     render json: { guild_invitation: guild_invitation.id }
   end
@@ -33,4 +25,26 @@ class Api::GuildInvitationsController < ApplicationController
     guild_invitation.destroy
     head :no_content, status: 204
   end
+
+  private
+  def valid_invite?(user, invited_user)
+    @error_message = nil
+    if @current_user.id != user&.id
+      @error_message = "유효하지 않은 요청입니다."
+    elsif user.in_guild.nil?
+      @error_message = "당신은 가입된 길드가 없습니다."
+    elsif user.guild_membership.position == "member"
+      @error_message = "당신은 초대 권한이 없습니다."
+    elsif invited_user.nil?
+      @error_message = "해당 유저가 존재하지 않습니다."
+    elsif !invited_user.in_guild.nil?
+      @error_message = "해당 유저는 가입된 길드가 있습니다."
+    else
+      guild_invitation = GuildInvitation.where(user_id: user.id, invited_user_id: invited_user.id, guild_id: user.in_guild.id).first
+      @error_message = "당신이 보낸 길드 초대가 존재합니다." unless guild_invitation.nil?
+    end
+    return false unless @error_message.nil?
+    true
+  end
+
 end

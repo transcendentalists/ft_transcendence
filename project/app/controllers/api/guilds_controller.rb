@@ -25,11 +25,7 @@ class Api::GuildsController < ApplicationController
         image_attach(guild)
         render json: { guild_membership: guild_membership.profile }
       rescue => e
-        if e.class == ArgumentError
-          render_error("길드 생성 실패", e.message, 400)
-        else
-          render_error("길드 생성 실패", "잘못된 요청입니다.", 400)
-        end
+        render_error("길드 생성 실패", e.class == ArgumentError ? e.message : "잘못된 요청입니다.", 400)
         raise ActiveRecord::Rollback
       end
     end

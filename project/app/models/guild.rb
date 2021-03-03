@@ -60,8 +60,4 @@ class Guild < ApplicationRecord
     war_request.challenger.cancel_rest_of_war_request
     War.create(war_request_id: war_request.id, status: "pending")
   end
-
-  def create_membership(user_id, position)
-    GuildMembership.create!(user_id: user_id, guild_id: self.id, position: position)
-  end
 end

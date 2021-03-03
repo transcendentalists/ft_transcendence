@@ -21,7 +21,7 @@ class Api::GuildsController < ApplicationController
           raise ArgumentError.new guild.errors[error_attribute_name].first
         end
         guild.save!
-        guild_membership = guild.create_membership(@current_user.id, "master")
+        guild_membership = guild.memberships.create!({ user_id: @current_user.id, guild_id: guild.id, position: "master" })
         image_attach(guild)
         render json: { guild: guild_membership.profile }
       rescue => e

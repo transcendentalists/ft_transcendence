@@ -575,8 +575,31 @@ body {
 }
 
 /* ==========================================================================
-     GUILD DETAIL VIEW
-     ========================================================================== */
+    GUILD CREATE VIEW
+    ========================================================================== */
+
+#guild-create-view .anagram-input-header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0;
+}
+
+#guild-create-view .anagram-input-header > label {
+  display: block;
+  margin: 0em 0em 0.28571429rem 0em;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.92857143em;
+  font-weight: bold;
+  text-transform: none;
+}
+
+#guild-create-view .anagram-input-header > i {
+  margin-left: 0.3rem;
+}
+
+/* ==========================================================================
+    GUILD DETAIL VIEW
+    ========================================================================== */
 
 #guild-detail-view .small.image {
   margin-bottom: 0;

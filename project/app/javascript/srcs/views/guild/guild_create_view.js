@@ -57,22 +57,20 @@ export let GuildCreateView = Backbone.View.extend({
 
   createGuild: async function () {
     const form_data = this.appendFormData();
-    let data = await fetch("api/guilds/", {
+    Helper.fetch("guilds", {
       method: "POST",
       headers: {
-        "X-CSRF-Token": Helper.getToken(),
-        current_user: App.current_user.id,
+        'Content-Type': 'form-data'
       },
       body: form_data,
+      success_callback: (data) => {
+        App.current_user.set("guild", data.guild_membership);
+        App.router.navigate("#/guilds?page=1");
+      },
+      fail_callback: (data) => {
+        Helper.info({ error: data.error });
+      },
     });
-    let response = await data.json();
-    let success = Math.floor(data.status / 100) == 2 ? true : false;
-    if (success) {
-      App.current_user.set("guild", response.guild_membership);
-      App.router.navigate("#/guilds?page=1");
-    } else {
-      Helper.info({ error: response.error });
-    }
   },
 
   appendFormData: function () {
@@ -84,7 +82,6 @@ export let GuildCreateView = Backbone.View.extend({
   },
 
   cancel: function () {
-    this.close();
     App.router.navigate("#/guilds?page=1");
   },
 
@@ -92,8 +89,8 @@ export let GuildCreateView = Backbone.View.extend({
     Helper.info({
       subject: "아나그램이란?",
       description:
-        "아나그램은 길드 이름에 포함된 글자들을 사용하여 만들어지는 어구입니다.<br>\
-        또한 아나그램은 길드 이름보다 짧아야 합니다.",
+        "아나그램은 길드 이름에 포함된 글자들만을 사용하여 만들어지는 어구입니다.<br>\
+        또한 아나그램은 길드 이름보다 같거나 짧아야 합니다.",
     });
   },
 

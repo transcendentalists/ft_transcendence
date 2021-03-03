@@ -24,10 +24,10 @@
     <div class="field">
       <label>경기 목표 점수</label>
       <select class="target-match-score">
-        <option value="3">3명</option>
-        <option value="5">5명</option>
-        <option value="7">7명</option>
-        <option value="10">10명</option>
+        <option value="3">3점</option>
+        <option value="5">5점</option>
+        <option value="7">7점</option>
+        <option value="10">10점</option>
       </select>
     </div>      
     <div class="field">
@@ -46,7 +46,7 @@
       <label>토너먼트 시작일</label>
       <input type="date" name="start-date"
        value="<%%= min_date %>",
-       min="<%%= min_date %>" max="2022-12-31">
+       min="<%%= min_date %>" max="<%%= max_date %>">
     </div>
     <div class="field">
       <label>경기 시작시각</label>
@@ -69,7 +69,6 @@
     </div>
 
     <div class="flex-cotnainer buttons">
-    <div>
       <div class="ui teal create button">개설하기</div>
       <div Class="ui red cancel button">취소하기</div>
     </div>

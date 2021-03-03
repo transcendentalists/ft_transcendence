@@ -11,8 +11,8 @@ class Api::WarRequestsController < ApplicationController
 
   # TODO: 트랜잭션으로 war_status까지 같이 만들어주기
   def create
-    if !@current_user.guild_membership.master? ||
-      @current_user.in_guild.id != params[:guild_id]
+    if @current_user.in_guild&.id != params[:guild_id].to_i ||
+      !@current_user.guild_membership.master?
       return render_error("전쟁 요청 실패", "권한이 없습니다.", 401)
     end
     challenger_guild = @current_user.in_guild

@@ -23,10 +23,10 @@ export let Helper = {
         delete params.headers["Content-Type"];
     }
     if (hash_args.hasOwnProperty("body")) {
-      if (params.headers.hasOwnProperty("Content-Type"))
-        params["body"] = JSON.stringify(hash_args["body"]);
-      else
+      if (!params.headers.hasOwnProperty("Content-Type"))
         params["body"] = hash_args["body"];
+      else
+        params["body"] = JSON.stringify(hash_args["body"]);
     }
 
     let prefix = hash_args.hasOwnProperty("prefix")

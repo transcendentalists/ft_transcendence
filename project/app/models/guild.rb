@@ -19,12 +19,15 @@ class Guild < ApplicationRecord
 
   def check_anagram
     return errors.add(:anagram, message: "아나그램 또는 이름은 비어있을 수 없습니다.") if anagram.nil? || name.nil?
-    anagram_downcase = anagram.downcase
-    anagram_downcase.slice!(0)
-    name.each_char do |name_char|
-      anagram_downcase.slice!(0) if name_char.downcase == anagram_downcase.first
+    sorted_anagram = anagram[1..].chars.sort.join
+    sorted_name = name.chars.sort.join
+    sorted_name.each_char do |ch|
+      if sorted_anagram.first == ch
+        sorted_anagram.slice!(0)
+        p sorted_anagram
+      end
     end
-    return errors.add(:anagram, message: "아나그램은 길드 이름보다 짧고 이름에 포함된 단어로 구성되어야 합니다.") unless anagram_downcase.empty?
+    return errors.add(:anagram, message: "아나그램은 길드 이름보다 같거나 짧고 이름에 포함된 단어로 구성되어야 합니다.") unless sorted_anagram.empty?
   end
 
   def for_member_list(page)

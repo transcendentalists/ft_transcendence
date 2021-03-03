@@ -28,13 +28,11 @@ export let WarRequestCreateView = Backbone.View.extend({
 
   parseWarParams: function () {
     let input_data = {};
-    input_data["bet_point"] = $(".bet-point option:selected").val();
+    input_data["bet_point"] = +$(".bet-point-input").text();
     input_data["war_start_date"] = $(".war-start-date").val();
-    input_data["war_duration"] = $(".war-duration option:selected").val();
+    input_data["war_duration"] = +$(".war-duration-input").text();
     input_data["war_time"] = $(".war-time option:selected").val();
-    input_data["max_no_reply_count"] = $(
-      ".max-no-reply-count option:selected"
-    ).val();
+    input_data["max_no_reply_count"] = +$(".max-no-reply-count-input").text();
     input_data["rule_id"] = $(".rule option:selected").val();
     input_data["include_ladder"] =
       $('[name="include-ladder"]:checked').val() === undefined ? false : true;
@@ -45,8 +43,6 @@ export let WarRequestCreateView = Backbone.View.extend({
     input_data["target_match_score"] = $(
       '[name="target-match-score"]:checked'
     ).val();
-
-    console.log(input_data);
     return input_data;
   },
 
@@ -76,6 +72,25 @@ export let WarRequestCreateView = Backbone.View.extend({
     this.max_date = date.toISOString().substring(0, 10);
   },
 
+  setRanges: function () {
+    $(document).ready(function () {
+      function setRange(min, max, class_name, step = 1) {
+        $(class_name).range({
+          min: min,
+          max: max,
+          start: min,
+          step: step,
+          onChange: function (value) {
+            $(class_name + "-input").html(value);
+          },
+        });
+      }
+      setRange(1000, 10000, ".bet-point", 500);
+      setRange(1, 7, ".war-duration");
+      setRange(3, 10, ".max-no-reply-count");
+    });
+  },
+
   render: function () {
     this.setWarStartDateMinAndMax();
     this.$el.html(
@@ -85,6 +100,7 @@ export let WarRequestCreateView = Backbone.View.extend({
         max_date: this.max_date,
       })
     );
+    this.setRanges();
     return this;
   },
 

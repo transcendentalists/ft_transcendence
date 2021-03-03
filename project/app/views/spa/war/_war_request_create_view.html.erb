@@ -3,24 +3,20 @@
   <form class="ui form">
     <div class="field">
       <label>상대 길드</label>
-      <div class="ui disabled input">
-        <input type="text" placeholder=<%%= enemy_guild_name %>>
+      <div class="ui large label">
+        <%%= enemy_guild_name %>
       </div>
     </div>
     <div class="field">
       <label>배팅 포인트</label>
-      <select class="bet-point">
-        <option value="1000">1000 포인트</option>
-        <option value="2000">2000 포인트</option>
-        <option value="3000">3000 포인트</option>
-        <option value="4000">4000 포인트</option>
-        <option value="5000">5000 포인트</option>
-        <option value="6000">6000 포인트</option>
-        <option value="7000">7000 포인트</option>
-        <option value="8000">8000 포인트</option>
-        <option value="9000">9000 포인트</option>
-        <option value="10000">10000 포인트</option>
-      </select>
+      <div class="ui segment flex-container">
+        <span class="minimum-value">1000점</span>
+        <div class="ui range bet-point"></div>
+        <span class="maximum-value">10000점</span>
+      </div>
+      <div class="display-value">
+        bet-point: <span class="bet-point-input"></span>점
+      </div>
     </div>
     <div class="field">
       <label>전쟁 시작일</label>
@@ -28,15 +24,14 @@
     </div>
     <div class="field">
       <label>전쟁 기간</label>
-      <select class="war-duration">
-        <option value="1">1일</option>
-        <option value="2">2일</option>
-        <option value="3">3일</option>
-        <option value="4">4일</option>
-        <option value="5">5일</option>
-        <option value="6">6일</option>
-        <option value="7">7일</option>
-      </select>
+      <div class="ui segment flex-container">
+        <span class="minimum-value">1일</span>
+        <div class="ui range war-duration"></div>
+        <span class="maximum-value">7일</span>
+      </div>
+      <div class="display-value">
+        war-duration: <span class="war-duration-input"></span>일
+      </div>
     </div>
     <div class="field">
       <label>워타임(1 hours)</label>
@@ -69,21 +64,19 @@
     </div>
     <div class="field">
       <label>최대 미응답수</label>
-      <select class="max-no-reply-count">
-        <option value="3">3회</option>
-        <option value="4">4회</option>
-        <option value="5">5회</option>
-        <option value="6">6회</option>
-        <option value="7">7회</option>
-        <option value="8">8회</option>
-        <option value="9">9회</option>
-        <option value="10">10회</option>
-      </select>
+      <div class="ui segment flex-container">
+        <span class="minimum-value">3회</span>
+        <div class="ui range max-no-reply-count"></div>
+        <span class="maximum-value">10회</span>
+      </div>
+      <div class="display-value">
+        max-no-reply-count: <span class="max-no-reply-count-input"></span>회
+      </div>
     </div>
     <div class="field">
-      <label>포함 범위</label>
-      <div class="ui form">
+      <div class="ui form flex-container column-direction">
         <div class="inline fields">
+          <label>포함 범위</label>
           <div class="field">
             <div class="ui checkbox">
               <input type="radio" checked="checked">
@@ -124,9 +117,9 @@
       </select>
     </div>
     <div class="field">
-      <label>워배틀 승리 점수</label>
-      <div class="ui form">
+      <div class="ui form flex-container column-direction">
         <div class="inline fields">
+          <label>워배틀 승리 점수</label>
           <div class="field">
             <div class="ui checkbox">
               <input type="radio" name="target-match-score" value="3" checked="checked">

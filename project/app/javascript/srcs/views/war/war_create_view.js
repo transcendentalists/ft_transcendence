@@ -71,8 +71,8 @@ export let WarCreateView = Backbone.View.extend({
   setWarStartDateMinAndMax: function () {
     let date = new Date();
     date.setDate(date.getDate() + 1);
-    this.tomorrow_date = date.toISOString().substring(0, 10);
-    date.setDate(date.getDate() + 7);
+    this.min_date = date.toISOString().substring(0, 10);
+    date.setDate(date.getDate() + 30);
     this.max_date = date.toISOString().substring(0, 10);
   },
 
@@ -81,7 +81,7 @@ export let WarCreateView = Backbone.View.extend({
     this.$el.html(
       this.template({
         enemy_guild_name: this.enemy_guild_name,
-        tomorrow_date: this.tomorrow_date,
+        min_date: this.min_date,
         max_date: this.max_date,
       })
     );

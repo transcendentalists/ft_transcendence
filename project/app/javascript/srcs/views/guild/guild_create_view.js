@@ -30,19 +30,18 @@ export let GuildCreateView = Backbone.View.extend({
   },
 
   checkValidOfImage: function () {
+    let warning_message = null;
+    const allowed_image_format = ["image/png", "image/jpeg", "image/jpg"];
     if (this.image === undefined) {
-      this.renderWarning("이미지가 설정되어 있지 않습니다.");
-    } else if (
-      !["image/png", "image/jpeg", "image/jpg"].includes(
-        this.image.type
-      )
-    ) {
-      this.renderWarning("지원하지 않는 이미지 포맷입니다.");
+      warning_message = "이미지가 설정되어 있지 않습니다.";
+    } else if (!allowed_image_format.includes(this.image.type)) {
+      warning_message = "지원하지 않는 이미지 포맷입니다.";
     } else if (this.image.size >= 1048576) {
-      this.renderWarning("이미지 사이즈가 큽니다. 1MB 이하여야합니다.");
+      warning_message = "이미지 사이즈는 1MB 이하여야합니다.";
     } else {
       return true;
     }
+    this.renderWarning(warning_message);
     return false;
   },
 

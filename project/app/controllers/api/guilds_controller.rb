@@ -23,7 +23,7 @@ class Api::GuildsController < ApplicationController
         guild.save!
         guild_membership = guild.memberships.create!({ user_id: @current_user.id, guild_id: guild.id, position: "master" })
         image_attach(guild)
-        render json: { guild: guild_membership.profile }
+        render json: { guild_membership: guild_membership.profile }
       rescue => e
         if e.class == ArgumentError
           render_error("길드 생성 실패", e.message, 400)

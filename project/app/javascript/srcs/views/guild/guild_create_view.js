@@ -69,7 +69,7 @@ export let GuildCreateView = Backbone.View.extend({
     let response = await data.json();
     let success = Math.floor(data.status / 100) == 2 ? true : false;
     if (success) {
-      App.current_user.set("guild", response.guild);
+      App.current_user.set("guild", response.guild_membership);
       App.router.navigate("#/guilds?page=1");
     } else {
       Helper.info({ error: response.error });

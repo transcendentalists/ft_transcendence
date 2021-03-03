@@ -9,7 +9,7 @@ export let TournamentCreateView = Backbone.View.extend({
     "click .cancel.button": "cancel",
   },
 
-  getFormData: function () {
+  getInputData: function () {
     const input_field = [
       "title",
       "incentive-gift",
@@ -23,31 +23,31 @@ export let TournamentCreateView = Backbone.View.extend({
       "tournament-time",
     ];
 
-    let form_data = {};
+    let input_data = {};
     input_field.forEach(
       (column) =>
-        (form_data[column.replaceAll("-", "_")] = this.$(
+        (input_data[column.replaceAll("-", "_")] = this.$(
           `input[name=${column}]`
         ).val())
     );
     select_field.forEach(
       (column) =>
-        (form_data[column.replaceAll("-", "_")] = this.$(
+        (input_data[column.replaceAll("-", "_")] = this.$(
           `.${column} option:selected`
         ).val())
     );
-    Object.keys(form_data).map(function (key) {
-      if (form_data[key] == "") form_data[key] = null;
+    Object.keys(input_data).map(function (key) {
+      if (input_data[key] == "") input_data[key] = null;
     });
-    return form_data;
+    return input_data;
   },
 
   submit: function () {
-    let form_data = this.getFormData();
+    let input_data = this.getInputData();
     Helper.fetch("tournaments", {
       method: "POST",
       body: {
-        tournament: form_data,
+        tournament: input_data,
       },
       success_callback: () => App.router.navigate("#/tournaments"),
       fail_callback: (data) => Helper.info({ error: data.error }),

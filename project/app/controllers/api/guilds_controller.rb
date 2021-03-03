@@ -16,7 +16,7 @@ class Api::GuildsController < ApplicationController
           anagram: '@' + params[:anagram],
           owner_id: @current_user.id,
         )
-        unless guild.valid?
+        if guild.invalid?
           error_attribute_name = guild.errors.attribute_names.first
           raise ArgumentError.new guild.errors[error_attribute_name].first
         end

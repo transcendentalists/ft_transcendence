@@ -4,14 +4,12 @@ export let CurrentUser = Backbone.Model.extend({
   urlRoot: "/api/users/",
 
   initialize: function () {
-    this.is_admin = false;
     this.sign_in = false;
     this.working = false;
     this.is_challenger = false;
   },
 
   logout: function () {
-    this.is_admin = false;
     this.sign_in = false;
     this.working = false;
     this.is_challenger = false;

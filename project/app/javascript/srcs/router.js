@@ -14,7 +14,7 @@ export let Router = Backbone.Router.extend({
     "war(/:new)": "warController",
     "matches(/:id)": "matchesController",
     "tournaments(/:param)": "tournamentsController",
-    "admin(/:param1)(/:param2)": "adminController",
+    "admin(/:param)": "adminController",
     "errors/:id(/:type)(/:msg)": "errorsController",
     "*exception": "errorsController",
   },
@@ -81,18 +81,18 @@ export let Router = Backbone.Router.extend({
     else this.navigate("#/errors/102");
   },
 
-  adminController(param1, param2) {
-    if (!App.user.signed_in || !App.current_user.is_admin)
+  adminController(param) {
+    if (!App.user.signed_in || !App.current_user.get("position") == "member")
       return this.navigate("#/errors/103");
 
     if (param == null) this.redirect_to(App.View.AdminUserIndexView);
-    else if (param1 === "chatrooms") {
-      if (param2 === null) this.redirect_to(App.View.AdminChatIndexView);
-      else this.redirect_to(App.View.AdminChatRoomView, param2);
-    } else if (param1 === "guilds") {
-      if (param2 === null) this.redirect_to(App.View.AdminGuildIndexView);
-      else this.redirect_to(App.View.AdminGuildDetailView, param2);
-    } else return this.navigate("#/errors/104");
+    //   else if (param1 === "chatrooms") {
+    //     if (param2 === null) this.redirect_to(App.View.AdminChatIndexView);
+    //     else this.redirect_to(App.View.AdminChatRoomView, param2);
+    //   } else if (param1 === "guilds") {
+    //     if (param2 === null) this.redirect_to(App.View.AdminGuildIndexView);
+    //     else this.redirect_to(App.View.AdminGuildDetailView, param2);
+    //   } else return this.navigate("#/errors/104");
   },
 
   errorsController(error_code, type = "", msg = "") {

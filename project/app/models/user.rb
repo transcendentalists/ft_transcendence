@@ -83,7 +83,7 @@ class User < ApplicationRecord
   end
 
   def profile
-    permitted = ["id", "name", "title", "image_url"]
+    permitted = ["id", "name", "title", "image_url", "position"]
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
     stat.merge!(self.game_stat)
     stat[:achievement] = self.achievement

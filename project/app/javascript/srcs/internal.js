@@ -25,6 +25,7 @@ import { SignUpView } from "./views/registration/sign_up_view";
 /** persist views */
 import { MainView } from "./views/persist/main_view";
 import { AppearanceView } from "./views/persist/appearance/appearance_view";
+import { MainButtonsView } from "./views/persist/main_buttons_view";
 import { AlertModalView } from "./views/persist/alert_modal_view";
 import { InfoModalView } from "./views/persist/info_modal_view";
 import { InputModalView } from "./views/persist/input_modal_view";
@@ -173,6 +174,7 @@ export let App = {
     SignInView,
     SignUpView,
     AppearanceView,
+    MainButtonsView,
 
     MainView,
     AlertModalView,

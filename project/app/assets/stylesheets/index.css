@@ -406,6 +406,8 @@ body {
   bottom: 0;
   height: 10rem;
   width: 220px;
+  background-color: rgb(224, 225, 226);
+  justify-content: space-around;
 }
 
 /* IMAGE UPLOAD MODAL VIEW

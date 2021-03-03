@@ -12,13 +12,18 @@ export let UserIndexButtonsView = Backbone.View.extend({
 
   initialize: function (user) {
     this.user_id = user.id;
-    const current_user_guild = App.current_user.get("guild");
     this.is_current_user = Helper.isCurrentUser(this.user_id);
-    this.invite_button =
+    this.invite_button = this.canInvite(user);
+  },
+
+  canInvite: function (user) {
+    const current_user_guild = App.current_user.get("guild");
+    return (
       !this.is_current_user &&
       current_user_guild != null &&
       current_user_guild.position != "member" &&
-      user.get("guild") == null;
+      user.get("guild") == null
+    );
   },
 
   changeTwoFactorAuth: function () {

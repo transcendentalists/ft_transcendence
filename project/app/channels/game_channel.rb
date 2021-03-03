@@ -6,15 +6,21 @@ class GameChannel < ApplicationCable::Channel
     current_user.reload
     reject if current_user.status == "offline"
     stream_from "game_channel_#{params[:match_id].to_s}"
+
     @match = Match.find_by_id(params[:match_id])
-    return stop(params[:match_id]) if @match.nil? || ["completed", "canceled"].include?(@match.status)
-    card = @match.scorecards.find_by_user_id(current_user.id)
-    card.update(result: "ready") unless card.nil?
-    return wait_start if @match.match_type == "tournament" && Time.now < @match.start_time
-    return if @match.users.count < 2 || !@match.scorecards.reload.find_by_result("wait").nil?
-    not_started = @match.status == "pending"
-    @match.start if not_started
-    enter(not_started)
+    return stop(params[:match_id]) if @match.nil? || @match.completed_or_canceled?
+    
+    current_user.ready_match(@match) if @match.player?(current_user)
+    return if !@match.ready_to_start? && @match.progress?
+    # not_started = @match.status == "pending"
+    # @match.start if not_started
+    if @match.ready_to_start?
+      @match.start
+    else
+      @match.broadcast({type: "WATCH", send_id: current_user.id})
+    end
+    # @match.enter()
+    # enter(not_started)
   end
 
   # 유효하지 않은 매치 접근시 예외처리
@@ -30,14 +36,14 @@ class GameChannel < ApplicationCable::Channel
 
   # 경기 정보(spec) 발송
   # 게임 시작(START)이냐 게스트 중간 입장(ENTER)이냐에 따라 메시지 타입 구분ㄴ
-  def enter(not_started)
-    left = @match.scorecards.find_by_side('left').user
-    right = @match.scorecards.find_by_side('right').user
-    speak({match_id: @match.id, type: not_started ? "START" : "ENTER",
-            left: left.profile, right: right.profile,
-            target_score: @match.target_score, rule: @match.rule,
-            send_id: current_user.id })
-  end
+  # def enter(not_started)
+  #   left = @match.scorecards.find_by_side('left').user
+  #   right = @match.scorecards.find_by_side('right').user
+  #   speak({match_id: @match.id, type: not_started ? "START" : "ENTER",
+  #           left: left.profile, right: right.profile,
+  #           target_score: @match.target_score, rule: @match.rule,
+  #           send_id: current_user.id })
+  # end
 
   def speak(msg)
     id = msg[:match_id] || msg['match_id']

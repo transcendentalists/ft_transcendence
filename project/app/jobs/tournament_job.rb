@@ -108,5 +108,6 @@ class TournamentJob < ApplicationJob
 
   # Tournament play branch에서 작업 예정
   def operate_match
+    @tournament.matches.where(status: "pending").each { |match| match.start }
   end
 end

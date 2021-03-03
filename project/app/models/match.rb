@@ -19,9 +19,30 @@ class Match < ApplicationRecord
   end
 
   def start
-    self.update(status: "progress", start_time: Time.now())
+    return if self.status != "pending"
+    
+    if self.match_type == "tournament"
+      return self.cancel if self.scorecards.where(status: "ready").count != 2
+      self.update(status: "progress")
+    else 
+      self.update(status: "progress", start_time: Time.now())
+    end
+
+    self.broadcast({type: "PLAY"})
   end
 
+  def broadcast(options = {type: "PLAY", send_id: -1})
+    left = self.scorecards.find_by_side('left').user
+    right = self.scorecards.find_by_side('right').user
+    ActionCable.server.broadcast(
+      "game_channel_#{self.id}",
+      { match_id: self.id, type: options[:type],
+        left: left.profile, right: right.profile,
+        target_score: self.target_score, rule: self.rule,
+        send_id: options[:send_id] }
+    )    
+  end
+  
   def winner
     self.scorecards.find_by_result("win")&.user
   end
@@ -43,8 +64,51 @@ class Match < ApplicationRecord
     self.status == "canceled"
   end
 
+  def pending?
+    self.status == "pending"
+  end
+
+  def progress?
+    self.status == "progress"
+  end
+
   def completed?
     self.status == "completed"
   end
+
+  def completed_or_canceled?
+    self.canceled? || self.completed?
+  end
+
+  def canceled_or_canceled?
+    self.completed_or_canceled?
+  end
+
+  def player?(user)
+    !self.users.where(id: user.id).empty?
+  end
+
+  def scorecard_of(user)
+    self.scorecards.find_by_user_id(user.id)
+  end
+
+  def tournament?
+    self.match_type == "tournament"
+  end
+
+  def ready_to_start?
+    if self.tournament? && self.before_tournament_time?
+      false
+    else
+      self.scorecards.reload.where(result: "ready").count == 2
+    end
+  end
+
+  private
+
+  def before_tournament_time?
+    !self.start_time.nil? && Time.zone.now < self.start_time
+  end
+
 end
 

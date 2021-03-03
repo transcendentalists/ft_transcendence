@@ -47,8 +47,8 @@ class Api::MatchesController < ApplicationController
   private
 
   def find_or_create_match(user)
-    if params[:match_type] == 'ladder'
-      match = find_or_create_ladder_match_for(user)
+    if ["ladder", "casual_ladder"].include?(params[:match_type])
+      match = find_or_create_ladder_match_for(user, { type: params[:match_type]} )
     elsif params[:match_type] == 'dual'
       match =
         if params[:match_id].nil?
@@ -60,15 +60,15 @@ class Api::MatchesController < ApplicationController
     match
   end
 
-  def find_or_create_ladder_match_for(user)
+  def find_or_create_ladder_match_for(user, options = {type: "casual_ladder"} )
     return nil unless Scorecard.where(user_id: user.id, result: ["wait", "ready"]).first.nil?
     ActiveRecord::Base.transaction do
-      @match = Match.where(match_type: "ladder", status: "pending").last
-      @match = Match.create(match_type: "ladder", rule_id: 1) if @match.nil?
+      @match = Match.where(match_type: options[:type], status: "pending").last
+      @match = Match.create(match_type: options[:type], rule_id: 1) if @match.nil?
       @match.with_lock do
         user_count = Scorecard.where(match_id: @match.id).count
         if user_count >= 2
-          @match = Match.create(match_type: "ladder", rule_id: 1)
+          @match = Match.create(match_type: options[:type], rule_id: 1)
         end
         side = @match.users.count == 0 ? "left" : "right"
         card = Scorecard.create(user_id: user.id, match_id: @match.id, side: side)

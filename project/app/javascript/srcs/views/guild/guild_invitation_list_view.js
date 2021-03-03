@@ -14,13 +14,9 @@ export let GuildInvitationListView = Backbone.View.extend({
   },
 
   render: function (guild_invitations) {
-    if (
-      !guild_invitations.hasOwnProperty("guild_invitations") ||
-      !guild_invitations["guild_invitations"].length
-    )
-      return;
+    if (!guild_invitations.length) return;
     this.$el.empty();
-    guild_invitations["guild_invitations"].forEach(this.addOne, this);
+    guild_invitations.forEach(this.addOne, this);
     return this;
   },
 

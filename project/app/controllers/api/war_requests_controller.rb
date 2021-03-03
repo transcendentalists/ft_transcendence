@@ -9,12 +9,12 @@ class Api::WarRequestsController < ApplicationController
     end
   end
 
-  # TODO: 트랜잭션으로 war_status까지 같이 만들어주기
   def create
     if @current_user.in_guild&.id != params[:guild_id].to_i ||
       !@current_user.guild_membership.master?
       return render_error("전쟁 요청 실패", "권한이 없습니다.", 401)
     end
+    return render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400) unless check_format_of_start_date?(params[:war_start_date])
     challenger_guild = @current_user.in_guild
     enemy_guild = Guild.find_by_id(params[:enemy_guild_id])
     return render_error("전쟁 요청 실패", "존재하지 않는 길드입니다.", 400) if enemy_guild.nil?
@@ -22,24 +22,14 @@ class Api::WarRequestsController < ApplicationController
     enemy_guild.requests.where(status: "pending").each do |request|
       return render_error("전쟁 요청 실패", "중복된 요청입니다.", 400) if request.challenger.id == challenger_guild.id
     end
-    war_request = WarRequest.create(
-      rule_id: params[:rule_id],
-      bet_point: params[:bet_point],
-      start_date: Date.parse(params[:war_start_date]),
-      end_date: Date.parse(params[:war_start_date]) + params[:war_duration].to_i.days,
-      war_time: Time.new(1 ,1 ,1 , params[:war_time].to_i),
-      max_no_reply_count: params[:max_no_reply_count],
-      include_ladder: params[:include_ladder],
-      include_tournament: params[:include_tournament],
-      target_match_score: params[:target_match_score],
-    )
+    war_request = WarRequest.create_by(params)
     return render_error("전쟁 요청 실패", "잘못된 요청입니다.", 400) if war_request.nil?
     unless war_request.valid?
       error_message = war_request.errors[war_request.errors.attribute_names.first].first
       return render_error("전쟁 요청 실패", error_message, 400) 
     end
-    WarStatus.create(guild_id: @current_user.in_guild.id, war_request_id: war_request.id, position: "challenger")
-    WarStatus.create(guild_id: params[:enemy_guild_id], war_request_id: war_request.id, position: "enemy")
+    war_request.save
+    war_request.create_war_statuses(params[:guild_id], params[:enemy_guild_id])
   end
 
   def update
@@ -58,5 +48,15 @@ class Api::WarRequestsController < ApplicationController
       war_request.update(status: params[:status]) if params[:status]
     end
     head :no_content, status: 204
+  end
+
+  private
+  def check_format_of_start_date?(str)
+    begin
+      date = Date.parse(str)
+    rescue
+      return false
+    end
+    true
   end
 end

@@ -3,7 +3,7 @@ import { App, Helper } from "srcs/internal";
 export let WarRequestCreateView = Backbone.View.extend({
   template: _.template($("#war-request-create-view-template").html()),
   id: "war-request-create-view",
-  className: "request-create-view top-margin",
+  className: "create-view top-margin",
 
   events: {
     "click .war-request-create-button": "submit",

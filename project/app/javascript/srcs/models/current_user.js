@@ -21,9 +21,13 @@ export let CurrentUser = Backbone.Model.extend({
 
   login: function () {
     this.sign_in = true;
-    this.fetch({
-      data: { for: "profile" },
-    });
+    (async () => {
+      await this.fetch({
+        data: { for: "profile" },
+      });
+      App.appView.render();
+      App.router.navigate(`#/users/${this.id}`);
+    })();
   },
 
   update_status: function (status) {

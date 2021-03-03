@@ -82,17 +82,10 @@ export let Router = Backbone.Router.extend({
   },
 
   adminController(param) {
-    if (!App.user.signed_in || !App.current_user.get("position") == "member")
+    if (!App.current_user.sign_in || App.current_user.get("position") == "user")
       return this.navigate("#/errors/103");
 
-    if (param == null) this.redirect_to(App.View.AdminUserIndexView);
-    //   else if (param1 === "chatrooms") {
-    //     if (param2 === null) this.redirect_to(App.View.AdminChatIndexView);
-    //     else this.redirect_to(App.View.AdminChatRoomView, param2);
-    //   } else if (param1 === "guilds") {
-    //     if (param2 === null) this.redirect_to(App.View.AdminGuildIndexView);
-    //     else this.redirect_to(App.View.AdminGuildDetailView, param2);
-    //   } else return this.navigate("#/errors/104");
+    this.redirect_to(App.View.AdminIndexView);
   },
 
   errorsController(error_code, type = "", msg = "") {

@@ -430,7 +430,7 @@ body {
      ========================================================================== */
 
 .profile-trophy > i {
-  margin-left: 0.5rem;
+  margin-left: 0.5rem !important;
 }
 
 .profile-card .small.image {
@@ -1094,4 +1094,31 @@ body {
 
 #chat-room-view .chat-member-unit {
   display: block;
+}
+
+/* ==========================================================================
+  ADMIN INDEX VIEW
+========================================================================== */
+
+#admin-index-view {
+  min-width: 450px;
+  max-width: 450px;
+}
+
+#admin-index-view .menu {
+  width: 100%;
+}
+
+#admin-index-view .actions {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+#admin-index-view label {
+  font-size: 1.2rem;
+}
+
+#admin-index-view .admin-action {
+  margin-top: 4rem;
+  width: 100%;
 }

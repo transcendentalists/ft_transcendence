@@ -20,7 +20,7 @@ export let GuildCreateView = Backbone.View.extend({
 
   submit: function () {
     this.parseGuildParams();
-    if (this.checkValidOfParams()) this.createGuild();
+    if (this.checkValidOfImage()) this.createGuild();
   },
 
   parseGuildParams: function () {
@@ -29,17 +29,17 @@ export let GuildCreateView = Backbone.View.extend({
     this.image = this.$("input[type=file]")[0].files[0];
   },
 
-  checkValidOfParams: function () {
+  checkValidOfImage: function () {
     if (this.image === undefined) {
       this.renderWarning("이미지가 설정되어 있지 않습니다.");
     } else if (
-      !["image/png", "image/jpeg", "image/png", "image/jpg"].includes(
+      !["image/png", "image/jpeg", "image/jpg"].includes(
         this.image.type
       )
     ) {
       this.renderWarning("지원하지 않는 이미지 포맷입니다.");
-    } else if (this.image.size >= 1000000) {
-      this.renderWarning("이미지 사이즈가 큽니다.");
+    } else if (this.image.size >= 1048576) {
+      this.renderWarning("이미지 사이즈가 큽니다. 1MB 이하여야합니다.");
     } else {
       return true;
     }

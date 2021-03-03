@@ -58,6 +58,15 @@ export let TournamentCreateView = Backbone.View.extend({
     Backbone.history.history.back();
   },
 
+  getMaxDate: function () {
+    const max = new Date();
+    max.setDate(max.getDate() + 60);
+    const month =
+      max.getMonth() < 9 ? "0" + (max.getMonth() + 1) : max.getMonth() + 1 + "";
+    const date = max.getDate() < 10 ? "0" + max.getDate() : max.getDate() + "";
+    return max.getFullYear() + "-" + month + "-" + date;
+  },
+
   getMinDate: function () {
     const min = new Date();
     min.setDate(min.getDate() + 1);
@@ -68,9 +77,12 @@ export let TournamentCreateView = Backbone.View.extend({
   },
 
   render: function () {
+    const min_date = this.getMinDate();
+    const max_date = this.getMaxDate();
     this.$el.html(
       this.template({
-        min_date: this.getMinDate(),
+        min_date: min_date,
+        max_date: max_date,
       })
     );
     return this;

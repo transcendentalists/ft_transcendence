@@ -18,9 +18,8 @@ class Match < ApplicationRecord
     }
   end
 
-  #TODO: where문 completed에서 progress로 변경
   scope :for_live, -> (match_type) do
-    where(match_type: match_type == "ladder" ? ["ladder", "casual_ladder"] : match_type, status: "completed")
+    where(match_type: match_type == "ladder" ? ["ladder", "casual_ladder"] : match_type, status: "progress")
     .order(created_at: :desc)
     .map { |match|
       {

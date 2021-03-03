@@ -2,7 +2,7 @@ import { App, Helper } from "srcs/internal";
 
 export let TournamentCreateView = Backbone.View.extend({
   id: "tournament-create-view",
-  className: "create-view top-margin",
+  className: "create-view",
   template: _.template($("#tournament-create-view-template").html()),
   events: {
     "click .create.button": "submit",

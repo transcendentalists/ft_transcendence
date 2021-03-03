@@ -26,7 +26,7 @@ class Guild < ApplicationRecord
         sorted_anagram.slice!(0)
       end
     end
-    return errors.add(:anagram, message: "아나그램은 길드 이름보다 같거나 짧고 이름에 포함된 단어로 구성되어야 합니다.") unless sorted_anagram.empty?
+    return errors.add(:anagram, message: "아나그램은 길드 이름보다 같거나 짧고 이름에 포함된 글자로 구성되어야 합니다.") unless sorted_anagram.empty?
   end
 
   def for_member_list(page)

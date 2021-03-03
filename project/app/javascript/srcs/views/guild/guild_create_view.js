@@ -37,7 +37,7 @@ export let GuildCreateView = Backbone.View.extend({
     } else if (!allowed_image_format.includes(this.image.type)) {
       warning_message = "지원하지 않는 이미지 포맷입니다.";
     } else if (this.image.size >= 1048576) {
-      warning_message = "이미지 사이즈는 1MB 이하여야합니다.";
+      warning_message = "이미지 사이즈는 1MB 미만여야합니다.";
     } else {
       return true;
     }
@@ -60,7 +60,7 @@ export let GuildCreateView = Backbone.View.extend({
     Helper.fetch("guilds", {
       method: "POST",
       headers: {
-        'Content-Type': 'form-data'
+        "Content-Type": "form-data",
       },
       body: form_data,
       success_callback: (data) => {

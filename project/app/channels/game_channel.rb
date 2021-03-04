@@ -18,6 +18,8 @@ class GameChannel < ApplicationCable::Channel
     else
       @match.broadcast({type: "WATCH", send_id: current_user.id})
     end
+
+    @match.ready_to_start? ? @match.start : @match.broadcast({type: "WATCH", send_id: current_user.id})
   end
 
   # 유효하지 않은 매치 접근시 예외처리

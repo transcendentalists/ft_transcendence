@@ -87,8 +87,8 @@ class Tournament < ApplicationRecord
   def next_match_of(user)
     membership = self.memberships.reload.find_by_user_id(user.id)
   
-    return nil if membership.nil? || membership.completed?
-    return nil if membership.defeated? || self.last_date?
+    return nil if membership.nil? || membership.completed? || membership.defeated?
+    return nil if self.last_date?
 
     match = user.matches.where(status: "pending", eventable_type: "Tournament", eventable_id: self.id).first
     if match.nil?

@@ -113,7 +113,7 @@ class Match < ApplicationRecord
     self.canceled? || self.completed?
   end
 
-  def canceled_or_canceled?
+  def canceled_or_completed?
     self.completed_or_canceled?
   end
 
@@ -130,11 +130,8 @@ class Match < ApplicationRecord
   end
 
   def ready_to_start?
-    if self.tournament? && self.before_tournament_time?
-      false
-    else
-      self.scorecards.reload.where(result: "ready").count == 2
-    end
+    return false if self.tournament? && self.before_tournament_time?
+    self.scorecards.reload.where(result: "ready").count == 2
   end
 
   private

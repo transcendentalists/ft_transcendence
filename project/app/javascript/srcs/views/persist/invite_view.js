@@ -32,7 +32,7 @@ export let InviteView = Backbone.View.extend({
   },
 
   render: function (invited_game) {
-    if (DualHelper.addLitsenToUserModel(this, invited_game.profile.id)) {
+    if (DualHelper.addListenToUserModel(this, invited_game.profile.id)) {
       this.invited_game = invited_game;
       App.current_user.working = true;
       this.$el.html(

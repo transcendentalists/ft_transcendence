@@ -116,7 +116,6 @@ ActiveRecord::Schema.define(version: 2021_03_03_085458) do
     t.bigint "user_id", null: false
     t.bigint "guild_id", null: false
     t.bigint "invited_user_id", null: false
-    t.string "result", default: "pending", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["guild_id"], name: "index_guild_invitations_on_guild_id"

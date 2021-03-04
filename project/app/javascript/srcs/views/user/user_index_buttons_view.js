@@ -90,6 +90,7 @@ export let UserIndexButtonsView = Backbone.View.extend({
       method: "POST",
       body: {
         invited_user_id: this.user_id,
+        guild_id: App.current_user.get("guild").id
       },
       success_callback: (data) => {
         Helper.info({

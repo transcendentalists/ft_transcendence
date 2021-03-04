@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get 'auth/42/callback', to: 'spa#index'
   post 'auth/mail/callback', to: 'spa#mail_auth'
 
+  get 'api/admin/db', to: 'api/admin#index'
+
   namespace :api do
     resources :users, only: %i[index show create update] do
       member do

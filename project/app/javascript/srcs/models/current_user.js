@@ -4,14 +4,12 @@ export let CurrentUser = Backbone.Model.extend({
   urlRoot: "/api/users/",
 
   initialize: function () {
-    this.is_admin = false;
     this.sign_in = false;
     this.working = false;
     this.is_challenger = false;
   },
 
   logout: function () {
-    this.is_admin = false;
     this.sign_in = false;
     this.working = false;
     this.is_challenger = false;
@@ -23,9 +21,13 @@ export let CurrentUser = Backbone.Model.extend({
 
   login: function () {
     this.sign_in = true;
-    this.fetch({
-      data: { for: "profile" },
-    });
+    (async () => {
+      await this.fetch({
+        data: { for: "profile" },
+      });
+      App.appView.render();
+      App.router.navigate(`#/users/${this.id}`);
+    })();
   },
 
   update_status: function (status) {

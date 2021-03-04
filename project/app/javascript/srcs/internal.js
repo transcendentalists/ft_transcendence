@@ -25,6 +25,7 @@ import { SignUpView } from "./views/registration/sign_up_view";
 /** persist views */
 import { MainView } from "./views/persist/main_view";
 import { AppearanceView } from "./views/persist/appearance/appearance_view";
+import { MainButtonsView } from "./views/persist/main_buttons_view";
 import { AlertModalView } from "./views/persist/alert_modal_view";
 import { InfoModalView } from "./views/persist/info_modal_view";
 import { InputModalView } from "./views/persist/input_modal_view";
@@ -83,7 +84,9 @@ import { LiveIndexView } from "./views/live/live_index_view";
 
 import { TournamentIndexView } from "./views/tournament/tournament_index_view";
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
-import { AdminUserIndexView } from "./views/admin/admin_user_index_view";
+import { AdminIndexView } from "./views/admin/admin_index_view";
+import { AdminOptionsView } from "./views/admin/admin_options_view";
+
 import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
 import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
@@ -173,6 +176,7 @@ export let App = {
     SignInView,
     SignUpView,
     AppearanceView,
+    MainButtonsView,
 
     MainView,
     AlertModalView,
@@ -232,7 +236,8 @@ export let App = {
     MatchHistoryListView,
     TournamentIndexView,
     TournamentCreateView,
-    AdminUserIndexView,
+    AdminIndexView,
+    AdminOptionsView,
     AdminChatIndexView,
     AdminChatRoomView,
     AdminGuildIndexView,

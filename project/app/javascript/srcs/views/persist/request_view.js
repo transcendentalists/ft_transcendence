@@ -19,7 +19,7 @@ export let RequestView = Backbone.View.extend({
   },
 
   render: function (enemy) {
-    if (DualHelper.addLitsenToUserModel(this, enemy.id)) {
+    if (DualHelper.addListenToUserModel(this, enemy.id)) {
       App.current_user.is_challenger = true;
       this.enemy = enemy;
       this.$el.html(this.template(enemy));

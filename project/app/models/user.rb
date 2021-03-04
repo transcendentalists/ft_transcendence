@@ -131,7 +131,7 @@ class User < ApplicationRecord
     }
   end
 
-  def ready_match(match)
+  def ready_for_match(match)
     card = match.scorecard_of(self)
     return false if card.nil?
     card.ready and true

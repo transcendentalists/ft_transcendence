@@ -11,15 +11,18 @@ class Api::WarRequestsController < ApplicationController
 
   def create
     begin
-      params = create_params # <== Missingparams UnpermittedParameters
+      params = create_params
+    rescue ActionController::UnpermittedParameters => e
+      return render_error("전쟁 요청 실패", "허용되지 않은 데이터가 보내졌습니다.", 400)
     rescue ActionController::ParameterMissing => e
-      return render_error("전쟁 요청 실패", "전송되지 않은 정보가 있습니다.")
+      return render_error("전쟁 요청 실패", "전송되지 않은 정보가 있습니다.", 400)
     end
 
     if @current_user.in_guild&.id != params[:guild_id].to_i ||
       !@current_user.guild_membership.master?
       return render_error("전쟁 요청 실패", "권한이 없습니다.", 401)
     end
+
     return render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400) unless check_format_of_start_date?(params[:start_date])
     return render_error("전쟁 요청 실패", @error_message, 400) unless check_guild_condition(params)
     ActiveRecord::Base.transaction do

@@ -2,14 +2,14 @@ import { App, Helper } from "srcs/internal";
 
 export let TournamentCreateView = Backbone.View.extend({
   id: "tournament-create-view",
-  className: "create-view top-margin",
+  className: "create-view",
   template: _.template($("#tournament-create-view-template").html()),
   events: {
     "click .create.button": "submit",
     "click .cancel.button": "cancel",
   },
 
-  getFormData: function () {
+  getInputData: function () {
     const input_field = [
       "title",
       "incentive-gift",
@@ -23,31 +23,31 @@ export let TournamentCreateView = Backbone.View.extend({
       "tournament-time",
     ];
 
-    let form_data = {};
+    let input_data = {};
     input_field.forEach(
       (column) =>
-        (form_data[column.replaceAll("-", "_")] = this.$(
+        (input_data[column.replaceAll("-", "_")] = this.$(
           `input[name=${column}]`
         ).val())
     );
     select_field.forEach(
       (column) =>
-        (form_data[column.replaceAll("-", "_")] = this.$(
+        (input_data[column.replaceAll("-", "_")] = this.$(
           `.${column} option:selected`
         ).val())
     );
-    Object.keys(form_data).map(function (key) {
-      if (form_data[key] == "") form_data[key] = null;
+    Object.keys(input_data).map(function (key) {
+      if (input_data[key] == "") input_data[key] = null;
     });
-    return form_data;
+    return input_data;
   },
 
   submit: function () {
-    let form_data = this.getFormData();
+    let input_data = this.getInputData();
     Helper.fetch("tournaments", {
       method: "POST",
       body: {
-        tournament: form_data,
+        tournament: input_data,
       },
       success_callback: () => App.router.navigate("#/tournaments"),
       fail_callback: (data) => Helper.info({ error: data.error }),
@@ -58,19 +58,27 @@ export let TournamentCreateView = Backbone.View.extend({
     Backbone.history.history.back();
   },
 
+  getMaxDate: function () {
+    let now = new Date();
+    now.setDate(now.getDate() + 60);
+    const max_iso_time = now.getTime() - now.getTimezoneOffset() * 60000;
+    return new Date(max_iso_time).toISOString().substr(0, 10);
+  },
+
   getMinDate: function () {
-    const min = new Date();
-    min.setDate(min.getDate() + 1);
-    const month =
-      min.getMonth() < 9 ? "0" + (min.getMonth() + 1) : min.getMonth() + 1 + "";
-    const date = min.getDate() < 10 ? "0" + min.getDate() : min.getDate() + "";
-    return min.getFullYear() + "-" + month + "-" + date;
+    let now = new Date();
+    now.setDate(now.getDate() + 1);
+    const min_iso_time = now.getTime() - now.getTimezoneOffset() * 60000;
+    return new Date(min_iso_time).toISOString().substr(0, 10);
   },
 
   render: function () {
+    const min_date = this.getMinDate();
+    const max_date = this.getMaxDate();
     this.$el.html(
       this.template({
-        min_date: this.getMinDate(),
+        min_date: min_date,
+        max_date: max_date,
       })
     );
     return this;

@@ -1,17 +1,3 @@
-class TournamentValidator < ActiveModel::Validator
-  def validate(record)
-    if record.start_date.to_date <= Date.current ||
-        invalid_tournament_time?(record.tournament_time)
-      record.errors.add :base, "토너먼트 생성은 내일 이후의 일정으로만 생성 가능합니다."
-    end
-  end
-
-  def invalid_tournament_time?(tournament_time)
-    playble_time = 9..22
-    !playble_time.include?(tournament_time.hour)
-  end
-end
-
 class Tournament < ApplicationRecord
   belongs_to :rule
   has_many :matches, as: :eventable
@@ -19,13 +5,12 @@ class Tournament < ApplicationRecord
   has_many :users, through: :memberships, source: :user
   has_many :scorecards, through: :matches, as: :eventable
 
-  validates :title, length: { minimum: 1, maximum: 20 }
-  validates :incentive_title, length: { maximum: 20 }
-  validates :incentive_gift, length: { maximum: 20 }, allow_nil: true
-  validates :max_user_count, inclusion: [8, 16, 32]
-  validates :target_match_score, inclusion: [3, 5, 7, 10]
-  # TODO: 실험 후 푸시전에 주석 풀기
-  # validates_with TournamentValidator, field: [ :start_date, :tournament_time ]
+  validates :title, length: { minimum: 1, maximum: 20, message: "토너먼트 타이틀은 최대 20글자까지 가능합니다." }
+  validates :incentive_title, length: { maximum: 20, message: "보상 타이틀은 최대 20글자까지 가능합니다."}
+  validates :incentive_gift, length: { maximum: 20, message: "상품명은 최대 20글자까지 가능합니다." }, allow_nil: true
+  validates :max_user_count, inclusion: {in: [8, 16, 32], message: "참여가능인원 수가 유효하지 않습니다."}
+  validates :target_match_score, inclusion: {in: [3, 5, 7, 10], message: "경기 목표 점수가 유효하지 않습니다." }
+  validates_with TournamentValidator, field: [ :start_date, :tournament_time ]
 
   scope :for_tournament_index, -> (current_user) do
     where.not(status: ["completed", "canceled"])
@@ -228,11 +213,7 @@ class Tournament < ApplicationRecord
     }
     tournament_hash.merge!({ incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
 
-    tournament = self.new(tournament_hash)
-
-    return nil unless tournament.valid?
-    tournament.save
-    tournament
+    self.create!(tournament_hash)
   end
 
   private

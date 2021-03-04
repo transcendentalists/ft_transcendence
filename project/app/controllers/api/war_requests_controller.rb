@@ -10,27 +10,31 @@ class Api::WarRequestsController < ApplicationController
   end
 
   def create
-    begin
-      params = create_params
-    rescue ActionController::UnpermittedParameters => e
-      return render_error("전쟁 요청 실패", "허용되지 않은 데이터가 보내졌습니다.", 400)
-    rescue ActionController::ParameterMissing => e
-      return render_error("전쟁 요청 실패", "전송되지 않은 정보가 있습니다.", 400)
-    end
-
-    if @current_user.in_guild&.id != params[:guild_id].to_i ||
-      !@current_user.guild_membership.master?
-      return render_error("전쟁 요청 실패", "권한이 없습니다.", 401)
-    end
-
-    return render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400) unless check_format_of_start_date?(params[:start_date])
-    return render_error("전쟁 요청 실패", @error_message, 400) unless check_guild_condition(params)
     ActiveRecord::Base.transaction do
       begin
+        params = create_params
+        guild = Guild.find_by_id(params[:guild_id])
+        raise WarRequestError.new("권한이 없습니다.", 403) unless WarRequest.can_be_created_by?(@current_user, guild)
         war_request = WarRequest.create_by(params)
-        war_request.create_war_statuses(params[:guild_id], params[:enemy_guild_id])
-      rescue => e
-        render_error("전쟁 요청 실패", e.class == ArgumentError ? e.message : "잘못된 요청입니다.", 400)
+        war_status = war_request.create_war_statuses(params[:guild_id], params[:enemy_guild_id])
+        war_request.overlap?
+      rescue ActionController::UnpermittedParameters
+        return render_error("전쟁 요청 실패", "허용되지 않은 데이터가 보내졌습니다.", 400)
+      rescue ActionController::ParameterMissing
+        return render_error("전쟁 요청 실패", "전송되지 않은 정보가 있습니다.", 400)
+      rescue Date::Error
+        return render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400)
+        raise ActiveRecord::Rollback
+      rescue WarRequestError => e
+        render_error("전쟁 요청 실패", e.message, e.status_code)
+        raise ActiveRecord::Rollback
+      rescue ActiveRecord::RecordInvalid => e
+        key =  e.record.errors.attribute_names.first
+        error_message = e.record.errors.messages[key].first
+        render_error("전쟁 요청 실패", error_message, 400)
+        raise ActiveRecord::Rollback
+      rescue
+        render_error("전쟁 요청 실패", "잘못된 요청입니다.", 400)
         raise ActiveRecord::Rollback
       end
     end
@@ -69,27 +73,6 @@ class Api::WarRequestsController < ApplicationController
       date = Date.parse(str)
     rescue
       return false
-    end
-    true
-  end
-
-  def check_guild_condition(params)
-    challenger_guild = @current_user.in_guild
-    enemy_guild = Guild.find_by_id(params[:enemy_guild_id])
-    @error_message = nil
-    if enemy_guild.nil?
-      @error_message = "존재하지 않는 길드입니다." 
-    elsif enemy_guild.in_war? || challenger_guild.in_war?
-      @error_message = "진행 중인 전쟁이 있습니다."
-    elsif challenger_guild.point < params[:bet_point].to_i
-      @error_message= "길드 포인트가 부족합니다." 
-    end
-    return false unless @error_message.nil?
-    enemy_guild.requests.where(status: "pending").each do |request|
-      if request.challenger.id == challenger_guild.id
-        @error_message = "중복된 요청입니다."
-        return false
-      end
     end
     true
   end

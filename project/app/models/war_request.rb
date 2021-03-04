@@ -28,6 +28,10 @@ class WarRequest < ApplicationRecord
     }
   end
 
+  def self.can_be_created_by?(current_user, guild)
+    current_user.in_guild&.id == guild.id && current_user.guild_membership.master?
+  end
+
   def can_be_updated_by(current_user)
     if current_user.in_guild.nil? ||
       current_user.in_guild.id != self.war_statuses.find_by_position("enemy").guild.id ||
@@ -56,11 +60,19 @@ class WarRequest < ApplicationRecord
       target_match_score: params[:target_match_score],
     )
     if war_request.invalid?
-      error_message = war_request.errors[war_request.errors.attribute_names.first].first
-      raise ArgumentError.new(error_message)
+      @error_message = war_request.errors[war_request.errors.attribute_names.first].first
+      raise WarRequestError.new(@error_message)
     end
     war_request.save!
     war_request
+  end
+
+  def overlap?
+    self.enemy.requests.where(status: "pending").each do |request|
+      if request.challenger.id == self.challenger.id && request.id != self.id
+        raise WarRequestError.new("중복된 요청입니다.")
+      end
+    end
   end
 
   def enemy

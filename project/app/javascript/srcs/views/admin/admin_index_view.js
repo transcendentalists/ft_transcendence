@@ -9,20 +9,6 @@ export let AdminIndexView = Backbone.View.extend({
     "click .admin-action.button": "requestAdminAction",
   },
 
-  // ban, user
-  // ban-release, user
-
-  // destroy, chat-channel
-  // show, chat-channel
-
-  // give, chat-channel, membership, position
-  // remove, chat-channel, membership, position
-
-  // give, guild, membership, position
-  // remove, guild, membership, position
-
-  // create, tournament
-
   initialize: function () {
     this.$el.html(this.template());
     this.resource = "users";
@@ -33,22 +19,19 @@ export let AdminIndexView = Backbone.View.extend({
       position: null,
     };
     this.db = null;
+    this.chat_modal_view = null;
   },
 
   hasBodyAction() {
-    return ["group_chat_memberships", "guild_memberships"].includes(
-      this.resource
-    );
+    return this.child_selects.action.val() == "PATCH";
   },
 
   url: function () {
     let url = this.resource + "/";
-    if (this.hasBodyAction()) url += this.child_selects.membership.val();
-    else url += this.child_selects.resource.val();
 
-    url += this.hasBodyAction()
-      ? this.child_selects.membership.val()
-      : this.child_selects.resource.val();
+    if (this.hasBodyAction() && this.resource != "users")
+      url += this.child_selects.membership.val();
+    else url += this.child_selects.resource.val();
 
     if (this.resource == "group_chat_rooms" && this.requestMethod() == "GET")
       url += "/chat_messages";
@@ -70,14 +53,36 @@ export let AdminIndexView = Backbone.View.extend({
   },
 
   createChatMessagesTable(data) {
-    return null;
+    return {
+      title: `${data.title} (id: ${data.id})`,
+      headers: ["user", "message", "at"],
+      records: data.messages,
+    };
   },
 
-  showTableModal: function () {
-    return (data) => {
-      console.log("success");
-      // Helper.table(createChatMessagesTable(data));
-    };
+  showTableModal: function (data) {
+    if (this.chat_modal_view == null)
+      this.chat_modal_view = new App.View.TableModalView();
+    this.chat_modal_view.render(
+      this.createChatMessagesTable(data.chat_messages)
+    );
+  },
+
+  adminActionCallback: function (data) {
+    const method = this.requestMethod();
+    if (method == "GET") return this.showTableModal.bind(this);
+    else if (method == "DELETE") {
+      const resource =
+        this.hasBodyAction() && this.resource != "users"
+          ? "membership"
+          : "resource";
+      this.db.destroy({
+        resource: this.resource,
+        resource_id: this.child_selects[resource].val(),
+      });
+      this.optionsRender(this.resource);
+    }
+    this.showInfoModal(data);
   },
 
   adminActionParams: function () {
@@ -86,18 +91,14 @@ export let AdminIndexView = Backbone.View.extend({
       headers: {
         admin: App.current_user.id,
       },
-      success_callback:
-        this.requestMethod() == "GET"
-          ? this.showTableModal()
-          : this.showInfoModal(),
+      success_callback: this.adminActionCallback.bind(this),
       fail_callback: (data) => {
         Helper.info({ error: data.error });
       },
     };
 
-    if (this.hasBodyAction()) {
+    if (this.hasBodyAction())
       params.body = { position: this.child_selects.position.val() };
-    }
 
     return params;
   },
@@ -119,7 +120,6 @@ export let AdminIndexView = Backbone.View.extend({
 
   changeResource: function (event) {
     const new_resource = event.target.getAttribute("data-resource-name");
-    if (this.resource == new_resource) return;
     if (new_resource == "tournament")
       return App.router.navigate("#/tournaments/new");
     this.changeHeader(event);
@@ -132,19 +132,19 @@ export let AdminIndexView = Backbone.View.extend({
       success_callback: function (data) {
         this.db = new App.Model.AdminDB(data.db);
         this.optionsRender(this.resource);
-        this.child_selects.membership.queryAndRenderOptions(
-          this.child_selects.resource.select.val()
-        );
       }.bind(this),
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
+      fail_callback: () => {
+        App.navigate("#/errors/400");
       },
     });
   },
 
-  listenResourceChange: function () {
-    this.listenTo(this.child_selects.resource, "change", (resource_id) =>
-      this.child_selects.membership.queryAndRenderOptions(resource_id)
+  listenValueChange: function () {
+    this.listenTo(this.child_selects.resource, "change", () =>
+      this.child_selects.membership.render(this.resource)
+    );
+    this.listenTo(this.child_selects.action, "change", () =>
+      this.child_selects.position.render(this.resource)
     );
   },
 
@@ -157,7 +157,7 @@ export let AdminIndexView = Backbone.View.extend({
       });
       this.child_selects[type] = child_select;
     }, this);
-    this.listenResourceChange();
+    this.listenValueChange();
     this.setDatabase();
     return this;
   },
@@ -166,6 +166,7 @@ export let AdminIndexView = Backbone.View.extend({
     for (let key of Object.keys(this.child_selects)) {
       this.child_selects[key].close();
     }
+    if (this.chat_modal_view) this.chat_modal_view.close();
     this.remove();
   },
 });

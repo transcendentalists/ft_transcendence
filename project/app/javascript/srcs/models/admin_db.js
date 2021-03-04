@@ -16,15 +16,23 @@ export let AdminDB = Backbone.Model.extend({
     }
   },
 
+  destroy: function (query_hash) {
+    let resource = this.get(query_hash.resource);
+    let index = resource.findIndex(
+      (record) => record.id == query_hash.resource_id
+    );
+    if (index != -1) resource.splice(index, 1);
+  },
+
   action: function (query_hash) {
     let data = {
       users: [
+        ["PATCH", "유저 권한 변경하기"],
         ["DELETE", "유저 접속 금지하기"],
-        ["PATCH", "유저 접속금지 해제하기"],
       ],
       group_chat_rooms: [
-        ["DELETE", "그룹 챗 채널 삭제하기"],
         ["GET", "그룹 챗 대화내역 보기"],
+        ["DELETE", "그룹 챗 채널 삭제하기"],
       ],
       group_chat_memberships: [
         ["PATCH", "그룹 챗 멤버십 변경하기"],
@@ -68,6 +76,8 @@ export let AdminDB = Backbone.Model.extend({
   membership: function (query_hash) {
     let data = this.get(query_hash.resource) || [];
     let resource_id = query_hash.resource_id;
+    if (isNaN(resource_id)) return [];
+
     if (query_hash.resource == "guild_memberships")
       data = _.filter(data, (membership) => resource_id == membership.guild_id);
     else if (query_hash.resource == "group_chat_memberships")

@@ -35,6 +35,7 @@ import { InviteView } from "./views/persist/invite_view";
 import { RequestView } from "./views/persist/request_view";
 import { NavBarView } from "./views/persist/nav_bar_view";
 import { RuleModalView } from "./views/persist/rule_modal_view";
+import { TableModalView } from "./views/persist/table_modal_view";
 
 /** error view */
 import { ErrorView } from "./views/error/error_view";
@@ -186,6 +187,7 @@ export let App = {
     DirectChatRoomView,
     ErrorView,
     InfoModalView,
+    TableModalView,
     InputModalView,
     ImageUploadModalView,
     InviteView,

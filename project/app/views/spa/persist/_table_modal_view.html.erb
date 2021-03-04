@@ -1,0 +1,29 @@
+<script type="text/template" id="table-modal-view-template">
+  <div class="header">
+    <%%= title %>
+    <i class="right floated close grey icon"></i>
+  </div>
+  <div class="content">
+      <%% if (!records.length) { %>
+        <span>렌더링할 데이터가 없습니다.</span>
+      <%% } %>
+      <table class="ui celled table">
+        <thead>
+          <tr>
+            <%% for (let header of headers) { %>
+              <th><%%= header %></th>
+            <%% } %>
+          </tr>
+        </thead>
+        <tbody>
+          <%% for (let record of records) { %>
+            <tr>
+              <%% for (let column of Object.values(record)) { %>
+                <td><%%= column %></td>
+              <%% } %>
+            </tr>
+          <%% } %>
+        </tbody>
+      </table>
+  </div>
+</script>

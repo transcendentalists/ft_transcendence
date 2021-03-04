@@ -224,7 +224,7 @@ class Tournament < ApplicationRecord
 
   def set_schedule_at_operation_time
     self.job_reservation(Date.tomorrow.midnight.change({min: 5}))
-=  end
+  end
 
   def set_schedule_at_tournament_time
     self.job_reservation(Date.today.midnight.change({hour: self.tournament_time.hour}))

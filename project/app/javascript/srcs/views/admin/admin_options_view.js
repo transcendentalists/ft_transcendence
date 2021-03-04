@@ -1,13 +1,8 @@
 import { App } from "srcs/internal";
 
-export let AdminIndexView = Backbone.View.extend({
-  id: "admin-index-view",
-  className: "flex-container column-direction center-aligned top-margin",
-  template: _.template($("#admin-index-view-template").html()),
-  events: {
-    "click .menu a": "changeResource",
-    "click .admin-action.button": "requestAdminAction",
-  },
+export let AdminOptionsView = Backbone.View.extend({
+  template: _.template($("#admin-option-template").html()),
+  default_option: "<option value='default'>----------</option>",
 
   // ban, user
   // ban-release, user

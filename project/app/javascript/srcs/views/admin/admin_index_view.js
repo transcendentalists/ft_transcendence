@@ -43,8 +43,8 @@ export let AdminIndexView = Backbone.View.extend({
   url: function () {
     let url = this.resource;
     if (this.hasBodyAction())
-      return url + "/" + this.child_options.resource[1].getResourceId();
-    return url + "/" + this.child_options.resource[2].getResourceId();
+      return url + "/" + this.child_options.resource.getResourceId();
+    return url + "/" + this.child_options.membership.getResourceId();
   },
 
   requestMethod: function () {
@@ -125,7 +125,7 @@ export let AdminIndexView = Backbone.View.extend({
   render: function () {
     const option_keys = ["action", "resource", "membership", "position"];
     option_keys.forEach(function (type) {
-      let child_option = new App.View.AdminOptionView({
+      let child_option = new App.View.AdminOptionsView({
         parent: this,
         type: type,
       });

@@ -39,8 +39,8 @@ class WarRequest < ApplicationRecord
   end
 
   def create_war_statuses(guild_id, enemy_guild_id)
-    WarStatus.create!(guild_id: guild_id, war_request_id: self.id, position: "challenger")
-    WarStatus.create!(guild_id: enemy_guild_id, war_request_id: self.id, position: "enemy")
+    self.war_statuses.create!(guild_id: guild_id, position: "challenger")
+    self.war_statuses.create!(guild_id: enemy_guild_id, position: "enemy")
   end
 
   def self.create_by(params)

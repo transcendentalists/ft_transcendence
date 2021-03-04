@@ -60,7 +60,7 @@ class Api::MatchesController < ApplicationController
     match
   end
 
-  def find_or_create_ladder_match_for(user)
+  def find_or_create_ladder_match_for(user, options = {type: "casual_ladder"} )
     # 거르는 이유: 중복참여 방지. 게임 중인데 또 게임하는 것 방지하기 위함.
     return nil if user.playing?
     # return nil unless Scorecard.where(user_id: user.id, result: ["wait", "ready"]).first.nil?

@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let AdminIndexView = Backbone.View.extend({
   id: "admin-index-view",
@@ -26,10 +26,11 @@ export let AdminIndexView = Backbone.View.extend({
   initialize: function () {
     this.$el.html(this.template());
     this.resource = "users";
-    this.child_options = {
+    this.child_selects = {
       action: null,
-      resource: [],
-      body: null,
+      resource: null,
+      membership: null,
+      position: null,
     };
     this.db = null;
   },
@@ -43,12 +44,12 @@ export let AdminIndexView = Backbone.View.extend({
   url: function () {
     let url = this.resource;
     if (this.hasBodyAction())
-      return url + "/" + this.child_options.resource.getResourceId();
-    return url + "/" + this.child_options.membership.getResourceId();
+      return url + "/" + this.child_selects.resource.getResourceId();
+    return url + "/" + this.child_selects.membership.getResourceId();
   },
 
   requestMethod: function () {
-    return this.child_options.method.getMethod();
+    return this.child_selects.method.getMethod();
   },
 
   showInfoModal: function () {
@@ -60,9 +61,13 @@ export let AdminIndexView = Backbone.View.extend({
     };
   },
 
+  createChatMessagesTable(data) {
+    return null;
+  },
+
   showTableModal: function () {
     return (data) => {
-      Helper.table(data);
+      Helper.table(createChatMessagesTable(data));
     };
   },
 
@@ -79,7 +84,7 @@ export let AdminIndexView = Backbone.View.extend({
     };
 
     if (this.hasBodyAction()) {
-      params.body = this.child_options.body.getBody();
+      params.body = this.child_selects.body.getBody();
     }
 
     return params;
@@ -95,8 +100,8 @@ export let AdminIndexView = Backbone.View.extend({
   },
 
   optionsRender: function (new_resource) {
-    for (let key of Object.keys(this.child_options)) {
-      this.child_options[key].render({ resource: new_resource });
+    for (let key of Object.keys(this.child_selects)) {
+      this.child_selects[key].render(new_resource);
     }
   },
 
@@ -113,7 +118,7 @@ export let AdminIndexView = Backbone.View.extend({
   setDatabase: function () {
     Helper.fetch("admin/db", {
       success_callback: (data) => {
-        this.db = data.db;
+        this.db = new App.Model.AdminDB(data.db);
         this.optionsRender(this.resource);
       },
       fail_callback: (data) => {
@@ -122,22 +127,29 @@ export let AdminIndexView = Backbone.View.extend({
     });
   },
 
+  listenResourceChange: function () {
+    this.listenTo(this.child_selects.resource, "change", (resource_id) =>
+      this.child_selects.membership.queryAndRenderOptions(resource_id)
+    );
+  },
+
   render: function () {
-    const option_keys = ["action", "resource", "membership", "position"];
-    option_keys.forEach(function (type) {
-      let child_option = new App.View.AdminOptionsView({
+    const select_keys = ["action", "resource", "membership", "position"];
+    select_keys.forEach(function (type) {
+      let child_select = new App.View.AdminSelectView({
         parent: this,
         type: type,
       });
-      this.child_options[type] = child_option;
-    });
+      this.child_selects[type] = child_select;
+    }, this);
+    this.listenResourceChange();
     this.setDatabase();
     return this;
   },
 
   close: function () {
-    for (let key of Object.keys(this.child_options)) {
-      this.child_options[key].close();
+    for (let key of Object.keys(this.child_selects)) {
+      this.child_selects[key].close();
     }
     this.remove();
   },

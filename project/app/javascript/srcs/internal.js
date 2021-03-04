@@ -7,6 +7,7 @@ import { GameScore } from "./models/game_score";
 import { GamePaddle } from "./models/game_paddle";
 import { ChatBan } from "./models/chat_ban";
 import { ChatMessage } from "./models/chat_message";
+import { AdminDB } from "./models/admin_db";
 
 /* COLLECTION */
 import { Users } from "./collections/users";
@@ -85,7 +86,7 @@ import { LiveIndexView } from "./views/live/live_index_view";
 import { TournamentIndexView } from "./views/tournament/tournament_index_view";
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
 import { AdminIndexView } from "./views/admin/admin_index_view";
-import { AdminOptionsView } from "./views/admin/admin_options_view";
+import { AdminSelectView } from "./views/admin/admin_select_view";
 
 import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
@@ -163,6 +164,7 @@ export let App = {
     GameBall,
     GameScore,
     GamePaddle,
+    AdminDB,
   },
   Collection: {
     Users,
@@ -237,7 +239,7 @@ export let App = {
     TournamentIndexView,
     TournamentCreateView,
     AdminIndexView,
-    AdminOptionsView,
+    AdminSelectView,
     AdminChatIndexView,
     AdminChatRoomView,
     AdminGuildIndexView,

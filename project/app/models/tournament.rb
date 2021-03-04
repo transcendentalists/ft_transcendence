@@ -85,7 +85,8 @@ class Tournament < ApplicationRecord
   end
 
   def next_match_of(user)
-    membership = self.memberships.find_by_user_id(user.id)
+    membership = self.memberships.reload.find_by_user_id(user.id)
+  
     return nil if membership.nil? || membership.completed?
     return nil if membership.defeated? || self.last_date?
 
@@ -148,7 +149,7 @@ class Tournament < ApplicationRecord
   end
 
   def last_date?
-    self.today_round == 2 && Time.zone.now.hour >= self.tournament_time.hour
+    self.status == "progress" && self.today_round == 2 && Time.zone.now.hour >= self.tournament_time.hour
   end
 
   def start

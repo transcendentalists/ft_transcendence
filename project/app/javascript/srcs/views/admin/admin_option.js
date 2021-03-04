@@ -51,28 +51,15 @@ export let AdminIndexView = Backbone.View.extend({
     return this.child_options.method.getMethod();
   },
 
-  showInfoModal: function () {
-    return () => {
-      Helper.info({
-        subject: "요청 성공",
-        description: "요청하신 액션이 성공적으로 수행되었습니다.",
-      });
-    };
-  },
-
-  showTableModal: function () {
-    return (data) => {
-      Helper.table(data);
-    };
-  },
-
   adminActionParams: function () {
     let params = {
       method: this.requestMethod(),
-      success_callback:
-        this.requestMethod() == "GET"
-          ? this.showInfoModal()
-          : this.showTableModal(),
+      success_callback: () => {
+        Helper.info({
+          subject: "요청 성공",
+          description: "요청하신 액션이 성공적으로 수행되었습니다.",
+        });
+      },
       fail_callback: (data) => {
         Helper.info({ error: data.error });
       },
@@ -95,9 +82,9 @@ export let AdminIndexView = Backbone.View.extend({
   },
 
   optionsRender: function (new_resource) {
-    for (let key of Object.keys(this.child_options)) {
-      this.child_options[key].render({ resource: new_resource });
-    }
+    this.child_views.forEach((child_view) =>
+      child_view.render({ resource: new_resource })
+    );
   },
 
   changeResource: function (event) {
@@ -110,7 +97,7 @@ export let AdminIndexView = Backbone.View.extend({
     this.optionsRender(this.resource);
   },
 
-  setDatabase: function () {
+  setDatabase: function (data) {
     Helper.fetch("admin/db", {
       success_callback: (data) => {
         this.db = data.db;
@@ -123,22 +110,20 @@ export let AdminIndexView = Backbone.View.extend({
   },
 
   render: function () {
-    const option_keys = ["action", "resource", "membership", "position"];
-    option_keys.forEach(function (type) {
+    ["action", "resource", "resource", "position"].forEach(function (type) {
       let child_option = new App.View.AdminOptionView({
         parent: this,
         type: type,
       });
-      this.child_options[type] = child_option;
+      if (type == "resource") this.child_options[type].push(child_option);
+      else this.child_options[type] = child_option;
     });
     this.setDatabase();
     return this;
   },
 
   close: function () {
-    for (let key of Object.keys(this.child_options)) {
-      this.child_options[key].close();
-    }
+    this.child_views.forEach((child_view) => child_view.close());
     this.remove();
   },
 });

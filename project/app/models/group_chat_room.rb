@@ -50,6 +50,19 @@ class GroupChatRoom < ApplicationRecord
     })
   }
 
+  def for_admin_format
+    {
+      id: self.id,
+      title: self.title,
+      messages: self.messages.map { |message|
+        {
+          name: message.user.name,
+          message: message.message
+        }
+      }
+    }
+  end
+
   def self.generate(create_params)
     GroupChatRoom.transaction do
       room = GroupChatRoom.create(create_params)

@@ -26,4 +26,10 @@ class ApplicationController < ActionController::Base
       return render_error("NOT VALID HEADERS", "요청 Header의 값이 유효하지 않습니다.", 400)
     end
   end
+
+  def for_admin?
+    return false if request.headers['HTTP_ADMIN'].nil?
+    true
+  end
+
 end

@@ -11,10 +11,8 @@ class Api::GuildInvitationsController < ApplicationController
   end
 
   def create
-    user = User.find_by_id(params[:user_id])
-    invited_user = User.find_by_id(params[:invited_user_id])
-    return render_error("길드 초대 실패", @error_message, 400) unless valid_invite?(user, invited_user)
-    guild_invitation = GuildInvitation.create(user_id: user.id, invited_user_id: invited_user.id, guild_id: user.in_guild.id)
+    return render_error("길드 초대 실패", @error_message, 400) unless valid_of?(params)
+    guild_invitation = GuildInvitation.create(create_params)
     render json: { guild_invitation: guild_invitation.id }
   end
 
@@ -27,7 +25,14 @@ class Api::GuildInvitationsController < ApplicationController
   end
 
   private
-  def valid_invite?(user, invited_user)
+  def create_params
+    params.permit(:user_id, :invited_user_id, :guild_id)
+  end
+
+  def valid_of?(params)
+    user = User.find_by_id(params[:user_id])
+    invited_user = User.find_by_id(params[:invited_user_id])
+
     @error_message = nil
     if @current_user.id != user&.id
       @error_message = "유효하지 않은 요청입니다."

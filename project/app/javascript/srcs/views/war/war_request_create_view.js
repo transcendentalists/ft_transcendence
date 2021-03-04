@@ -29,8 +29,9 @@ export let WarRequestCreateView = Backbone.View.extend({
   parseWarParams: function () {
     let input_data = {};
     input_data["bet_point"] = +$(".bet-point-input").text();
-    input_data["war_start_date"] = $(".war-start-date").val();
+    input_data["start_date"] = $(".war-start-date").val();
     input_data["war_duration"] = +$(".war-duration-input").text();
+    // TODO: end_date 추가?
     input_data["war_time"] = $(".war-time option:selected").val();
     input_data["max_no_reply_count"] = +$(".max-no-reply-count-input").text();
     input_data["rule_id"] = $(".rule option:selected").val();

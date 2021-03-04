@@ -10,11 +10,17 @@ class Api::WarRequestsController < ApplicationController
   end
 
   def create
+    begin
+      params = create_params # <== Missingparams UnpermittedParameters
+    rescue ActionController::ParameterMissing => e
+      return render_error("전쟁 요청 실패", "전송되지 않은 정보가 있습니다.")
+    end
+
     if @current_user.in_guild&.id != params[:guild_id].to_i ||
       !@current_user.guild_membership.master?
       return render_error("전쟁 요청 실패", "권한이 없습니다.", 401)
     end
-    return render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400) unless check_format_of_start_date?(params[:war_start_date])
+    return render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400) unless check_format_of_start_date?(params[:start_date])
     return render_error("전쟁 요청 실패", @error_message, 400) unless check_guild_condition(params)
     ActiveRecord::Base.transaction do
       begin
@@ -46,6 +52,15 @@ class Api::WarRequestsController < ApplicationController
   end
 
   private
+
+  def create_params
+    params.require(:guild_id)
+    params.require(:enemy_guild_id)
+    params.require(:war_duration)
+    params.require(:war_request).permit(:rule_id, :bet_point, :start_date, :war_time, :max_no_reply_count, :include_ladder, :include_tournament, :target_match_score)
+    params
+  end
+
   def check_format_of_start_date?(str)
     begin
       date = Date.parse(str)

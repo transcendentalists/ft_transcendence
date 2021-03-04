@@ -47,8 +47,8 @@ class WarRequest < ApplicationRecord
     war_request = self.new(
       rule_id: params[:rule_id],
       bet_point: params[:bet_point],
-      start_date: Date.parse(params[:war_start_date]),
-      end_date: Date.parse(params[:war_start_date]) + params[:war_duration].to_i.days,
+      start_date: Date.parse(params[:start_date]),
+      end_date: Date.parse(params[:start_date]) + params[:war_duration].to_i.days,
       war_time: Time.new(1 ,1 ,1 , params[:war_time].to_i),
       max_no_reply_count: params[:max_no_reply_count],
       include_ladder: params[:include_ladder],

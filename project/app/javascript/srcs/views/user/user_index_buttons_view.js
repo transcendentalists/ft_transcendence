@@ -1,5 +1,4 @@
-import { App } from "srcs/internal";
-import { Helper } from "srcs/helper";
+import { App, Helper } from "srcs/internal";
 
 export let UserIndexButtonsView = Backbone.View.extend({
   el: "user-index-buttons-view",
@@ -11,12 +10,20 @@ export let UserIndexButtonsView = Backbone.View.extend({
     "click #guild-invite-button": "inviteGuild",
   },
 
-  initialize: function (user_id) {
-    this.user_id = user_id;
-    const guild = App.current_user.get("guild");
-    this.is_current_user = Helper.isCurrentUser(user_id);
-    this.invite_possible =
-      !this.is_current_user && guild != null && guild.position != "member";
+  initialize: function (user) {
+    this.user_id = user.id;
+    this.is_current_user = Helper.isCurrentUser(this.user_id);
+    this.invite_button = this.canInvite(user);
+  },
+
+  canInvite: function (user) {
+    const current_user_guild = App.current_user.get("guild");
+    return (
+      !this.is_current_user &&
+      current_user_guild != null &&
+      current_user_guild.position != "member" &&
+      user.get("guild") == null
+    );
   },
 
   changeTwoFactorAuth: function () {
@@ -77,13 +84,31 @@ export let UserIndexButtonsView = Backbone.View.extend({
     });
   },
 
-  inviteGuild: function () {},
+  inviteGuild: function () {
+    const invite_url = `users/${App.current_user.id}/guild_invitations`;
+    Helper.fetch(invite_url, {
+      method: "POST",
+      body: {
+        invited_user_id: this.user_id,
+        guild_id: App.current_user.get("guild").id
+      },
+      success_callback: (data) => {
+        Helper.info({
+          subject: "길드 초대 성공",
+          description: "초대장을 전송했습니다.",
+        });
+      },
+      fail_callback: (data) => {
+        Helper.info({ error: data.error });
+      },
+    });
+  },
 
   render: function () {
     this.$el.html(
       this.template({
         is_current_user: this.is_current_user,
-        invite_possible: this.invite_possible,
+        invite_button: this.invite_button,
       })
     );
     if (App.current_user.two_factor_auth)

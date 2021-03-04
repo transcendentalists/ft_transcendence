@@ -20,6 +20,7 @@ class Api::GuildMembershipsController < ApplicationController
         position: params[:position],
       )
     return render_error('가입 실패', '유효하지 않은 정보가 포함되어 있습니다.', 404) unless guild_membership.valid?
+    @current_user.guild_invitations.destroy_all
     render json: { guild_membership: guild_membership.profile }
   end
 

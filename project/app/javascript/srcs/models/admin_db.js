@@ -20,18 +20,18 @@ export let AdminDB = Backbone.Model.extend({
     let data = {
       users: [
         ["DELETE", "유저 접속 금지하기"],
-        ["POST", "유저 접속금지 해제하기"],
+        ["PATCH", "유저 접속금지 해제하기"],
       ],
       group_chat_rooms: [
         ["DELETE", "그룹 챗 채널 삭제하기"],
         ["GET", "그룹 챗 대화내역 보기"],
       ],
       group_chat_memberships: [
-        ["POST", "그룹 챗 멤버십 변경하기"],
+        ["PATCH", "그룹 챗 멤버십 변경하기"],
         ["DELETE", "그룹 챗 멤버 제명하기"],
       ],
       guild_memberships: [
-        ["POST", "길드 멤버십 변경하기"],
+        ["PATCH", "길드 멤버십 변경하기"],
         ["DELETE", "길드 멤버 제명하기"],
       ],
     };

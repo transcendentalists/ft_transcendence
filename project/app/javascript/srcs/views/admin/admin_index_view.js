@@ -42,14 +42,22 @@ export let AdminIndexView = Backbone.View.extend({
   },
 
   url: function () {
-    let url = this.resource;
-    if (this.hasBodyAction())
-      return url + "/" + this.child_selects.resource.getResourceId();
-    return url + "/" + this.child_selects.membership.getResourceId();
+    let url = this.resource + "/";
+    if (this.hasBodyAction()) url += this.child_selects.membership.val();
+    else url += this.child_selects.resource.val();
+
+    url += this.hasBodyAction()
+      ? this.child_selects.membership.val()
+      : this.child_selects.resource.val();
+
+    if (this.resource == "group_chat_rooms" && this.requestMethod() == "GET")
+      url += "/chat_messages";
+
+    return url;
   },
 
   requestMethod: function () {
-    return this.child_selects.method.getMethod();
+    return this.child_selects.action.val();
   },
 
   showInfoModal: function () {
@@ -67,31 +75,35 @@ export let AdminIndexView = Backbone.View.extend({
 
   showTableModal: function () {
     return (data) => {
-      Helper.table(createChatMessagesTable(data));
+      console.log("success");
+      // Helper.table(createChatMessagesTable(data));
     };
   },
 
   adminActionParams: function () {
     let params = {
       method: this.requestMethod(),
+      headers: {
+        admin: App.current_user.id,
+      },
       success_callback:
         this.requestMethod() == "GET"
-          ? this.showInfoModal()
-          : this.showTableModal(),
+          ? this.showTableModal()
+          : this.showInfoModal(),
       fail_callback: (data) => {
         Helper.info({ error: data.error });
       },
     };
 
     if (this.hasBodyAction()) {
-      params.body = this.child_selects.body.getBody();
+      params.body = { position: this.child_selects.position.val() };
     }
 
     return params;
   },
 
   requestAdminAction: function () {
-    Helper.fetch(this.url(), adminActionParams());
+    Helper.fetch(this.url(), this.adminActionParams());
   },
 
   changeHeader: function (event) {
@@ -117,10 +129,13 @@ export let AdminIndexView = Backbone.View.extend({
 
   setDatabase: function () {
     Helper.fetch("admin/db", {
-      success_callback: (data) => {
+      success_callback: function (data) {
         this.db = new App.Model.AdminDB(data.db);
         this.optionsRender(this.resource);
-      },
+        this.child_selects.membership.queryAndRenderOptions(
+          this.child_selects.resource.select.val()
+        );
+      }.bind(this),
       fail_callback: (data) => {
         Helper.info({ error: data.error });
       },

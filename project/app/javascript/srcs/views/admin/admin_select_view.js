@@ -27,6 +27,10 @@ export let AdminSelectView = Backbone.View.extend({
     this.select.on("change", () => this.trigger("change", this.select.val()));
   },
 
+  val: function () {
+    return this.select.val();
+  },
+
   clear: function () {
     this.select.empty();
     this.field.removeClass("disabled");
@@ -46,8 +50,6 @@ export let AdminSelectView = Backbone.View.extend({
 
   addOption: function (record) {
     this.select.append(this.template(record));
-    if (this.type == "membership")
-      console.log("🚀 ~ file: admin_select_view.js ~ line 48 ~ record", record);
   },
 
   renderOptions: function (relation) {
@@ -57,8 +59,12 @@ export let AdminSelectView = Backbone.View.extend({
   },
 
   queryAndRenderOptions: function (resource_id) {
+    if (!this.db) return;
     if (this.disabled()) return this.setDisable();
-    if (this.type == "membership" && !resource_id) return this.setDisable();
+    if (this.type == "membership" && !resource_id) {
+      resource_id = this.parent.child_selects.resource.val();
+      if (isNaN(resource_id)) return this.setDisable();
+    }
 
     let query = { type: this.type, resource: this.resource };
     if (this.type == "membership") query.resource_id = resource_id;

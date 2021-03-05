@@ -1,6 +1,6 @@
 class Guild < ApplicationRecord
   belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
-  has_many :memberships, class_name: 'GuildMembership'
+  has_many :memberships, class_name: 'GuildMembership', dependent: :delete_all
   has_many :war_statuses
   has_many :requests, through: :war_statuses
   has_many :wars, through: :requests
@@ -61,5 +61,17 @@ class Guild < ApplicationRecord
     war_request.enemy.cancel_rest_of_war_request
     war_request.challenger.cancel_rest_of_war_request
     War.create(war_request_id: war_request.id, status: "pending")
+  end
+
+  def make_another_member_master
+    memberships = self.memberships
+
+    master = memberships.find_by_position("master")
+    master.update(position: "member") unless master.nil?
+    
+    new_master = memberships.find_by_position("officer")
+    new_master = memberships.find_by_position("member") if new_master.nil?
+    self.update!(owner_id: new_master.user_id)
+    new_master.update(position: "master")
   end
 end

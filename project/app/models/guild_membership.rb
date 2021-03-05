@@ -31,6 +31,8 @@ class GuildMembership < ApplicationRecord
   end
 
   def can_be_destroyed_by?(current_user)
+    return true if current_user.can_service_manage?
+
     return false if self.master?
     if self.user_id == current_user.id
       return false unless self.guild_id == current_user.in_guild&.id
@@ -49,6 +51,10 @@ class GuildMembership < ApplicationRecord
 
   def master?
     self.position == "master"
+  end
+
+  def last_user_of_guild?
+    self.guild.memberships.count == 1
   end
 
 end

@@ -35,7 +35,21 @@ class Api::GuildMembershipsController < ApplicationController
     membership = GuildMembership.find_by_id_and_guild_id(params[:id], params[:guild_id])
     return render_error("탈퇴 실패", "길드에 존재하지 않는 멤버입니다.", 404) if membership.nil?
     return render_error("권한 에러", "접근 권한이 없습니다.", 401) unless membership.can_be_destroyed_by?(@current_user)
-    membership.destroy
-    head :no_content, status: 204
+
+    ActiveRecord::Base.transaction do
+      begin
+        if membership.last_user_of_guild?
+          membership.guild.destory
+          return head :no_content, status: 204
+        end
+
+        membership.guild.make_another_member_owner if membership.master?
+        membership.destroy
+        return head :no_content, status: 204
+      rescue
+        raise ActiveRecord::Rollback
+      end
+    end
+    return render_error("길드멤버 제명 실패", "길드 멤버 제명에 실패했습니다.", 500)
   end
 end

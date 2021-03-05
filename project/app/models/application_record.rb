@@ -18,7 +18,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def self.guild_positions
-    ["master", "admin", "member"]
+    ["master", "officer", "member"]
   end
 
   def self.user_positions

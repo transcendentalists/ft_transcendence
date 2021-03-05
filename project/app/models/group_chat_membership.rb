@@ -18,6 +18,12 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def can_be_kicked_by?(current_user)
+    if current_user.can_service_manage?
+      return false if self.user.position_grade >= current_user.position_grade
+      return true
+    end
+    return false if self.user.can_service_manage?
+
     position_grade = ApplicationRecord.position_grade
     current_user_position = self.room.memberships.find_by_user_id(current_user.id)&.position
     return false if current_user_position.nil?

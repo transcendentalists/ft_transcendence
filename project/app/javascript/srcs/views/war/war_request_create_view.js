@@ -17,7 +17,6 @@ export let WarRequestCreateView = Backbone.View.extend({
     this.enemy_guild_name = query.enemy_name;
     this.params = null;
     this.max_date = null;
-    this.tomorrow_date = null;
   },
 
   submit: function () {

@@ -57,7 +57,8 @@ class GroupChatRoom < ApplicationRecord
       messages: self.messages.map { |message|
         {
           name: message.user.name,
-          message: message.message
+          message: message.message,
+          created_at: message.created_at.strftime("%F %T")
         }
       }
     }

@@ -7,6 +7,7 @@ import { GameScore } from "./models/game_score";
 import { GamePaddle } from "./models/game_paddle";
 import { ChatBan } from "./models/chat_ban";
 import { ChatMessage } from "./models/chat_message";
+import { AdminDB } from "./models/admin_db";
 
 /* COLLECTION */
 import { Users } from "./collections/users";
@@ -34,6 +35,7 @@ import { InviteView } from "./views/persist/invite_view";
 import { RequestView } from "./views/persist/request_view";
 import { NavBarView } from "./views/persist/nav_bar_view";
 import { RuleModalView } from "./views/persist/rule_modal_view";
+import { TableModalView } from "./views/persist/table_modal_view";
 
 /** error view */
 import { ErrorView } from "./views/error/error_view";
@@ -85,6 +87,7 @@ import { LiveIndexView } from "./views/live/live_index_view";
 import { TournamentIndexView } from "./views/tournament/tournament_index_view";
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
 import { AdminIndexView } from "./views/admin/admin_index_view";
+import { AdminSelectView } from "./views/admin/admin_select_view";
 
 import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
@@ -162,6 +165,7 @@ export let App = {
     GameBall,
     GameScore,
     GamePaddle,
+    AdminDB,
   },
   Collection: {
     Users,
@@ -183,6 +187,7 @@ export let App = {
     DirectChatRoomView,
     ErrorView,
     InfoModalView,
+    TableModalView,
     InputModalView,
     ImageUploadModalView,
     InviteView,
@@ -236,6 +241,7 @@ export let App = {
     TournamentIndexView,
     TournamentCreateView,
     AdminIndexView,
+    AdminSelectView,
     AdminChatIndexView,
     AdminChatRoomView,
     AdminGuildIndexView,

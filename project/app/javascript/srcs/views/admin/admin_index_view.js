@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let AdminIndexView = Backbone.View.extend({
   id: "admin-index-view",
@@ -9,46 +9,38 @@ export let AdminIndexView = Backbone.View.extend({
     "click .admin-action.button": "requestAdminAction",
   },
 
-  // ban, user
-  // ban-release, user
-
-  // destroy, chat-channel
-  // show, chat-channel
-
-  // give, chat-channel, membership, position
-  // remove, chat-channel, membership, position
-
-  // give, guild, membership, position
-  // remove, guild, membership, position
-
-  // create, tournament
-
   initialize: function () {
     this.$el.html(this.template());
     this.resource = "users";
-    this.child_options = {
+    this.child_selects = {
       action: null,
-      resource: [],
-      body: null,
+      resource: null,
+      membership: null,
+      position: null,
     };
     this.db = null;
+    this.chat_modal_view = null;
   },
 
   hasBodyAction() {
-    return ["group_chat_memberships", "guild_memberships"].includes(
-      this.resource
-    );
+    return this.child_selects.action.val() == "PATCH";
   },
 
   url: function () {
-    let url = this.resource;
-    if (this.hasBodyAction())
-      return url + "/" + this.child_options.resource[1].getResourceId();
-    return url + "/" + this.child_options.resource[2].getResourceId();
+    let url = this.resource + "/";
+
+    if (this.hasBodyAction() && this.resource != "users")
+      url += this.child_selects.membership.val();
+    else url += this.child_selects.resource.val();
+
+    if (this.resource == "group_chat_rooms" && this.requestMethod() == "GET")
+      url += "/chat_messages";
+
+    return url;
   },
 
   requestMethod: function () {
-    return this.child_options.method.getMethod();
+    return this.child_selects.action.val();
   },
 
   showInfoModal: function () {
@@ -60,33 +52,59 @@ export let AdminIndexView = Backbone.View.extend({
     };
   },
 
-  showTableModal: function () {
-    return (data) => {
-      Helper.table(data);
+  createChatMessagesTable(data) {
+    return {
+      title: `${data.title} (id: ${data.id})`,
+      headers: ["user", "message", "at"],
+      records: data.messages,
     };
+  },
+
+  showTableModal: function (data) {
+    if (this.chat_modal_view == null)
+      this.chat_modal_view = new App.View.TableModalView();
+    this.chat_modal_view.render(
+      this.createChatMessagesTable(data.chat_messages)
+    );
+  },
+
+  adminActionCallback: function (data) {
+    const method = this.requestMethod();
+    if (method == "GET") return this.showTableModal.bind(this);
+    else if (method == "DELETE") {
+      const resource =
+        this.hasBodyAction() && this.resource != "users"
+          ? "membership"
+          : "resource";
+      this.db.destroy({
+        resource: this.resource,
+        resource_id: this.child_selects[resource].val(),
+      });
+      this.optionsRender(this.resource);
+    }
+    this.showInfoModal(data);
   },
 
   adminActionParams: function () {
     let params = {
       method: this.requestMethod(),
-      success_callback:
-        this.requestMethod() == "GET"
-          ? this.showInfoModal()
-          : this.showTableModal(),
+      headers: {
+        admin: App.current_user.id,
+      },
+      success_callback: this.adminActionCallback.bind(this),
       fail_callback: (data) => {
         Helper.info({ error: data.error });
       },
     };
 
-    if (this.hasBodyAction()) {
-      params.body = this.child_options.body.getBody();
-    }
+    if (this.hasBodyAction())
+      params.body = { position: this.child_selects.position.val() };
 
     return params;
   },
 
   requestAdminAction: function () {
-    Helper.fetch(this.url(), adminActionParams());
+    Helper.fetch(this.url(), this.adminActionParams());
   },
 
   changeHeader: function (event) {
@@ -95,14 +113,13 @@ export let AdminIndexView = Backbone.View.extend({
   },
 
   optionsRender: function (new_resource) {
-    for (let key of Object.keys(this.child_options)) {
-      this.child_options[key].render({ resource: new_resource });
+    for (let key of Object.keys(this.child_selects)) {
+      this.child_selects[key].render(new_resource);
     }
   },
 
   changeResource: function (event) {
     const new_resource = event.target.getAttribute("data-resource-name");
-    if (this.resource == new_resource) return;
     if (new_resource == "tournament")
       return App.router.navigate("#/tournaments/new");
     this.changeHeader(event);
@@ -112,33 +129,46 @@ export let AdminIndexView = Backbone.View.extend({
 
   setDatabase: function () {
     Helper.fetch("admin/db", {
-      success_callback: (data) => {
-        this.db = data.db;
+      success_callback: function (data) {
+        this.db = new App.Model.AdminDB(data.db);
+        for (let key of Object.keys(this.child_selects))
+          this.child_selects[key].setDB(this.db);
         this.optionsRender(this.resource);
-      },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
+      }.bind(this),
+      fail_callback: () => {
+        App.navigate("#/errors/400");
       },
     });
   },
 
+  listenValueChange: function () {
+    this.listenTo(this.child_selects.resource, "change", () =>
+      this.child_selects.membership.render(this.resource)
+    );
+    this.listenTo(this.child_selects.action, "change", () =>
+      this.child_selects.position.render(this.resource)
+    );
+  },
+
   render: function () {
-    const option_keys = ["action", "resource", "membership", "position"];
-    option_keys.forEach(function (type) {
-      let child_option = new App.View.AdminOptionView({
+    const select_keys = ["action", "resource", "membership", "position"];
+    select_keys.forEach(function (type) {
+      let child_select = new App.View.AdminSelectView({
         parent: this,
         type: type,
       });
-      this.child_options[type] = child_option;
-    });
+      this.child_selects[type] = child_select;
+    }, this);
+    this.listenValueChange();
     this.setDatabase();
     return this;
   },
 
   close: function () {
-    for (let key of Object.keys(this.child_options)) {
-      this.child_options[key].close();
+    for (let key of Object.keys(this.child_selects)) {
+      this.child_selects[key].close();
     }
+    if (this.chat_modal_view) this.chat_modal_view.close();
     this.remove();
   },
 });

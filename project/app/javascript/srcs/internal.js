@@ -95,7 +95,6 @@ import { AdminSelectView } from "./views/admin/admin_select_view";
 import { UserProfileCardView } from "./views/user/user_profile_card_view";
 import { LiveIndexView } from "./views/live/live_index_view";
 
-import { AdminUserIndexView } from "./views/admin/admin_user_index_view";
 import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
 import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
@@ -255,7 +254,6 @@ export let App = {
 
     AdminIndexView,
     AdminSelectView,
-    AdminUserIndexView,
     AdminChatIndexView,
     AdminChatRoomView,
     AdminGuildIndexView,

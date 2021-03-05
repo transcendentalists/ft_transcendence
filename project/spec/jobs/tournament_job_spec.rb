@@ -62,7 +62,7 @@ describe "tournament test" do
       expect_matches_count(matches_count, {status: "completed"})
       expect_scorecards_count(matches_count, {result: "win"})
       expect_scorecards_count(matches_count, {result: "lose"})
-      expect_memberships_count(usqers_count, {status: "completed"})
+      expect_memberships_count(users_count, {status: "completed"})
       expect_memberships_count(1, {result: "gold"})
       expect_memberships_count(1, {result: "silver"})
 

@@ -222,6 +222,7 @@ ActiveRecord::Schema.define(version: 2021_03_03_085458) do
     t.integer "point", default: 0, null: false
     t.string "email", default: "marvin@ecole42.fr", null: false
     t.string "verification_code"
+    t.string "position", default: "user", null: false
   end
 
   create_table "war_requests", force: :cascade do |t|

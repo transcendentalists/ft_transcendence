@@ -3,7 +3,7 @@ class Api::ChatMessagesController < ApplicationController
 
   def index
 
-    if for_admin?
+    if current_user_is_admin_or_owner?
       chat_messages = GroupChatRoom.find_by_id(params[:group_chat_room_id]).for_admin_format
     else
       chat_messages = GroupChatRoom.find_by_id(params[:group_chat_room_id])&.messages&.last(20)

@@ -15,9 +15,9 @@ class Api::WarRequestsController < ApplicationController
         params = create_params
         guild = Guild.find_by_id(params[:guild_id])
         raise WarRequestError.new("권한이 없습니다.", 403) unless WarRequest.can_be_created_by?(@current_user, guild)
+        raise WarRequestError.new("이미 요청한 전쟁이 있습니다.") if guild.already_request_to?(params[:enemy_guild_id])
         war_request = WarRequest.create_by(params)
         war_status = war_request.create_war_statuses(params[:guild_id], params[:enemy_guild_id])
-        raise WarRequestError.new("이미 요청한 전쟁이 있습니다.") if war_request.overlapped?
       rescue => e
         if e.class == ActionController::UnpermittedParameters
           render_error("전쟁 요청 실패", "허용되지 않은 데이터가 보내졌습니다.", 400)

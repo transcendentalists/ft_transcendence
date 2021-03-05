@@ -39,5 +39,17 @@ RSpec.describe Guild, type: :model do
     expect(guild.memberships.find_by_position("master").nil?).to eq(false)
   end
 
+  it "destroy guild if only_one_member_exist" do
+
+    owner = create(:user)
+    guild = create_guild({owner: owner})
+
+    master = guild.memberships.find_by_user_id(owner.id)
+
+    guild.destroy if owner.own_guild.only_one_member_exist?
+
+    expect(guild.destroyed?).to eq(true)
+    expect(GuildMembership.exists?(master.id)).to eq(false)
+  end
 
 end

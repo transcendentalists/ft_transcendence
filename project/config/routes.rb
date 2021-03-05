@@ -24,9 +24,7 @@ Rails.application.routes.draw do
     end
 
     resources :tournaments, only: %i[index create] do
-      member do
-        patch :enroll, to: 'tournaments#enroll'
-      end
+      resources :tournament_memberships, path: 'memberships', only: [:create]
     end
 
     resources :matches, only: %i[index create] do

@@ -6,15 +6,20 @@ class GameChannel < ApplicationCable::Channel
     current_user.reload
     reject if current_user.status == "offline"
     stream_from "game_channel_#{params[:match_id].to_s}"
+
     @match = Match.find_by_id(params[:match_id])
-    return stop(params[:match_id]) if @match.nil? || ["completed", "canceled"].include?(@match.status)
-    card = @match.scorecards.find_by_user_id(current_user.id)
-    card.update(result: "ready") unless card.nil?
-    return wait_start if @match.match_type == "tournament" && Time.now < @match.start_time
-    return if @match.users.count < 2 || !@match.scorecards.reload.find_by_result("wait").nil?
-    not_started = @match.status == "pending"
-    @match.start if not_started
-    enter(not_started)
+    return stop(params[:match_id]) if @match.nil? || @match.completed_or_canceled?
+    current_user.ready_for_match(@match) if @match.player?(current_user)
+    return if @match.pending? && !@match.ready_to_start?
+
+    # 이미 시작한 상황이므로, 게임이 시작한 후에 들어오는 모든 user는 관전.
+    if @match.ready_to_start?
+      @match.start
+    else
+      @match.broadcast({type: "WATCH", send_id: current_user.id})
+    end
+
+    @match.ready_to_start? ? @match.start : @match.broadcast({type: "WATCH", send_id: current_user.id})
   end
 
   # 유효하지 않은 매치 접근시 예외처리
@@ -26,17 +31,6 @@ class GameChannel < ApplicationCable::Channel
   # 이후 처리는 토너먼트 구현시 상세 설계 필요
   def wait_start
     speak({match_id: @match.id, type: "WAIT", message: "NOT YET STARTED", start_time: @match.start_time, send_id: current_user.id })
-  end
-
-  # 경기 정보(spec) 발송
-  # 게임 시작(START)이냐 게스트 중간 입장(ENTER)이냐에 따라 메시지 타입 구분ㄴ
-  def enter(not_started)
-    left = @match.scorecards.find_by_side('left').user
-    right = @match.scorecards.find_by_side('right').user
-    speak({match_id: @match.id, type: not_started ? "START" : "ENTER",
-            left: left.profile, right: right.profile,
-            target_score: @match.target_score, rule: @match.rule,
-            send_id: current_user.id })
   end
 
   def speak(msg)
@@ -76,7 +70,8 @@ class GameChannel < ApplicationCable::Channel
       card.update(result: card.score == @match.target_score ? "win" : "lose")
     end
     update_game_status
-    send_complete_message("END", winner_id)
+    @match.complete({type: "END"})
+    stop_all_streams
   end
 
   # 정상적이지 않은 경로로 게임이 종료되었을 때를 감지하여
@@ -89,22 +84,7 @@ class GameChannel < ApplicationCable::Channel
       card.update(result: card.user.id == current_user.id ? "lose" : "win")
     end
     winner_id = current_user.enemy
-    update_game_status
-
-    send_complete_message("ENEMY_GIVEUP", winner_id)
-  end
-
-  # 게임의 승패와 종료여부를 채널에 알리고
-  # 해당 채널의 모든 스트림을 종료
-  def send_complete_message(type, winner_id)
-    msg = {
-      send_id: 0,
-      match_id: @match.id, type: type,
-      winner_id: winner_id,
-      left: @match.scorecards.find_by_side('left'),
-      right: @match.scorecards.find_by_side('right'),
-    };
-    speak msg
+    @match.complete({type: "ENEMY_GIVEUP"})
     stop_all_streams
   end
 

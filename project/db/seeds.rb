@@ -161,8 +161,9 @@ Match.create([
   {rule_id: 5, status: "completed", eventable_type: "War", eventable_id: 2, match_type: "war"},
   {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 2, match_type: "war"},
   {rule_id: 1, status: "completed", eventable_type: "War", eventable_id: 2, match_type: "war"},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 11, match_type: "tournament"},
-  {rule_id: 1, status: "completed", eventable_type: "Tournament", eventable_id: 12, match_type: "tournament"},
+  {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-04 15pm')},
+  {rule_id: 2, status: "pending", eventable_type: "Tournament", eventable_id: 2, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-04 16pm')},
+  {rule_id: 3, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-04 17pm')},
 ])
 
 Scorecard.create([
@@ -177,7 +178,6 @@ Scorecard.create([
   {user_id: 2, score: 2, result: "lose", match_id: 9, side: "right"},
   {user_id: 2, score: 1, result: "lose", match_id: 10, side: "left"},
   {user_id: 2, score: 0, result: "lose", match_id: 11, side: "right"},
-
   {user_id: 1, score: 2, result: "lose", match_id: 1, side: "right"},
   {user_id: 3, score: 1, result: "lose", match_id: 2, side: "right"},
   {user_id: 4, score: 0, result: "lose", match_id: 3, side: "right"},
@@ -189,17 +189,19 @@ Scorecard.create([
   {user_id: 10, score: 1, result: "win",  match_id: 9, side: "left"},
   {user_id: 8, score: 2, result: "win",  match_id: 10, side: "right"},
   {user_id: 1, score: 0, result: "win", match_id: 11, side: "left"},
-
   {user_id: 1, score: 1, result: "win", match_id: 12, side: "left"},
   {user_id: 1, score: 2, result: "win", match_id: 13, side: "left"},
   {user_id: 1, score: 3, result: "win", match_id: 14, side: "left"},
-  {user_id: 1, score: 4, result: "win", match_id: 15, side: "left"},
-  {user_id: 1, score: 0, result: "win", match_id: 16, side: "left"},
   {user_id: 10, score: 0, result: "lose", match_id: 12, side: "right"},
   {user_id: 10, score: 0, result: "lose", match_id: 13, side: "right"},
   {user_id: 10, score: 0, result: "lose", match_id: 14, side: "right"},
-  {user_id: 10, score: 0, result: "lose", match_id: 15, side: "right"},
-  {user_id: 10, score: 0, result: "lose", match_id: 16, side: "right"},
+
+  {user_id: 1, score: 0, result: "wait", match_id: 15, side: "left"},  
+  {user_id: 4, score: 0, result: "wait", match_id: 15, side: "right"},  
+  {user_id: 2, score: 0, result: "wait", match_id: 16, side: "left"},  
+  {user_id: 5, score: 0, result: "wait", match_id: 16, side: "right"},  
+  {user_id: 3, score: 0, result: "wait", match_id: 17, side: "left"},  
+  {user_id: 6, score: 0, result: "wait", match_id: 17, side: "right"},  
 ])
 
 GroupChatRoom.create([
@@ -250,6 +252,7 @@ GroupChatMembership.create([
   {user_id: 9, group_chat_room_id: 1, position: "member", ban_ends_at: nil},
   {user_id: 10, group_chat_room_id: 1, position: "member", ban_ends_at: nil},
   {user_id: 11, group_chat_room_id: 1, position: "member", ban_ends_at: nil},
+
 ])
 
 DirectChatRoom.create([
@@ -319,6 +322,10 @@ GuildMembership.create([
   {user_id: 9, guild_id: 9, position: "master"},
   {user_id: 10, guild_id: 10, position: "master"},
   {user_id: 11, guild_id: 11, position: "master"},
+  {user_id: 12, guild_id: 1, position: "officer"},
+  {user_id: 13, guild_id: 2, position: "officer"},
+  {user_id: 14, guild_id: 3, position: "officer"},
+  {user_id: 15, guild_id: 4, position: "officer"},
   {user_id: 16, guild_id: 5, position: "officer"},
   {user_id: 17, guild_id: 6, position: "officer"},
   {user_id: 18, guild_id: 7, position: "officer"},
@@ -375,15 +382,18 @@ GuildInvitation.create([
 ])
 
 Tournament.create([
-  {rule_id: 1, title: "tototototo", start_date: DateTime.new(2021,1,14,8), tournament_time: Time.new},
-  {rule_id: 1, title: "xoxoxoxoxo", start_date: DateTime.new(2021,1,14,8), tournament_time: Time.new},
+  {rule_id: 1, title: "둘다접속토너먼트", status: "progress", start_date: Time.zone.tomorrow.midnight, tournament_time: Time.zone.now.change({hour:15}) },
+  {rule_id: 2, title: "한명접속토너먼트", status: "progress", start_date: Time.zone.tomorrow.midnight, tournament_time: Time.zone.now.change({hour:16}) },
+  {rule_id: 3, title: "미접속토너먼트", status: "progress", start_date: Time.zone.tomorrow.midnight, tournament_time: Time.zone.now.change({hour:17})},
 ])
 
 TournamentMembership.create([
-  {user_id: 1, tournament_id: 1},
-  {user_id: 2, tournament_id: 1},
-  {user_id: 3, tournament_id: 1},
-  {user_id: 4, tournament_id: 1},
+  {user_id: 1, tournament_id: 1, status: "progress"},
+  {user_id: 4, tournament_id: 1, status: "progress"},
+  {user_id: 2, tournament_id: 2, status: "progress"},
+  {user_id: 5, tournament_id: 2, status: "progress"},
+  {user_id: 3, tournament_id: 3, status: "progress"},
+  {user_id: 6, tournament_id: 3, status: "progress"},
 ])
 
 WarStatus.create([

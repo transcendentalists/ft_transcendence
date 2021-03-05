@@ -197,15 +197,14 @@ ActiveRecord::Schema.define(version: 2021_03_03_085458) do
     t.bigint "rule_id", null: false
     t.string "title", null: false
     t.integer "max_user_count", default: 16, null: false
-    t.integer "registered_user_count", default: 0, null: false
     t.datetime "start_date", null: false
-    t.datetime "end_date"
     t.time "tournament_time", null: false
     t.string "incentive_title", default: "super rookie", null: false
     t.string "incentive_gift"
     t.string "status", default: "pending", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "target_match_score", default: 3, null: false
     t.index ["rule_id"], name: "index_tournaments_on_rule_id"
   end
 

@@ -67,12 +67,13 @@ class WarRequest < ApplicationRecord
     war_request
   end
 
-  def overlap?
+  def overlapped?
     self.enemy.requests.where(status: "pending").each do |request|
       if request.challenger.id == self.challenger.id && request.id != self.id
-        raise WarRequestError.new("중복된 요청입니다.")
+        return true
       end
     end
+    false
   end
 
   def enemy

@@ -17,24 +17,23 @@ class Api::WarRequestsController < ApplicationController
         raise WarRequestError.new("권한이 없습니다.", 403) unless WarRequest.can_be_created_by?(@current_user, guild)
         war_request = WarRequest.create_by(params)
         war_status = war_request.create_war_statuses(params[:guild_id], params[:enemy_guild_id])
-        war_request.overlap?
-      rescue ActionController::UnpermittedParameters
-        return render_error("전쟁 요청 실패", "허용되지 않은 데이터가 보내졌습니다.", 400)
-      rescue ActionController::ParameterMissing
-        return render_error("전쟁 요청 실패", "전송되지 않은 정보가 있습니다.", 400)
-      rescue Date::Error
-        return render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400)
-        raise ActiveRecord::Rollback
-      rescue WarRequestError => e
-        render_error("전쟁 요청 실패", e.message, e.status_code)
-        raise ActiveRecord::Rollback
-      rescue ActiveRecord::RecordInvalid => e
-        key =  e.record.errors.attribute_names.first
-        error_message = e.record.errors.messages[key].first
-        render_error("전쟁 요청 실패", error_message, 400)
-        raise ActiveRecord::Rollback
-      rescue
-        render_error("전쟁 요청 실패", "잘못된 요청입니다.", 400)
+        raise WarRequestError.new("이미 요청한 전쟁이 있습니다.") if war_request.overlapped?
+      rescue => e
+        if e.class == ActionController::UnpermittedParameters
+          render_error("전쟁 요청 실패", "허용되지 않은 데이터가 보내졌습니다.", 400)
+        elsif e.class == ActionController::ParameterMissing
+          render_error("전쟁 요청 실패", "전송되지 않은 정보가 있습니다.", 400)
+        elsif e.class == ActiveRecord::RecordInvalid
+          key =  e.record.errors.attribute_names.first
+          error_message = e.record.errors.messages[key].first
+          render_error("전쟁 요청 실패", error_message, 400)
+        elsif e.class == Date::Error
+          render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400)
+        elsif e.class == WarRequestError
+          render_error("전쟁 요청 실패", e.message, e.status_code)
+        else
+          render_error("전쟁 요청 실패", "잘못된 요청입니다.", 400)
+        end
         raise ActiveRecord::Rollback
       end
     end

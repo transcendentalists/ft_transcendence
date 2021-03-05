@@ -3,33 +3,41 @@ require 'helpers/guild_helper'
 
 RSpec.describe Guild, type: :model do
   include GuildHelper
+  it "is only_one_member_exist" do
+
+    owner = create(:user)
+    guild = create_guild({owner: owner})
+
+    expect(guild.reload.only_one_member_exist?).to eq(true)
+
+    officer = create_officer()
+    members = create_members(3)
+    expect(guild.reload.only_one_member_exist?).to eq(false)
+  end
+
   it "can make_another_member_master" do
 
-    owner = create_user({name: "aaaa"})
-    officer = create_user({name: "bbbb"})
-    member1 = create_user({name: "cccc"})
-    member2 = create_user({name: "dddd"})
-    member3 = create_user({name: "eeee"})
+    owner = create(:user)
+    guild = create_guild({owner: owner})
 
-    guild = create_guild({owner_id: owner.id})
+    officer = create_officer()
+    members = create_members(3)
 
-    a = create_membership({user_id: owner.id, guild_id: guild.id, position: "master"})
-    b = create_membership({user_id: officer.id, guild_id: guild.id, position: "officer"})
-    c = create_membership({user_id: member1.id, guild_id: guild.id, position: "member"})
-    d = create_membership({user_id: member2.id, guild_id: guild.id, position: "member"})
-    e = create_membership({user_id: member3.id, guild_id: guild.id, position: "member"})
+    # guild master는 a인 상태
+    expect(owner.id == guild.reload.master&.user_id).to eq(true)
 
-    expect(a.user_id == guild.reload.memberships.find_by_position("master").user_id).to eq(true)
+    guild.make_another_member_master!
 
-    guild.make_another_member_master
+    # 이제 a는 member, officer였던 b가 master가 되어야함
+    expect(guild.memberships.find_by_user_id(owner.id).position).to eq("member")
+    expect(officer.user_id).to eq(guild.reload.master&.user_id)
 
-    expect(a.user_id != guild.reload.memberships.find_by_position("master")).to eq(true)
-    expect(b.user_id == guild.reload.memberships.find_by_position("master").user_id).to eq(true)
+    guild.make_another_member_master!
 
-    guild.make_another_member_master
-
-    expect(b.user_id != guild.reload.memberships.find_by_position("master").user_id).to eq(true)
-    expect(a.user_id == guild.reload.memberships.find_by_position("master").user_id).to eq(true)
-
+    # 이제 a는 master, b는 member가 되어야함
+    expect(guild.memberships.find_by_user_id(officer.user_id).position).to eq("member")
+    expect(guild.memberships.find_by_position("master").nil?).to eq(false)
   end
+
+
 end

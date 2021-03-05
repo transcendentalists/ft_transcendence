@@ -7,8 +7,8 @@ class WarRequest < ApplicationRecord
   validates :rule_id, inclusion: { in: 1..7, message: "요청하신 룰이 존재하지 않습니다." }
   validates :target_match_score, inclusion: { in: [3, 5, 7, 10], message: "목표 점수를 잘못 입력하셨습니다." }
   validates :max_no_reply_count, inclusion: { in: 3..10, message: "최대 미응답 개수를 잘못 입력하셨습니다." }
-  validates :bet_point, inclusion: { in: (1000..10000).step(500), message: "배팅 포인트를 잘못 입력하셨습니다."}
-  validates_with WarRequestValidator, field: [ :start_date, :end_date ]
+  validates :bet_point, inclusion: { in: (100..1000).step(50), message: "배팅 포인트를 잘못 입력하셨습니다."}
+  validates_with WarRequestValidator, field: [ :start_date, :end_date, :war_time ]
 
   scope :for_guild_index, -> (guild_id) do
     WarRequest.joins(:war_statuses).where(war_statuses: {guild_id: guild_id, position: "enemy"}, status: "pending")
@@ -39,19 +39,19 @@ class WarRequest < ApplicationRecord
     end
   end
 
-  def create_war_statuses(guild_id, enemy_guild_id)
+  def create_war_statuses!(guild_id, enemy_guild_id)
     self.war_statuses.create!(guild_id: guild_id, position: "challenger")
     self.war_statuses.create!(guild_id: enemy_guild_id, position: "enemy")
   end
 
-  def self.create_by(params)
-    start_date = Date.strptime(params[:start_date], "%Y-%m-%d")
+  def self.create_by!(params)
+    start_date = Time.zone.strptime(params[:start_date], "%Y-%m-%d")
     war_request = self.new(
       rule_id: params[:rule_id],
       bet_point: params[:bet_point],
       start_date: start_date,
       end_date: start_date + params[:war_duration].days,
-      war_time: Time.new(1 ,1 ,1 , params[:war_time]),
+      war_time: Time.zone.now.change({ hour: params[:war_time] }),
       max_no_reply_count: params[:max_no_reply_count],
       include_ladder: params[:include_ladder],
       include_tournament: params[:include_tournament],
@@ -62,6 +62,7 @@ class WarRequest < ApplicationRecord
       raise WarRequestError.new(@error_message)
     end
     war_request.save!
+    war_request.create_war_statuses!(params[:guild_id], params[:enemy_guild_id])
     war_request
   end
 

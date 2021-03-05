@@ -2,27 +2,35 @@ class WarRequestValidator < ActiveModel::Validator
   def validate(record)
     @start_date = record.start_date
     @end_date = record.end_date
+    @war_time = record.war_time
     errors = record.errors
     if @start_date.nil? || @end_date.nil?
       errors.add(:base, "전쟁 시작일을 입력해주세요")
-    elsif start_date_after_max_end_date
-      errors.add(:base, "전쟁 시작일은 한달 이내로 설정해야 합니다.")
-    elsif start_date_after_now
+    elsif start_date_after_max_end_date?
+      errors.add(:base, "전쟁 시작일은 60일 이내로 설정해야 합니다.")
+    elsif start_date_after_tomorrow?
       errors.add(:base, "전쟁 시작일은 미래여야 합니다.")
-    elsif end_date_after_start_date
+    elsif end_date_after_start_date?
       errors.add(:base, "전쟁 종료일은 시작일보다 미래여야 합니다.")
+    elsif invalid_war_time?
+      errors.add(:base, "전쟁 시간은 9시부터 22시 사이여야 합니다.")
     end
   end
 
-  def start_date_after_max_end_date
-    @start_date > Date.today+ 31.days
+  def start_date_after_max_end_date?
+    @start_date > Time.zone.today.midnight + 60.days
   end
 
-  def start_date_after_now
-    @start_date.past?
+  def start_date_after_tomorrow?
+    @start_date < Time.zone.tomorrow.midnight
   end
 
-  def end_date_after_start_date
+  def end_date_after_start_date?
     @end_date < @start_date
+  end
+
+  def invalid_war_time?
+    time = 9..22
+    !time.include?(@war_time.hour)
   end
 end

@@ -8,6 +8,7 @@ export let WarRequestCreateView = Backbone.View.extend({
   events: {
     "click .war-request-create-button": "submit",
     "click .war-request-create-cancel-button": "cancel",
+    "click .max-no-reply-definition-icon": "showMaxNoReplyDefinition",
   },
 
   initialize: function () {
@@ -63,12 +64,28 @@ export let WarRequestCreateView = Backbone.View.extend({
     App.router.navigate("#/guilds?page=1");
   },
 
-  setWarStartDateMinAndMax: function () {
-    let date = new Date();
-    date.setDate(date.getDate() + 1);
-    this.min_date = date.toISOString().substring(0, 10);
-    date.setDate(date.getDate() + 30);
-    this.max_date = date.toISOString().substring(0, 10);
+  showMaxNoReplyDefinition: function () {
+    Helper.info({
+      subject: "최대 미응답수란?",
+      description:
+        "전쟁 시간에 상대 길드가 매치를 신청하고<br>\
+        10분 이내에 응답하지 않는 경우 미응답 처리가 됩니다.<br>\
+        미응답을 최대 미응답수만큼 하게되면 해당 전쟁을 패배하게 됩니다.",
+    });
+  },
+
+  getMaxDate: function () {
+    let now = new Date();
+    now.setDate(now.getDate() + 60);
+    const max_iso_time = now.getTime() - now.getTimezoneOffset() * 60000;
+    return new Date(max_iso_time).toISOString().substr(0, 10);
+  },
+
+  getMinDate: function () {
+    let now = new Date();
+    now.setDate(now.getDate() + 1);
+    const min_iso_time = now.getTime() - now.getTimezoneOffset() * 60000;
+    return new Date(min_iso_time).toISOString().substr(0, 10);
   },
 
   setRanges: function () {
@@ -84,22 +101,24 @@ export let WarRequestCreateView = Backbone.View.extend({
           },
         });
       }
-      setRange(1000, 10000, ".bet-point", 500);
+      setRange(100, 1000, ".bet-point", 50);
       setRange(1, 7, ".war-duration");
       setRange(3, 10, ".max-no-reply-count");
     });
   },
 
   render: function () {
-    this.setWarStartDateMinAndMax();
+    this.min_date = this.getMinDate();
+    this.max_date = this.getMaxDate();
     this.$el.html(
       this.template({
         enemy_guild_name: this.enemy_guild_name,
         min_date: this.min_date,
         max_date: this.max_date,
+        guild_point: App.current_user.get("guild").point,
       })
     );
-    this.setRanges();
+    this.setRanges(App.current_user.get("guild"));
     return this;
   },
 

@@ -1,0 +1,50 @@
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
+
+<table class="ui celled table">
+  <thead>
+    <th>tournament</th>
+    <th>column</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>rule_name</td>
+      <td><%= tournament.rule.name %></td>
+    </tr>
+    <tr>
+      <td>title</td>
+      <td><%= tournament.title %> </td>
+    </tr>
+    <tr>
+      <td>max_user_count</td>
+      <td><%= tournament.max_user_count %></td>
+    </tr>
+    <tr>
+      <td>start_date</td>
+      <td><%= tournament.start_date %> </td>
+    </tr>
+    <tr>
+      <td>tournament_time</td>
+      <td><%= tournament.tournament_time %></td>
+    </tr>
+    <tr>
+      <td>incentive_title</td>
+      <td><%= tournament.incentive_title %> </td>
+    </tr>
+    <tr>
+      <td>incentive_gift</td>
+      <td><%= tournament.incentive_gift %></td>
+    </tr>
+    <tr>
+      <td>status</td>
+      <td><%= tournament.status %> </td>
+    </tr>
+    <tr>
+      <td>created_at</td>
+      <td><%= tournament.created_at %></td>
+    </tr>
+    <tr>
+      <td>updated_at</td>
+      <td><%= tournament.updated_at %> </td>
+    </tr>
+</table>

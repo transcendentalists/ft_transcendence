@@ -48,6 +48,8 @@ export let GameIndexView = Backbone.View.extend({
 
   joinGame: function () {
     App.current_user.update_status("playing");
+    if (this.match_type == "tournament")
+      return this.subscribeGameChannelAndBroadcast(this.match_id);
     Helper.fetch("matches", {
       method: "POST",
       success_callback: this.subscribeGameChannelAndBroadcast.bind(this),
@@ -68,15 +70,16 @@ export let GameIndexView = Backbone.View.extend({
    ** 매치 타입이 dual인 경우 게임 채널을 구독하고  challenger한테 broadcast 한다.
    */
   subscribeGameChannelAndBroadcast: function (data) {
+    this.match_id = data.match.id || data;
     this.channel = App.Channel.ConnectGameChannel(
       this.recv,
       this,
-      this.is_player ? data["match"]["id"] : data
+      this.match_id
     );
     if (this.match_type == "dual" && this.challenger_id != null) {
       App.notification_channel.dualMatchHasCreated(
         this.challenger_id,
-        data["match"]["id"]
+        this.match_id
       );
     }
   },
@@ -115,8 +118,8 @@ export let GameIndexView = Backbone.View.extend({
    */
   recv: function (msg) {
     if (
-      msg.type == "START" ||
-      (msg.type == "ENTER" && App.current_user.id == msg["send_id"])
+      msg.type == "PLAY" ||
+      (msg.type == "WATCH" && App.current_user.id == msg["send_id"])
     ) {
       this.spec = msg;
       this.renderPlayerView(msg);
@@ -159,7 +162,7 @@ export let GameIndexView = Backbone.View.extend({
       this.right_player_view.render(data["right"]).$el
     );
 
-    if (data.type == "START") {
+    if (data.type == "PLAY") {
       this.$(".ui.active.loader").removeClass("active loader");
       this.$("#count-down-box").empty();
       this.countDown();
@@ -200,7 +203,7 @@ export let GameIndexView = Backbone.View.extend({
   render: function () {
     this.$el.empty();
     this.$el.html(this.template());
-    if (this.is_player) this.joinGame();
+    if (this.is_player) this.joinGame(this.match_id);
     else this.subscribeChannel(this.match_id);
     return this;
   },

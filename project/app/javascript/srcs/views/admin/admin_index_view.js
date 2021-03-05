@@ -29,7 +29,7 @@ export let AdminIndexView = Backbone.View.extend({
   url: function () {
     let url = this.resource + "/";
 
-    if (this.hasBodyAction() && this.resource != "users")
+    if (this.resource.endsWith("memberships"))
       url += this.child_selects.membership.val();
     else url += this.child_selects.resource.val();
 
@@ -44,12 +44,10 @@ export let AdminIndexView = Backbone.View.extend({
   },
 
   showInfoModal: function () {
-    return () => {
-      Helper.info({
-        subject: "요청 성공",
-        description: "요청하신 액션이 성공적으로 수행되었습니다.",
-      });
-    };
+    Helper.info({
+      subject: "요청 성공",
+      description: "요청하신 액션이 성공적으로 수행되었습니다.",
+    });
   },
 
   createChatMessagesTable(data) {
@@ -72,17 +70,16 @@ export let AdminIndexView = Backbone.View.extend({
     const method = this.requestMethod();
     if (method == "GET") return this.showTableModal.bind(this);
     else if (method == "DELETE") {
-      const resource =
-        this.hasBodyAction() && this.resource != "users"
-          ? "membership"
-          : "resource";
+      const resource = this.resource.endsWith("memberships")
+        ? "membership"
+        : "resource";
       this.db.destroy({
         resource: this.resource,
         resource_id: this.child_selects[resource].val(),
       });
       this.optionsRender(this.resource);
     }
-    this.showInfoModal(data);
+    this.showInfoModal();
   },
 
   adminActionParams: function () {

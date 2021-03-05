@@ -33,18 +33,18 @@ class Api::GuildMembershipsController < ApplicationController
   end
 
   def destroy
-    membership = GuildMembership.find_by_id_and_guild_id(params[:id], params[:guild_id])
+    membership = GuildMembership.find_by_id(params[:id])
     return render_error("탈퇴 실패", "길드에 존재하지 않는 멤버입니다.", 404) if membership.nil?
     return render_error("권한 에러", "접근 권한이 없습니다.", 401) unless membership.can_be_destroyed_by?(@current_user)
 
     ActiveRecord::Base.transaction do
       begin
-        if membership.last_user_of_guild?
-          membership.guild.destory
+        if membership.guild.only_one_member_exist?
+          membership.guild.destroy
           return head :no_content, status: 204
         end
 
-        membership.guild.make_another_member_owner if membership.master?
+        membership.guild.make_another_member_master! if membership.master?
         membership.destroy
         return head :no_content, status: 204
       rescue

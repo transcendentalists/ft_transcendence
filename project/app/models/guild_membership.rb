@@ -52,9 +52,4 @@ class GuildMembership < ApplicationRecord
   def master?
     self.position == "master"
   end
-
-  def last_user_of_guild?
-    self.guild.memberships.count == 1
-  end
-
 end

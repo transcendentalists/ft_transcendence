@@ -32,6 +32,10 @@ class User < ApplicationRecord
     update_status('offline')
   end
 
+  def can_service_manage?
+    ApplicationRecord.position_grade[self.position] >= 4
+  end
+
   def self.onlineUsersWithoutFriends(params)
     users = where_by_query(params)
     users = users.where.not(id: (Friendship.where(user_id: params[:user_id]).select(:friend_id)))

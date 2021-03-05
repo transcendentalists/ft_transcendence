@@ -14,6 +14,10 @@ export let AdminSelectView = Backbone.View.extend({
     this.select.on("change", () => this.trigger("change", this.select.val()));
   },
 
+  setDB: function (db) {
+    this.db = db;
+  },
+
   val: function () {
     return this.select.val();
   },

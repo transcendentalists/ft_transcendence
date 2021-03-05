@@ -96,6 +96,7 @@ export let AdminDB = Backbone.Model.extend({
       data = this.get("guild_positions") || [];
     else if (query_hash.resource == "group_chat_memberships")
       data = this.get("group_chat_positions") || [];
+    else if (query_hash.resource == "users") data = this.get("user_positions");
 
     return data.map(function (position) {
       return { value: position, text: position };

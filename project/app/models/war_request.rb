@@ -50,8 +50,8 @@ class WarRequest < ApplicationRecord
       rule_id: params[:rule_id],
       bet_point: params[:bet_point],
       start_date: start_date,
-      end_date: start_date + params[:war_duration].to_i.days,
-      war_time: Time.new(1 ,1 ,1 , params[:war_time].to_i),
+      end_date: start_date + params[:war_duration].days,
+      war_time: Time.new(1 ,1 ,1 , params[:war_time]),
       max_no_reply_count: params[:max_no_reply_count],
       include_ladder: params[:include_ladder],
       include_tournament: params[:include_tournament],
@@ -63,15 +63,6 @@ class WarRequest < ApplicationRecord
     end
     war_request.save!
     war_request
-  end
-
-  def overlapped?
-    self.enemy.requests.where(status: "pending").each do |request|
-      if request.challenger.id == self.challenger.id && request.id != self.id
-        return true
-      end
-    end
-    false
   end
 
   def enemy

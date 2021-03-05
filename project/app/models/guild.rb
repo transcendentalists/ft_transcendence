@@ -62,4 +62,11 @@ class Guild < ApplicationRecord
     war_request.challenger.cancel_rest_of_war_request
     War.create(war_request_id: war_request.id, status: "pending")
   end
+
+  def already_request_to?(enemy_guild_id)
+    self.requests.where(status: "pending").each do |request|
+      return true if request.enemy.id == enemy_guild_id
+    end
+    false
+  end
 end

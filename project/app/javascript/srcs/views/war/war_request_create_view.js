@@ -13,7 +13,7 @@ export let WarRequestCreateView = Backbone.View.extend({
   initialize: function () {
     let query = Helper.parseHashQuery();
 
-    this.enemy_guild_id = query.enemy_id;
+    this.enemy_guild_id = +query.enemy_id;
     this.enemy_guild_name = query.enemy_name;
     this.params = null;
     this.max_date = null;
@@ -32,16 +32,16 @@ export let WarRequestCreateView = Backbone.View.extend({
     input_data["start_date"] = $(".war-start-date").val();
     input_data["war_duration"] = +$(".war-duration-input").text();
     // TODO: end_date 추가?
-    input_data["war_time"] = $(".war-time option:selected").val();
+    input_data["war_time"] = +$(".war-time option:selected").val();
     input_data["max_no_reply_count"] = +$(".max-no-reply-count-input").text();
-    input_data["rule_id"] = $(".rule option:selected").val();
+    input_data["rule_id"] = +$(".rule option:selected").val();
     input_data["include_ladder"] =
       $('[name="include-ladder"]:checked').val() === undefined ? false : true;
     input_data["include_tournament"] =
       $('[name="include-tournament"]:checked').val() === undefined
         ? false
         : true;
-    input_data["target_match_score"] = $(
+    input_data["target_match_score"] = +$(
       '[name="target-match-score"]:checked'
     ).val();
     return input_data;

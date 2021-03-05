@@ -66,13 +66,4 @@ class Api::WarRequestsController < ApplicationController
     params.require(:war_request).permit(:rule_id, :bet_point, :start_date, :war_time, :max_no_reply_count, :include_ladder, :include_tournament, :target_match_score)
     params
   end
-
-  def check_format_of_start_date?(str)
-    begin
-      date = Date.parse(str)
-    rescue
-      return false
-    end
-    true
-  end
 end

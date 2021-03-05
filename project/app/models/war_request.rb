@@ -8,10 +8,7 @@ class WarRequest < ApplicationRecord
   validates :target_match_score, inclusion: { in: [3, 5, 7, 10], message: "목표 점수를 잘못 입력하셨습니다." }
   validates :max_no_reply_count, inclusion: { in: 3..10, message: "최대 미응답 개수를 잘못 입력하셨습니다." }
   validates :bet_point, inclusion: { in: (1000..10000).step(500), message: "배팅 포인트를 잘못 입력하셨습니다."}
-  validates :start_date, presence: { message: "시작일을 입력해주세요."}
-  validate :start_date_after_now
-  validate :start_date_after_max_end_date
-  validate :end_date_after_start_date
+  validates_with WarRequestValidator, field: [ :start_date, :end_date ]
 
   scope :for_guild_index, -> (guild_id) do
     WarRequest.joins(:war_statuses).where(war_statuses: {guild_id: guild_id, position: "enemy"}, status: "pending")
@@ -48,11 +45,12 @@ class WarRequest < ApplicationRecord
   end
 
   def self.create_by(params)
+    start_date = Date.strptime(params[:start_date], "%Y-%m-%d")
     war_request = self.new(
       rule_id: params[:rule_id],
       bet_point: params[:bet_point],
-      start_date: Date.parse(params[:start_date]),
-      end_date: Date.parse(params[:start_date]) + params[:war_duration].to_i.days,
+      start_date: start_date,
+      end_date: start_date + params[:war_duration].to_i.days,
       war_time: Time.new(1 ,1 ,1 , params[:war_time].to_i),
       max_no_reply_count: params[:max_no_reply_count],
       include_ladder: params[:include_ladder],

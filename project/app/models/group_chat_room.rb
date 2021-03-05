@@ -157,4 +157,11 @@ class GroupChatRoom < ApplicationRecord
     new_owner.update_mute(false) if new_owner.mute?
   end
 
+  def let_all_out_and_destroy!
+    self.memberships.each do |membership|
+      membership.update_position("ghost")
+    end
+
+    self.destroy!
+  end
 end

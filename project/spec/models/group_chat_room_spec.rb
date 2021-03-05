@@ -19,7 +19,6 @@ RSpec.describe GroupChatRoom, type: :model do
     messages.each do |message|
       expect(ChatMessage.exist?(message.id)).to eq(false)
     end
-
   end
 
 end

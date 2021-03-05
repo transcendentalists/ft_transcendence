@@ -848,6 +848,25 @@ body {
   text-align: center;
 }
 
+#war-request-create-view .max-no-reply-header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0;
+}
+
+#war-request-create-view .max-no-reply-header > label {
+  display: block;
+  margin: 0em 0em 0.28571429rem 0em;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.92857143em;
+  font-weight: bold;
+  text-transform: none;
+}
+
+#war-request-create-view .max-no-reply-header > i {
+  margin-left: 0.3rem;
+}
+
 /* ==========================================================================
      LADDER INDEX VIEW
      ========================================================================== */

@@ -8,14 +8,14 @@
       </div>
     </div>
     <div class="field">
-      <label>배팅 포인트</label>
+      <label>배팅 포인트 (현재 길드 포인트: <%%= guild_point %>)</label>
       <div class="ui segment flex-container">
-        <span class="minimum-value">1000점</span>
+        <span class="minimum-value">100점</span>
         <div class="ui range bet-point"></div>
-        <span class="maximum-value">10000점</span>
+        <span class="maximum-value">1000점</span>
       </div>
       <div class="display-value">
-        bet-point: <span class="bet-point-input"></span>점
+        배팅 포인트: <span class="bet-point-input"></span>점
       </div>
     </div>
     <div class="field">
@@ -30,21 +30,12 @@
         <span class="maximum-value">7일</span>
       </div>
       <div class="display-value">
-        war-duration: <span class="war-duration-input"></span>일
+        전쟁 기간: <span class="war-duration-input"></span>일
       </div>
     </div>
     <div class="field">
-      <label>워타임(1 hours)</label>
+      <label>워타임(1 hour)</label>
       <select class="war-time">
-        <option value="00">00:00 ~ 01:00</option>
-        <option value="01">01:00 ~ 02:00</option>
-        <option value="02">02:00 ~ 03:00</option>
-        <option value="03">03:00 ~ 04:00</option>
-        <option value="04">04:00 ~ 05:00</option>
-        <option value="05">05:00 ~ 06:00</option>
-        <option value="06">06:00 ~ 07:00</option>
-        <option value="07">07:00 ~ 08:00</option>
-        <option value="08">08:00 ~ 09:00</option>
         <option value="09">09:00 ~ 10:00</option>
         <option value="10">10:00 ~ 11:00</option>
         <option value="11">11:00 ~ 12:00</option>
@@ -59,18 +50,20 @@
         <option value="20">20:00 ~ 21:00</option>
         <option value="21">21:00 ~ 22:00</option>
         <option value="22">22:00 ~ 23:00</option>
-        <option value="23">23:00 ~ 00:00</option>
       </select>
     </div>
     <div class="field">
-      <label>최대 미응답수</label>
+      <div class="max-no-reply-header">
+        <label>최대 미응답수</label>
+        <i class="max-no-reply-definition-icon question circle outline icon link"></i>
+      </div>
       <div class="ui segment flex-container">
         <span class="minimum-value">3회</span>
         <div class="ui range max-no-reply-count"></div>
         <span class="maximum-value">10회</span>
       </div>
       <div class="display-value">
-        max-no-reply-count: <span class="max-no-reply-count-input"></span>회
+        최대 미응답수: <span class="max-no-reply-count-input"></span>회
       </div>
     </div>
     <div class="field">
@@ -78,13 +71,13 @@
         <div class="inline fields">
           <label>포함 범위</label>
           <div class="field">
-            <div class="ui checkbox">
+            <div class="ui disabled checkbox">
               <input type="radio" checked="checked">
-              <label>친선전</label>
+              <label>듀얼</label>
             </div>
           </div>
           <div class="field">
-            <div class="ui checkbox">
+            <div class="ui disabled checkbox">
               <input type="radio" checked="checked">
               <label>워배틀</label>
             </div>
@@ -92,7 +85,7 @@
           <div class="field">
             <div class="ui checkbox">
               <input type="checkbox" name="include-ladder">
-              <label>승급전</label>
+              <label>래더</label>
             </div>
           </div>
           <div class="field">

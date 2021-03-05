@@ -138,7 +138,7 @@ class User < ApplicationRecord
   end
 
   def already_received_guild_invitation_by(user)
-    return true if !self.guild_invitations.find_by_user_id(user.id).nil?
+    return true unless self.guild_invitations.find_by_user_id(user.id).nil?
   end
 
   private

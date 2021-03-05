@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_22_090631) do
+ActiveRecord::Schema.define(version: 2021_03_03_085458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -116,7 +116,6 @@ ActiveRecord::Schema.define(version: 2021_02_22_090631) do
     t.bigint "user_id", null: false
     t.bigint "guild_id", null: false
     t.bigint "invited_user_id", null: false
-    t.string "result", default: "pending", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["guild_id"], name: "index_guild_invitations_on_guild_id"
@@ -138,7 +137,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_090631) do
     t.bigint "owner_id", null: false
     t.string "name", null: false
     t.string "anagram", null: false
-    t.string "image_url", default: "default_image_url"
+    t.string "image_url", default: "assets/default_guild.png"
     t.integer "point", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -198,15 +197,14 @@ ActiveRecord::Schema.define(version: 2021_02_22_090631) do
     t.bigint "rule_id", null: false
     t.string "title", null: false
     t.integer "max_user_count", default: 16, null: false
-    t.integer "registered_user_count", default: 0, null: false
     t.datetime "start_date", null: false
-    t.datetime "end_date"
     t.time "tournament_time", null: false
     t.string "incentive_title", default: "super rookie", null: false
     t.string "incentive_gift"
     t.string "status", default: "pending", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "target_match_score", default: 3, null: false
     t.index ["rule_id"], name: "index_tournaments_on_rule_id"
   end
 
@@ -223,6 +221,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_090631) do
     t.integer "point", default: 0, null: false
     t.string "email", default: "marvin@ecole42.fr", null: false
     t.string "verification_code"
+    t.string "position", default: "user", null: false
   end
 
   create_table "war_requests", force: :cascade do |t|

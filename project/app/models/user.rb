@@ -52,11 +52,12 @@ class User < ApplicationRecord
   end
 
   def waiting_match?
-    self.matches&.exists?(status: "pending")
+    return false if self.status != "playing"
+    !self.matches.where.not(match_type: "tournament").find_by_status("pending").nil?
   end
 
   def waiting_match
-    self.matches&.find_by_status(:pending)
+    self.matches.where.not(match_type: "tournament").find_by_status("pending")
   end
 
   def enemy
@@ -120,7 +121,6 @@ class User < ApplicationRecord
     })
   end
 
-
   def make_user_data(status)
     user_data = {
       id: id,
@@ -129,6 +129,12 @@ class User < ApplicationRecord
       image_url: image_url,
       anagram: guild_membership&.guild&.anagram
     }
+  end
+
+  def ready_for_match(match)
+    card = match.scorecard_of(self)
+    return false if card.nil?
+    card.ready and true
   end
 
   private

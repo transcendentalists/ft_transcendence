@@ -1,0 +1,35 @@
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js" integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw==" crossorigin="anonymous"></script>
+
+<table class="ui celled table">
+  <thead>
+    <th>tournament_membership</th>
+    <th>column</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>tournament_id</td>
+      <td><%= tournament_membership.tournament.id %></td>
+    </tr>
+    <tr>
+      <td>tournament_title</td>
+      <td><%= tournament_membership.tournament.title %></td>
+    </tr>
+    <tr>
+      <td>user_id</td>
+      <td><%= tournament_membership.user.id %></td>
+    </tr>
+    <tr>
+      <td>user_name</td>
+      <td><%= tournament_membership.user.name %></td>
+    </tr>
+    <tr>
+      <td>status</td>
+      <td><%= tournament_membership.status %></td>
+    </tr>
+    <tr>
+      <td>result</td>
+      <td><%= tournament_membership.result %></td>
+    </tr>
+  </tbody>
+</table>

@@ -122,6 +122,10 @@ export let GameIndexView = Backbone.View.extend({
       this.start();
     }
 
+    if (msg.type == "WATCH" && this.is_player && this.play_view) {
+      this.play_view.sendObjectSpec(this.play_view.ball.to_simple());
+    }
+
     if (
       msg.type == "PLAY" ||
       (msg.type == "WATCH" && App.current_user.id == msg["send_id"])

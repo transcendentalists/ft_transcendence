@@ -39,10 +39,7 @@ class Api::GuildMembershipsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       begin
-        if membership.guild.only_one_member_exist?
-          membership.guild.destroy
-          return head :no_content, status: 204
-        end
+        return render_error("길드멤버 제명 실패", "길드에는 한명 이상의 유저가 존재해야 합니다.", 403) if membership.guild.only_one_member_exist?
 
         membership.guild.make_another_member_master! if membership.master?
         membership.destroy

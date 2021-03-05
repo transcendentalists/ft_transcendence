@@ -1,3 +1,5 @@
+import { App } from "srcs/internal";
+
 export let TournamentMatchCardView = Backbone.View.extend({
   template: _.template($("#tournament-match-card-view-template").html()),
   className: "tournament-match-card",

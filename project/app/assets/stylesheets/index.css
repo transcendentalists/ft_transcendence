@@ -433,7 +433,8 @@ body {
 
 .profile-card .small.image {
   margin-bottom: 0;
-  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
 }
 
 .profile-card .content {

@@ -69,6 +69,7 @@ class Match < ApplicationRecord
         left: self.left_user.profile,
         right: self.right_user.profile,
         target_score: self.target_score,
+        score: {left: self.left_score, right: self.right_score},
         rule: self.rule,
       })
     end
@@ -83,7 +84,7 @@ class Match < ApplicationRecord
   def loser
     self.scorecards.find_by_result("lose")&.user
   end
-
+  
   def left_user
     self.scorecards.find_by_side('left').user
   end
@@ -158,6 +159,13 @@ class Match < ApplicationRecord
   def before_tournament_time?
     !self.start_time.nil? && Time.zone.now < self.start_time
   end
+  
+  def left_score
+    self.scorecards.find_by_side("left")&.score || 0
+  end
 
+  def right_score
+    self.scorecards.find_by_side("right")&.score || 0
+  end
 end
 

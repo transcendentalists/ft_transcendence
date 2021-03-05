@@ -40,9 +40,6 @@ class Tournament < ApplicationRecord
         name: self.rule.name
       },
     })
-<<<<<<< HEAD
-  end  
-=======
   end
 
   def enroll(user)
@@ -250,6 +247,5 @@ class Tournament < ApplicationRecord
       image_url: "assets/default_avatar.png",
     }
   end
->>>>>>> 62ef8f3cacd915ce1d165bbf93378fd0cdc363d3
 end
 

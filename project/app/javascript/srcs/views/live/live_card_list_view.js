@@ -16,6 +16,7 @@ export let LiveCardListView = Backbone.View.extend({
   },
 
   render: function (matches) {
+    if (!matches || matches.length == 0) return;
     this.$el.empty();
     matches.forEach(this.addOne, this);
     return this;

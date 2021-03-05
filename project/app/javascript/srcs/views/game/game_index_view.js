@@ -117,18 +117,20 @@ export let GameIndexView = Backbone.View.extend({
    ** 5) "ENEMY_GIVEUP" : 게임 중 상대 유저 이탈에 따른 게임 종료 -> 클로즈 처리
    */
   recv: function (msg) {
+    if (this.play_view == null && !this.is_player) {
+      this.spec = msg;
+      this.start();
+    }
+
     if (
       msg.type == "PLAY" ||
       (msg.type == "WATCH" && App.current_user.id == msg["send_id"])
     ) {
       this.spec = msg;
       this.renderPlayerView(msg);
+      if (!this.is_player) this.play_view.score.update(msg.score);
     } else if (msg.type == "BROADCAST") {
-      if (this.play_view == null && !this.is_player) {
-        this.play_view = new App.View.GamePlayView(this, this.spec);
-        this.play_view.update(msg);
-        this.start();
-      } else this.play_view.update(msg);
+      this.play_view.update(msg);
     } else if (msg.type == "END" || msg.type == "ENEMY_GIVEUP") {
       if (this.play_view) this.play_view.stopRender();
       if (this.clear_id) clearInterval(this.clear_id);

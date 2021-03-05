@@ -22,10 +22,6 @@ export let AdminSelectView = Backbone.View.extend({
     return this.select.val();
   },
 
-  length: function () {
-    return this.select.find("option").length;
-  },
-
   clear: function () {
     this.select.empty();
     this.field.removeClass("disabled");

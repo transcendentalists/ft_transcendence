@@ -25,7 +25,7 @@ class Match < ApplicationRecord
       {
         id: match.id,
         type: match.match_type,
-        match: match,
+        target_score: match.target_score,
         rule: match.rule,
         left_scorecard: match.scorecards[0],
         right_scorecard: match.scorecards[1],
@@ -39,13 +39,13 @@ class Match < ApplicationRecord
 
   def start
     return if self.status != "pending"
-    
+
     if self.match_type == "tournament"
       ready_count = self.scorecards.reload.where(result: "ready").count
       return self.cancel if ready_count == 0
       return self.end_by_giveup_on_tournament if ready_count == 1
       self.update(status: "progress")
-    else 
+    else
       self.update(status: "progress", start_time: Time.zone.now())
     end
     self.scorecards.update_all(result: "progress")
@@ -55,7 +55,7 @@ class Match < ApplicationRecord
   # broadcast type
   # 1. PLAY
   # 2. WATCH
-  # 3. END 
+  # 3. END
   # 3. ENEMY_GIVEUP
   def broadcast(options = {type: "PLAY", send_id: -1})
     msg = {
@@ -84,7 +84,7 @@ class Match < ApplicationRecord
   def loser
     self.scorecards.find_by_result("lose")&.user
   end
-  
+
   def left_user
     self.scorecards.find_by_side('left').user
   end
@@ -159,7 +159,7 @@ class Match < ApplicationRecord
   def before_tournament_time?
     !self.start_time.nil? && Time.zone.now < self.start_time
   end
-  
+
   def left_score
     self.scorecards.find_by_side("left")&.score || 0
   end

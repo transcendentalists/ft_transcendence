@@ -25,7 +25,7 @@ class Match < ApplicationRecord
       {
         id: match.id,
         type: match.match_type,
-        match: match,
+        target_score: match.target_score,
         rule: match.rule,
         left_scorecard: match.scorecards[0],
         right_scorecard: match.scorecards[1],

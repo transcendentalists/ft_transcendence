@@ -12,13 +12,6 @@ class GameChannel < ApplicationCable::Channel
     current_user.ready_for_match(@match) if @match.player?(current_user)
     return if @match.pending? && !@match.ready_to_start?
 
-    # 이미 시작한 상황이므로, 게임이 시작한 후에 들어오는 모든 user는 관전.
-    if @match.ready_to_start?
-      @match.start
-    else
-      @match.broadcast({type: "WATCH", send_id: current_user.id})
-    end
-
     @match.ready_to_start? ? @match.start : @match.broadcast({type: "WATCH", send_id: current_user.id})
   end
 

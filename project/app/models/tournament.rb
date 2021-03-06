@@ -10,7 +10,7 @@ class Tournament < ApplicationRecord
   validates :incentive_gift, length: { maximum: 20, message: "상품명은 최대 20글자까지 가능합니다." }, allow_nil: true
   validates :max_user_count, inclusion: {in: [8, 16, 32], message: "참여가능인원 수가 유효하지 않습니다."}
   validates :target_match_score, inclusion: {in: [3, 5, 7, 10], message: "경기 목표 점수가 유효하지 않습니다." }
-  validates_with TournamentValidator, field: [ :start_date, :tournament_time ]
+  validates_with TournamentValidator, field: [ :start_date, :tournament_time ], on: :create
 
   scope :for_tournament_index, -> (current_user) do
     where.not(status: ["completed", "canceled"])

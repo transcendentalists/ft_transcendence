@@ -118,8 +118,7 @@ export let GameIndexView = Backbone.View.extend({
    */
   recv: function (msg) {
     if (this.play_view == null && !this.is_player) {
-      this.spec = msg;
-      this.start();
+      if (msg.type != "WATCH") this.start();
     }
 
     if (msg.type == "WATCH" && this.is_player && this.play_view) {
@@ -132,7 +131,6 @@ export let GameIndexView = Backbone.View.extend({
     ) {
       this.spec = msg;
       this.renderPlayerView(msg);
-      if (!this.is_player) this.play_view.score.update(msg.score);
     } else if (msg.type == "BROADCAST") {
       this.play_view.update(msg);
     } else if (msg.type == "END" || msg.type == "ENEMY_GIVEUP") {
@@ -204,6 +202,7 @@ export let GameIndexView = Backbone.View.extend({
     if (this.play_view == null)
       this.play_view = new App.View.GamePlayView(this, this.spec);
     this.play_view.render();
+    this.play_view.score.update(this.spec.score);
   },
 
   render: function () {

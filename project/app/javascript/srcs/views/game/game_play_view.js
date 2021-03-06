@@ -187,6 +187,7 @@ export let GamePlayView = Backbone.View.extend({
       this.renderRoutine.bind(this),
       1000 / framePerSecond
     );
+    if (this.is_player) this.sendObjectSpec(this.ball.to_simple());
   },
 
   /**

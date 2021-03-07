@@ -365,20 +365,18 @@ GuildMembership.create([
   {user_id: 52, guild_id: 5, position: "member"},
   {user_id: 53, guild_id: 4, position: "member"},
   {user_id: 54, guild_id: 3, position: "member"},
-  {user_id: 55, guild_id: 2, position: "member"},
-  {user_id: 56, guild_id: 1, position: "member"},
 
 ])
 
 GuildInvitation.create([
-  {user_id: 1, invited_user_id: 13, guild_id: 1},
-  {user_id: 2, invited_user_id: 13, guild_id: 2},
-  {user_id: 3, invited_user_id: 13, guild_id: 3},
-  {user_id: 4, invited_user_id: 14, guild_id: 4},
-  {user_id: 5, invited_user_id: 14, guild_id: 5},
-  {user_id: 1, invited_user_id: 14, guild_id: 1},
-  {user_id: 7, invited_user_id: 14, guild_id: 7},
-  {user_id: 1, invited_user_id: 14, guild_id: 1},
+  {user_id: 1, invited_user_id: 55, guild_id: 1},
+  {user_id: 2, invited_user_id: 55, guild_id: 2},
+  {user_id: 3, invited_user_id: 55, guild_id: 3},
+  {user_id: 4, invited_user_id: 56, guild_id: 4},
+  {user_id: 5, invited_user_id: 56, guild_id: 5},
+  {user_id: 1, invited_user_id: 56, guild_id: 1},
+  {user_id: 7, invited_user_id: 56, guild_id: 7},
+  {user_id: 1, invited_user_id: 56, guild_id: 1},
 ])
 
 Tournament.create([

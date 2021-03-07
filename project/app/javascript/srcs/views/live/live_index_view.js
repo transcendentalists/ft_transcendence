@@ -24,8 +24,8 @@ export let LiveIndexView = Backbone.View.extend({
     this.live_card_list_view.render(data.matches);
   },
 
-  redirectErrorPage: function (data) {
-    App.router.navigate("#/errors/500");
+  redirectErrorPage: function () {
+    App.router.navigate("#/errors/404");
   },
 
   render: function () {

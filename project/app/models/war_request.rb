@@ -25,7 +25,9 @@ class WarRequest < ApplicationRecord
     }
   end
 
-  def self.can_be_created_by?(current_user, guild)
+  def self.can_be_created_by?(options)
+    current_user = options[:current_user]
+    guild = options[:guild]
     current_user.in_guild&.id == guild.id && current_user.guild_membership.master?
   end
 

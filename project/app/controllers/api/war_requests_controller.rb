@@ -14,7 +14,10 @@ class Api::WarRequestsController < ApplicationController
       begin
         params = create_params
         guild = Guild.find_by_id(params[:guild_id])
-        raise WarRequestError.new("권한이 없습니다.", 403) unless WarRequest.can_be_created_by?(@current_user, guild)
+        raise WarRequestError.new("권한이 없습니다.", 403) unless WarRequest.can_be_created_by?({
+          current_user: @current_user,
+          guild: guild
+        })
         raise WarRequestError.new("이미 요청한 전쟁이 있습니다.") if guild.already_request_to?(params[:enemy_guild_id])
         war_request = WarRequest.create_by!(params)
       rescue => e

@@ -41,7 +41,7 @@ class WarRequest < ApplicationRecord
     end
   end
 
-  def can_be_accepted?
+  def acceptable_time?
     calc_time = Time.zone.today <=> self.start_date.to_date
     if calc_time == 1
       return false

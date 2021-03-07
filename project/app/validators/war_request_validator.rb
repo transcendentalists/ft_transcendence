@@ -15,7 +15,7 @@ class WarRequestValidator < ActiveModel::Validator
     elsif end_date_after_max_end_date?
       errors.add(:base, "전쟁 종료일은 시작일 기준 7일 이내여야 합니다.")
     elsif invalid_war_time?
-      errors.add(:base, "전쟁 시간은 9시부터 22시 사이여야 합니다.")
+      errors.add(:base, "전쟁 시작 시간은 9시부터 22시 사이여야 합니다.")
     end
   end
 

@@ -30,7 +30,7 @@ class WarRequest < ApplicationRecord
     guild = options[:guild]
     current_user.in_guild&.id == guild.id && current_user.guild_membership.master?
   end
-  
+
   def can_be_updated_by(current_user)
     if current_user.in_guild.nil? ||
       current_user.in_guild.id != self.war_statuses.find_by_position("enemy").guild.id ||

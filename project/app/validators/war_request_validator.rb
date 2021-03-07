@@ -1,7 +1,7 @@
 class WarRequestValidator < ActiveModel::Validator
   def validate(record)
-    @start_date = record.start_date
-    @end_date = record.end_date
+    @start_date = record.start_date.to_date
+    @end_date = record.end_date.to_date
     @war_time = record.war_time
     errors = record.errors
     if @start_date.nil? || @end_date.nil?
@@ -20,11 +20,11 @@ class WarRequestValidator < ActiveModel::Validator
   end
 
   def start_date_after_max_start_date?
-    @start_date > Time.zone.today.midnight + 60.days
+    @start_date > Time.zone.today + 60.days
   end
 
   def start_date_after_tomorrow?
-    @start_date < Time.zone.tomorrow.midnight
+    @start_date < Time.zone.tomorrow
   end
 
   def end_date_after_start_date?

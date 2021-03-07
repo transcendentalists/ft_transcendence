@@ -8,7 +8,7 @@ class WarRequest < ApplicationRecord
   validates :target_match_score, inclusion: { in: [3, 5, 7, 10], message: "목표 점수를 잘못 입력하셨습니다." }
   validates :max_no_reply_count, inclusion: { in: 3..10, message: "최대 미응답 회수를 잘못 입력하셨습니다." }
   validates :bet_point, inclusion: { in: (100..1000).step(50), message: "배팅 포인트를 잘못 입력하셨습니다."}
-  validates_with WarRequestValidator, field: [ :start_date, :end_date, :war_time ]
+  validates_with WarRequestValidator, field: [ :start_date, :end_date, :war_time ], on: :create
 
   scope :for_guild_index, -> (guild_id) do
     WarRequest.joins(:war_statuses).where(war_statuses: {guild_id: guild_id, position: "enemy"}, status: "pending")
@@ -30,7 +30,7 @@ class WarRequest < ApplicationRecord
     guild = options[:guild]
     current_user.in_guild&.id == guild.id && current_user.guild_membership.master?
   end
-
+  
   def can_be_updated_by(current_user)
     if current_user.in_guild.nil? ||
       current_user.in_guild.id != self.war_statuses.find_by_position("enemy").guild.id ||
@@ -39,6 +39,16 @@ class WarRequest < ApplicationRecord
     else
       return true
     end
+  end
+
+  def can_be_accepted?
+    calc_time = Time.zone.today <=> self.start_date.to_date
+    if calc_time == 1
+      return false
+    elsif calc_time == 0 && (Time.zone.now.hour <=> self.war_time.hour) != -1
+      return false
+    end
+    true
   end
 
   def create_war_statuses_by_guild_ids!(options)

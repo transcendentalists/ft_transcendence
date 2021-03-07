@@ -48,6 +48,10 @@ class Api::WarRequestsController < ApplicationController
     return render_error("전쟁 제안 검색 에러", "요청하신 전쟁 제안이 존재하지 않습니다.", 404) if war_request.nil?
     return render_error("권한 에러", "접근 권한이 없습니다.", 401) unless war_request.can_be_updated_by(@current_user)
     if params[:status] == "accepted"
+      unless war_request.can_be_accepted?
+        war_request.update(status: "canceled")
+        return render_error("전쟁 수락 에러", "전쟁 시작일이 지나서 해당 전쟁이 취소되었습니다.", 400)
+      end
       return render_error("전쟁 수락 에러", "이미 수락되었거나 취소된 전쟁입니다.", 404) if war_request.status != "pending"
       if war_request.enemy.in_war?
         return render_error("전쟁 수락 에러", "이미 진행중인 전쟁이 있습니다.", 404)

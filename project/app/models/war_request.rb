@@ -41,9 +41,9 @@ class WarRequest < ApplicationRecord
     end
   end
 
-  def create_war_statuses!(guild_id, enemy_guild_id)
-    self.war_statuses.create!(guild_id: guild_id, position: "challenger")
-    self.war_statuses.create!(guild_id: enemy_guild_id, position: "enemy")
+  def create_war_statuses_by_guild_ids!(options)
+    self.war_statuses.create!(guild_id: options[:challenger_guild_id], position: "challenger")
+    self.war_statuses.create!(guild_id: options[:enemy_guild_id], position: "enemy")
   end
 
   def self.create_by!(params)
@@ -64,7 +64,10 @@ class WarRequest < ApplicationRecord
       raise WarRequestError.new(@error_message)
     end
     war_request.save!
-    war_request.create_war_statuses!(params[:guild_id], params[:enemy_guild_id])
+    war_request.create_war_statuses_by_guild_ids!({
+      challenger_guild_id: params[:guild_id],
+      enemy_guild_id: params[:enemy_guild_id]
+    })
     war_request
   end
 

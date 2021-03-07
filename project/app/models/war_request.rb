@@ -73,17 +73,4 @@ class WarRequest < ApplicationRecord
   def challenger
     self.war_statuses.find_by_position("challenger")&.guild
   end
-
-  private
-  def start_date_after_max_end_date
-    errors.add(:start_date, "전쟁 시작일은 한달 이내로 설정해야 합니다.") if start_date && start_date > Date.today+ 31.days
-  end
-
-  def start_date_after_now
-    errors.add(:start_date, "전쟁 시작일은 미래여야 합니다.") if start_date && start_date.past?
-  end
-
-  def end_date_after_start_date
-    errors.add(:end_date, "전쟁 종료일은 시작일보다 미래여야 합니다.") if start_date && end_date && end_date < start_date
-  end
 end

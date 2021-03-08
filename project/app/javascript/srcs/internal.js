@@ -112,7 +112,7 @@ import { GuildMemberProfileCardView } from "./views/guild/guild_member_profile_c
 import { WarRequestCardListView } from "./views/war/war_request_card_list_view";
 import { WarRequestCardView } from "./views/war/war_request_card_view";
 import { WarIndexView } from "./views/war/war_index_view";
-import { WarCreateView } from "./views/war/war_create_view";
+import { WarRequestCreateView } from "./views/war/war_request_create_view";
 import { WarHistoryListView } from "./views/war/war_history_list_view";
 import { WarHistoryView } from "./views/war/war_history_view";
 import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_view";
@@ -235,7 +235,7 @@ export let App = {
     LiveCardView,
     LiveCardListView,
     WarIndexView,
-    WarCreateView,
+    WarRequestCreateView,
     GameIndexView,
     GamePlayView,
     MatchHistoryView,

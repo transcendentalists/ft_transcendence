@@ -576,8 +576,8 @@ body {
 }
 
 /* ==========================================================================
-      GUILD CREATE VIEW
-      ========================================================================== */
+     GUILD CREATE VIEW
+     ========================================================================== */
 
 #guild-create-view .anagram-input-header {
   display: flex;
@@ -599,8 +599,8 @@ body {
 }
 
 /* ==========================================================================
-      GUILD DETAIL VIEW
-      ========================================================================== */
+     GUILD DETAIL VIEW
+     ========================================================================== */
 
 #guild-detail-view .small.image {
   margin-bottom: 0;
@@ -812,8 +812,65 @@ body {
 }
 
 /* ==========================================================================
-       LADDER INDEX VIEW
-       ========================================================================== */
+     WAR REQUEST CREATE VIEW
+     ========================================================================== */
+
+#war-request-create-view {
+  width: 550px;
+}
+
+#war-request-create-view .ui.large.label {
+  margin-bottom: 1rem;
+}
+
+#war-request-create-view .ui.segment.flex-container {
+  margin-top: 0;
+}
+
+#war-request-create-view .inline.fields {
+  align-items: baseline;
+}
+
+#war-request-create-view .inline.fields > label {
+  margin-top: 1rem;
+  margin-right: 2rem;
+}
+
+#war-request-create-view .minimum-value {
+  width: 6rem;
+}
+
+#war-request-create-view .maximum-value {
+  width: 6rem;
+  text-align: end;
+}
+
+#war-request-create-view .display-value {
+  text-align: center;
+}
+
+#war-request-create-view .max-no-reply-header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0;
+}
+
+#war-request-create-view .max-no-reply-header > label {
+  display: block;
+  margin: 0em 0em 0.28571429rem 0em;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.92857143em;
+  font-weight: bold;
+  text-transform: none;
+}
+
+#war-request-create-view .max-no-reply-header > i {
+  margin-left: 0.3rem;
+}
+
+/* ==========================================================================
+     LADDER INDEX VIEW
+     ========================================================================== */
 
 #ladder-index-view {
   margin-top: 8rem;
@@ -1262,4 +1319,77 @@ body {
 #live-index-view .live-card .score span {
   font-size: 1rem;
   font-weight: 400;
+}
+
+/* ==========================================================================
+     SEMANTIC RANGE
+========================================================================== */
+.ui.range {
+  width: 100%;
+  height: 20px;
+}
+
+.ui.range .inner {
+  margin: 0 10px 0 10px;
+  height: 20px;
+  position: relative;
+}
+
+.ui.range .inner:hover {
+  cursor: pointer;
+}
+
+.ui.range .inner .track {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  top: 9px;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ui.inverted.range .inner .track {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.ui.range .inner .track-fill {
+  position: absolute;
+  width: 0;
+  height: 4px;
+  border-radius: 4px;
+  top: 9px;
+  left: 0;
+  background-color: #1b1c1d;
+}
+
+.ui.inverted.range .inner .track-fill {
+  background-color: #545454;
+}
+
+.ui.range .inner .thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -webkit-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -o-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  border-radius: 100%;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15),
+    0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+}
+
+.ui.range.disabled {
+  opacity: 0.5;
+}
+
+.ui.range.disabled .inner:hover {
+  cursor: auto;
+}
+
+.ui.range.disabled .inner .track-fill {
+  background: #ccc;
 }

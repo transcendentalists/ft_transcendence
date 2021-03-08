@@ -116,6 +116,11 @@ import { WarRequestCreateView } from "./views/war/war_request_create_view";
 import { WarHistoryListView } from "./views/war/war_history_list_view";
 import { WarHistoryView } from "./views/war/war_history_view";
 import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_view";
+import { WarBattleView } from "./views/war/war_battle_view";
+import { WarStatusView } from "./views/war/war_status_view";
+import { WarRuleView } from "./views/war/war_rule_view";
+import { WarMatchHistoryListView } from "./views/war/war_match_history_list_view";
+import { WarMatchHistoryView } from "./views/war/war_match_history_view";
 
 /* CHANNEL */
 import { ConnectAppearanceChannel } from "channels/appearance_channel";
@@ -236,6 +241,11 @@ export let App = {
     LiveCardListView,
     WarIndexView,
     WarRequestCreateView,
+    WarRuleView,
+    WarStatusView,
+    WarBattleView,
+    WarMatchHistoryListView,
+    WarMatchHistoryView,
     GameIndexView,
     GamePlayView,
     MatchHistoryView,

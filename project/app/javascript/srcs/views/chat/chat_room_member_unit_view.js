@@ -34,12 +34,14 @@ export let ChatRoomMemberUnitView = Backbone.View.extend({
     const position = this.model.get("position");
     if (position == "ghost") this.close();
 
-    const remove_icon = this.position_icons[
-      position == "member" ? "admin" : "member"
-    ];
-    const add_icon = this.position_icons[position];
+    const remove_icons = [...Object.keys(this.position_icons)]
+      .filter((key) => key !== position)
+      .map((key) => this.position_icons[key]);
+    remove_icons.forEach((icon) =>
+      this.$el.find(".position.icon").removeClass(icon)
+    );
 
-    this.$el.find(".position.icon").removeClass(remove_icon);
+    const add_icon = this.position_icons[position];
     this.$el.find(".position.icon").addClass(add_icon);
   },
 

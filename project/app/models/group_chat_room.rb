@@ -159,7 +159,7 @@ class GroupChatRoom < ApplicationRecord
   end
 
   def let_all_out_and_destroy!
-    self.memberships.each do |membership|
+    self.memberships.where.not(position: "ghost").each do |membership|
       membership.update_position!("ghost")
     end
 

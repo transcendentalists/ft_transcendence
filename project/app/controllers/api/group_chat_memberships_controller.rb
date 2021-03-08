@@ -24,7 +24,7 @@ class Api::GroupChatMembershipsController < ApplicationController
         if room.active_member_count == 1
           room.destroy
         else
-          room.make_another_member_owner if membership.position == "owner"
+          room.make_another_member_owner! if membership.position == "owner"
           membership.set_ban_time_from_now({ sec: 5 }) unless membership.current_user?(@current_user)
           membership.update_position!("ghost")
         end

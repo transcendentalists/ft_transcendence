@@ -112,7 +112,7 @@ export function ConnectNotificationChannel(room_id) {
 
       serviceBanned: function () {
         this.showBannedInfo();
-        setTimeout(App.restart, 2000);
+        setTimeout(App.restart.bind(App), 2000);
       },
     }
   );

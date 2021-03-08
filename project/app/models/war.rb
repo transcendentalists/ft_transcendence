@@ -29,5 +29,4 @@ class War < ApplicationRecord
       "패"
     end
   end
-
 end

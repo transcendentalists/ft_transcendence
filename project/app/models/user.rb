@@ -172,7 +172,7 @@ class User < ApplicationRecord
     self.update!(position: position)
   end
 
-  def already_received_guild_invitation_by(user)
+  def already_received_guild_invitation_by?(user)
     !self.guild_invitations.find_by_user_id(user.id).nil?
   end
 

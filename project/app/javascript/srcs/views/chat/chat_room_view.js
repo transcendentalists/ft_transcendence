@@ -47,7 +47,6 @@ export let ChatRoomView = Backbone.View.extend({
     });
     this.chat_messages.fetch({
       reset: true,
-      headers: { current_user: App.current_user.id },
     });
   },
 

@@ -133,7 +133,7 @@ export let AdminIndexView = Backbone.View.extend({
         this.optionsRender(this.resource);
       }.bind(this),
       fail_callback: () => {
-        App.navigate("#/errors/400");
+        App.router.navigate("#/errors/400");
       },
     });
   },

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get 'api/admin/db', to: 'api/admin#index'
 
   namespace :api do
-    resources :users, only: %i[index show create update] do
+    resources :users, only: %i[index show create update destroy] do
       member do
         patch :ban
         post 'session', to: 'users#login'

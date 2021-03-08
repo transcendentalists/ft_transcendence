@@ -1,20 +1,18 @@
 <script type="text/template" id="war-status-view-template">
   <div class="ui card">
     <div class="content">
-      <div class="header">
-        <%%= '전쟁 종료까지 ' + '남음' %>
-      </div>
-    </div>
-    <div class="content">
       <h4 class="ui sub header">포인트 현황</h4>
-      <div class="row">
+      <div class="war-point row">
         <div class="flex-container center-aligned baseline">
-          <div class="ui green progress" data-value="100" data-total="1000" id="challenger-point">
+          <div class="ui green progress" data-value=<%%= my_guild_point %> data-total=<%%= total_point %> id="my-guild-point">
             <div class="bar">
               <div class="progress"></div>
             </div>
           </div>
-          <div class="ui red progress" data-value="100" data-total="1000" id="enemy-point">
+          <a class="ui circular label">
+            VS
+          </a>
+          <div class="ui red progress" data-value=<%%= opponent_guild_point %> data-total=<%%= total_point %> id="enemy-point">
             <div class="bar">
               <div class="progress"></div>
             </div>
@@ -23,7 +21,7 @@
       </div>
       <div class="row">
         <h4 class="ui sub header"><%%= remained_no_reply_count %>회 더 미응답 시 패배</h4>
-        <div class="ui progress error" data-value="3" data-total="10" id="remained-no-reply-count">
+        <div class="ui progress error" data-value=<%%= remained_no_reply_count %> data-total=<%%= max_no_reply_count %> id="remained-no-reply-count">
           <div class="bar">
             <div class="progress"></div>
           </div>

@@ -15,10 +15,15 @@ export function ConnectNotificationChannel(room_id) {
       },
 
       received(data) {
-        if (data.type == "dual") {
-          this.dual(data);
-        } else {
-          console.log(data);
+        switch (data.type) {
+          case "dual":
+            this.dual(data);
+            break;
+          case "service_ban":
+            this.serviceBanned();
+            break;
+          default:
+            console.log(data);
         }
       },
 
@@ -96,6 +101,18 @@ export function ConnectNotificationChannel(room_id) {
         App.current_user.is_challenger
           ? App.appView.request_view.close()
           : App.appView.invite_view.close();
+      },
+
+      showBannedInfo: function () {
+        Helper.info({
+          subject: "접속 제한",
+          description: "정책 상의 이유로 서비스 이용이 제한되었습니다.",
+        });
+      },
+
+      serviceBanned: function () {
+        this.showBannedInfo();
+        setTimeout(App.restart, 2000);
       },
     }
   );

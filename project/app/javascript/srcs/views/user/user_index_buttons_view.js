@@ -43,11 +43,10 @@ export let UserIndexButtonsView = Backbone.View.extend({
   showAvatarImageUploadModal: function () {
     let callback = function (formData) {
       formData.append("user", JSON.stringify({ id: this.user_id }));
-      formData.append("has_file", JSON.stringify(true));
-      fetch("api/users/" + this.user_id, {
+      Helper.fetch("users/" + this.user_id, {
         method: "PATCH",
         headers: {
-          "X-CSRF-Token": Helper.getToken(),
+          "Content-Type": "form-data",
         },
         body: formData,
       }).then(() => App.router.navigate("#/"));
@@ -90,7 +89,7 @@ export let UserIndexButtonsView = Backbone.View.extend({
       method: "POST",
       body: {
         invited_user_id: this.user_id,
-        guild_id: App.current_user.get("guild").id
+        guild_id: App.current_user.get("guild").id,
       },
       success_callback: (data) => {
         Helper.info({

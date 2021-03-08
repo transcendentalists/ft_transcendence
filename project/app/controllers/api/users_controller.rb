@@ -1,7 +1,7 @@
 require 'bcrypt'
 
 class Api::UsersController < ApplicationController
-  before_action :check_headers_and_find_current_user, only: [:destroy]
+  before_action :check_headers_and_find_current_user, only: [:destroy, :update]
 
   def index
     if params[:for] == 'appearance'
@@ -48,27 +48,25 @@ class Api::UsersController < ApplicationController
   end
 
   def update
-    if (!params.has_key?(:user))
-      return render_error("upload fail", "API에 user 키가 없습니다.", 400);
-    end
-    params[:user] = JSON.parse(params[:user]) if params.has_key?("has_file")
-
-    user = User.find_by_id(params[:id])
-    if (user.nil?)
-     return render_error("upload fail", "해당 id를 가진 user가 없습니다.", 400)
-    end
-
-    if params.has_key?(:file)
-      user.avatar.purge if user.avatar.attached?
-      user.avatar.attach(params[:file])
-      user.image_url = url_for(user.avatar)
-      user.save
-    elsif user.update(update_params) == false
-      return render_error("parameter error", "유효하지 읺은 파라미터입니다.", 400);
+    begin
+      if (current_user_is_admin_or_owner?)
+      else
+        raise UserError.new("API에 user 키가 없습니다.", 400) unless params.has_key?(:user)
+        user = User.find(params[:id])
+        if params.has_key?(:file)
+          update_avatar!
+        else
+          user.update!(update_params)
+        end
+      end
+    rescue UserError => e
+      return render_error("UPDATE FAILURE", e.message, e.status_code);
+    rescue
+      return render_error("UPDATE FAILED", "유저 업데이트에 실패했습니다.", 500);
     end
     head :no_content, status: 204
   end
-
+  
   def login
     user = User.find_by_name(params[:user]['name'])
     return render_error("login failure", "가입된 이름이 없습니다.", 401) if user.nil?
@@ -129,10 +127,17 @@ class Api::UsersController < ApplicationController
   end
 
   def update_params
-    params.require(:user).permit(:name, :image, :two_factor_auth)
+    params.require(:user).permit(:name, :two_factor_auth)
   end
 
   def service_params
     params.permit(:id, :name, :for, :user_id, status: [])
+  end
+
+  def update_avatar!
+    @current_user.avatar.purge if @current_user.avatar.attached?
+    @current_user.avatar.attach(params[:file])
+    @current_user.image_url = url_for(@current_user.avatar)
+    @current_user.save!
   end
 end

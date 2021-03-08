@@ -41,15 +41,15 @@ class User < ApplicationRecord
   end
 
   def can_be_service_banned_by?(current_user)
+    return false unless current_user.can_service_manage?
     grade = ApplicationRecord.position_grade
     grade[current_user.position] > grade[self.position]
   end
 
-  #TODO: notification channel로 "service_ban" 고지 제대로 되는지 확인 필요
   def service_ban!
-    user.update_status("offline")
-    user.update!(position: "ghost")
-    ActionCable.server.broadcast("notification_channel_#{self.id}", {type: "service_ban"})
+    self.update_status("offline")
+    self.update!(position: "ghost")
+    ActionCable.server.broadcast("notification_channel_#{self.id.to_s}", {type: "service_ban"})
   end
 
   def position_grade

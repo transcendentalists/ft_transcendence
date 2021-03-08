@@ -46,7 +46,10 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
       },
       success_callback: (data) => {
         App.current_user.set("guild", data.guild_membership);
-        App.router.navigate(`#/guilds/${App.current_user.get("guild").id}?page=1`, true);
+        App.router.navigate(
+          `#/guilds/${App.current_user.get("guild").id}?page=1`,
+          true
+        );
       },
       fail_callback: (data) => {
         Helper.info({ error: data.error });
@@ -55,7 +58,9 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
   },
 
   createWarRequest: function () {
-    App.router.navigate(`#/guilds/war_request/new?enemy_id=${this.guild.id}`);
+    App.router.navigate(
+      `#/war/new?enemy_id=${this.guild.id}&enemy_name=${this.guild.name}`
+    );
   },
 
   isInGuildIndex: function () {

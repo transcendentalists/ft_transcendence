@@ -17,24 +17,32 @@ class GroupChatMembership < ApplicationRecord
     false
   end
 
-  def can_be_kicked_by?(current_user)
-    return current_user.position_grade > self.user.position_grade if current_user.can_service_manage?
+  def can_be_kicked_by?(user)
+    return user.position_grade > self.user.position_grade if user.can_service_manage?
     return false if self.user.can_service_manage?
 
     position_grade = ApplicationRecord.position_grade
-    current_user_position = self.room.memberships.find_by_user_id(current_user.id)&.position
-    return false if current_user_position.nil?
-    position_grade[self.position] <= 2 && position_grade[current_user_position] >= 2
+    user_position = self.room.memberships.find_by_user_id(user.id)&.position
+    return false if user_position.nil?
+    position_grade[self.position] <= 2 && position_grade[user_position] >= 2
   end
 
-  def can_be_muted_by?(current_user_position)
-    position_grade = ApplicationRecord.position_grade
-    position_grade[self.position] <= 2 && position_grade[current_user_position] >= 2
+  def can_be_muted_by?(user)
+    membership = GroupChatMembership.find_by_user_id(user.id)
+    return false if membership.nil?
+
+    grade = ApplicationRecord.position_grade
+    grade[self.position] <= 2 && grade[membership.position] >= 2
   end
 
-  def can_be_position_changed_by?(current_user_position)
-    position_grade = ApplicationRecord.position_grade
-    position_grade[self.position] <= 2 && position_grade[current_user_position] >= 3
+  def can_be_position_changed_by?(user)
+    return true if user.can_service_manage?
+
+    membership = GroupChatMembership.find_by_user_id(user.id)
+    return false if membership.nil?
+
+    grade = ApplicationRecord.position_grade
+    grade[self.position] <= 2 && grade[membership.position] >= 3
   end
       
   def ghost?
@@ -60,17 +68,14 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def update_with_params!(options = {by: self, params: {}})
-    by_user_position = GroupChatMembership.find_by_user_id(options[:by].id)
     params = options[:params]
-    
+    p params
     unless params[:mute].nil?
-      self.can_be_muted_by?(by_user_position)
-      self.update_mute!(params[:mute])
+      self.update_mute!(params[:mute]) if self.can_be_muted_by?(options[:by])
     end
 
     unless params[:position].nil?
-      self.can_be_position_changed_by?(by_user_position)
-      self.update_position!(params[:position])
+      self.update_position!(params[:position]) if self.can_be_position_changed_by?(options[:by])
     end
   end
 
@@ -88,7 +93,17 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def update_position!(position)
+    # raise GroupChatMembershipError.new("이미 해당 유저의 포지션은 #{position}입니다.", 400) if self.position == position
+    return if self.position == position
+
+    if position == "owner"
+      owner_membership = self.room.memberships.find_by_user_id(self.room.owner.id)
+      owner_membership.update_position!("ghost")
+      self.room.update!(owner_id: self.user_id)
+    end
+
     self.update!(position: position)
+
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.group_chat_room_id.to_s}",
       {

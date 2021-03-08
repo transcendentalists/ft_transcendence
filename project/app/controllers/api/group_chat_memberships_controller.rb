@@ -3,10 +3,10 @@ class Api::GroupChatMembershipsController < ApplicationController
 
   def update
     begin
-      params = update_params
       membership = GroupChatMembership.find(params[:id])
-      membership.update_with_params!({by: @current_user, params: params})
-    rescue
+      membership.update_with_params!({by: @current_user, params: update_params})
+    rescue => e
+      p "ERROR: #{e.message}"
       return render_error("UPDATE FAILURE", "업데이트에 실패하였습니다.", 400)
     end
     render :json => { group_chat_membership: membership }
@@ -37,7 +37,21 @@ class Api::GroupChatMembershipsController < ApplicationController
 
   private
   def update_params
-    params.permit(:group_chat_room_id, :id, :mute, :position)
+    if current_user_is_admin_or_owner?
+      # params.permit(:id, :mute, :position)
+      {
+        id: params[:id],
+        position: params[:position],
+        mute: params[:mute]
+      }
+    else
+      params.require(:group_chat_membership)
+      {
+        id: params[:id],
+        mute: params[:mute],
+        position: params[:position]
+      }
+    end
   end
 
 end

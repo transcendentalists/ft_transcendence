@@ -56,6 +56,8 @@ export let FriendsListView = Backbone.View.extend({
   },
 
   updateUserList: function (user_data) {
-    this.friends.get(user_data.id).set({ status: user_data.status });
+    const friend = this.friends.get(user_data.id);
+    if (friend)
+      friend.set({ status: user_data.status });
   },
 });

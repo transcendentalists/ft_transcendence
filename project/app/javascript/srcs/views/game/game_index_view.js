@@ -84,14 +84,16 @@ export let GameIndexView = Backbone.View.extend({
     }
   },
 
-  showInfoModal: function (type) {
+  showInfoModal: function (type = "END") {
+    const info_dict = {
+      END: ["게임종료", "게임이 종료되었습니다."],
+      ENEMY_GIVEUP: ["게임종료", "유저가 게임을 기권하였습니다."],
+      STOP: ["잘못된 접근", "취소/종료되었거나 유효하지 않은 게임입니다."],
+    };
+
     Helper.info({
-      subject: "게임종료",
-      description:
-        (type == "END"
-          ? "게임이 종료되었습니다. "
-          : "유저가 게임을 기권하였습니다. ") +
-        "잠시후 홈 화면으로 이동합니다.",
+      subject: info_dict[type][0],
+      description: info_dict[type][1] + " 홈 화면으로 이동합니다.",
     });
   },
 
@@ -103,8 +105,9 @@ export let GameIndexView = Backbone.View.extend({
     setTimeout(this.redirectHomeCallback, 2000);
   },
 
-  redirectHomeCallback: function () {
-    return App.router.navigate("#/");
+  redirectHome: function (type) {
+    this.showInfoModal(type);
+    setTimeout(() => App.router.navigate("#/"), 1000);
   },
 
   /**
@@ -117,31 +120,33 @@ export let GameIndexView = Backbone.View.extend({
    ** 5) "ENEMY_GIVEUP" : 게임 중 상대 유저 이탈에 따른 게임 종료 -> 클로즈 처리
    */
   recv: function (msg) {
-    if (
-      msg.type == "PLAY" ||
-      (msg.type == "WATCH" && App.current_user.id == msg["send_id"])
-    ) {
-      this.spec = msg;
-      this.renderPlayerView(msg);
-    } else if (msg.type == "BROADCAST") {
-      if (this.play_view == null && !this.is_player) {
-        this.play_view = new App.View.GamePlayView(this, this.spec);
-        this.play_view.update(msg);
+    switch (msg.type) {
+      case "PLAY":
+        this.spec = msg;
+        this.renderPlayerView();
+        this.countDown();
+        break;
+      case "WATCH":
+        if (this.is_player)
+          this.play_view.sendObjectSpec(this.play_view.ball.to_simple());
+        if (!Helper.isCurrentUser(msg["send_id"])) return;
+        this.spec = msg;
+        this.renderPlayerView();
         this.start();
-      } else this.play_view.update(msg);
-    } else if (msg.type == "END" || msg.type == "ENEMY_GIVEUP") {
-      if (this.play_view) this.play_view.stopRender();
-      if (this.clear_id) clearInterval(this.clear_id);
-      this.showInfoModal(msg.type);
-      setTimeout(this.redirectHomeCallback, 2000);
-      this.channel.unsubscribe();
-      this.channel = null;
-    } else if (msg.type == "STOP") {
-      Helper.info({
-        subject: "잘못된 접근",
-        description: "취소/종료되었거나 유효하지 않은 게임입니다.",
-      });
-      setTimeout(this.redirectHomeCallback, 3000);
+        break;
+      case "BROADCAST":
+        if (!this.play_view) return;
+        this.play_view.update(msg);
+        break;
+      case "END":
+      case "ENEMY_GIVEUP":
+        if (this.play_view) this.play_view.stopRender();
+        if (this.clear_id) clearInterval(this.clear_id);
+        this.redirectHome(msg.type);
+        break;
+      case "STOP":
+        this.redirectHome(msg.type);
+        break;
     }
   },
 
@@ -149,24 +154,16 @@ export let GameIndexView = Backbone.View.extend({
    ** 플레이어의 경우 카운트다운 후 게임 시작
    ** 게스트일 경우 로딩 대기
    */
-  renderPlayerView: function (data) {
-    if (this.is_player_view_rendered) return;
+  renderPlayerView: function () {
     this.left_player_view = new App.View.UserProfileCardView();
     this.right_player_view = new App.View.UserProfileCardView();
-    this.is_player_view_rendered = true;
     this.$(".vs-icon").html("VS");
     this.$("#left-game-player-view").append(
-      this.left_player_view.render(data["left"]).$el
+      this.left_player_view.render(this.spec["left"]).$el
     );
     this.$("#right-game-player-view").append(
-      this.right_player_view.render(data["right"]).$el
+      this.right_player_view.render(this.spec["right"]).$el
     );
-
-    if (data.type == "PLAY") {
-      this.$(".ui.active.loader").removeClass("active loader");
-      this.$("#count-down-box").empty();
-      this.countDown();
-    }
   },
 
   /**
@@ -174,6 +171,9 @@ export let GameIndexView = Backbone.View.extend({
    ** 게임 중 입장한 게스트일 경우 실행하지 않음
    */
   countDown: function () {
+    this.$(".ui.active.loader").removeClass("active loader");
+    this.$("#count-down-box").empty();
+
     let $box = this.$("#count-down-box");
     $box.html(10);
     this.clear_id = setInterval(
@@ -195,16 +195,18 @@ export let GameIndexView = Backbone.View.extend({
    ** 플레이 뷰를 recv에서 먼저 생성하고 게임 정보를 업데이트한 후 시작
    */
   start: function () {
-    if (this.play_view == null)
-      this.play_view = new App.View.GamePlayView(this, this.spec);
+    if (this.play_view) return;
+
+    this.play_view = new App.View.GamePlayView(this, this.spec);
+    this.play_view.score.update(this.spec.score);
     this.play_view.render();
   },
 
   render: function () {
     this.$el.empty();
     this.$el.html(this.template());
-    if (this.is_player) this.joinGame(this.match_id);
-    else this.subscribeChannel(this.match_id);
+    if (this.is_player) this.joinGame();
+    else this.subscribeGameChannelAndBroadcast(this.match_id);
     return this;
   },
 

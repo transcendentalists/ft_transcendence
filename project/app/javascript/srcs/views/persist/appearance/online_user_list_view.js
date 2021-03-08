@@ -61,11 +61,13 @@ export let OnlineUserListView = Backbone.View.extend({
     let user = this.online_users.get(user_data.id);
     let status = user_data.status;
 
-    if (status == "offline") {
+    if (user && status == "offline") {
       user.set({ status: status });
       this.online_users.remove(user);
     } else if (status == "online" && user === undefined)
       this.online_users.add(new App.Model.User(user_data));
-    else user.set({ status: status });
+    else if (user) {
+      user.set({ status: status });
+    }
   },
 });

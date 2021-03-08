@@ -1,0 +1,21 @@
+<script type="text/template" id="live-card-view-template">
+  <div class="title">
+    <%%= title %>
+  </div>
+  <div class="rule">
+    <%%- "<" + rule.name + " " + target_score + "점>" %>
+  </div>
+  <div class="enemy flex-container center-aligned">
+    <img src="<%%= left_user.image_url %>" alt="" class="ui mini circular image">
+    <div class="name"><%%= left_user.name %></div>
+    <span class="vs-icon">VS</span>
+    <img src="<%%= right_user.image_url %>" alt="" class="ui mini circular image">
+    <div class="name"><%%= right_user.name %></div>
+  </div>
+  <div class="score">
+    <%%= left_scorecard.score %><span> vs </span><%%= right_scorecard.score %>
+  </div>
+
+  <div data-match-id="<%%= id %>" class="ui fluid watch button">관전하기</div>
+
+</script>

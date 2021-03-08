@@ -81,8 +81,12 @@ import { GroupChatMessageListView } from "./views/chat/group_chat_message_list_v
 import { ChatRoomMemberMenuView } from "./views/chat/chat_room_member_menu_view";
 import { ChatRoomMenuView } from "./views/chat/chat_room_menu_view";
 
-/** tournaments views */
+import { UserProfileCardView } from "./views/user/user_profile_card_view";
+import { LiveIndexView } from "./views/live/live_index_view";
+import { LiveCardListView } from "./views/live/live_card_list_view";
+import { LiveCardView } from "./views/live/live_card_view";
 
+/** tournaments views */
 import { TournamentIndexView } from "./views/tournament/tournament_index_view";
 import { TournamentCardView } from "./views/tournament/tournament_card_view";
 import { TournamentCardListView } from "./views/tournament/tournament_card_list_view";
@@ -91,9 +95,6 @@ import { TournamentMatchCardListView } from "./views/tournament/tournament_match
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
 import { AdminIndexView } from "./views/admin/admin_index_view";
 import { AdminSelectView } from "./views/admin/admin_select_view";
-
-import { UserProfileCardView } from "./views/user/user_profile_card_view";
-import { LiveIndexView } from "./views/live/live_index_view";
 
 import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
 import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
@@ -238,6 +239,8 @@ export let App = {
     UserProfileCardView,
     MyRatingView,
     LiveIndexView,
+    LiveCardView,
+    LiveCardListView,
     WarIndexView,
     WarCreateView,
     GameIndexView,

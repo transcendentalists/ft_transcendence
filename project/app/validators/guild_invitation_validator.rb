@@ -4,9 +4,9 @@ class GuildInvitationValidator < ActiveModel::Validator
     @invited_user = User.find_by_id(record.invited_user_id)
     @record = record
     @record.errors.clear
-    valid_of_user
-    valid_of_invited_user
-    @record.errors.add(:base, message: "이미 길드 초대장을 보내셨습니다.") if @invited_user&.already_received_guild_invitation_by(@user)
+    validate_user
+    validate_invited_user
+    validate_duplication_of_guild_invitation unless @invited_user.nil? || @user.nil?
   end
 
   def validate_user
@@ -25,5 +25,9 @@ class GuildInvitationValidator < ActiveModel::Validator
     elsif !@invited_user.in_guild.nil?
       @record.errors.add(:invited_user_id, message: "해당 유저는 가입된 길드가 있습니다.")
     end
+  end
+
+  def validate_duplication_of_guild_invitation
+    @record.errors.add(:invited_user_id, message: "이미 길드 초대장을 보내셨습니다.") if @invited_user.already_received_guild_invitation_by(@user)
   end
 end

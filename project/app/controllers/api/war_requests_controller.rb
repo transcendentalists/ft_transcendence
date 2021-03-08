@@ -44,25 +44,34 @@ class Api::WarRequestsController < ApplicationController
   end
 
   def update
-    war_request = WarRequest.find_by_id(params[:id])
-    return render_error("전쟁 제안 검색 에러", "요청하신 전쟁 제안이 존재하지 않습니다.", 404) if war_request.nil?
-    return render_error("권한 에러", "접근 권한이 없습니다.", 401) unless war_request.can_be_updated_by(@current_user)
-    if params[:status] == "accepted"
-      unless war_request.acceptable_time?
-        war_request.update(status: "canceled")
-        return render_error("전쟁 수락 에러", "전쟁 시작일이 지나서 해당 전쟁이 취소되었습니다.", 400)
+    ActiveRecord::Base.transaction do
+      begin
+        war_request = WarRequest.find(params[:id])
+        raise WarRequestError.new("접근 권한이 없습니다.", 403) unless war_request.can_be_updated_by(@current_user)
+        raise WarRequestError.new("이미 수락되었거나 취소된 전쟁입니다.", 404) unless war_request.status == "pending"
+        if params[:status] == "accepted"
+          war_request.enemy.accept!(war_request)
+        else
+          war_request.update!(status: params[:status]) if params[:status]
+        end
+        head :no_content, status: 204
+      rescue ActiveRecord::RecordNotFound
+        render_error("전쟁 제안 검색 에러", "요청하신 전쟁 제안이 존재하지 않습니다.", 404)
+      rescue WarRequestError => e
+        render_error("전쟁 수락 에러", e.message, e.status_code)
+        raise ActiveRecord::Rollback
+      rescue => e
+        p e
+        key =  e.record.errors.attribute_names.first
+        error_message = e.record.errors.messages[key].first
+        render_error("전쟁 수락 실패", error_message, 400)
+        raise ActiveRecord::Rollback
+      # rescue => e
+      #   render_error("전쟁 수락 실패", "유효하지 않은 요청입니다.", 400)
+      else
+        head :no_content, status: 204
       end
-      return render_error("전쟁 수락 에러", "이미 수락되었거나 취소된 전쟁입니다.", 404) if war_request.status != "pending"
-      if war_request.enemy.in_war?
-        return render_error("전쟁 수락 에러", "이미 진행중인 전쟁이 있습니다.", 404)
-      elsif war_request.challenger.in_war?
-        return render_error("전쟁 수락 에러", "상대 길드가 전쟁을 진행 중입니다.", 404)
-      end
-      war_request.enemy.accept(war_request)
-    else
-      war_request.update(status: params[:status]) if params[:status]
     end
-    head :no_content, status: 204
   end
 
   private

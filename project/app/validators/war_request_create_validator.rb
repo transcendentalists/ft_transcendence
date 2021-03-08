@@ -1,9 +1,10 @@
-class WarRequestValidator < ActiveModel::Validator
+class WarRequestCreateValidator < ActiveModel::Validator
   def validate(record)
     @start_date = record.start_date.to_date
     @end_date = record.end_date.to_date
     @war_time = record.war_time
     errors = record.errors
+
     if @start_date.nil? || @end_date.nil?
       errors.add(:base, "전쟁 시작일을 입력해주세요")
     elsif start_date_after_max_start_date?

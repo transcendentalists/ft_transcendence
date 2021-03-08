@@ -19,15 +19,11 @@ export let Helper = {
       : null;
     if (hash_args.hasOwnProperty("headers")) {
       $.extend(params.headers, hash_args.headers);
-      if (
-        hash_args.headers.hasOwnProperty("Content-Type") &&
-        hash_args.headers["Content-Type"] == "form-data"
-      )
+      if (params.headers["Content-Type"] == "form-data")
         delete params.headers["Content-Type"];
     }
     if (hash_args.hasOwnProperty("body")) {
-      if (!params.headers.hasOwnProperty("Content-Type"))
-        params["body"] = hash_args["body"];
+      if (!params.headers["Content-Type"]) params["body"] = hash_args["body"];
       else params["body"] = JSON.stringify(hash_args["body"]);
     }
 

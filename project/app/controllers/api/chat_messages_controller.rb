@@ -2,7 +2,6 @@ class Api::ChatMessagesController < ApplicationController
   before_action :check_headers_and_find_current_user, only: [ :index ]
 
   def index
-
     if current_user_is_admin_or_owner?
       chat_messages = GroupChatRoom.find_by_id(params[:group_chat_room_id]).for_admin_format
     else

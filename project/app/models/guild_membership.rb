@@ -30,16 +30,13 @@ class GuildMembership < ApplicationRecord
     guild
   end
 
-  def can_be_destroyed_by?(current_user)
-    return true if current_user.can_service_manage?
-
-    return false if self.master?
-    if self.user_id == current_user.id
-      return false unless self.guild_id == current_user.in_guild&.id
-    else
-      return false if current_user.guild_membership.position == "member"
-    end
-    true
+  def can_be_destroyed_by?(user)
+    return true if user.can_service_manage?
+    return false unless self.guild_id == current_user.in_guild&.id
+    return !self.master? if self.user_id == user.id
+    
+    grade = ApplicationRecord.position_grade
+    return grade[user.guild_membership.position] > grade[self.position] 
   end
 
   def unregister!
@@ -57,5 +54,9 @@ class GuildMembership < ApplicationRecord
 
   def master?
     self.position == "master"
+  end
+
+  def admin?
+    self.position == "admin"
   end
 end

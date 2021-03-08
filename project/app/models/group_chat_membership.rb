@@ -11,15 +11,11 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def can_be_destroyed_by?(current_user)
-    return true if requested_by_myself?(current_user)
-    return true if can_be_kicked_by?(current_user)
-
-    false
+    return requested_by_myself?(current_user) || can_be_kicked_by?(current_user)
   end
 
   def can_be_kicked_by?(user)
-    return user.position_grade > self.user.position_grade if user.can_service_manage?
-    return false if self.user.can_service_manage?
+    return true if user.can_service_manage?
 
     position_grade = ApplicationRecord.position_grade
     user_position = self.room.memberships.find_by_user_id(user.id)&.position
@@ -93,8 +89,7 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def update_position!(position)
-    # raise GroupChatMembershipError.new("이미 해당 유저의 포지션은 #{position}입니다.", 400) if self.position == position
-    return if self.position == position
+    raise GroupChatMembershipError.new("이미 해당 유저의 포지션은 #{position}입니다.", 400) if self.position == position
 
     if position == "owner"
       owner_membership = self.room.memberships.find_by_user_id(self.room.owner.id)

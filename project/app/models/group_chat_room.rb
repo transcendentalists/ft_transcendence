@@ -149,17 +149,18 @@ class GroupChatRoom < ApplicationRecord
 
   def make_another_member_owner
     memberships = self.memberships
+    return if memberships.count == 1
 
     new_owner = memberships.find_by_position("admin")
     new_owner = memberships.find_by_position("member") if new_owner.nil?
     self.update!(owner_id: new_owner.user_id)
-    new_owner.update_position("owner")
+    new_owner.update_position!("owner")
     new_owner.update_mute(false) if new_owner.mute?
   end
 
   def let_all_out_and_destroy!
     self.memberships.each do |membership|
-      membership.update_position("ghost")
+      membership.update_position!("ghost")
     end
 
     self.destroy!

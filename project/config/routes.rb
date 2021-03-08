@@ -48,10 +48,11 @@ Rails.application.routes.draw do
 
     resources :guild_memberships, only: %i[destroy update]
 
-    resources :group_chat_rooms, only: %i[index create update show destroy] do
+    resources :group_chat_rooms, only: %i[index create update show] do
       resources :chat_messages, only: %i[index create]
       resources :group_chat_memberships, path: 'memberships', only: %i[update destroy]
     end
+    resources :group_chat_memberships, only: %i[destroy]
 
     resources :direct_chat_rooms, only: [] do
       resources :chat_messages, only: %i[index create]

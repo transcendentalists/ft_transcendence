@@ -31,10 +31,7 @@ class Api::GroupChatMembershipsController < ApplicationController
   end
 
   def destroy
-    memberships = GroupChatMembership.where(group_chat_room_id: params[:group_chat_room_id])
-    return render_error("NOT FOUND", "해당하는 챗룸 정보가 없습니다.", "404") if memberships.empty?
-
-    membership = memberships.find_by_id(params[:id])
+    membership = GroupChatMembership.find_by_id(params[:id])
     return render_error("NOT FOUND", "챗룸에 유저 정보가 없습니다.", "404") if membership.nil?
     return render_error("NOT AUTHORIZED", "권한이 없는 유저입니다.", "403") unless membership.can_be_destroyed_by?(@current_user)
 

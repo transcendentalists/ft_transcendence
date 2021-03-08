@@ -68,7 +68,7 @@ export let AdminIndexView = Backbone.View.extend({
 
   adminActionCallback: function (data) {
     const method = this.requestMethod();
-    if (method == "GET") return this.showTableModal.bind(this);
+    if (method == "GET") return this.showTableModal(data);
     else if (method == "DELETE") {
       const resource = this.resource.endsWith("memberships")
         ? "membership"

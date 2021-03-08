@@ -63,11 +63,14 @@ class GuildMembership < ApplicationRecord
     raise GuildMembershipError.new("길드에는 한명의 master가 필요합니다.", 400) if self.guild.only_one_member_exist?
     raise GuildMembershipError.new("접근 권한이 없습니다.", 403) unless self.can_be_updated_by?(options[:by])
 
+    #  1. 원래 멤버인 녀석을 master로 바꾼다. 
     ActiveRecord::Base.transaction do
       if position == "master"
         owner_membership = self.guild.memberships.find_by_user_id(self.guild.owner.id)
         owner_membership.update!(position: "member")
         self.guild.update!(owner_id: self.user_id)
+      elsif self.position == "master"
+        self.guild.make_another_member_master!
       end
       self.update!(position: position)
     end

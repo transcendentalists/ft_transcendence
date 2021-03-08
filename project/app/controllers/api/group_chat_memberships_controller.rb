@@ -4,7 +4,7 @@ class Api::GroupChatMembershipsController < ApplicationController
   def update
     begin
       membership = GroupChatMembership.find(params[:id])
-      membership.update_with_params!({by: @current_user, params: update_params})
+      membership.update_by_params!({by: @current_user, params: update_params})
     rescue GroupChatMembershipError => e
       return render_error("UPDATE FAILURE", e.message, e.status_code)
     rescue

@@ -32,6 +32,10 @@ class User < ApplicationRecord
     update_status('offline')
   end
 
+  def web_owner?
+    self.position == "web_owner"
+  end
+
   def banned?
     self.position == "ghost"
   end
@@ -163,6 +167,14 @@ class User < ApplicationRecord
     card = match.scorecard_of(self)
     return false if card.nil?
     card.ready and true
+  end
+
+  def update_position!(options = { by: self, position: self.position })
+    by_user = options[:by]
+    position = options[:position]
+    raise UserError.new("변경 권한이 없습니다.", 403) unless by_user.web_owner?
+    raise UserError.new("현재 포지션과 변경하려는 포지션이 같습니다.", 400) if self.position == position
+    self.update!(position: position)
   end
 
   private

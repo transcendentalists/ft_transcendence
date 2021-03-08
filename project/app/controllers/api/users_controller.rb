@@ -50,6 +50,9 @@ class Api::UsersController < ApplicationController
   def update
     begin
       if (current_user_is_admin_or_owner?)
+        raise UserError.new("API에 position 키가 없습니다.", 400) unless params.has_key?(:position)
+        user = User.find(params[:id])
+        user.update_position!({by: @current_user, position: params[:position]})
       else
         raise UserError.new("API에 user 키가 없습니다.", 400) unless params.has_key?(:user)
         user = User.find(params[:id])

@@ -147,9 +147,9 @@ class GroupChatRoom < ApplicationRecord
     membership
   end
 
-  def make_another_member_owner
+  def make_another_member_owner!
     memberships = self.memberships
-    return if memberships.count == 1
+    return if memberships.where.not(position: "ghost").count == 1
 
     new_owner = memberships.find_by_position("admin")
     new_owner = memberships.find_by_position("member") if new_owner.nil?

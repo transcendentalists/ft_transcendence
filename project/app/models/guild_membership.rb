@@ -34,7 +34,7 @@ class GuildMembership < ApplicationRecord
     return true if user.can_service_manage?
     return false unless self.guild_id == current_user.in_guild&.id
     return !self.master? if self.user_id == user.id
-    
+
     grade = ApplicationRecord.position_grade
     return grade[user.guild_membership.position] > grade[self.position] 
   end
@@ -45,11 +45,9 @@ class GuildMembership < ApplicationRecord
     self.destroy
   end
 
-  def can_be_updated_by?(current_user)
-    return false if self.master?
-    return false unless self.guild_id == current_user.in_guild&.id
-    return false if current_user.guild_membership.position != "master"
-    true
+  def can_be_updated_by?(user)
+    return true if user.can_service_manage?
+    return can_be_destroyed_by?(user) && self.id != user.id
   end
 
   def master?
@@ -59,4 +57,20 @@ class GuildMembership < ApplicationRecord
   def admin?
     self.position == "admin"
   end
+
+  def update_position!(position, options = { by: self })
+    raise GuildMembershipError.new("이미 해당 유저의 포지션은 #{position}입니다.", 400) if self.position == position
+    raise GuildMembershipError.new("길드에는 한명의 master가 필요합니다.", 400) if self.guild.only_one_member_exist?
+    raise GuildMembershipError.new("접근 권한이 없습니다.", 403) unless self.can_be_updated_by?(options[:by])
+
+    ActiveRecord::Base.transaction do
+      if position == "master"
+        owner_membership = self.guild.memberships.find_by_user_id(self.guild.owner.id)
+        owner_membership.update!(position: "member")
+        self.guild.update!(owner_id: self.user_id)
+      end
+      self.update!(position: position)
+    end
+  end
+
 end

@@ -25,10 +25,14 @@ class Api::GuildMembershipsController < ApplicationController
   end
 
   def update
-    guild_membership = GuildMembership.find_by_id_and_guild_id(params[:id], params[:guild_id])
-    return render_error('변경 실패', '길드에 존재하지 않는 멤버입니다.', 404) if guild_membership.nil?
-    return render_error('권한 에러', '접근 권한이 없습니다.', 401) unless guild_membership.can_be_updated_by?(@current_user)
-    guild_membership.update(position: params[:position])
+    begin
+      guild_membership = GuildMembership.find(params[:id])
+      guild_membership.update_position!(params[:position], {by: @current_user})
+    rescue GuildMembershipError => e
+      return render_error("업데이트 실패", e.message, e.status_code)
+    rescue
+      return render_error("업데이트 실패", "업데이트에 실패하였습니다.", 500)
+    end
     render json: { guild_membership: guild_membership.profile }
   end
 

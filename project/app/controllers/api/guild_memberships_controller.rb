@@ -39,15 +39,16 @@ class Api::GuildMembershipsController < ApplicationController
 
     ActiveRecord::Base.transaction do
       begin
-        return render_error("길드멤버 제명 실패", "길드에는 한명 이상의 유저가 존재해야 합니다.", 403) if membership.guild.only_one_member_exist?
-
-        membership.guild.make_another_member_master! if membership.master?
-        membership.destroy
-        return head :no_content, status: 204
+        membership.unregister!
+        head :no_content, status: 204
+      rescue GuildMembershipError => e
+        render_error("길드멤버 탈퇴 실패", e.message, e.status_code)
+        raise ActiveRecord::Rollback
       rescue
+        render_error("길드멤버 탈퇴 실패", "요청하신 멤버의 탈퇴에 실패했습니다.", 500)
         raise ActiveRecord::Rollback
       end
     end
-    return render_error("길드멤버 제명 실패", "길드 멤버 제명에 실패했습니다.", 500)
   end
+
 end

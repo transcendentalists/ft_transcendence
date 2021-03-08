@@ -57,7 +57,7 @@ class Guild < ApplicationRecord
   end
 
   def only_one_member_exist?
-    self.memberships.count == 1
+    self.memberships.reload.count == 1
   end
 
   def cancel_rest_of_war_request
@@ -72,13 +72,13 @@ class Guild < ApplicationRecord
   end
 
   def make_another_member_master!
-    return if memberships.count <= 1
+    return if self.memberships.count <= 1
 
-    master = memberships.find_by_position("master")
+    master = self.memberships.find_by_position("master")
     master.update(position: "member") unless master.nil?
     
-    new_master = memberships.find_by_position("officer")
-    new_master = memberships.find_by_position("member") if new_master.nil?
+    new_master = self.memberships.find_by_position("officer")
+    new_master = self.memberships.find_by_position("member") if new_master.nil?
     self.update!(owner_id: new_master.user_id)
     new_master.update!(position: "master")
   end

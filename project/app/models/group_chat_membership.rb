@@ -60,7 +60,7 @@ class GroupChatMembership < ApplicationRecord
     self
   end
 
-  def update_with_params!(options = {by: self, params: {}})
+  def update_by_params!(options = {by: self, params: {}})
     params = options[:params]
     unless params[:mute].nil?
       self.update_mute!(params[:mute]) if self.can_be_muted_by?(options[:by])

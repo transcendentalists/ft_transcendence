@@ -1,7 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe User, type: :model do
-  it "is not valid without name" do
-    expect(User.new.name).to be_nil
+describe "user test" do
+  it "generate test" do
+    user = create(:user)
+    expect(user.persisted?).to eq(true)
   end
 end

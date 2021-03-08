@@ -1,0 +1,77 @@
+<script type="text/template" id="tournament-create-view-template">
+  <h1 class="ui header">토너먼트 생성하기</h1>
+  <form class="ui form">
+    <div class="field">
+      <label>토너먼트 이름(20자 이내)</label>
+      <input type="text" placeholder="토너먼트 이름을 입력해주세요." name="title">
+    </div>
+    <div class="field">
+      <label>상품</label>
+      <input type="text" placeholder="상품이 있는 경우 입력해주세요." name="incentive-gift">
+    </div>
+    <div class="field">
+      <label>보상 타이틀</label>
+      <input type="text" placeholder="보상 타이틀이 있는 경우 입력해주세요." name="incentive-title">
+    </div>
+    <div class="field">
+      <label>참여인원 제한</label>
+      <select class="max-user-count">
+        <option value="8">8명</option>
+        <option value="16">16명</option>
+        <option value="32">32명</option>
+      </select>
+    </div>      
+    <div class="field">
+      <label>경기 목표 점수</label>
+      <select class="target-match-score">
+        <option value="3">3점</option>
+        <option value="5">5점</option>
+        <option value="7">7점</option>
+        <option value="10">10점</option>
+      </select>
+    </div>      
+    <div class="field">
+      <label>토너먼트 규칙</label>
+      <select class="rule-id">
+        <option value="1">classic</option>
+        <option value="2">invisible</option>
+        <option value="3">dwindle</option>
+        <option value="4">accel_wall</option>
+        <option value="5">accel_paddle</option>
+        <option value="6">bound_wall</option>
+        <option value="7">bound_paddle</option>
+      </select>
+    </div>      
+    <div class="field">
+      <label>토너먼트 시작일</label>
+      <input type="date" name="start-date"
+       value="<%%= min_date %>",
+       min="<%%= min_date %>" max="<%%= max_date %>">
+    </div>
+    <div class="field">
+      <label>경기 시작시각</label>
+      <select class="tournament-time">
+        <option value="9">09시</option>
+        <option value="10">10시</option>
+        <option value="11">11시</option>
+        <option value="12">12시</option>
+        <option value="13">13시</option>
+        <option value="14">14시</option>
+        <option value="15">15시</option>
+        <option value="16">16시</option>
+        <option value="17">17시</option>
+        <option value="18">18시</option>
+        <option value="19">19시</option>
+        <option value="20">20시</option>
+        <option value="21">21시</option>
+        <option value="22">22시</option>
+      </select>
+    </div>
+
+    <div class="flex-cotnainer buttons">
+      <div class="ui teal create button">개설하기</div>
+      <div Class="ui red cancel button">취소하기</div>
+    </div>
+  </form>
+
+</script>

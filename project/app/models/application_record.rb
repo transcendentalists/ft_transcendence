@@ -1,7 +1,7 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
-  def self.position_grade
+  def position_grade
     {
       "web_owner" => 5, 
       "web_admin" => 4, 
@@ -11,6 +11,10 @@ class ApplicationRecord < ActiveRecord::Base
       "user" => 1,
       "ghost" => 0
     }
+  end
+
+  def position_compare(membership_one, membership_two)
+    position_grade[membership_one.position] - position_grade[membership_two.position]
   end
 
   def self.group_chat_positions

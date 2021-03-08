@@ -17,28 +17,25 @@ class GroupChatMembership < ApplicationRecord
   def can_be_kicked_by?(user)
     return true if user.can_service_manage?
 
-    position_grade = ApplicationRecord.position_grade
     user_position = self.room.memberships.find_by_user_id(user.id)&.position
     return false if user_position.nil?
     position_grade[self.position] <= 2 && position_grade[user_position] >= 2
   end
 
   def can_be_muted_by?(user)
-    membership = GroupChatMembership.find_by_user_id(user.id)
+    membership = self.room.memberships.find_by_user_id(user.id)
     return false if membership.nil?
 
-    grade = ApplicationRecord.position_grade
-    grade[self.position] <= 2 && grade[membership.position] >= 2
+    position_grade[self.position] <= 2 && position_grade[membership.position] >= 2
   end
 
   def can_be_position_changed_by?(user)
     return true if user.can_service_manage?
 
-    membership = GroupChatMembership.find_by_user_id(user.id)
+    membership = self.room.memberships.find_by_user_id(user.id)
     return false if membership.nil?
 
-    grade = ApplicationRecord.position_grade
-    grade[self.position] <= 2 && grade[membership.position] >= 3
+    position_grade[self.position] <= 2 && position_grade[membership.position] >= 3
   end
       
   def ghost?

@@ -41,23 +41,18 @@ class User < ApplicationRecord
   end
 
   def can_service_manage?
-    ApplicationRecord.position_grade[self.position] >= 4
+    position_grade[self.position] >= 4
   end
 
-  def can_be_service_banned_by?(current_user)
-    return false unless current_user.can_service_manage?
-    grade = ApplicationRecord.position_grade
-    grade[current_user.position] > grade[self.position]
+  def can_be_service_banned_by?(user)
+    return false unless user.can_service_manage?
+    position_compare(user, self) > 0
   end
 
   def service_ban!
     self.update_status("offline")
     self.update!(position: "ghost")
     ActionCable.server.broadcast("notification_channel_#{self.id.to_s}", {type: "service_ban"})
-  end
-
-  def position_grade
-    ApplicationRecord.position_grade[self.position]
   end
 
   def self.onlineUsersWithoutFriends(params)
@@ -75,7 +70,7 @@ class User < ApplicationRecord
   end
 
   def has_auth_for_admin_web?
-    ApplicationRecord.position_grade[self.position] >= 4
+    position_grade[self.position] >= 4
   end
 
   # instance methods for game

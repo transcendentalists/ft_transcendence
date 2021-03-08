@@ -2,31 +2,13 @@ class Api::GroupChatMembershipsController < ApplicationController
   before_action :check_headers_and_find_current_user, only: [ :update, :destroy ]
 
   def update
-    params = update_params
-
-    memberships = GroupChatMembership.where(group_chat_room_id: params[:group_chat_room_id])
-    return render_error("NOT FOUND", "존재하지 않는 챗룸입니다.", "404") if memberships.nil?
-    
-    membership = memberships.find_by_id(params[:id])
-    # TODO: webadmin check
-    # current_user_position = @current_user.web_admin ? "admin" : memberships.find_by_user_id(@current_user.id)
-    current_user_position = memberships.find_by_user_id(@current_user.id)&.position
-    return render_error("NOT FOUND", "챗룸 멤버 정보를 찾을 수 없습니다.", "404") if membership.nil? || current_user_position.nil?
-    
     begin
-      if !params[:mute].nil?
-        membership.can_be_muted_by?(current_user_position)
-        membership.update_mute(params[:mute])
-      end
-
-      if !params[:position].nil?
-        membership.can_be_position_changed_by?(current_user_position)
-        membership.update_position(params[:position])
-      end
+      params = update_params
+      membership = GroupChatMembership.find(params[:id])
+      membership.update_with_params!({by: @current_user, params: params})
     rescue
-      render_error("BAD REQUEST", "권한이 없거나 형식이 잘못된 요청입니다.", 400)
+      return render_error("UPDATE FAILURE", "업데이트에 실패하였습니다.", 400)
     end
-
     render :json => { group_chat_membership: membership }
   end
 

@@ -59,7 +59,22 @@ class GroupChatMembership < ApplicationRecord
     self
   end
 
-  def update_mute(mute)
+  def update_with_params!(options = {by: self, params: {}})
+    by_user_position = GroupChatMembership.find_by_user_id(options[:by].id)
+    params = options[:params]
+    
+    unless params[:mute].nil?
+      self.can_be_muted_by?(by_user_position)
+      self.update_mute!(params[:mute])
+    end
+
+    unless params[:position].nil?
+      self.can_be_position_changed_by?(by_user_position)
+      self.update_position!(params[:position])
+    end
+  end
+
+  def update_mute!(mute)
     self.update!(mute: mute)
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.group_chat_room_id.to_s}",
@@ -72,7 +87,7 @@ class GroupChatMembership < ApplicationRecord
     self
   end
 
-  def update_position(position)
+  def update_position!(position)
     self.update!(position: position)
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.group_chat_room_id.to_s}",

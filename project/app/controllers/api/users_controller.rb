@@ -1,6 +1,8 @@
 require 'bcrypt'
 
 class Api::UsersController < ApplicationController
+  before_action :check_headers_and_find_current_user, only: [:destroy]
+
   def index
     if params[:for] == 'appearance'
       users = User.onlineUsersWithoutFriends(service_params)
@@ -101,6 +103,20 @@ class Api::UsersController < ApplicationController
 
   def ban
     render plain: 'You banned ' + params[:id] + ' user'
+  end
+
+  def destroy
+    return render_error("FORBIDDEN", "서비스 매니저만 유저 계정을 제한할 수 있습니다.", 403) unless current_user_is_admin_or_owner?
+    begin
+      user = User.find(params[:id])
+      raise UserError.new("해당 유저에 대한 제한 권한이 없습니다.", 403) unless user.can_be_service_banned_by?(@current_user)
+      user.service_ban!
+      return head :no_content, status: 204
+    rescue UserError => e
+      return render_error("계정 제한 실패", e.message, e.status_code)
+    rescue
+      return render_error("계정 제한 실패", "요청하신 유저 계정의 제한에 실패했습니다.", 500)
+    end
   end
 
   private

@@ -32,6 +32,10 @@ class User < ApplicationRecord
     update_status('offline')
   end
 
+  def banned?
+    self.position == "ghost"
+  end
+
   def can_service_manage?
     ApplicationRecord.position_grade[self.position] >= 4
   end

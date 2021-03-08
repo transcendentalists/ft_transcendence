@@ -69,31 +69,26 @@ class Api::UsersController < ApplicationController
 
   def login
     user = User.find_by_name(params[:user]['name'])
-    if user
-      if BCrypt::Password.new(user.password) == params[:user]['password']
-        if user.two_factor_auth
-          verification_code = rand(100000..999999).to_s
-          user.update(verification_code: verification_code)
-          ActionMailer::Base.mail(to: user.email,
-            subject: "[Transcendence] 2차 인증 메일입니다.",
-            body: "인증번호는 [#{verification_code}] 입니다.",
-            from: "valhalla.host@gmail.com",
-            content_type: "text/html").deliver_now 
-        else
-          user.login
-          create_session user.id 
-        end
-        render :json => { current_user: user.to_simple }
-      else
-        render json: { error: {
-          'type': 'login failure', 'msg': '비밀번호가 맞지 않습니다.'
-        } }, status: 401
-      end
+    return render_error("login failure", "가입된 이름이 없습니다.", 401) if user.nil?
+    return render_error("login failure", "로그인이 제한된 계정입니다.", 403) if user.banned?
+    
+    if BCrypt::Password.new(user.password) != params[:user]['password']
+      return render_error("login failure", "비밀번호가 맞지 않습니다.", 401)
+    end
+  
+    if user.two_factor_auth
+      verification_code = rand(100000..999999).to_s
+      user.update(verification_code: verification_code)
+      ActionMailer::Base.mail(to: user.email,
+        subject: "[Transcendence] 2차 인증 메일입니다.",
+        body: "인증번호는 [#{verification_code}] 입니다.",
+        from: "valhalla.host@gmail.com",
+        content_type: "text/html").deliver_now 
     else
-      render json: { error: {
-        'type': 'login failure', 'msg': '가입된 이름이 없습니다.'
-      } }, status: 401
-    end 
+      user.login
+      create_session user.id 
+    end
+    render :json => { current_user: user.to_simple }
   end
 
   # 유저가 로그아웃 버튼을 클릭했을 때 id를 이용한 로그아웃 프로세스 처리

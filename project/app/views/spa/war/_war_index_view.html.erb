@@ -1,39 +1,59 @@
 <script type="text/template" id="war-index-view-template">
+  <%
+=begin%>
+ <h1 class="ui header guild-index-header">Current War</h1>
+  <%% if (current_user_guild == null) { %>
+    <span>소속된 길드가 없습니다.</span>
+  <%% } else if (!current_user_guild_in_war) { %>
+    <span>진행 중인 전쟁이 없습니다.</span>
+  <%% } else { %>
+    <div class="ui text container">
+      <h2 class="opponent-guild-header ui header">상대 길드</h2>
+      <div class="opponent-guild-profile-view guild-profile-card ui segment flex-container center-aligned"></div>
 
-  <div class="ui text container">
-    <h1 class="opponent-guild-header ui header">상대 길드</h1>
-    <%% if (current_user_guild !== null) { %>
-      <div class="guild-profile-view">
-        <div class="current-user-guild guild-profile-card ui segment flex-container center-aligned"></div>
-      </div>
-    <%% } else { %>
-      <span>소속된 길드가 없습니다.</span>
-    <%% } %>
+      <h2 class="war-status-header ui header">War Status</h2>
+      <div class="war-status-view"></div>
 
-    <h1 class="war-request-header ui header">War Request</h1>
-    <%% if (current_user_guild !== null) { %>
-      <div class="war-request-card-list"> </div>
-    <%% } else { %>
-      <span>소속된 길드가 없습니다.</span>
-    <%% } %>
+      <h2 class="war-rule-header ui header">Rules of War</h2>
+      <div class="war-rule-view"></div>
 
-    <div class="guild-ranking-header flex-container">
-      <h1 class="ui header">Guild Ranking</h1>
-      <%% if (current_user_guild === null) { %>
-        <button id="guild-create-button" class="ui teal mini button">길드 생성</button>
-      <%% } %>
+      <h2 class="war-battle-header ui header">Battle</h2>
+      <div class="war-battle-view flex-container baseline"></div>
+
+      <h2 class="war-match-history-header ui header">대전 기록</h2>
+      <div class="war-match-history-list-view flex-container column-direction"></div>
     </div>
-    <div>
-      <div class="guild-rank-page-buttons flex-container space-between">
-        <button id="guild-page-before-button" class="ui button tiny teal">
-          before
-        </button>
-        <button id="guild-page-next-button" class="ui button tiny teal">
-          next
-        </button>
-      </div>
-    </div>
-    <div class="guild-ranking-list"></div>
-  </div>
+  <%% } %> 
+<%
+=end%>
 
+
+  <h1 class="ui header guild-index-header">Current War</h1>
+  <%% if (current_user_guild == null) { %>
+    <span>소속된 길드가 없습니다.</span>
+  <%% } else if (!current_user_guild_in_war) { %>
+    <span>진행 중인 전쟁이 없습니다.</span>
+  <%% } else { %>
+    <div class="ui text container">
+
+      <h2 class="opponent-guild-header ui header">상대 길드</h2>
+      <div class="opponent-guild-profile-view guild-profile-card ui segment flex-container center-aligned"></div>
+
+      <div class="flex-container baseline">
+        <h2 class="war-rule-header ui header">Rules of War</h2>
+        <h2 class="war-status-header ui header">War Status</h2>
+      </div>
+      <div class="flex-container">
+        <div class="war-rule-view"></div>
+        <div class="war-status-view"></div>
+      </div>
+
+
+      <h2 class="war-battle-header ui header">Battle</h2>
+      <div class="war-battle-view flex-container baseline"></div>
+
+      <h2 class="war-match-history-header ui header">대전 기록</h2>
+      <div class="war-match-history-list-view flex-container column-direction"></div>
+    </div>
+  <%% } %>
 </script>

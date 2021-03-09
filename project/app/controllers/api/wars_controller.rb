@@ -17,28 +17,11 @@ class Api::WarsController < ApplicationController
     request = war.request
     my_guild_status = request.war_statuses.current_guild_war_status(params[:guild_id])
     opponent_guild_status = request.war_statuses.opponent_guild_war_status(params[:guild_id])
-    my_guild  = my_guild_status.guild
-    opponent_guild = opponent_guild_status.guild
-    # TODO: 아래 두 해쉬만드는 로직은 메서드로 뺴기
-    status = {
-      my_guild_point: my_guild_status.point,
-      opponent_guild_point: opponent_guild_status.point,
-      max_no_reply_count: request.max_no_reply_count,
-      remained_no_reply_count: request.max_no_reply_count - my_guild_status.no_reply_count,
-    }
-    rules_of_war = {
-      bet_point: request.bet_point,
-      start_date: request.start_date.to_date,
-      end_date: request.end_date.to_date,
-      rule: request.rule.name,
-      max_no_reply_count: request.max_no_reply_count,
-      war_time: request.war_time.hour,
-      include_tournament: request.include_tournament,
-      include_ladder: request.include_ladder,
-    }
-    matches = my_guild.war_match_history
+    status = my_guild_status.profile(my_guild_status.guild)
+    rules_of_war = my_guild_status.request.profile
+    matches = my_guild_status.guild.war_match_history
     keys = %w[guild status rules_of_war matches]
-    values = [opponent_guild.profile, status, rules_of_war, matches]
+    values = [opponent_guild_status.guild.profile, status, rules_of_war, matches]
     hash = Hash[keys.zip values]
     render json: hash
   end

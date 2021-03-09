@@ -1,6 +1,6 @@
 namespace :db do
   desc "Checks to see if the database exists"
-  task :exists do
+  task :connection_exists do
     begin
       Rake::Task['environment'].invoke
       ActiveRecord::Base.connection

@@ -8,26 +8,33 @@ export let SignUpView = Backbone.View.extend({
     "click .button": "submit",
   },
 
-  signUpSuccessCallback: function (data) {
-    App.current_user.set("id", data.user.id);
-    App.current_user.login();
-    App.app_view.render();
-    App.router.navigate(`#/users/${data.user.id}`);
+  render: function () {
+    this.$el.empty();
+    this.$el.html(this.template());
+
+    this.message_field = this.$(".ui.negative.message");
+    this.message_field.hide();
+
+    return this;
   },
 
-  failCallback: function (data) {
-    this.$(".ui.negative.message").empty();
-    this.$(".ui.negative.message").append(
-      this.warning_message_template(data.error)
-    );
-    this.$(".ui.negative.message").show();
+  submit: function () {
+    let name = this.getInput("name");
+    let password = this.getInput("password");
+    let email = this.getInput("email");
+
+    Helper.fetch("users", this.signUpParams(name, password, email));
+  },
+
+  getInput: function (input_name) {
+    return document.forms[0][input_name].value;
   },
 
   signUpParams: function (name, password, email) {
     return {
       method: "POST",
       success_callback: this.signUpSuccessCallback.bind(this),
-      fail_callback: this.failCallback.bind(this),
+      fail_callback: this.showWarningMessage.bind(this),
       body: {
         user: {
           name,
@@ -38,19 +45,14 @@ export let SignUpView = Backbone.View.extend({
     };
   },
 
-  submit: function () {
-    let name = $("input[name=name]").val();
-    let password = $("input[name=password]").val();
-    let email = $("input[name=email]").val();
-
-    Helper.fetch("users", this.signUpParams(name, password, email));
+  signUpSuccessCallback: function (data) {
+    App.current_user.login(data.user.id);
   },
 
-  render: function () {
-    this.$el.empty();
-    this.$el.html(this.template());
-    this.$(".ui.negative.message").hide();
-    return this;
+  showWarningMessage: function (data) {
+    this.message_field.empty();
+    this.message_field.append(this.warning_message_template(data.error));
+    this.message_field.show();
   },
 
   close: function () {

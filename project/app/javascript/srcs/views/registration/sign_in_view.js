@@ -21,14 +21,15 @@ export let SignInView = Backbone.View.extend({
     this.$el.empty();
     this.$el.html(this.template());
 
+    this.status = "login";
     this.login_field = this.$(".login.field");
-    this.auth_field = this.$(".auth.field");
-    this.message_field = this.$(".ui.negative.message");
     this.submit_button = this.$(".submit.button");
 
-    this.status = "login";
+    this.auth_field = this.$(".auth.field");
     this.auth_field.hide();
+    this.message_field = this.$(".ui.negative.message");
     this.message_field.hide();
+
     return this;
   },
 
@@ -116,8 +117,7 @@ export let SignInView = Backbone.View.extend({
   },
 
   authSuccessCallback: function (data) {
-    App.current_user.set("id", data.current_user.id);
-    App.current_user.login();
+    App.current_user.login(data.current_user.id);
   },
 
   submit_lock: function () {

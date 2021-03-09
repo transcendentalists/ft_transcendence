@@ -138,8 +138,11 @@ class User < ApplicationRecord
     card.ready and true
   end
 
-  private
+  def already_received_guild_invitation_by(user)
+    !self.guild_invitations.find_by_user_id(user.id).nil?
+  end
 
+  private
   def self.where_by_query(params)
     users = self.all
     params.except(:for, :user_id).each do |k, v|

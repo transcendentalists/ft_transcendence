@@ -16,7 +16,7 @@ class WarStatus < ApplicationRecord
       my_guild_point: self.point,
       opponent_guild_point: WarStatus.opponent_guild_war_status(guild_id).point,
       max_no_reply_count: self.request.max_no_reply_count,
-      remained_no_reply_count: self.request.max_no_reply_count - self.no_reply_count,
+      no_reply_count: self.no_reply_count,
     }
   end
 

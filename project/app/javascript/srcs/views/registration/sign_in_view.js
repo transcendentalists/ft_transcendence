@@ -79,7 +79,7 @@ export let SignInView = Backbone.View.extend({
       this.submit_unlock();
       this.login_field.hide();
       this.auth_field.show();
-    } else this.showWarningMessage(data);
+    } else this.authSuccessCallback(data);
   },
 
   showWarningMessage: function (data) {

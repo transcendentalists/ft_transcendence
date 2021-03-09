@@ -73,33 +73,26 @@ class Guild < ApplicationRecord
   def war_match_history
     war = self.wars.find_by_status(["pending", "progress"])
     return if war.nil?
-    opponent_guild = war.war_statuses.opponent_guild_war_status(self.id).guild
+    my_guild_war_status = war.war_statuses.find_by_guild_id(self.id)
+    opponent_guild = my_guild_war_status.opponent_guild_war_status.guild
     request = war.request
-    # TODO 래더랑 토너먼트 나중에 추가하는 방식으로
-    match_type = %w[war dual ladder tournament]
-    # match_type << "ladder" if request.include_ladder
-    # match_type << "tournament" if request.include_tournament
+    match_type = %w[war dual]
+    match_type << "ladder" if request.include_ladder
+    match_type << "tournament" if request.include_tournament
     matches = []
-    # TODO: 전쟁 이전의 match 는 가져오면 안된다.
-    # NOTE: 전쟁 시작 전날까지는 다 거르기
     Scorecard.where(user_id: self.users.ids).each do |scorecard|
       if scorecard.opponent_user.in_guild&.id == opponent_guild.id && match_type.include?(scorecard.match.match_type)
         match = scorecard.match
-        # TODO
-        # if request.start_date <= match.updated_at
+        if request.start_date <= match.updated_at
           matches << {
             match: match,
             opponent_guild_user: scorecard.opponent_user,
             current_guild_user_scorecard: scorecard,
             opponent_guild_user_scorecard: scorecard.opponent_scorecard,
-            # scorecards: match.scorecards,
-            # users: match.users.map { |user| user.profile }
           }
-        # end
+        end
       end
     end
-    # NOTE limit 4개 걸기
     matches.sort_by { |match| match[:match].updated_at }.reverse[..3]
   end
-
 end

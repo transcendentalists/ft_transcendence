@@ -10,6 +10,15 @@ class WarStatus < ApplicationRecord
   def self.opponent_guild_war_status(current_guild_id)
     self.where.not(guild_id: current_guild_id).first
   end
+  
+  def profile(guild_id)
+    {
+      my_guild_point: self.point,
+      opponent_guild_point: WarStatus.opponent_guild_war_status(guild_id).point,
+      max_no_reply_count: self.request.max_no_reply_count,
+      remained_no_reply_count: self.request.max_no_reply_count - self.no_reply_count,
+    }
+  end
 
   def enemy?
     return self.position == "enemy"
@@ -18,5 +27,6 @@ class WarStatus < ApplicationRecord
   def challenger?
     return self.position == "challenger"
   end
+
 
 end

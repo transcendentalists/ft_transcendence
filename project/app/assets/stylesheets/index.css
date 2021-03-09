@@ -5,7 +5,7 @@
 body {
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: grayscale;
-  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  font-family: "Helveca Neue", Arial, Helvetica, sans-serif;
 }
 
 #root {
@@ -1156,6 +1156,19 @@ body {
      WAR INDEX VIEW
      ========================================================================== */
 
+#war-index-view .ui.header {
+  margin-bottom: 1rem;
+}
+
+#war-index-view .opponent-guild {
+  width: 32rem;
+}
+
+#war-index-view .opponent-guild-profile-view {
+  margin-bottom: 4rem;
+  height: 13rem;
+}
+
 #war-index-view .small.image {
   margin-bottom: 0;
   width: 150px !important;
@@ -1164,18 +1177,54 @@ body {
   min-height: 150px;
 }
 
-#war-index-view .ui.header {
-  margin-bottom: 1.0rem;
+#war-index-view .war-battle {
+  width: 16rem;
+  margin-left: auto;
 }
 
-#war-index-view .opponent-guild-profile-view {
+#war-index-view .war-battle-view {
   margin-bottom: 4rem;
+}
+
+#war-index-view .war-battle-view .ui.card {
+  width: 24rem;
   height: 13rem;
+  margin-right: 1rem;
+}
+
+#war-index-view .war-battle-view .ui.card .content .description {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+#war-index-view .war-status {
+  margin-left: auto;
 }
 
 #war-index-view .war-status-view {
   margin-bottom: 4rem;
   width: 100%;
+}
+
+#war-index-view .war-status-view .ui.card {
+  width: 336px;
+  height: 200px;
+}
+
+#war-index-view .war-status-view .content {
+  margin-top: 1.2rem;
+}
+
+#war-index-view .war-status-view .ui.circular.label {
+  place-self: flex-end;
+}
+
+#war-index-view .war-status-view .war-point.row {
+  margin-bottom: 1rem;
+}
+
+#war-index-view .war-status-view .sub.header {
+  margin-bottom: 0.5rem;
 }
 
 #war-index-view .war-rule-view {
@@ -1184,8 +1233,24 @@ body {
   margin-right: 1rem;
 }
 
-#war-index-view .war-battle-view {
-  margin-bottom: 4rem;
+#war-index-view .war-rule-view .ui.card {
+  width: 336px;
+  height: 200px;
+}
+
+#war-index-view #my-guild-point {
+  width: 50%;
+  margin-bottom: 0;
+}
+
+#war-index-view #opponent-guild-point {
+  width: 50%;
+  transform: scaleX(-1);
+  margin-bottom: 0;
+}
+
+#war-index-view #opponent-guild-point .label {
+  transform: scaleX(-1);
 }
 
 #war-index-view .war-match-history-list-view {
@@ -1231,62 +1296,6 @@ body {
 #war-index-view .war-match-history-view div[data-text] {
   font-size: 1.2rem;
   margin-top: -0.4rem;
-}
-
-#war-index-view .war-status-view .ui.card {
-  width: 336px;
-  height: 200px;
-}
-
-#war-index-view .war-status-view .ui.circular.label {
-  place-self: flex-end;
-}
-
-#war-index-view .war-status-view .war-point.row {
-  margin-bottom: 1rem;
-}
-
-#war-index-view .war-status-view .sub.header {
-  margin-bottom: 0.5rem;
-}
-
-#war-index-view .war-status-view .content {
-  margin-top: 1.2rem;
-}
-
-#war-index-view .war-rule-view .ui.card {
-  width: 336px;
-  height: 200px;
-}
-
-#war-index-view .war-battle-view .ui.card {
-  width: 24rem;
-  height: 13rem;
-  margin-right: 1rem;
-}
-
-#war-index-view .war-battle-view .ui.card .content .description {
-  text-align: center;
-  margin-top: 3rem;
-}
-
-#war-index-view #my-guild-point {
-  width: 50%;
-  margin-bottom: 0;
-}
-
-#war-index-view #opponent-guild-point {
-  width: 50%;
-  transform: scaleX(-1);
-  margin-bottom: 0;
-}
-
-#war-index-view #opponent-guild-point .bar .progress {
-  transform: scaleX(-1);
-}
-
-#war-index-view #opponent-guild-point .label {
-  transform: scaleX(-1);
 }
 
 /* ==========================================================================

@@ -6,35 +6,24 @@
     <span>진행 중인 전쟁이 없습니다.</span>
   <%% } else { %>
     <div class="ui text container">
-      <div class="ui grid">
-        <div class="eleven wide column">
+      <div class="flex-container">
+        <div class="opponent-guild">
           <h2 class="opponent-guild-header ui header">상대 길드</h2>
           <div class="opponent-guild-profile-view guild-profile-card ui segment flex-container center-aligned"></div>
         </div>
-        <div class="five wide column">
+        <div class="war-battle">
           <h2 class="war-battle-header ui header">Battle</h2>
           <div class="war-battle-view"></div>
         </div>
       </div>
-
-
-      <div class="ui grid">
-        <div class="eight wide column">
-          <div class="row">
-            <h2 class="war-rule-header ui header">전쟁 규칙</h2>
-          </div>
-          <div class="flex-container">
-            <div class="war-rule-view"></div>
-          </div>
+      <div class="flex-container">
+        <div class="war-rule">
+          <h2 class="war-rule-header ui header">전쟁 규칙</h2>
+          <div class="war-rule-view"></div>
         </div>
-
-        <div class="eight wide column">
-          <div class="row">
-            <h2 class="war-status-header ui header">전쟁 상태</h2>
-          </div>
-          <div class="flex-container">
-            <div class="war-status-view"></div>
-          </div>
+        <div class="war-status">
+          <h2 class="war-status-header ui header">전쟁 상태</h2>
+          <div class="war-status-view"></div>
         </div>
       </div>
       <h2 class="war-match-history-header ui header">대전 기록</h2>

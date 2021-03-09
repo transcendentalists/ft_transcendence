@@ -69,10 +69,6 @@ class User < ApplicationRecord
     self.status == "playing"
   end
 
-  def has_auth_for_admin_web?
-    position_grade[self.position] >= 4
-  end
-
   # instance methods for game
   def playing_match
     self.matches&.find_by_status(:progress)

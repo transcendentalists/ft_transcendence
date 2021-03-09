@@ -126,6 +126,9 @@ export let AdminIndexView = Backbone.View.extend({
 
   setDatabase: function () {
     Helper.fetch("admin/db", {
+      headers: {
+        admin: App.current_user.id,
+      },
       success_callback: function (data) {
         this.db = new App.Model.AdminDB(data.db);
         for (let key of Object.keys(this.child_selects))

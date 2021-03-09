@@ -2,7 +2,7 @@ class Api::AdminController < ApplicationController
   before_action :check_headers_and_find_current_user, only: [ :index ]
 
   def index
-    return render_error("UNAUTHORIZATION", "권한이 없습니다.", 403) unless @current_user.has_auth_for_admin_web?
+    return render_error("UNAUTHORIZATION", "권한이 없습니다.", 403) unless current_user_is_admin_or_owner?
 
     begin
       resources = {

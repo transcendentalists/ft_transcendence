@@ -18,7 +18,7 @@ class Api::WarsController < ApplicationController
     my_guild_status = request.war_statuses.current_guild_war_status(params[:guild_id])
     opponent_guild_status = request.war_statuses.opponent_guild_war_status(params[:guild_id])
     status = my_guild_status.profile(my_guild_status.guild)
-    rules_of_war = my_guild_status.request.profile
+    rules_of_war = my_guild_status.request.rules_of_war
     matches = my_guild_status.guild.war_match_history
     keys = %w[guild status rules_of_war matches]
     values = [opponent_guild_status.guild.profile, status, rules_of_war, matches]

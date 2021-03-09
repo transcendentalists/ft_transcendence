@@ -79,4 +79,17 @@ class WarRequest < ApplicationRecord
   def challenger
     self.war_statuses.find_by_position("challenger")&.guild
   end
+
+  def rules_of_war
+    {
+      bet_point: self.bet_point,
+      start_date: self.start_date.to_date,
+      end_date: self.end_date.to_date,
+      rule: self.rule.name,
+      max_no_reply_count: self.max_no_reply_count,
+      war_time: self.war_time.hour,
+      include_tournament: self.include_tournament,
+      include_ladder: self.include_ladder,
+    }
+  end
 end

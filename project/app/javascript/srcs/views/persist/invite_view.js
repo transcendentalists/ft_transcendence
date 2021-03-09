@@ -1,4 +1,4 @@
-import { App, Helper, DualHelper } from "srcs/internal";
+import { App, DualHelper } from "srcs/internal";
 
 export let InviteView = Backbone.View.extend({
   template: _.template($("#invite-view-template").html()),

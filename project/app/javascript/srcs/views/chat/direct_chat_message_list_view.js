@@ -55,7 +55,6 @@ export let DirectChatMessageListView = Backbone.View.extend({
     this.listenTo(this.message_list, "scroll", this.scrollDown);
     this.channel = App.Channel.ConnectDirectChatChannel(
       this.message_list,
-      this,
       this.room_id
     );
     return this;

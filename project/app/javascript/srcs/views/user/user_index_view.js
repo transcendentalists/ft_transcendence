@@ -1,5 +1,4 @@
-import { App } from "srcs/internal";
-import { Helper } from "../../helper";
+import { App, Helper } from "srcs/internal";
 
 export let UserIndexView = Backbone.View.extend({
   id: "user-index-view",

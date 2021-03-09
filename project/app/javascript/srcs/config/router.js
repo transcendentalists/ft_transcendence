@@ -1,5 +1,4 @@
-import { Helper } from "./helper";
-import { App } from "./internal";
+import { App } from "srcs/internal";
 
 export let Router = Backbone.Router.extend({
   routes: {

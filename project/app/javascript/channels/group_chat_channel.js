@@ -1,5 +1,4 @@
-import { App } from "../srcs/internal";
-import consumer from "./consumer";
+import consumer from "channels/consumer";
 
 export function ConnectGroupChatChannel(
   message_collection,

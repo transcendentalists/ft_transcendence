@@ -1,5 +1,3 @@
-import { Helper } from "srcs/helper";
-
 export let MatchHistoryView = Backbone.View.extend({
   className: "match-history-view flex-container center-aligned",
   template: _.template($("#match-history-view-template").html()),

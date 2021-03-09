@@ -1,4 +1,4 @@
-import { Helper } from "srcs/helper";
+import { Helper } from "srcs/internal";
 
 export let TournamentCardView = Backbone.View.extend({
   template: _.template($("#tournament-card-view-template").html()),

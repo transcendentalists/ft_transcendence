@@ -1,10 +1,6 @@
-import consumer from "./consumer";
+import consumer from "channels/consumer";
 
-export function ConnectDirectChatChannel(
-  message_collection,
-  chat_room,
-  room_id
-) {
+export function ConnectDirectChatChannel(message_collection, room_id) {
   return consumer.subscriptions.create(
     {
       channel: "DirectChatChannel",

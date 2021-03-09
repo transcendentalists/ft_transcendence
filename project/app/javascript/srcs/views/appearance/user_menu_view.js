@@ -1,4 +1,4 @@
-import { App, DualHelper, Helper } from "srcs/internal";
+import { App } from "srcs/internal";
 
 export let UserMenuView = Backbone.View.extend({
   template: _.template($("#user-menu-view-template").html()),

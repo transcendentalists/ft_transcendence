@@ -1,5 +1,3 @@
-import { Helper } from "srcs/internal";
-
 export let ImageUploadModalView = Backbone.View.extend({
   template: _.template($("#image-upload-modal-view-template").html()),
   warning_message_template: _.template($("#warning-message-template").html()),

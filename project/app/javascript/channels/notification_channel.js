@@ -1,4 +1,4 @@
-import consumer from "./consumer";
+import consumer from "channels/consumer";
 import { App, Helper } from "srcs/internal";
 
 export function ConnectNotificationChannel(room_id) {

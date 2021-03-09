@@ -1,4 +1,4 @@
-import { App, Helper, DualHelper } from "srcs/internal";
+import { App, DualHelper } from "srcs/internal";
 
 export let RuleModalView = Backbone.View.extend({
   template: _.template($("#rule-modal-view-template").html()),

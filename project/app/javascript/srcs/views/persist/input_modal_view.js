@@ -1,5 +1,3 @@
-import { App } from "srcs/internal";
-
 export let InputModalView = Backbone.View.extend({
   template: _.template($("#input-modal-view-template").html()),
   el: "#input-modal-view",

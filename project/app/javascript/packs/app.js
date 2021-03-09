@@ -1,5 +1,5 @@
-import * as semantic from "srcs/semantic-min";
-import * as sync from "srcs/backbone.sync";
+import * as semantic from "srcs/lib/semantic-min";
+import * as sync from "srcs/config/backbone.sync";
 import { App, Helper } from "srcs/internal";
 
 $(document).ready(function () {

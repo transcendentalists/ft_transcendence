@@ -1,5 +1,5 @@
-import { App, Helper } from "../internal";
-import { User } from "../models/user";
+import { App, Helper } from "srcs/internal";
+import { User } from "srcs/models/user";
 
 export let Friends = Backbone.Collection.extend({
   model: User,

@@ -1,4 +1,4 @@
-import * as Draw from "srcs/draw";
+import * as Draw from "srcs/lib/draw";
 
 export const GameBall = Backbone.Model.extend({
   initialize: function (self, rule) {

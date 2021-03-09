@@ -1,5 +1,5 @@
-import { App, Helper } from "../internal";
-import { ChatBan } from "../models/chat_ban";
+import { App, Helper } from "srcs/internal";
+import { ChatBan } from "srcs/models/chat_ban";
 
 export let ChatBans = Backbone.Collection.extend({
   model: ChatBan,

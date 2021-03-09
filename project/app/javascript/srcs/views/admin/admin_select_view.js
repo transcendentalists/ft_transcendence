@@ -1,5 +1,3 @@
-import { App } from "srcs/internal";
-
 export let AdminSelectView = Backbone.View.extend({
   template: _.template($("#admin-select-view-template").html()),
   default_option: "<option value='default'>----------</option>",

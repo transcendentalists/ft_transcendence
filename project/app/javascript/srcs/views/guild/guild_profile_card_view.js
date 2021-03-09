@@ -1,4 +1,4 @@
-import { App, Helper } from "srcs/internal";
+import { App } from "srcs/internal";
 
 export let GuildProfileCardView = Backbone.View.extend({
   template: _.template($("#guild-profile-card-template").html()),
@@ -20,7 +20,7 @@ export let GuildProfileCardView = Backbone.View.extend({
       })
     );
     this.buttons_view = new App.View.GuildProfileCardButtonsView({
-      guild: this.guild
+      guild: this.guild,
     });
     this.buttons_view
       .setElement(this.$("#guild-profile-card-buttons-view"))

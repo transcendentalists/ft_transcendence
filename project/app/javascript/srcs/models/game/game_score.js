@@ -1,4 +1,4 @@
-import * as Draw from "srcs/draw";
+import * as Draw from "srcs/lib/draw";
 import { App } from "srcs/internal";
 
 export const GameScore = Backbone.Model.extend({

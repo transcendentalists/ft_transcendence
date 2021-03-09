@@ -1,5 +1,4 @@
-import { App, Helper } from "srcs/internal";
-import { DualHelper } from "srcs/dual_helper";
+import { App, Helper, DualHelper } from "srcs/internal";
 
 export let ChatRoomMemberMenuView = Backbone.View.extend({
   el: "#chat-room-member-menu-view",

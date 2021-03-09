@@ -1,4 +1,4 @@
-import { App, Helper } from "srcs/internal";
+import { App } from "srcs/internal";
 
 export let DirectChatView = Backbone.View.extend({
   template: _.template($("#direct-chat-view-template").html()),

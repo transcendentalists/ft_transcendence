@@ -40,6 +40,7 @@ export let AppView = Backbone.View.extend({
     this.rule_modal_view.close();
     this.alert_modal_view.close();
     this.info_modal_view.close();
+    this.image_upload_modal_view.close();
 
     this.invite_view.close();
     this.request_view.close();

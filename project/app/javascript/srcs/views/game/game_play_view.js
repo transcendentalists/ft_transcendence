@@ -1,5 +1,5 @@
-import { App, Helper } from "srcs/internal";
-import * as Draw from "srcs/draw";
+import { App } from "srcs/internal";
+import * as Draw from "srcs/lib/draw";
 
 export let GamePlayView = Backbone.View.extend({
   el: "ladder-game-section",

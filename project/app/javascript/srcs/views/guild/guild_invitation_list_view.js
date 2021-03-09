@@ -1,7 +1,7 @@
 import { App } from "srcs/internal";
 
 export let GuildInvitationListView = Backbone.View.extend({
-  el: "#guild-invitation-list",
+  el: "#guild-invitation-list-view",
 
   initialize: function () {
     this.child_views = [];

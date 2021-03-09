@@ -22,7 +22,6 @@ export let WarIndexView = Backbone.View.extend({
       .render();
   },
 
-  // Status
   renderWarStatusView: function (war_status) {
     this.war_status_view = new App.View.WarStatusView();
     this.war_status_view
@@ -30,7 +29,6 @@ export let WarIndexView = Backbone.View.extend({
       .render(war_status);
   },
 
-  // Rule of War
   renderWarRuleView: function (rule) {
     this.war_rule_view = new App.View.WarRuleView();
     this.war_rule_view
@@ -38,17 +36,13 @@ export let WarIndexView = Backbone.View.extend({
       .render(rule);
   },
 
-  // Battle
-  // renderWarBattleView: function (battle) {
-  renderWarBattleView: function () {
+    renderWarBattleView: function () {
     this.war_battle_view = new App.View.WarBattleView();
     this.war_battle_view
       .setElement(this.$(".war-battle-view"))
       .render();
-      // .render(battle);
   },
   
-  // 대전기록 
   renderWarMatchHistory: function (war_matches) {
     this.war_match_history_list_view = new App.View.WarMatchHistoryListView();
     this.war_match_history_list_view
@@ -60,7 +54,6 @@ export let WarIndexView = Backbone.View.extend({
     this.renderGuildProfileCardView(data.guild);
     this.renderWarStatusView(data.status);
     this.renderWarRuleView(data.rules_of_war);
-    // this.renderWarBattleView(data.battle);
     this.renderWarBattleView();
     this.renderWarMatchHistory(data.matches);
   },

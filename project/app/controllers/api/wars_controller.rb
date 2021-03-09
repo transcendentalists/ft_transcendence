@@ -12,6 +12,7 @@ class Api::WarsController < ApplicationController
     end
   end
 
+  private
   def get_war_index_data(war_id)
     war = War.find_by_id(war_id)
     request = war.request

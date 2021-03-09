@@ -29,7 +29,7 @@ export let WarRequestDetailModalView = Backbone.View.extend({
       },
       fail_callback: (data) => {
         this.close();
-        Helper.info({ error: data.error });
+        Helper.defaultErrorHandler(data);
       },
     });
   },
@@ -46,7 +46,7 @@ export let WarRequestDetailModalView = Backbone.View.extend({
       },
       fail_callback: (data) => {
         this.close();
-        Helper.info({ error: data.error });
+        Helper.defaultErrorHandler(data);
       },
     });
   },

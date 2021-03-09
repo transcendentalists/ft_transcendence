@@ -23,7 +23,7 @@ import { GameScore } from "./models/game/game_score";
 
 /* COLLECTION */
 import { ChatBans } from "./collections/chat_bans";
-import { DirectChatMessages } from "./collections/chat_messages";
+import { DirectChatMessages } from "./collections/direct_chat_messages";
 import { Friends } from "./collections/friends";
 import { GroupChatMembers } from "./collections/group_chat_members";
 import { GroupChatMessages } from "./collections/group_chat_messages";

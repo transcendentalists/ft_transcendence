@@ -19,9 +19,7 @@ export let TournamentCardView = Backbone.View.extend({
     Helper.fetch(this.url(tournament_id), {
       method: "POST",
       success_callback: (data) => this.moveCardToMyTournamentsView(data),
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 

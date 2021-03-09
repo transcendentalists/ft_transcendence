@@ -13,16 +13,12 @@ export let ChatBans = Backbone.Collection.extend({
   },
 
   isUserChatBanned: function (user_id) {
-    if (
+    return (
       typeof this.findWhere({
         user_id: App.current_user.id,
         banned_user_id: user_id,
-      }) == "undefined"
-    )
-      return false;
-    else {
-      return true;
-    }
+      }) !== "undefined"
+    );
   },
 
   createOrDestroyChatBan: function (user_id) {

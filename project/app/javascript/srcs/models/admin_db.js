@@ -50,9 +50,7 @@ export let AdminDB = Backbone.Model.extend({
   },
 
   resourceText: function (resource) {
-    if (resource.hasOwnProperty("title"))
-      return `${resource.title}(${resource.channel_code})`;
-    else return resource.name;
+    return resource.name || `${resource.title}(${resource.channel_code})`;
   },
 
   resource: function (query_hash) {

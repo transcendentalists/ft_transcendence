@@ -5,12 +5,14 @@ export let CurrentUser = Backbone.Model.extend({
 
   initialize: function () {
     this.sign_in = false;
+    this.two_factor_auth = false;
     this.working = false;
     this.is_challenger = false;
   },
 
   logout: function () {
     this.sign_in = false;
+    this.two_factor_auth = false;
     this.working = false;
     this.is_challenger = false;
   },

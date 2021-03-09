@@ -167,11 +167,11 @@ Match.create([
 Match.create([
   # TODO: updated_at 시간을 어제와 지금 사이로 만들기
   {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.zone.yesterday},
-  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.find_zone('Seoul').parse('2021-03-07 17pm')},
-  {rule_id: 1, status: "completed", match_type: "ladder", updated_at: Time.find_zone('Seoul').parse('2021-03-07 17pm')},
-  {rule_id: 1, status: "completed", match_type: "ladder", updated_at: Time.find_zone('Seoul').parse('2021-03-07 17pm')},
-  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.find_zone('Seoul').parse('2021-03-07 17pm')},
-  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.find_zone('Seoul').parse('2021-03-07 17pm')},
+  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.zone.yesterday},
+  {rule_id: 1, status: "completed", match_type: "ladder", updated_at: Time.zone.yesterday},
+  {rule_id: 1, status: "completed", match_type: "ladder", updated_at: Time.zone.yesterday},
+  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.zone.yesterday},
+  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.zone.yesterday},
 ])
 
 Scorecard.create([
@@ -474,6 +474,6 @@ WarStatus.create([
 
 WarStatus.create([
   # war progress 상태
-  {guild_id: 12, war_request_id: 19, position: "challenger", point: "400", no_reply_count: 1},
+  {guild_id: 12, war_request_id: 19, position: "challenger", point: "50", no_reply_count: 1},
   {guild_id: 13, war_request_id: 19, position: "enemy", point: "250", no_reply_count: 2}
 ])

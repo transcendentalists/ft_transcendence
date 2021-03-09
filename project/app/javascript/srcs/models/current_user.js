@@ -39,29 +39,28 @@ export let CurrentUser = Backbone.Model.extend({
   dualRequestTo: function (enemy) {
     if (this.isDualRequestPossibleTo(enemy)) {
       App.app_view.rule_modal_view.render(enemy);
+    } else {
+      this.alertDualImpossibleModal(enemy);
     }
   },
 
   isDualRequestPossibleTo: function (enemy) {
-    let description = null;
-    if (this.get("status") == "playing") {
-      description = "게임 중에는 대전 신청이 불가능합니다.";
-    } else if (enemy.get("status") != "online") {
-      description =
-        enemy.get("status") == "offline"
-          ? enemy.get("name") + "님은 현재 로그아웃 상태입니다."
-          : enemy.get("name") + "님은 현재 게임중입니다.";
-    } else if (this.isWorking()) {
-      description = "다른 유저와 대전 신청 중에는 대전 신청이 불가능합니다.";
-    }
-    if (description != null) {
-      Helper.info({
-        subject: "대전 신청 불가능",
-        description: description,
-      });
-      return false;
-    }
-    return true;
+    return this.get("status") !== "playing" && enemy.get("status") === "online";
+  },
+
+  alertDualImpossibleModal: function (enemy) {
+    const my_status = this.get("status");
+    const enemy_status = enemy.get("status");
+    const status_hash = { playing: "게임중인", offline: "오프라인" };
+    let [name, status] = [this.get("name"), my_status];
+
+    if (enemy_status !== "online")
+      [name, status] = [enemy.get("name"), enemy_status];
+
+    Helper.info({
+      subject: "대전 신청 불가능",
+      description: `${name}님은 현재 ${status_hash[status]} 상태입니다.`,
+    });
   },
 
   isWorking: function () {

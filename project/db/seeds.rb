@@ -474,6 +474,6 @@ WarStatus.create([
 
 WarStatus.create([
   # war progress 상태
-  {guild_id: 12, war_request_id: 19, position: "challenger", point: "400"},
-  {guild_id: 13, war_request_id: 19, position: "enemy", point: "250"}
+  {guild_id: 12, war_request_id: 19, position: "challenger", point: "400", no_reply_count: 1},
+  {guild_id: 13, war_request_id: 19, position: "enemy", point: "250", no_reply_count: 2}
 ])

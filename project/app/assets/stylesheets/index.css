@@ -1165,30 +1165,22 @@ body {
 }
 
 #war-index-view .ui.header {
-  margin-bottom: 1.5rem;
-}
-
-#war-index-view .war-status-header {
-  margin-left: 16rem;
-  margin-top: 0;
-}
-
-#war-index-view .war-battle-header {
-  margin-top: 0;
+  margin-bottom: 1.0rem;
 }
 
 #war-index-view .opponent-guild-profile-view {
   margin-bottom: 4rem;
+  height: 13rem;
 }
 
 #war-index-view .war-status-view {
   margin-bottom: 4rem;
-  width: 50%;
+  width: 100%;
 }
 
 #war-index-view .war-rule-view {
   margin-bottom: 4rem;
-  width: 50%;
+  width: 100%;
   margin-right: 1rem;
 }
 
@@ -1221,6 +1213,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 16.5rem;
 }
 
 #war-index-view .war-match-history-view .right.button {
@@ -1241,7 +1234,7 @@ body {
 }
 
 #war-index-view .war-status-view .ui.card {
-  width: 100%;
+  width: 336px;
   height: 200px;
 }
 
@@ -1253,15 +1246,23 @@ body {
   margin-bottom: 1rem;
 }
 
+#war-index-view .war-status-view .sub.header {
+  margin-bottom: 0.5rem;
+}
+
+#war-index-view .war-status-view .content {
+  margin-top: 1.2rem;
+}
+
 #war-index-view .war-rule-view .ui.card {
-  width: 100%;
+  width: 336px;
   height: 200px;
 }
 
 #war-index-view .war-battle-view .ui.card {
   width: 24rem;
   height: 13rem;
-  margin-left: 1rem;
+  margin-right: 1rem;
 }
 
 #war-index-view .war-battle-view .ui.card .content .description {
@@ -1274,13 +1275,17 @@ body {
   margin-bottom: 0;
 }
 
-#war-index-view #enemy-point {
+#war-index-view #opponent-guild-point {
   width: 50%;
   transform: scaleX(-1);
   margin-bottom: 0;
 }
 
-#war-index-view #enemy-point .bar .progress {
+#war-index-view #opponent-guild-point .bar .progress {
+  transform: scaleX(-1);
+}
+
+#war-index-view #opponent-guild-point .label {
   transform: scaleX(-1);
 }
 

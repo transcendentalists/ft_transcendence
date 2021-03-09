@@ -11,8 +11,8 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
     this.chat_bans = self.chat_bans;
     this.chat_members = self.chat_room_members;
     this.current_user_membership = self.parent.current_user_membership;
-    this.friends = App.appView.appearance_view.friends;
-    this.online_users = App.appView.appearance_view.online_users;
+    this.friends = App.app_view.appearance_view.friends;
+    this.online_users = App.app_view.appearance_view.online_users;
   },
 
   menuAction: function (e) {
@@ -26,7 +26,7 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
     this.hide();
     switch (event) {
       case "direct-chat":
-        return App.appView.direct_chat_view.render(member);
+        return App.app_view.direct_chat_view.render(member);
       case "toggle-ban":
         return this.chat_bans.createOrDestroyChatBan(member.id);
       case "toggle-friend":

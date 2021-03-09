@@ -7,7 +7,7 @@ $(document).ready(function () {
   window.onresize = function () {
     window.trigger("resize");
   };
-  App.initialize();
+  App.start();
   window.app = App;
   window.helper = Helper;
   Backbone.history.start();

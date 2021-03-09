@@ -58,7 +58,7 @@ export let Helper = {
   },
 
   isUserFriend: function (user_id) {
-    return App.appView.appearance_view.friends.get(user_id) !== undefined;
+    return App.app_view.appearance_view.friends.get(user_id) !== undefined;
   },
 
   isCurrentUser: function (user_id) {
@@ -80,7 +80,7 @@ export let Helper = {
     if (!data.hasOwnProperty("description"))
       data.description = "경고 내용을 입력해주세요.";
 
-    App.appView.alert_modal_view.render(data);
+    App.app_view.alert_modal_view.render(data);
   },
 
   input: function (data) {
@@ -96,7 +96,7 @@ export let Helper = {
     if (!data.hasOwnProperty("description"))
       data.description = "입력받을 내용에 대해 설명해주세요.";
 
-    App.appView.input_modal_view.render(data);
+    App.app_view.input_modal_view.render(data);
   },
 
   info: function (data) {
@@ -113,7 +113,7 @@ export let Helper = {
       if (!data.hasOwnProperty("description"))
         data.description = "알려줄 내용을 설명해주세요.";
     }
-    App.appView.info_modal_view.render(data);
+    App.app_view.info_modal_view.render(data);
   },
 
   /*

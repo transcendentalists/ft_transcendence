@@ -24,7 +24,7 @@ export let CurrentUser = Backbone.Model.extend({
     this.fetch({
       data: { for: "profile" },
       success: () => {
-        App.appView.render();
+        App.app_view.render();
         App.router.navigate(`#/users/${this.id}`);
       },
     });
@@ -36,7 +36,7 @@ export let CurrentUser = Backbone.Model.extend({
 
   dualRequestTo: function (enemy) {
     if (this.isDualRequestPossibleTo(enemy)) {
-      App.appView.rule_modal_view.render(enemy);
+      App.app_view.rule_modal_view.render(enemy);
     }
   },
 

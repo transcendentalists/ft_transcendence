@@ -11,7 +11,7 @@ export let SignUpView = Backbone.View.extend({
   signUpSuccessCallback: function (data) {
     App.current_user.set("id", data.user.id);
     App.current_user.login();
-    App.appView.render();
+    App.app_view.render();
     App.router.navigate(`#/users/${data.user.id}`);
   },
 

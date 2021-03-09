@@ -48,7 +48,7 @@ export let RuleModalView = Backbone.View.extend({
       rule_name,
       target_score
     );
-    App.appView.request_view.render(this.enemy.attributes);
+    App.app_view.request_view.render(this.enemy.attributes);
     this.clear();
   },
 });

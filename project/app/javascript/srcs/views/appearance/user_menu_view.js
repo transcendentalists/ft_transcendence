@@ -22,7 +22,7 @@ export let UserMenuView = Backbone.View.extend({
     this.friends = this.parent.friends;
     this.is_friend = options.is_friend;
     this.listenTo(
-      App.appView.appearance_view,
+      App.app_view.appearance_view,
       "destroy_user_menu_all",
       this.close
     );
@@ -30,7 +30,7 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   directChat: function () {
-    App.appView.direct_chat_view.render(this.model);
+    App.app_view.direct_chat_view.render(this.model);
     this.close();
   },
 

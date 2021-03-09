@@ -51,7 +51,7 @@ export let UserIndexButtonsView = Backbone.View.extend({
         body: formData,
       }).then(() => App.router.navigate("#/"));
     }.bind(this);
-    App.appView.image_upload_modal_view.render(callback);
+    App.app_view.image_upload_modal_view.render(callback);
   },
 
   showNameInputModal: function () {

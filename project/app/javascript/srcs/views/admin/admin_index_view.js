@@ -10,7 +10,6 @@ export let AdminIndexView = Backbone.View.extend({
   },
 
   initialize: function () {
-    this.$el.html(this.template());
     this.resource = "users";
     this.child_selects = {
       action: null,
@@ -151,6 +150,7 @@ export let AdminIndexView = Backbone.View.extend({
   },
 
   render: function () {
+    this.$el.html(this.template());
     const select_keys = ["action", "resource", "membership", "position"];
     select_keys.forEach(function (type) {
       let child_select = new App.View.AdminSelectView({

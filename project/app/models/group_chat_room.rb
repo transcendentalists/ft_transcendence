@@ -8,8 +8,8 @@ class GroupChatRoom < ApplicationRecord
   validates :title, presence: true, length: {minimum: 1, maximum: 20}, allow_blank: false
   validates :max_member_count, :inclusion => { :in => 2..10 }
   validates :room_type, inclusion: { in: ["public", "private"] }
-  scope :list_associated_with_current_user, -> (current_user) do
-    current_user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
+  scope :list_associated_with_current_user, -> (user) do
+    user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
       {
         id: chat_room.id,
         title: chat_room.title,
@@ -18,13 +18,13 @@ class GroupChatRoom < ApplicationRecord
         max_member_count: chat_room.max_member_count,
         current_member_count: chat_room.active_member_count,
         current_user: {
-          position: chat_room.memberships.find_by_user_id(current_user.id)&.position
+          position: chat_room.memberships.find_by_user_id(user.id)&.position
         }
       }
     }
   end
-  scope :list_filtered_by_type, -> (room_type, current_user) {
-    current_user_room_ids = current_user.group_chat_memberships.where.not(position: "ghost").pluck(:group_chat_room_id)
+  scope :list_filtered_by_type, -> (room_type, user) {
+    current_user_room_ids = user.group_chat_memberships.where.not(position: "ghost").pluck(:group_chat_room_id)
 
     where(room_type: room_type).where.not(id: current_user_room_ids).map { |chat_room|
       {
@@ -40,12 +40,12 @@ class GroupChatRoom < ApplicationRecord
       }
     }
   }
-  scope :matching_channel_code, -> (channel_code, current_user) {
+  scope :matching_channel_code, -> (channel_code, user) {
     chat_room = self.find_by_channel_code(channel_code)
     return nil if chat_room.nil?
     chat_room.for_chat_room_format.merge({
       current_user: {
-        position: chat_room.memberships.find_by_id(current_user.id)&.position
+        position: chat_room.memberships.find_by_id(user.id)&.position
       }
     })
   }
@@ -81,6 +81,10 @@ class GroupChatRoom < ApplicationRecord
 
   def valid_password?(input_password)
     BCrypt::Password::new(self.password) == input_password
+  end
+
+  def only_one_member_exist?
+    self.memberships.reload.where.not(position: "ghost").count == 1
   end
 
   def active_member_count
@@ -155,7 +159,7 @@ class GroupChatRoom < ApplicationRecord
     new_owner = memberships.find_by_position("member") if new_owner.nil?
     self.update!(owner_id: new_owner.user_id)
     new_owner.update_position!("owner")
-    new_owner.update_mute(false) if new_owner.mute?
+    new_owner.update_mute!(false) if new_owner.mute?
   end
 
   def let_all_out_and_destroy!

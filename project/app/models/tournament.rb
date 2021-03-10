@@ -12,13 +12,13 @@ class Tournament < ApplicationRecord
   validates :target_match_score, inclusion: {in: [3, 5, 7, 10], message: "경기 목표 점수가 유효하지 않습니다." }
   validates_with TournamentValidator, field: [ :start_date, :tournament_time ], on: :create
 
-  scope :for_tournament_index, -> (current_user) do
+  scope :for_tournament_index, -> (user) do
     where.not(status: ["completed", "canceled"])
     .reject{|tournament|
-      !tournament.memberships.where(user_id: current_user.id, status: "completed").empty?
+      !tournament.memberships.where(user_id: user.id, status: "completed").empty?
     }.map { |tournament|
       stat = tournament.profile
-      stat[:current_user_next_match] = tournament.next_match_of(current_user)
+      stat[:current_user_next_match] = tournament.next_match_of(user)
       stat
     }
   end
@@ -196,8 +196,7 @@ class Tournament < ApplicationRecord
   end
 
   def self.can_be_created_by?(user)
-    web_admin_auth_level = 4
-    position_grade[user.position] >= web_admin_auth_level
+    user.can_service_manage?
   end
 
   def self.create_by(params)

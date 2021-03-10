@@ -38,21 +38,12 @@ class Api::GroupChatMembershipsController < ApplicationController
 
   private
   def update_params
-    if current_user_is_admin_or_owner?
-      # params.permit(:id, :mute, :position)
-      {
-        id: params[:id],
-        position: params[:position],
-        mute: params[:mute]
-      }
-    else
-      params.require(:group_chat_membership)
-      {
-        id: params[:id],
-        mute: params[:mute],
-        position: params[:position]
-      }
-    end
+    params.require(:group_chat_membership) unless current_user_is_admin_or_owner?
+    {
+      id: params[:id],
+      mute: params[:mute],
+      position: params[:position]
+    }
   end
 
 end

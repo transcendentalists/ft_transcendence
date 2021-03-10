@@ -25,6 +25,5 @@ export let TableModalView = Backbone.View.extend({
 
   close: function () {
     this.hide();
-    this.remove();
   },
 });

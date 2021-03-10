@@ -9,22 +9,6 @@ export let AdminIndexView = Backbone.View.extend({
     "click .admin-action.button": "requestAdminAction",
   },
 
-  initialize: function () {
-    this.resource = "users";
-    this.child_selects = {
-      action: null,
-      resource: null,
-      membership: null,
-      position: null,
-    };
-    this.db = null;
-    this.chat_modal_view = null;
-  },
-
-  hasBodyAction() {
-    return this.child_selects.action.val() == "PATCH";
-  },
-
   url: function () {
     let url = this.resource + "/";
 
@@ -38,47 +22,83 @@ export let AdminIndexView = Backbone.View.extend({
     return url;
   },
 
-  requestMethod: function () {
-    return this.child_selects.action.val();
-  },
-
-  showInfoModal: function () {
-    Helper.info({
-      subject: "요청 성공",
-      description: "요청하신 액션이 성공적으로 수행되었습니다.",
-    });
-  },
-
-  createChatMessagesTable(data) {
-    return {
-      title: `${data.title} (id: ${data.id})`,
-      headers: ["user", "message", "at"],
-      records: data.messages,
+  initialize: function () {
+    this.resource = "users";
+    this.child_selects = {
+      action: null,
+      resource: null,
+      membership: null,
+      position: null,
     };
+    this.db = null;
+    this.chat_modal_view = null;
   },
 
-  showTableModal: function (data) {
-    if (this.chat_modal_view == null)
-      this.chat_modal_view = new App.View.TableModalView();
-    this.chat_modal_view.render(
-      this.createChatMessagesTable(data.chat_messages)
+  render: function () {
+    this.$el.html(this.template());
+    const select_keys = ["action", "resource", "membership", "position"];
+    select_keys.forEach(function (type) {
+      let child_select = new App.View.AdminSelectView({
+        parent: this,
+        type: type,
+      });
+      this.child_selects[type] = child_select;
+    }, this);
+    this.listenValueChange();
+    this.requestDatabase();
+    return this;
+  },
+
+  listenValueChange: function () {
+    this.listenTo(this.child_selects.resource, "change", () =>
+      this.child_selects.membership.render(this.resource)
+    );
+    this.listenTo(this.child_selects.action, "change", () =>
+      this.child_selects.position.render(this.resource)
     );
   },
 
-  adminActionCallback: function (data) {
-    const method = this.requestMethod();
-    if (method == "GET") return this.showTableModal(data);
-    else if (method == "DELETE") {
-      const resource = this.resource.endsWith("memberships")
-        ? "membership"
-        : "resource";
-      this.db.destroy({
-        resource: this.resource,
-        resource_id: this.child_selects[resource].val(),
-      });
-      this.optionsRender(this.resource);
+  requestDatabase: function () {
+    Helper.fetch("admin/db", {
+      headers: {
+        admin: App.current_user.id,
+      },
+      success_callback: this.setDatabase.bind(this),
+      fail_callback: () => {
+        App.router.navigate("#/errors/400");
+      },
+    });
+  },
+
+  setDatabase: function (data) {
+    this.db = new App.Model.AdminDB(data.db);
+    for (let key of Object.keys(this.child_selects))
+      this.child_selects[key].setDB(this.db);
+    this.optionsRender(this.resource);
+  },
+
+  optionsRender: function (new_resource) {
+    for (let key of Object.keys(this.child_selects)) {
+      this.child_selects[key].render(new_resource);
     }
-    this.showInfoModal();
+  },
+
+  changeResource: function (event) {
+    const new_resource = event.target.getAttribute("data-resource-name");
+    if (new_resource == "tournament")
+      return App.router.navigate("#/tournaments/new");
+    this.changeHeader(event);
+    this.resource = new_resource;
+    this.optionsRender(this.resource);
+  },
+
+  changeHeader: function (event) {
+    $(".menu a.header").removeClass("header");
+    event.target.classList.add("header");
+  },
+
+  requestAdminAction: function () {
+    Helper.fetch(this.url(), this.adminActionParams());
   },
 
   adminActionParams: function () {
@@ -97,71 +117,51 @@ export let AdminIndexView = Backbone.View.extend({
     return params;
   },
 
-  requestAdminAction: function () {
-    Helper.fetch(this.url(), this.adminActionParams());
+  requestMethod: function () {
+    return this.child_selects.action.val();
   },
 
-  changeHeader: function (event) {
-    $(".menu a.header").removeClass("header");
-    event.target.classList.add("header");
+  hasBodyAction() {
+    return this.child_selects.action.val() == "PATCH";
   },
 
-  optionsRender: function (new_resource) {
-    for (let key of Object.keys(this.child_selects)) {
-      this.child_selects[key].render(new_resource);
-    }
-  },
-
-  changeResource: function (event) {
-    const new_resource = event.target.getAttribute("data-resource-name");
-    if (new_resource == "tournament")
-      return App.router.navigate("#/tournaments/new");
-    this.changeHeader(event);
-    this.resource = new_resource;
-    this.optionsRender(this.resource);
-  },
-
-  setDatabase: function (data) {
-    this.db = new App.Model.AdminDB(data.db);
-    for (let key of Object.keys(this.child_selects))
-      this.child_selects[key].setDB(this.db);
-    this.optionsRender(this.resource);
-  },
-
-  requestDatabase: function () {
-    Helper.fetch("admin/db", {
-      headers: {
-        admin: App.current_user.id,
-      },
-      success_callback: this.setDatabase.bind(this),
-      fail_callback: () => {
-        App.router.navigate("#/errors/400");
-      },
-    });
-  },
-
-  listenValueChange: function () {
-    this.listenTo(this.child_selects.resource, "change", () =>
-      this.child_selects.membership.render(this.resource)
-    );
-    this.listenTo(this.child_selects.action, "change", () =>
-      this.child_selects.position.render(this.resource)
-    );
-  },
-
-  render: function () {
-    this.$el.html(this.template());
-    const select_keys = ["action", "resource", "membership", "position"];
-    select_keys.forEach(function (type) {
-      let child_select = new App.View.AdminSelectView({
-        parent: this,
-        type: type,
+  adminActionCallback: function (data) {
+    const method = this.requestMethod();
+    if (method == "GET") return this.showTableModal(data);
+    else if (method == "DELETE") {
+      const resource = this.resource.endsWith("memberships")
+        ? "membership"
+        : "resource";
+      this.db.destroy({
+        resource: this.resource,
+        resource_id: this.child_selects[resource].val(),
       });
-      this.child_selects[type] = child_select;
-    }, this);
-    this.listenValueChange();
-    this.requestDatabase();
-    return this;
+      this.optionsRender(this.resource);
+    }
+    this.showInfoModal();
+  },
+
+  showTableModal: function (data) {
+    if (this.chat_modal_view == null)
+      this.chat_modal_view = new App.View.TableModalView();
+    this.chat_modal_view.render(
+      this.createChatMessagesTable(data.chat_messages)
+    );
+  },
+
+  createChatMessagesTable(data) {
+    return {
+      title: `${data.title} (id: ${data.id})`,
+      headers: ["user", "message", "at"],
+      records: data.messages,
+    };
+  },
+
+  showInfoModal: function () {
+    Helper.info({
+      subject: "요청 성공",
+      description: "요청하신 액션이 성공적으로 수행되었습니다.",
+    });
   },
 
   close: function () {

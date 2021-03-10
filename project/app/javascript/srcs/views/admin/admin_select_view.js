@@ -12,17 +12,17 @@ export let AdminSelectView = Backbone.View.extend({
     this.select.on("change", () => this.trigger("change", this.select.val()));
   },
 
-  setDB: function (db) {
-    this.db = db;
-  },
+  render: function (resource) {
+    this.resource = resource;
+    if (this.disabled()) return this.setDisable();
 
-  val: function () {
-    return this.select.val();
-  },
+    let query = { type: this.type, resource: this.resource };
+    if (this.type == "membership")
+      query.resource_id = this.parent.child_selects.resource.val();
+    let relation = this.db.where(query);
+    this.renderOptions(relation);
 
-  clear: function () {
-    this.select.empty();
-    this.field.removeClass("disabled");
+    return this;
   },
 
   disabled: function () {
@@ -45,27 +45,27 @@ export let AdminSelectView = Backbone.View.extend({
     this.field.addClass("disabled");
   },
 
-  addOption: function (record) {
-    this.select.append(this.template(record));
-  },
-
   renderOptions: function (relation) {
     if (!relation || relation.length == 0) return this.setDisable();
     this.clear();
     relation.forEach(this.addOption, this);
   },
 
-  render: function (resource) {
-    this.resource = resource;
-    if (this.disabled()) return this.setDisable();
+  clear: function () {
+    this.select.empty();
+    this.field.removeClass("disabled");
+  },
 
-    let query = { type: this.type, resource: this.resource };
-    if (this.type == "membership")
-      query.resource_id = this.parent.child_selects.resource.val();
-    let relation = this.db.where(query);
-    this.renderOptions(relation);
+  addOption: function (record) {
+    this.select.append(this.template(record));
+  },
 
-    return this;
+  setDB: function (db) {
+    this.db = db;
+  },
+
+  val: function () {
+    return this.select.val();
   },
 
   close: function () {

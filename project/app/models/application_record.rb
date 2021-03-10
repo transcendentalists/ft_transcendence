@@ -6,7 +6,9 @@ class ApplicationRecord < ActiveRecord::Base
       "web_owner" => 5, 
       "web_admin" => 4, 
       "owner" => 3, 
-      "admin" => 2, 
+      "master" => 3, 
+      "admin" => 2,
+      "officer" => 2, 
       "member" => 1,
       "user" => 1,
       "ghost" => 0

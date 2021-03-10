@@ -44,14 +44,14 @@ RSpec.describe GroupChatRoom, type: :model do
     expect(owner_membership.can_be_kicked_by?(web_admin)).to eq(true)
     expect(owner_membership.can_be_kicked_by?(member)).to eq(false)
 
-    expect(web_owner_membership.can_be_kicked_by?(web_owner)).to eq(false)
-    expect(web_owner_membership.can_be_kicked_by?(web_admin)).to eq(false)
-    expect(web_owner_membership.can_be_kicked_by?(owner)).to eq(false)
+    expect(web_owner_membership.can_be_kicked_by?(web_owner)).to eq(true)
+    expect(web_owner_membership.can_be_kicked_by?(web_admin)).to eq(true)
+    expect(web_owner_membership.can_be_kicked_by?(owner)).to eq(true)
     expect(web_owner_membership.can_be_kicked_by?(member)).to eq(false)
 
     expect(web_admin_membership.can_be_kicked_by?(web_owner)).to eq(true)
-    expect(web_admin_membership.can_be_kicked_by?(web_admin)).to eq(false)
-    expect(web_admin_membership.can_be_kicked_by?(owner)).to eq(false)
+    expect(web_admin_membership.can_be_kicked_by?(web_admin)).to eq(true)
+    expect(web_admin_membership.can_be_kicked_by?(owner)).to eq(true)
     expect(web_admin_membership.can_be_kicked_by?(member)).to eq(false)
 
     expect(member_membership.can_be_kicked_by?(web_owner)).to eq(true)

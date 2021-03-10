@@ -34,14 +34,15 @@ class GuildMembership < ApplicationRecord
     return true if user.can_service_manage?
     return false unless self.guild_id == user.in_guild&.id
     return !self.master? if self.user_id == user.id
+    return false if user.guild_membership.position == "member"
 
-    position_compare(user.guild_membership, self) > 0
+    position_compare(user.guild_membership, self) >= 0
   end
 
   def unregister!
     raise GuildMembershipError.new("길드에는 한명 이상의 유저가 존재해야 합니다.", 403) if self.guild.only_one_member_exist?
     self.guild.make_another_member_master! if self.master?
-    self.destroy
+    self.destroy!
   end
 
   def can_be_updated_by?(user)
@@ -64,7 +65,7 @@ class GuildMembership < ApplicationRecord
 
     ActiveRecord::Base.transaction do
       if position == "master"
-        owner_membership = self.guild.memberships.find_by_user_id(self.guild.owner.id)
+        owner_membership = self.guild.owner.guild_membership
         owner_membership.update!(position: "member")
         self.guild.update!(owner_id: self.user_id)
       elsif self.position == "master"

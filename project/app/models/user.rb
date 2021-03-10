@@ -41,7 +41,7 @@ class User < ApplicationRecord
   end
 
   def can_service_manage?
-    position_grade[self.position] >= 4
+    position_grade[self.position] >= position_grade["web_admin"]
   end
 
   def can_be_service_banned_by?(user)

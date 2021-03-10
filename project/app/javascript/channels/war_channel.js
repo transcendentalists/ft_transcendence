@@ -1,3 +1,4 @@
+import { App } from "srcs/internal";
 import consumer from "./consumer";
 
 export function ConnectWarChannel(room_id) {
@@ -8,17 +9,23 @@ export function ConnectWarChannel(room_id) {
   },
   {
     connected() {
-      console.log("YOU ARE IN WAR_INDEX VIEW");
-      // Called when the subscription is ready for use on the server
     },
 
     disconnected() {
       this.unsubscribe();
-      // Called when the subscription has been terminated by the server
     },
 
     received(data) {
-      // Called when there's incoming data on the websocket for this channel
+      if (App.mainView.current_view.id == "war-index-view")
+        App.mainView.current_view.war_battle_view.updateView(data);
+    },
+
+    battleRequest(data) {
+      this.perform("battle_request", {
+        war_id: data.war_id,
+        user_id: data.user_id,
+        guild_id: data.guild_id,
+      });
     },
   });
 }

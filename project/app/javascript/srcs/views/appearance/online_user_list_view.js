@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let OnlineUserListView = Backbone.View.extend({
   template: _.template($("#appearance-online-user-list-view").html()),
@@ -59,6 +59,8 @@ export let OnlineUserListView = Backbone.View.extend({
     const user = this.online_users.get(user_data.id);
     let status = user_data.status;
 
+    if (App.current_user.equalTo(user)) this.disconnectService();
+
     if (user === undefined) {
       if (status === "online")
         this.online_users.add(new App.Model.User(user_data));
@@ -67,5 +69,13 @@ export let OnlineUserListView = Backbone.View.extend({
 
     user.set({ status: status });
     if (status === "offline") this.online_users.remove(user);
+  },
+
+  disconnectService: function () {
+    Helper.info({
+      subject: "중복 접속",
+      description: "같은 계정의 트렌센던스 접속이 감지되었습니다.",
+    });
+    setTimeout(App.restart.bind(App), 2000);
   },
 });

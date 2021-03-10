@@ -19,14 +19,17 @@ class GroupChatMembership < ApplicationRecord
 
     user_position = self.room.memberships.find_by_user_id(user.id)&.position
     return false if user_position.nil?
-    position_grade[self.position] <= 2 && position_grade[user_position] >= 2
+    return false if position_grade[self.position] > position_grade["admin"]
+
+    position_grade[user_position] >= position_grade["admin"]
   end
 
   def can_be_muted_by?(user)
     membership = self.room.memberships.find_by_user_id(user.id)
     return false if membership.nil?
+    return false if position_grade[self.position] > position_grade["admin"]
 
-    position_grade[self.position] <= 2 && position_grade[membership.position] >= 2
+    position_grade[membership.position] >= position_grade["admin"]
   end
 
   def can_be_position_changed_by?(user)
@@ -34,8 +37,9 @@ class GroupChatMembership < ApplicationRecord
 
     membership = self.room.memberships.find_by_user_id(user.id)
     return false if membership.nil?
+    return false if position_grade[self.position] > position_grade["admin"]
 
-    position_grade[self.position] <= 2 && position_grade[membership.position] >= 3
+    position_grade[membership.position] >= position_grade["owner"]
   end
       
   def ghost?

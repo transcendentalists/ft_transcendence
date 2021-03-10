@@ -46,7 +46,7 @@ export let WarIndexView = Backbone.View.extend({
       .render(war_matches);
   },
 
-  renderWarIndexChilds: function (data) {
+  renderChildViews: function (data) {
     this.renderGuildProfileCardView(data.guild);
     this.renderWarStatusView(data.status);
     this.renderWarRuleView(data.rules_of_war);
@@ -65,7 +65,7 @@ export let WarIndexView = Backbone.View.extend({
     );
     if (current_user_guild && current_user_guild_in_war) {
       Helper.fetch(`guilds/${current_user_guild.id}/wars?for=index`, {
-        success_callback: this.renderWarIndexChilds.bind(this),
+        success_callback: this.renderChildViews.bind(this),
       });
     }
     return this;

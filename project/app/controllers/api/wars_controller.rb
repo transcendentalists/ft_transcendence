@@ -21,8 +21,27 @@ class Api::WarsController < ApplicationController
     status = my_guild_status.for_war_status_view(my_guild_status.guild)
     rules_of_war = my_guild_status.request.rules_of_war
     matches = my_guild_status.guild.war_match_history
-    keys = %w[guild status rules_of_war matches war]
-    values = [opponent_guild_status.guild.profile, status, rules_of_war, matches, war]
+
+    # match -> match, match가 대기중인지, 진행중인지 
+    # eventable_id: 해당 war의 id 가 들어간다.
+    # status: pending: 대기상태, progress: 게임상태
+    war_match = war.matches.find_by_status(["pending", "progress"])
+
+    # TODO: 변수 이름 수정
+    is_my_guild = war_match.nil? ? false : war_match.scorecards.first.user.in_guild.id == params[:guild_id]
+    # 시간초로 나옴
+    wait_time = war_match&.status == "pending" ? Time.zone.now - war_match.updated_at : nil
+    battle = {
+              current_hour: Time.zone.now.hour,
+              match: war_match,
+              war_time: request.war_time.hour,
+              is_my_guild: is_my_guild,
+              wait_time: 250,
+              # 남아있는 시간을 여기서 구한다음에 건네주는 방식 ok?
+            }
+
+    keys = %w[guild status rules_of_war matches war battle]
+    values = [opponent_guild_status.guild.profile, status, rules_of_war, matches, war, battle]
     war_index_data = Hash[keys.zip values]
   end
 end

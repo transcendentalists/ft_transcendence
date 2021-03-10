@@ -53,13 +53,8 @@ class Api::MatchesController < ApplicationController
   def find_or_create_match(user)
     if ["ladder", "casual_ladder"].include?(params[:match_type])
       match = find_or_create_ladder_match_for(user, { type: params[:match_type]} )
-    elsif params[:match_type] == 'dual'
-      match =
-        if params[:match_id].nil?
-          create_dual_match_for(user, params[:rule_id], params[:target_score])
-        else
-          join_dual_match_for(user, params[:match_id])
-        end
+    else
+      match = params[:match_id].nil? ? create_match_for(user, params) : join_match_for(user, params[:match_id])
     end
     match
   end
@@ -82,20 +77,24 @@ class Api::MatchesController < ApplicationController
     @match
   end
 
-  def create_dual_match_for(user, rule_id, target_score)
-    match =
-      Match.create(
-        match_type: 'dual',
-        status: 'pending',
-        rule_id: rule_id,
-        target_score: target_score,
-      )
+  def create_match_for(user, params)
+    create_params = {
+      match_type: params[:match_type],
+      status: 'pending',
+      rule_id: params[:rule_id],
+      target_score: params[:target_score],
+    }
+    if params[:match_type] == "war"
+      create_params[:eventable_type] = "War"
+      create_params[:eventable_id] = params[:war_id]
+    end
+    match = Match.create(create_params)
     card = Scorecard.create(user_id: user.id, match_id: match.id, side: 'left')
     user.update_status('playing')
     match
   end
 
-  def join_dual_match_for(user, match_id)
+  def join_match_for(user, match_id)
     match = Match.find(match_id)
     card = Scorecard.create(user_id: user.id, match_id: match_id, side: 'right')
     user.update_status('playing')

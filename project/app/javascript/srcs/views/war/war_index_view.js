@@ -11,7 +11,6 @@ export let WarIndexView = Backbone.View.extend({
     this.war_rule_view = null;
     this.war_battle_view = null;
     this.war_match_history_list_view = null;
-    this.war_channel = null;
   },
 
   renderGuildProfileCardView: function (guild) {
@@ -31,6 +30,7 @@ export let WarIndexView = Backbone.View.extend({
   },
 
   renderWarRuleView: function (rule) {
+    this.rules_of_war = rule;
     this.war_rule_view = new App.View.WarRuleView();
     this.war_rule_view
       .setElement(this.$(".war-rule-view"))
@@ -38,7 +38,7 @@ export let WarIndexView = Backbone.View.extend({
   },
 
   renderWarBattleView: function (battle) {
-    this.war_battle_view = new App.View.WarBattleView();
+    this.war_battle_view = new App.View.WarBattleView({ parent: this });
     this.war_battle_view
       .setElement(this.$(".war-battle-view"))
       .render(battle);
@@ -60,7 +60,9 @@ export let WarIndexView = Backbone.View.extend({
   },
 
   joinWarChannelAndRenderWarIndexChilds: function(data) {
-    this.war_channel = App.Channel.ConnectWarChannel(data.war.id);
+    this.war_id = data.war.id;
+    if (App.war_channel == null)
+      App.war_channel = App.Channel.ConnectWarChannel(data.war.id);
     this.renderWarIndexChilds(data);
   },
 
@@ -84,7 +86,6 @@ export let WarIndexView = Backbone.View.extend({
     if (this.war_rule_view) this.war_rule_view.close();
     if (this.war_battle_view) this.war_battle_view.close();
     if (this.war_match_history_list_view) this.war_match_history_list_view.close();
-    if (this.war_channel) this.war_channel.unsubscribe();
     this.remove();
   },
 });

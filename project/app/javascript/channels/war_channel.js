@@ -13,6 +13,7 @@ export function ConnectWarChannel(room_id) {
     },
 
     disconnected() {
+      this.unsubscribe();
       // Called when the subscription has been terminated by the server
     },
 

@@ -34,8 +34,9 @@ class GuildMembership < ApplicationRecord
     return true if user.can_service_manage?
     return false unless self.guild_id == user.in_guild&.id
     return !self.master? if self.user_id == user.id
+    return false if user.guild_membership.position == "member"
 
-    position_compare(user.guild_membership, self) > 0
+    position_compare(user.guild_membership, self) >= 0
   end
 
   def unregister!

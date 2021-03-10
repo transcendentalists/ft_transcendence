@@ -4,9 +4,8 @@ class WarStatus < ApplicationRecord
   validates_with WarStatusValidator, on: :create
 
   def enemy_status
-    request = self.request
-    war_statuses = request.war_statuses
-    return war_statuses.first == self ? war_statuses.second : war_statuses.first
+    war_statuses = self.request.war_statuses
+    war_statuses.first == self ? war_statuses.second : war_statuses.first
   end
 
   def for_war_status_view

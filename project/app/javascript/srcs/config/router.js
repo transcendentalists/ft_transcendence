@@ -17,50 +17,53 @@ export let Router = Backbone.Router.extend({
     "*exception": "errorsController",
   },
 
-  redirect_to: function (viewPrototype, param) {
+  redirect_to: function (viewPrototype, param, menu) {
     if (!App.current_user.sign_in) {
       return this.navigate("#/sessions/new");
     }
+    App.app_view.nav_bar_view.changeActiveItem(menu);
     App.main_view.render(viewPrototype, param);
   },
 
   sessionsController: function () {
-    if (App.current_user.sign_in)
+    if (App.current_user.sign_in) {
       return this.navigate("#/users/" + App.current_user.id);
-    else App.main_view.render(App.View.SignInView);
+    } else App.main_view.render(App.View.SignInView);
   },
 
   usersController: function (param) {
     if (param === "new") return App.main_view.render(App.View.SignUpView);
-    this.redirect_to(App.View.UserIndexView, param);
+    const menu = App.current_user.id == param ? "home" : "ladder";
+    this.redirect_to(App.View.UserIndexView, param, menu);
   },
 
   chatRoomsController: function (param) {
-    if (param === null) this.redirect_to(App.View.ChatIndexView);
+    if (param === null) this.redirect_to(App.View.ChatIndexView, null, "chat");
     else if (param === "new")
-      this.redirect_to(App.View.ChatRoomCreateView, param);
-    else this.redirect_to(App.View.ChatRoomView, param);
+      this.redirect_to(App.View.ChatRoomCreateView, param, "chat");
+    else this.redirect_to(App.View.ChatRoomView, param, "chat");
   },
 
   guildsController: function (param) {
     if (param === null) {
-      this.redirect_to(App.View.GuildIndexView);
+      this.redirect_to(App.View.GuildIndexView, null, "guild");
     } else if (param === "new")
-      this.redirect_to(App.View.GuildCreateView, param);
-    else this.redirect_to(App.View.GuildDetailView, param);
+      this.redirect_to(App.View.GuildCreateView, param, "guild");
+    else this.redirect_to(App.View.GuildDetailView, param, "guild");
   },
 
   ladderController: function (page = 1) {
-    this.redirect_to(App.View.LadderIndexView, page);
+    this.redirect_to(App.View.LadderIndexView, page, "ladder");
   },
 
   liveController(live_type = "dual") {
-    this.redirect_to(App.View.LiveIndexView, live_type);
+    this.redirect_to(App.View.LiveIndexView, live_type, "live");
   },
 
   warController(param) {
-    if (param === null) this.redirect_to(App.View.WarIndexView);
-    else if (param === "new") this.redirect_to(App.View.WarCreateView, param);
+    if (param === null) this.redirect_to(App.View.WarIndexView, null, "war");
+    else if (param === "new")
+      this.redirect_to(App.View.WarCreateView, param, "war");
     else this.navigate("#/errors/101");
   },
 
@@ -69,9 +72,10 @@ export let Router = Backbone.Router.extend({
   },
 
   tournamentsController(param) {
-    if (param === null) this.redirect_to(App.View.TournamentIndexView);
+    if (param === null)
+      this.redirect_to(App.View.TournamentIndexView, null, "tournament");
     else if (param === "new")
-      this.redirect_to(App.View.TournamentCreateView, param);
+      this.redirect_to(App.View.TournamentCreateView, param, "tournament");
     else this.navigate("#/errors/102");
   },
 

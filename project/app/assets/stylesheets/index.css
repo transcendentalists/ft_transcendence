@@ -104,6 +104,80 @@ body {
 }
 
 /* ==========================================================================
+     SEMANTIC RANGE
+     ========================================================================== */
+
+.ui.range {
+  width: 100%;
+  height: 20px;
+}
+
+.ui.range .inner {
+  margin: 0 10px 0 10px;
+  height: 20px;
+  position: relative;
+}
+
+.ui.range .inner:hover {
+  cursor: pointer;
+}
+
+.ui.range .inner .track {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  top: 9px;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ui.inverted.range .inner .track {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.ui.range .inner .track-fill {
+  position: absolute;
+  width: 0;
+  height: 4px;
+  border-radius: 4px;
+  top: 9px;
+  left: 0;
+  background-color: #1b1c1d;
+}
+
+.ui.inverted.range .inner .track-fill {
+  background-color: #545454;
+}
+
+.ui.range .inner .thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -webkit-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -o-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  border-radius: 100%;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15),
+    0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+}
+
+.ui.range.disabled {
+  opacity: 0.5;
+}
+
+.ui.range.disabled .inner:hover {
+  cursor: auto;
+}
+
+.ui.range.disabled .inner .track-fill {
+  background: #ccc;
+}
+
+/* ==========================================================================
                                     PERSIST VIEW
        ========================================================================== */
 
@@ -1502,78 +1576,4 @@ body {
 #war-index-view .war-match-history-view div[data-text] {
   font-size: 1.2rem;
   margin-top: -0.4rem;
-}
-
-/* ==========================================================================
-     SEMANTIC RANGE
-     ========================================================================== */
-
-.ui.range {
-  width: 100%;
-  height: 20px;
-}
-
-.ui.range .inner {
-  margin: 0 10px 0 10px;
-  height: 20px;
-  position: relative;
-}
-
-.ui.range .inner:hover {
-  cursor: pointer;
-}
-
-.ui.range .inner .track {
-  position: absolute;
-  width: 100%;
-  height: 4px;
-  border-radius: 4px;
-  top: 9px;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.ui.inverted.range .inner .track {
-  background-color: rgba(255, 255, 255, 0.08);
-}
-
-.ui.range .inner .track-fill {
-  position: absolute;
-  width: 0;
-  height: 4px;
-  border-radius: 4px;
-  top: 9px;
-  left: 0;
-  background-color: #1b1c1d;
-}
-
-.ui.inverted.range .inner .track-fill {
-  background-color: #545454;
-}
-
-.ui.range .inner .thumb {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  background: #fff linear-gradient(transparent, rgba(0, 0, 0, 0.05));
-  background: #fff -webkit-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
-  background: #fff -o-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
-  background: #fff -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
-  border-radius: 100%;
-  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15),
-    0 0 0 1px rgba(34, 36, 38, 0.15) inset;
-}
-
-.ui.range.disabled {
-  opacity: 0.5;
-}
-
-.ui.range.disabled .inner:hover {
-  cursor: auto;
-}
-
-.ui.range.disabled .inner .track-fill {
-  background: #ccc;
 }

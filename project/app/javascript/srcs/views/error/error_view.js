@@ -27,6 +27,7 @@ export let ErrorView = Backbone.View.extend({
       105: ["Create Failed", "요청하신 ChatRoom을 만들 수 없습니다."],
       106: ["Input not entered", "아무런 정보가 입력되지 않았습니다."],
 
+      400: ["Bad Request", "잘못된 요청입니다."],
       403: ["Invalid Authorization", "접근할 권한이 없습니다."],
       404: ["Not Found", "요청하신 리소스를 찾을 수 없습니다."],
 

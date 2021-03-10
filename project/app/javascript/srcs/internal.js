@@ -7,6 +7,7 @@ import { GameScore } from "./models/game_score";
 import { GamePaddle } from "./models/game_paddle";
 import { ChatBan } from "./models/chat_ban";
 import { ChatMessage } from "./models/chat_message";
+import { AdminDB } from "./models/admin_db";
 
 /* COLLECTION */
 import { Users } from "./collections/users";
@@ -25,6 +26,7 @@ import { SignUpView } from "./views/registration/sign_up_view";
 /** persist views */
 import { MainView } from "./views/persist/main_view";
 import { AppearanceView } from "./views/persist/appearance/appearance_view";
+import { MainButtonsView } from "./views/persist/main_buttons_view";
 import { AlertModalView } from "./views/persist/alert_modal_view";
 import { InfoModalView } from "./views/persist/info_modal_view";
 import { InputModalView } from "./views/persist/input_modal_view";
@@ -33,6 +35,7 @@ import { InviteView } from "./views/persist/invite_view";
 import { RequestView } from "./views/persist/request_view";
 import { NavBarView } from "./views/persist/nav_bar_view";
 import { RuleModalView } from "./views/persist/rule_modal_view";
+import { TableModalView } from "./views/persist/table_modal_view";
 
 /** error view */
 import { ErrorView } from "./views/error/error_view";
@@ -90,12 +93,8 @@ import { TournamentCardListView } from "./views/tournament/tournament_card_list_
 import { TournamentMatchCardView } from "./views/tournament/tournament_match_card_view";
 import { TournamentMatchCardListView } from "./views/tournament/tournament_match_card_list_view";
 import { TournamentCreateView } from "./views/tournament/tournament_create_view";
-
-import { AdminUserIndexView } from "./views/admin/admin_user_index_view";
-import { AdminChatIndexView } from "./views/admin/admin_chat_index_view";
-import { AdminChatRoomView } from "./views/admin/admin_chat_room_view";
-import { AdminGuildIndexView } from "./views/admin/admin_guild_index_view";
-import { AdminGuildDetailView } from "./views/admin/admin_guild_detail_view";
+import { AdminIndexView } from "./views/admin/admin_index_view";
+import { AdminSelectView } from "./views/admin/admin_select_view";
 
 /** guild views */
 import { GuildIndexView } from "./views/guild/guild_index_view";
@@ -173,6 +172,7 @@ export let App = {
     GameBall,
     GameScore,
     GamePaddle,
+    AdminDB,
   },
   Collection: {
     Users,
@@ -186,6 +186,7 @@ export let App = {
     SignInView,
     SignUpView,
     AppearanceView,
+    MainButtonsView,
 
     MainView,
     AlertModalView,
@@ -193,6 +194,7 @@ export let App = {
     DirectChatRoomView,
     ErrorView,
     InfoModalView,
+    TableModalView,
     InputModalView,
     ImageUploadModalView,
     InviteView,
@@ -258,11 +260,8 @@ export let App = {
     TournamentMatchCardView,
     TournamentMatchCardListView,
 
-    AdminUserIndexView,
-    AdminChatIndexView,
-    AdminChatRoomView,
-    AdminGuildIndexView,
-    AdminGuildDetailView,
+    AdminIndexView,
+    AdminSelectView,
     FriendsListView,
     OnlineUserListView,
     UserUnitView,

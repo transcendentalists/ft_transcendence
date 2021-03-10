@@ -17,7 +17,7 @@ export let WarMatchHistoryView = Backbone.View.extend({
         user_card,
         enemy_user_card,
         enemy_user,
-        win: user_card.result == "win",
+        win: user_card.result === "win",
       })
     );
     return this;

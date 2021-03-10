@@ -19,12 +19,12 @@
           </div>
         </div>
       </div>
-      <h4 class="ui sub header">미응답 회수 (전체 미응답 수 충족시 자동 패배)</h4>
+      <h4 class="no-reply-count ui sub header">미응답 회수 (전체 미응답 수 충족시 자동 패배)</h4>
       <div class="row">
         <div class="ui progress indicating" data-value=<%%= no_reply_count %> data-total=<%%= max_no_reply_count %> id="no-reply-count">
           <div class="bar">
           </div>
-          <div class="label"><%%= no_reply_count %>회/<%%= max_no_reply_count %>회</div>
+          <div class="label">패배까지 남은 미응답 회수 <%%= max_no_reply_count - no_reply_count %>회</div>
         </div>
       </div>
     </div>

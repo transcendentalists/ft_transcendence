@@ -1414,7 +1414,7 @@ body {
 }
 
 #war-index-view .war-status-view .content {
-  margin-top: 1.2rem;
+  margin-top: 0.8rem;
 }
 
 #war-index-view .war-status-view .ui.circular.label {
@@ -1427,6 +1427,10 @@ body {
 
 #war-index-view .war-status-view .sub.header {
   margin-bottom: 0.5rem;
+}
+
+#war-index-view .war-status-view .no-reply-count {
+  margin-top: 2.5rem;
 }
 
 #war-index-view .war-rule-view {

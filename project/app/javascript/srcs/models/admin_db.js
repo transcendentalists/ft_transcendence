@@ -44,9 +44,9 @@ export let AdminDB = Backbone.Model.extend({
       ],
     };
 
-    data = data[query_hash.resource] || [];
+    const actions = data[query_hash.resource] || [];
 
-    return data.map(function (action) {
+    return actions.map(function (action) {
       return { value: action[0], text: action[1] };
     });
   },

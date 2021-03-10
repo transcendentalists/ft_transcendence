@@ -9,7 +9,7 @@ class WarStatus < ApplicationRecord
     return war_statuses.first == self ? war_statuses.second : war_statuses.first
   end
 
-  def for_war_status_view(guild_id)
+  def for_war_status_view
     {
       my_guild_point: self.point,
       enemy_guild_point: self.enemy_status.point,

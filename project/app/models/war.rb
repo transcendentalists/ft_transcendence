@@ -32,10 +32,9 @@ class War < ApplicationRecord
 
   def index_data(guild_id)
     begin
-      request = self.request
-      my_guild_status = request.war_statuses.find_by_guild_id!(guild_id)
+      my_guild_status = self.request.war_statuses.find_by_guild_id!(guild_id)
       enemy_guild_status = my_guild_status.enemy_status
-      status = my_guild_status.for_war_status_view(my_guild_status.guild)
+      status = my_guild_status.for_war_status_view
       rules_of_war = my_guild_status.request.rules_of_war
       matches = my_guild_status.guild.current_war_match_history!
       keys = %w[guild status rules_of_war matches]

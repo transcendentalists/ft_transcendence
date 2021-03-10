@@ -29,6 +29,21 @@ export let UserMenuView = Backbone.View.extend({
     this.listenTo(window, "resize", this.close);
   },
 
+  render: function (position) {
+    this.$el.html(
+      this.template({
+        model: this.model,
+        banned: this.chat_bans.isUserChatBanned(this.model.id),
+        is_friend: this.is_friend,
+      })
+    );
+    this.$el.css("position", "absolute");
+    this.$el.css("top", position.top);
+    this.$el.css("left", position.left - 127);
+    this.$el.css("z-index", 103);
+    return this;
+  },
+
   directChat: function () {
     App.app_view.direct_chat_view.render(this.model);
     this.close();
@@ -62,21 +77,6 @@ export let UserMenuView = Backbone.View.extend({
 
   userBan: function () {
     this.close();
-  },
-
-  render: function (position) {
-    this.$el.html(
-      this.template({
-        model: this.model,
-        banned: this.chat_bans.isUserChatBanned(this.model.id),
-        is_friend: this.is_friend,
-      })
-    );
-    this.$el.css("position", "absolute");
-    this.$el.css("top", position.top);
-    this.$el.css("left", position.left - 127);
-    this.$el.css("z-index", 103);
-    return this;
   },
 
   close: function () {

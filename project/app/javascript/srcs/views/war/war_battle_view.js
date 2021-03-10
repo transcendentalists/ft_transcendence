@@ -80,6 +80,12 @@ export let WarBattleView = Backbone.View.extend({
         this.battle.match.id = data.match_id;
         this.battle.match.status = "progress";
         break;
+      case "war_time_start":
+        this.battle.current_hour = data.current_hour;
+        break;
+      case "war_time_end":
+        this.battle.current_hour = data.current_hour;
+        break;
       default:
         this.battle.match = null;
     }

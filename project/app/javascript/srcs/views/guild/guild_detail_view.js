@@ -11,6 +11,7 @@ export let GuildDetailView = Backbone.View.extend({
   },
 
   initialize: function (guild_id) {
+    Helper.authenticateREST(guild_id);
     const query = Helper.parseHashQuery();
     this.page = +query.page;
     this.guild_id = guild_id;

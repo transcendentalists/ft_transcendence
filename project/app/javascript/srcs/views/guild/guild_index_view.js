@@ -12,6 +12,7 @@ export let GuildIndexView = Backbone.View.extend({
 
   initialize: function () {
     const query = Helper.parseHashQuery();
+    Helper.authenticateREST(query.page);
     this.page = +query.page;
     this.is_last_page = false;
     this.current_user_guild = App.current_user.get("guild");

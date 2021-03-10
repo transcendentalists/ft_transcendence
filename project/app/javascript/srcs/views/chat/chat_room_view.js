@@ -10,6 +10,8 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   initialize: function (room_id) {
+    Helper.authenticateREST(room_id);
+    if (!Helper.isNumber(room_id)) return App.router.navigate("#/errors/404");
     this.room_id = room_id;
     this.chat_message_list_view = null;
     this.chat_room_member_list_view = null;

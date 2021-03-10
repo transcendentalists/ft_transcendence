@@ -13,6 +13,7 @@ export let LadderIndexView = Backbone.View.extend({
 
   initialize: function (page) {
     this.page = page ? +page : 1;
+    Helper.authenticateREST(this.page);
     this.is_last_page = false;
     this.my_rating_view = null;
     this.user_ranking_view = null;

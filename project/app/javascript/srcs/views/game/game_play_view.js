@@ -40,6 +40,20 @@ export let GamePlayView = Backbone.View.extend({
   },
 
   /**
+   ** @framePerSecond: 초당 통신 횟수
+   ** 플레이어일 경우 keydown 이벤트 on(패들 이동 목적),
+   ** 초당 통신횟수만큼 renderRoutine을 실행
+   */
+  render: function () {
+    const framePerSecond = 50;
+    if (this.is_player) document.onkeydown = this.checkKey.bind(this);
+    this.clear_key = setInterval(
+      this.renderRoutine.bind(this),
+      1000 / framePerSecond
+    );
+  },
+
+  /**
    ** @p paddle
    ** @b ball
    ** 공이 패들에 부딪혔는지 확인, 벽은 충돌 대상으로 보지 않음
@@ -186,20 +200,6 @@ export let GamePlayView = Backbone.View.extend({
     if (this.is_player) this.operateEngine();
 
     this.drawCanvas();
-  },
-
-  /**
-   ** @framePerSecond: 초당 통신 횟수
-   ** 플레이어일 경우 keydown 이벤트 on(패들 이동 목적),
-   ** 초당 통신횟수만큼 renderRoutine을 실행
-   */
-  render: function () {
-    const framePerSecond = 50;
-    if (this.is_player) document.onkeydown = this.checkKey.bind(this);
-    this.clear_key = setInterval(
-      this.renderRoutine.bind(this),
-      1000 / framePerSecond
-    );
   },
 
   /**

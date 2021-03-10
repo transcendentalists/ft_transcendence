@@ -6,6 +6,7 @@ export let UserIndexView = Backbone.View.extend({
   template: _.template($("#user-index-view-template").html()),
 
   initialize: function (user_id) {
+    Helper.authenticateREST(user_id);
     this.user_id = user_id;
     this.model = new App.Model.User({ id: this.user_id });
     this.user_index_buttons_view = null;

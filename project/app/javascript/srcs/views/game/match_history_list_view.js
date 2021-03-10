@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let MatchHistoryListView = Backbone.View.extend({
   el: ".match-history-list",

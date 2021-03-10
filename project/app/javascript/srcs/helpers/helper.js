@@ -81,7 +81,11 @@ export let Helper = {
   },
 
   isNumber(number) {
-    return number && typeof +number === "number";
+    return number && !isNaN(+number);
+  },
+
+  authenticateREST: function (number) {
+    if (!this.isNumber(number)) App.router.navigate("#/errors/400");
   },
 
   isUserChatBanned: function (user_id) {

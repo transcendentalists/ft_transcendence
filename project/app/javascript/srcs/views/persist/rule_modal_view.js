@@ -9,7 +9,7 @@ export let RuleModalView = Backbone.View.extend({
   },
 
   initialize: function () {
-    $el.modal("setting", {
+    $("#rule-modal-view.tiny.modal").modal("setting", {
       closable: false,
     });
   },

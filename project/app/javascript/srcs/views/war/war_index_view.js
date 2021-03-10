@@ -22,7 +22,7 @@ export let WarIndexView = Backbone.View.extend({
         current_user_guild_in_war,
       })
     );
-    if (current_user_guild && current_user_guild_in_war) {
+    if (current_user_guild_in_war) {
       Helper.fetch(`guilds/${current_user_guild.id}/wars?for=index`, {
         success_callback: this.renderChildViews.bind(this),
       });

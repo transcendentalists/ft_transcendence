@@ -8,16 +8,19 @@ export let LiveCardView = Backbone.View.extend({
     "click .watch.button": "watchMatchLive",
   },
 
-  initialize: function () {
-    this.match_id = null;
-  },
-
   url: function () {
     return `#/matches/${this.match_id}`;
   },
 
-  watchMatchLive: function () {
-    App.router.navigate(this.url());
+  initialize: function () {
+    this.match_id = null;
+  },
+
+  render: function (match) {
+    this.match_id = match.id;
+    match.title = this.title(match);
+    this.$el.html(this.template(match));
+    return this;
   },
 
   title: function (match) {
@@ -41,11 +44,8 @@ export let LiveCardView = Backbone.View.extend({
     }
   },
 
-  render: function (match) {
-    this.match_id = match.id;
-    match.title = this.title(match);
-    this.$el.html(this.template(match));
-    return this;
+  watchMatchLive: function () {
+    App.router.navigate(this.url());
   },
 
   close: function () {

@@ -13,9 +13,14 @@ export let LiveIndexView = Backbone.View.extend({
     this.live_card_list_view = null;
   },
 
-  switchLiveType: function (event) {
-    let live_type = event.target.getAttribute("data-live-type");
-    App.router.navigate(`#/live/${live_type}`);
+  render: function () {
+    this.$el.html(this.template());
+    this.$(`.${this.live_type}`).addClass("active");
+    Helper.fetch(`matches?for=live&match_type=${this.live_type}`, {
+      success_callback: this.renderLiveCardList.bind(this),
+      fail_callback: this.redirectErrorPage.bind(this),
+    });
+    return this;
   },
 
   renderLiveCardList: function (data) {
@@ -28,14 +33,9 @@ export let LiveIndexView = Backbone.View.extend({
     App.router.navigate("#/errors/404");
   },
 
-  render: function () {
-    this.$el.html(this.template());
-    this.$(`.${this.live_type}`).addClass("active");
-    Helper.fetch(`matches?for=live&match_type=${this.live_type}`, {
-      success_callback: this.renderLiveCardList.bind(this),
-      fail_callback: this.redirectErrorPage.bind(this),
-    });
-    return this;
+  switchLiveType: function (event) {
+    let live_type = event.target.getAttribute("data-live-type");
+    App.router.navigate(`#/live/${live_type}`);
   },
 
   close: function () {

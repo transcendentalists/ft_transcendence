@@ -39,7 +39,7 @@ export let DirectChatRoomView = Backbone.View.extend({
   },
 
   stop: function () {
-    if (this.status != "run") return;
+    if (this.status !== "run") return;
     if (this.chat_message_list_view) this.chat_message_list_view.stop();
     this.status = "stop";
   },

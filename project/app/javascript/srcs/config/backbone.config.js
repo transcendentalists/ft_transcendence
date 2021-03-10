@@ -12,6 +12,7 @@ import { App } from "srcs/internal";
   };
 
   Backbone.Model.prototype.equalTo = function (other) {
+    if (!other) return false;
     return _.isEqual(this.id, other.id);
   };
 })();

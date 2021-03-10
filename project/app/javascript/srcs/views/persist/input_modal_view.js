@@ -1,24 +1,26 @@
 export let InputModalView = Backbone.View.extend({
   template: _.template($("#input-modal-view-template").html()),
   el: "#input-modal-view",
-
-  initialize: function () {
-    this.data = null;
-    $("#input-modal-view.tiny.modal").modal("setting", {
-      closable: false,
-    });
-  },
-
   events: {
     "click .green.button": "send",
     "click .cancel.button": "cancel",
+  },
+
+  initialize: function () {
+    this.data = null;
+    this.modal_view = $("#input-modal-view.tiny.modal");
+    this.modal_view.modal("setting", {
+      closable: false,
+    });
+    this.input = null;
   },
 
   render: function (data) {
     this.data = data;
     this.$el.empty();
     this.$el.html(this.template(data));
-    $("#input-modal-view.tiny.modal").modal("show");
+    this.modal_view.modal("show");
+    this.input = this.$("input");
     return this;
   },
 
@@ -29,12 +31,13 @@ export let InputModalView = Backbone.View.extend({
 
   close: function () {
     this.$el.empty();
-    $("#input-modal-view.tiny.modal").modal("hide");
+    this.modal_view.modal("hide");
   },
 
   send: function () {
-    let input = this.$("input").val();
-    this.$("input").val("");
+    if (!this.input) return;
+    let input = this.input.val();
+    this.input.val("");
     if (this.data.success_callback) this.data.success_callback(input);
     this.close();
   },

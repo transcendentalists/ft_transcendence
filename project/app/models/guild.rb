@@ -78,10 +78,10 @@ class Guild < ApplicationRecord
     false
   end
 
-  def current_war_match_history
+  def current_war_match_history!
     war = self.wars.find_by_status(["pending", "progress"])
     return if war.nil?
-    my_guild_war_status = war.war_statuses.find_by_guild_id(self.id)
+    my_guild_war_status = war.war_statuses.find_by_guild_id!(self.id)
     enemy_guild = my_guild_war_status.enemy_status.guild
     request = war.request
     match_type = %w[war dual]
@@ -89,7 +89,9 @@ class Guild < ApplicationRecord
     match_type << "tournament" if request.include_tournament
     matches = []
     Scorecard.where(user_id: self.users.ids).each do |scorecard|
-      if scorecard.enemy_user.in_guild&.id == enemy_guild.id && match_type.include?(scorecard.match.match_type)
+      if scorecard.match.status == "completed" &&
+        scorecard.enemy_user.in_guild&.id == enemy_guild.id &&
+        match_type.include?(scorecard.match.match_type)
         match = scorecard.match
         if request.start_date <= match.updated_at
           matches << {

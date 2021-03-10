@@ -9,11 +9,11 @@ class War < ApplicationRecord
     self.where(status: "completed").order(updated_at: :desc).limit(5).map { |war|
       war_statuses = war.war_statuses
       current_guild_war_status = war_statuses.find_by_guild_id(guild_id)
-      enemy_guild_war_status = current_guild_war_status.enemy_guild_war_status
+      enemy_guild_war_status = current_guild_war_status.enemy_status
       {
         point_of_current_guild: current_guild_war_status.point,
-        point_of_enemy_guild: enemy_guild_war_status.point,
-        enemy_guild_profile: enemy_guild_war_status.guild.profile,
+        point_of_enemy_guild: enemy_status.point,
+        enemy_guild_profile: enemy_status.guild.profile,
         war_result: war_result(current_guild_war_status, enemy_guild_war_status),
         bet_point: war.request.bet_point
       }
@@ -27,6 +27,23 @@ class War < ApplicationRecord
       current_guild_war_status.enemy? ? "승" : "패"
     else
       "패"
+    end
+  end
+
+  def index_data(guild_id)
+    begin
+      request = self.request
+      my_guild_status = request.war_statuses.find_by_guild_id!(guild_id)
+      enemy_guild_status = my_guild_status.enemy_status
+      status = my_guild_status.for_war_status_view(my_guild_status.guild)
+      rules_of_war = my_guild_status.request.rules_of_war
+      matches = my_guild_status.guild.current_war_match_history!
+      keys = %w[guild status rules_of_war matches]
+      values = [enemy_guild_status.guild.profile, status, rules_of_war, matches]
+    rescue
+      nil
+    else
+      Hash[keys.zip values]
     end
   end
 end

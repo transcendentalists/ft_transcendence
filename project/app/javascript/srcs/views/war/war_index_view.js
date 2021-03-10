@@ -18,8 +18,8 @@ export let WarIndexView = Backbone.View.extend({
     const current_user_guild_in_war = current_user_guild?.in_war;
     this.$el.html(
       this.template({
-        current_user_guild: current_user_guild,
-        current_user_guild_in_war: current_user_guild_in_war,
+        current_user_guild,
+        current_user_guild_in_war,
       })
     );
     if (current_user_guild && current_user_guild_in_war) {

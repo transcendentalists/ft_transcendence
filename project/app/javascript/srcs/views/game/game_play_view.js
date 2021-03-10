@@ -143,23 +143,28 @@ export let GamePlayView = Backbone.View.extend({
    ** 4) 전달받은 객체의 타입이 '공'인 경우 공의 위치나 속도 등을 업데이트
    */
   update: function (data) {
-    if (!data.hasOwnProperty("object")) return;
-
-    if (data.object.type == "SCORE") {
-      this.score.update(data.object);
+    if (!data) return;
+    if (data.object.type !== "SCORE" && data.send_id == App.current_user.id)
       return;
-    }
 
-    if (this.is_player && data.send_id == App.current_user.id) return;
-
-    if (data.object.type == "PADDLE") {
-      if (this.is_player) this.enemy_paddle.update(data.object);
-      else if (data.object.side == "LEFT") this.left_paddle.update(data.object);
-      else this.right_paddle.update(data.object);
-    } else if (data.object.type == "BALL") {
-      this.ball.delay_time = 0;
-      this.ball.update(data.object);
+    const object = data.object;
+    switch (object.type) {
+      case "SCORE":
+        this.score.update(object);
+        break;
+      case "PADDLE":
+        this.updatePaddle(object);
+        break;
+      case "BALL":
+        this.ball.update(object);
+        break;
     }
+  },
+
+  updatePaddle: function (object) {
+    if (this.is_player) this.enemy_paddle.update(object);
+    else if (object.side == "LEFT") this.left_paddle.update(object);
+    else this.right_paddle.update(object);
   },
 
   /**

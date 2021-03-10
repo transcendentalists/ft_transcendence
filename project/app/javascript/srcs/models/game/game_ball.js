@@ -143,6 +143,7 @@ export const GameBall = Backbone.Model.extend({
     this.event_count = +data.event_count;
     this.freeze_time = +data.freeze_time;
     this.accel_time = +data.accel_time;
+    this.delay_time = 0;
   },
 
   missPosition: function () {

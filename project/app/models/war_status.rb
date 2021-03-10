@@ -25,4 +25,9 @@ class WarStatus < ApplicationRecord
   def challenger?
     return self.position == "challenger"
   end
+
+  def increase_point
+    self.point += 20
+    self.save
+  end
 end

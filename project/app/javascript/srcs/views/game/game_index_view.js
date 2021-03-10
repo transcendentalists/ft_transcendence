@@ -28,6 +28,7 @@ export let GameIndexView = Backbone.View.extend({
     let params = Helper.parseHashQuery();
     let default_hash = {
       challenger_id: null,
+      war_id: null,
       rule_id: "1",
       target_score: "3",
       match_id: match_id,
@@ -35,6 +36,7 @@ export let GameIndexView = Backbone.View.extend({
 
     params = Object.assign({}, default_hash, params);
     this.challenger_id = params["challenger_id"];
+    this.war_id = params["war_id"];
     this.rule_id = params["rule_id"];
     this.target_score = params["target_score"];
     this.match_id = params["match_id"];
@@ -60,6 +62,7 @@ export let GameIndexView = Backbone.View.extend({
         rule_id: this.rule_id,
         target_score: this.target_score,
         match_id: this.match_id,
+        war_id: this.war_id,
       },
     });
   },
@@ -81,6 +84,12 @@ export let GameIndexView = Backbone.View.extend({
         this.challenger_id,
         this.match_id
       );
+    } else if (this.match_type == "war" && this.war_id != null) {
+      App.war_channel.battleRequest({
+        war_id: this.war_id,
+        user_id: App.current_user.id,
+        guild_id: App.current_user.get("guild").id,
+      });
     }
   },
 

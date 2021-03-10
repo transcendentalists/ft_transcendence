@@ -78,7 +78,7 @@ class Guild < ApplicationRecord
     false
   end
 
-  def war_match_history
+  def current_war_match_history
     war = self.wars.find_by_status(["pending", "progress"])
     return if war.nil?
     my_guild_war_status = war.war_statuses.find_by_guild_id(self.id)

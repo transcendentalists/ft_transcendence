@@ -3,7 +3,7 @@ import { App } from "srcs/internal";
 export let Helper = {
   fetch: async function (url, hash_args = {}) {
     let params = {
-      method: hash_args.hasOwnProperty("method") ? hash_args["method"] : "GET",
+      method: hash_args.method || "GET",
       credentials: "same-origin",
       headers: {
         "X-CSRF-Token": this.getToken(),
@@ -11,31 +11,29 @@ export let Helper = {
         current_user: App.current_user?.id,
       },
     };
-    const success_callback = hash_args.hasOwnProperty("success_callback")
-      ? hash_args["success_callback"]
-      : null;
-    const fail_callback = hash_args.hasOwnProperty("fail_callback")
-      ? hash_args["fail_callback"]
-      : null;
-    if (hash_args.hasOwnProperty("headers")) {
+
+    const success_callback = hash_args.success_callback || null;
+    const fail_callback = hash_args.fail_callback || null;
+
+    if (hash_args.headers) {
       $.extend(params.headers, hash_args.headers);
       if (params.headers["Content-Type"] == "form-data")
         delete params.headers["Content-Type"];
     }
-    if (hash_args.hasOwnProperty("body")) {
-      if (!params.headers["Content-Type"]) params["body"] = hash_args["body"];
-      else params["body"] = JSON.stringify(hash_args["body"]);
+    if (hash_args.body) {
+      let body = hash_args.body;
+      params.body = params.headers["Content-Type"]
+        ? JSON.stringify(body)
+        : body;
     }
 
-    let prefix = hash_args.hasOwnProperty("prefix")
-      ? hash_args["prefix"]
-      : "api/";
-
+    const prefix = hash_args.prefix ? hash_args.prefix : "api/";
     let data = {};
     let success = false;
+
     try {
       let response = await fetch(prefix + url, params);
-      success = Math.floor(response.status / 100) == 2;
+      success = response.ok;
       data = await response.json();
     } catch (err) {}
 

@@ -91,7 +91,7 @@ class Api::UsersController < ApplicationController
       user.login
       create_session user.id 
     end
-    render :json => { current_user: user.to_simple }
+    render json: { current_user: user.to_simple }
   end
 
   # 유저가 로그아웃 버튼을 클릭했을 때 id를 이용한 로그아웃 프로세스 처리

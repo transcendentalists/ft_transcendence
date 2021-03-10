@@ -49,6 +49,14 @@ class Match < ApplicationRecord
     self.update(status: "progress", start_time: Time.zone.now())
     self.scorecards.update_all(result: "progress")
     self.broadcast({type: "PLAY"})
+    if (self.match_type == "war")
+      ActionCable.server.broadcast(
+        "war_channel_#{self.eventable_id.to_s}",
+        {
+          type: "match_start",
+        },
+      )
+    end
   end
 
   # broadcast type

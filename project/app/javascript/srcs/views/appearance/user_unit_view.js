@@ -21,7 +21,7 @@ export let UserUnitView = Backbone.View.extend({
   },
 
   destroyAndCreateUserMenu: function () {
-    App.appView.appearance_view.trigger("destroy_user_menu_all");
+    App.app_view.appearance_view.trigger("destroy_user_menu_all");
     this.model.trigger("create_user_menu");
   },
 

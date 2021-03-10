@@ -3,8 +3,8 @@ import { App, Helper } from "srcs/internal";
 export let DualHelper = {
   getUserModelInAppearanceCollections: function (id) {
     return (
-      App.appView.appearance_view.friends.get(id) ||
-      App.appView.appearance_view.online_users.get(id)
+      App.app_view.appearance_view.friends.get(id) ||
+      App.app_view.appearance_view.online_users.get(id)
     );
   },
 

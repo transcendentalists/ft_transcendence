@@ -11,7 +11,7 @@ export function ConnectNotificationChannel(room_id) {
       connected() {},
 
       disconnected() {
-        this.unsubscribe();
+        App.restart();
       },
 
       received(data) {
@@ -22,6 +22,8 @@ export function ConnectNotificationChannel(room_id) {
           case "service_ban":
             this.serviceBanned();
             break;
+          case "same_browser_connection":
+            this.browserAlert();
           default:
             console.log(data);
         }
@@ -40,9 +42,9 @@ export function ConnectNotificationChannel(room_id) {
         if (data.status == "request") {
           if (App.current_user.isWorking()) {
             this.dualRequestAlreadyExist(data.profile.id);
-          } else App.appView.invite_view.render(data);
+          } else App.app_view.invite_view.render(data);
         } else if (data.status == "approved") {
-          App.appView.request_view.close();
+          App.app_view.request_view.close();
           this.dualGameStart(data);
         } else if (statuses.includes(data.status)) {
           if (data.status != "canceled") {
@@ -99,19 +101,23 @@ export function ConnectNotificationChannel(room_id) {
 
       dualCloseInviteOrRequestView: function () {
         App.current_user.is_challenger
-          ? App.appView.request_view.close()
-          : App.appView.invite_view.close();
+          ? App.app_view.request_view.close()
+          : App.app_view.invite_view.close();
       },
 
-      showBannedInfo: function () {
+      serviceBanned: function () {
         Helper.info({
           subject: "접속 제한",
           description: "정책 상의 이유로 서비스 이용이 제한되었습니다.",
         });
+        setTimeout(App.restart.bind(App), 2000);
       },
 
-      serviceBanned: function () {
-        this.showBannedInfo();
+      browserAlert: function () {
+        Helper.info({
+          subject: "중복 접속",
+          description: "같은 브라우저에서 트렌센던스 접속이 감지되었습니다.",
+        });
         setTimeout(App.restart.bind(App), 2000);
       },
     }

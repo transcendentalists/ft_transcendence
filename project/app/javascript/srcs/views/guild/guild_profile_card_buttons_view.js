@@ -28,9 +28,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
         App.current_user.set("guild", null);
         App.router.navigate("#/guilds?page=1", true);
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 
@@ -46,11 +44,12 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
       },
       success_callback: (data) => {
         App.current_user.set("guild", data.guild_membership);
-        App.router.navigate(`#/guilds/${App.current_user.get("guild").id}?page=1`, true);
+        App.router.navigate(
+          `#/guilds/${App.current_user.get("guild").id}?page=1`,
+          true
+        );
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 

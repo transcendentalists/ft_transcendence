@@ -88,9 +88,7 @@ export let AdminIndexView = Backbone.View.extend({
         admin: App.current_user.id,
       },
       success_callback: this.adminActionCallback.bind(this),
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     };
 
     if (this.hasBodyAction())

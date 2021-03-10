@@ -30,9 +30,7 @@ export let GuildMemberCardButtonsView = Backbone.View.extend({
       success_callback: (data) => {
         this.parent.refresh(data.guild_membership);
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 
@@ -46,9 +44,7 @@ export let GuildMemberCardButtonsView = Backbone.View.extend({
       success_callback: (data) => {
         this.parent.refresh(data.guild_membership);
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 
@@ -59,9 +55,7 @@ export let GuildMemberCardButtonsView = Backbone.View.extend({
       success_callback: () => {
         this.parent.close();
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 

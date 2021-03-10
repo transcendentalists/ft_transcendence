@@ -45,12 +45,34 @@ export let Helper = {
     return data;
   },
 
-  getToken: function () {
-    return $("meta[name=csrf-token]")[0].getAttribute("content");
+  defaultSuccessHandler: function (action_name = "액션") {
+    let immediate_action = false;
+    if (typeof action_name !== "string") {
+      immediate_action = true;
+      action_name = "액션";
+    }
+
+    const prop =
+      (action_name[action_name.length - 1].charCodeAt() - 0xac00) % 28 !== 0;
+    const description = `요청하신 ${
+      action_name + (prop ? "이" : "가")
+    } 성공하였습니다.`;
+
+    const callback = Helper.info.bind(Helper, {
+      subject: "요청 성공",
+      description: description,
+    });
+
+    return immediate_action ? callback() : callback;
   },
 
-  isCurrentView: function (view_name) {
-    return $("#main-view-container").has(view_name).length > 0;
+  // binding this를 피하기 위해 모듈명(Helper) 지정
+  defaultErrorHandler: function (data) {
+    Helper.info({ error: data.error });
+  },
+
+  getToken: function () {
+    return $("meta[name=csrf-token]")[0].getAttribute("content");
   },
 
   isUserChatBanned: function (user_id) {
@@ -58,7 +80,7 @@ export let Helper = {
   },
 
   isUserFriend: function (user_id) {
-    return App.appView.appearance_view.friends.get(user_id) !== undefined;
+    return App.app_view.appearance_view.friends.get(user_id) !== undefined;
   },
 
   isCurrentUser: function (user_id) {
@@ -73,47 +95,36 @@ export let Helper = {
   },
 
   alert: function (data) {
-    if (data == undefined || data == null) return this.callModalError();
+    if (!data) return this.callModalError();
 
-    if (!data.hasOwnProperty("subject"))
-      data.subject = "경고 창의 제목을 설정해주세요.";
-    if (!data.hasOwnProperty("description"))
-      data.description = "경고 내용을 입력해주세요.";
+    data.subject = data.subject || "경고 창의 제목을 설정해주세요.";
+    data.description = data.description || "경고 내용을 입력해주세요.";
 
-    App.appView.alert_modal_view.render(data);
+    App.app_view.alert_modal_view.render(data);
   },
 
   input: function (data) {
-    if (
-      data == undefined ||
-      data == null ||
-      !data.hasOwnProperty("success_callback")
-    )
-      return this.callModalError();
+    if (!data || !data.success_callback) return this.callModalError();
 
-    if (!data.hasOwnProperty("subject"))
-      data.subject = "입력받을 창의 제목을 설정해주세요";
-    if (!data.hasOwnProperty("description"))
-      data.description = "입력받을 내용에 대해 설명해주세요.";
+    data.subject = data.subject || "입력받을 창의 제목을 설정해주세요";
+    data.description = data.description || "입력받을 내용에 대해 설명해주세요.";
 
-    App.appView.input_modal_view.render(data);
+    App.app_view.input_modal_view.render(data);
   },
 
   info: function (data) {
-    if (data == undefined || data == null) return this.callModalError();
+    if (!data) return this.callModalError();
     if (data.hasOwnProperty("error") && !data.error)
       return App.router.navigate("#/400");
 
-    if (data.hasOwnProperty("error")) {
+    if (data.error) {
       data.subject = data.error.type;
       data.description = data.error.msg;
     } else {
-      if (!data.hasOwnProperty("subject"))
-        data.subject = "알려줄 내용의 제목을 설정해주세요";
-      if (!data.hasOwnProperty("description"))
-        data.description = "알려줄 내용을 설명해주세요.";
+      data.subject = data.subject || "제목 없음";
+      data.description = data.description || "내용이 설정되어 있지 않습니다.";
     }
-    App.appView.info_modal_view.render(data);
+    App.app_view.info_modal_view.render(data);
   },
 
   /*

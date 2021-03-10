@@ -3,7 +3,6 @@ import { App } from "srcs/internal";
 export let Router = Backbone.Router.extend({
   routes: {
     "": "sessionsController",
-    "auth/github/callback": "authController",
     "sessions/new": "sessionsController",
     "users(/:param)": "usersController",
     "chatrooms(/:param)": "chatRoomsController",
@@ -13,30 +12,26 @@ export let Router = Backbone.Router.extend({
     "war(/:new)": "warController",
     "matches(/:id)": "matchesController",
     "tournaments(/:param)": "tournamentsController",
-    "admin(/:param)": "adminController",
+    admin: "adminController",
     "errors/:id(/:type)(/:msg)": "errorsController",
     "*exception": "errorsController",
-  },
-
-  authController: function () {
-    console.log("github login success!");
   },
 
   redirect_to: function (viewPrototype, param) {
     if (!App.current_user.sign_in) {
       return this.navigate("#/sessions/new");
     }
-    App.mainView.render(viewPrototype, param);
+    App.main_view.render(viewPrototype, param);
   },
 
   sessionsController: function () {
     if (App.current_user.sign_in)
       return this.navigate("#/users/" + App.current_user.id);
-    else App.mainView.render(App.View.SignInView);
+    else App.main_view.render(App.View.SignInView);
   },
 
   usersController: function (param) {
-    if (param === "new") return App.mainView.render(App.View.SignUpView);
+    if (param === "new") return App.main_view.render(App.View.SignUpView);
     this.redirect_to(App.View.UserIndexView, param);
   },
 
@@ -80,7 +75,7 @@ export let Router = Backbone.Router.extend({
     else this.navigate("#/errors/102");
   },
 
-  adminController(param) {
+  adminController() {
     if (!App.current_user.sign_in || App.current_user.get("position") == "user")
       return this.navigate("#/errors/103");
 

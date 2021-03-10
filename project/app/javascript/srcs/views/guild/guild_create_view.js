@@ -67,9 +67,7 @@ export let GuildCreateView = Backbone.View.extend({
         App.current_user.set("guild", data.guild_membership);
         App.router.navigate("#/guilds?page=1");
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 

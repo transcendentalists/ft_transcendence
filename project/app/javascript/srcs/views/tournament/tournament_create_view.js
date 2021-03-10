@@ -50,7 +50,7 @@ export let TournamentCreateView = Backbone.View.extend({
         tournament: input_data,
       },
       success_callback: () => App.router.navigate("#/tournaments"),
-      fail_callback: (data) => Helper.info({ error: data.error }),
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 

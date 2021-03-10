@@ -6,7 +6,6 @@ Rails.application.routes.draw do
   delete 'api/session', to: 'spa#destroy'
   get 'auth/42/callback', to: 'spa#index'
   post 'auth/mail/callback', to: 'spa#mail_auth'
-
   get 'api/admin/db', to: 'api/admin#index'
 
   namespace :api do

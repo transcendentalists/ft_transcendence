@@ -23,7 +23,7 @@ import { GameScore } from "./models/game/game_score";
 
 /* COLLECTION */
 import { ChatBans } from "./collections/chat_bans";
-import { ChatMessages } from "./collections/chat_messages";
+import { DirectChatMessages } from "./collections/direct_chat_messages";
 import { Friends } from "./collections/friends";
 import { GroupChatMembers } from "./collections/group_chat_members";
 import { GroupChatMessages } from "./collections/group_chat_messages";
@@ -142,16 +142,16 @@ import { WarRequestCardView } from "./views/war/war_request_card_view";
 import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_view";
 
 export let App = {
-  initialize: function () {
+  start: function () {
     Helper.fetch("session", { method: "DELETE" });
     this.resources = {
       chat_bans: new App.Collection.ChatBans(),
     };
-    this.appView = new AppView();
-    this.router = new Router();
-    this.mainView = App.appView.main_view;
-    this.current_user = new CurrentUser();
     this.consumer = consumer;
+    this.app_view = new AppView();
+    this.current_user = new CurrentUser();
+    this.main_view = App.app_view.main_view;
+    this.router = new Router();
   },
 
   restart: function () {
@@ -159,8 +159,7 @@ export let App = {
       subscription.unsubscribe()
     );
     this.consumer.disconnect();
-    this.appView.restart();
-    this.current_user.logout();
+    this.app_view.restart();
     this.current_user = new CurrentUser();
     this.router.navigate("#/sessions/new");
   },
@@ -178,7 +177,7 @@ export let App = {
   },
   Collection: {
     ChatBans,
-    ChatMessages,
+    DirectChatMessages,
     Friends,
     GroupChatMembers,
     GroupChatMessages,

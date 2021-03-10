@@ -144,9 +144,7 @@ import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_
 export let App = {
   start: function () {
     Helper.fetch("session", { method: "DELETE" });
-    this.resources = {
-      chat_bans: new App.Collection.ChatBans(),
-    };
+    this.resources = this.getInitialResource();
     this.consumer = consumer;
     this.app_view = new AppView();
     this.current_user = new CurrentUser();
@@ -155,6 +153,7 @@ export let App = {
   },
 
   restart: function () {
+    this.resources = this.getInitialResource();
     this.consumer.subscriptions.subscriptions.forEach((subscription) =>
       subscription.unsubscribe()
     );
@@ -162,6 +161,14 @@ export let App = {
     this.app_view.restart();
     this.current_user = new CurrentUser();
     this.router.navigate("#/sessions/new");
+  },
+
+  getInitialResource: function () {
+    return {
+      chat_bans: new App.Collection.ChatBans(),
+      online_users: null,
+      friends: null,
+    };
   },
 
   Model: {

@@ -11,7 +11,7 @@ export let MatchHistoryView = Backbone.View.extend({
     const user_card = data.scorecards.find(
       (card) => this.user_id == card.user_id
     );
-    const enemy_user_card = data["scorecards"].find(
+    const enemy_user_card = data.scorecards.find(
       (card) => this.user_id != card.user_id
     );
     const enemy_user = data.users.find((user) => user.id != this.user_id);

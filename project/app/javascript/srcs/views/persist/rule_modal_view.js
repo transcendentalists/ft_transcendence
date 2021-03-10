@@ -16,7 +16,7 @@ export let RuleModalView = Backbone.View.extend({
   },
 
   render: function (enemy) {
-    if (DualHelper.addLitsenToUserModel(this, enemy.id)) {
+    if (DualHelper.addListenToUserModel(this, enemy.id)) {
       this.enemy = enemy;
       App.current_user.working = true;
       this.$el.html(this.template());

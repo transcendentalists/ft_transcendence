@@ -73,9 +73,15 @@ class Api::GroupChatRoomsController < ApplicationController
     head :no_content, status: 204
   end
 
-  # TODO: web_admin이 이 메서드를 사용할 예정
   def destroy
-    render plain: "group chat room destroy"
+    return render_error("FORBIDDEN", "서비스 매니저만 챗룸을 삭제할 수 있습니다.", 403) unless current_user_is_admin_or_owner?
+    begin
+      group_chat_room = GroupChatRoom.find_by_id(params[:id])
+      group_chat_room.let_all_out_and_destroy!
+      return head :no_content, status: 204
+    rescue
+      return render_error("챗룸 삭제 실패", "챗룸 삭제에 실패했습니다.", 500)
+    end
   end
 
   private

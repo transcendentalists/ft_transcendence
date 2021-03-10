@@ -28,6 +28,6 @@ class GuildInvitationValidator < ActiveModel::Validator
   end
 
   def validate_duplication_of_guild_invitation
-    @record.errors.add(:invited_user_id, message: "이미 길드 초대장을 보내셨습니다.") if @invited_user.already_received_guild_invitation_by(@user)
+    @record.errors.add(:invited_user_id, message: "이미 길드 초대장을 보내셨습니다.") if @invited_user.already_received_guild_invitation_by?(@user)
   end
 end

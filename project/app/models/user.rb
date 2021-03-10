@@ -32,6 +32,29 @@ class User < ApplicationRecord
     update_status('offline')
   end
 
+  def web_owner?
+    self.position == "web_owner"
+  end
+
+  def banned?
+    self.position == "ghost"
+  end
+
+  def can_service_manage?
+    position_grade[self.position] >= position_grade["web_admin"]
+  end
+
+  def can_be_service_banned_by?(user)
+    return false unless user.can_service_manage?
+    position_compare(user, self) > 0
+  end
+
+  def service_ban!
+    self.update_status("offline")
+    self.update!(position: "ghost")
+    ActionCable.server.broadcast("notification_channel_#{self.id.to_s}", {type: "service_ban"})
+  end
+
   def self.onlineUsersWithoutFriends(params)
     users = where_by_query(params)
     users = users.where.not(id: (Friendship.where(user_id: params[:user_id]).select(:friend_id)))
@@ -83,7 +106,7 @@ class User < ApplicationRecord
   end
 
   def profile
-    permitted = ["id", "name", "title", "image_url"]
+    permitted = ["id", "name", "title", "image_url", "position"]
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
     stat.merge!(self.game_stat)
     stat[:achievement] = self.achievement
@@ -137,7 +160,15 @@ class User < ApplicationRecord
     card.ready and true
   end
 
-  def already_received_guild_invitation_by(user)
+  def update_position!(options = { by: self, position: self.position })
+    by_user = options[:by]
+    position = options[:position]
+    raise UserError.new("변경 권한이 없습니다.", 403) unless by_user.web_owner?
+    raise UserError.new("현재 포지션과 변경하려는 포지션이 같습니다.", 400) if self.position == position
+    self.update!(position: position)
+  end
+
+  def already_received_guild_invitation_by?(user)
     !self.guild_invitations.find_by_user_id(user.id).nil?
   end
 

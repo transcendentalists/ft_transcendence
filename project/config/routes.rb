@@ -7,8 +7,10 @@ Rails.application.routes.draw do
   get 'auth/42/callback', to: 'spa#index'
   post 'auth/mail/callback', to: 'spa#mail_auth'
 
+  get 'api/admin/db', to: 'api/admin#index'
+
   namespace :api do
-    resources :users, only: %i[index show create update] do
+    resources :users, only: %i[index show create update destroy] do
       member do
         patch :ban
         post 'session', to: 'users#login'
@@ -44,10 +46,13 @@ Rails.application.routes.draw do
       resources :war_requests, only: %i[index create update]
     end
 
+    resources :guild_memberships, only: %i[destroy update]
+
     resources :group_chat_rooms, only: %i[index create update show destroy] do
       resources :chat_messages, only: %i[index create]
       resources :group_chat_memberships, path: 'memberships', only: %i[update destroy]
     end
+    resources :group_chat_memberships, only: %i[update destroy]
 
     resources :direct_chat_rooms, only: [] do
       resources :chat_messages, only: %i[index create]

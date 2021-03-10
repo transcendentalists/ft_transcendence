@@ -10,4 +10,8 @@ import { App } from "srcs/internal";
 
     backboneSync(method, model, options);
   };
+
+  Backbone.Model.prototype.equalTo = function (other) {
+    return _.isEqual(this.id, other.id);
+  };
 })();

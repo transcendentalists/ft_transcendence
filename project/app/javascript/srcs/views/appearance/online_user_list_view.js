@@ -13,7 +13,6 @@ export let OnlineUserListView = Backbone.View.extend({
 
     this.listenTo(this.online_users, "add", this.addOne);
     this.listenTo(this.online_users, "reset", this.addAll);
-    // this.listenTo(this.online_users, "remove", this.deleteOne);
   },
 
   render: function () {
@@ -37,9 +36,8 @@ export let OnlineUserListView = Backbone.View.extend({
   },
 
   addOne: function (user) {
-    if (App.current_user.get("id") === user.get("id")) {
-      return;
-    }
+    if (App.current_user.equalTo(user)) return;
+
     this.online_user_unit = new App.View.UserUnitView({
       parent: this,
       model: user,

@@ -45,6 +45,13 @@ class GameChannel < ApplicationCable::Channel
   # 게임의 승패에 따라 유저의 포인트를 업데이트
   def update_game_status
     @match.update(status: "completed")
+
+    if @match.users.in_same_war?
+      war = @match.winner.in_guild.current_war
+      war_status = war.war_statuses.find_by_guild_id(@match.winner.in_guild.id)
+      war_status.increase_point if war.match_types.include?(@match.match_type)
+    end
+
     return if @match.match_type != "ladder"
     @match.users.each do |user|
       if user.id == @match.winner.id
@@ -65,6 +72,14 @@ class GameChannel < ApplicationCable::Channel
     end
     update_game_status
     @match.complete({type: "END"})
+    if (@match.match_type == "war")
+      ActionCable.server.broadcast(
+        "war_channel_#{@match.eventable_id.to_s}",
+        {
+          type: "match_end",
+        },
+      )
+    end
     stop_all_streams
   end
 
@@ -79,6 +94,12 @@ class GameChannel < ApplicationCable::Channel
     end
     winner_id = current_user.enemy
     @match.complete({type: "ENEMY_GIVEUP"})
+
+    if @match.users.in_same_war?
+      war = @match.winner.in_guild.current_war
+      war_status = war.war_statuses.find_by_guild_id(@match.winner.in_guild.id)
+      war_status.increase_point if war.match_types.include?(@match.match_type)
+    end
     stop_all_streams
   end
 
@@ -89,6 +110,14 @@ class GameChannel < ApplicationCable::Channel
       complete_by_giveup
     end
     current_user.update_status("online")
+    if (@match&.match_type == "war")
+      ActionCable.server.broadcast(
+        "war_channel_#{@match.eventable_id.to_s}",
+        {
+          type: "match_canceled",
+        },
+      )
+    end
     # Any cleanup needed when channel is unsubscribed
   end
 end

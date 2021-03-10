@@ -33,11 +33,11 @@ export let ChatRoomCreateView = Backbone.View.extend({
       case "input":
         return document.forms[0][input_name].value;
       case "check":
-        return $(`input[name=${input_name}]`).is(":checked")
+        return this.$(`input[name=${input_name}]`).is(":checked")
           ? "private"
           : "public";
       case "option":
-        return $(`.${input_name} option:selected`).val();
+        return this.$(`.${input_name} option:selected`).val();
     }
   },
 

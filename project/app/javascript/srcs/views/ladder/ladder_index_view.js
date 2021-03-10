@@ -18,32 +18,24 @@ export let LadderIndexView = Backbone.View.extend({
     this.user_ranking_view = null;
   },
 
-  beforePage: function () {
-    if (this.page === 1) return;
-    App.router.navigate("#/ladder/" + (this.page - 1));
-  },
-
-  nextPage: function () {
-    if (this.is_last_page === true) return;
-    App.router.navigate("#/ladder/" + (this.page + 1));
-  },
-
-  alert: function () {
-    Helper.info({
-      subject: "래더 신청 불가능",
-      description: "다른 유저와 듀얼 신청 중에는 래더 신청이 불가능합니다.",
+  /*
+   ** 별도 모델이나 컬렉션을 만들지 않고 처리
+   ** 현재 유저와 래더 랭킹 페이지에 필요한 url을 만들어 fetch
+   ** 각각 렌더링 콜백을 넘겨주어 렌더링 진행
+   */
+  render: function () {
+    this.$el.html(this.template());
+    const current_user_url = "users/" + App.current_user.id + "?for=profile";
+    Helper.fetch(current_user_url, {
+      success_callback: this.renderMyRatingCallback.bind(this),
     });
-  },
 
-  //  승급전 참여 버튼 클릭시 게임 인덱스 뷰로 이동
-  joinLadder: function () {
-    if (App.current_user.isWorking()) return this.alert();
-    App.router.navigate("#/matches?match_type=ladder");
-  },
+    const ladder_users_url = "users/?for=ladder_index&page=" + this.page;
+    Helper.fetch(ladder_users_url, {
+      success_callback: this.renderUserRankingCallback.bind(this),
+    });
 
-  joinCasualLadder: function () {
-    if (App.current_user.isWorking()) return this.alert();
-    App.router.navigate("#/matches?match_type=casual_ladder");
+    return this;
   },
 
   /**
@@ -68,24 +60,32 @@ export let LadderIndexView = Backbone.View.extend({
       .render(data.users);
   },
 
-  /*
-   ** 별도 모델이나 컬렉션을 만들지 않고 처리
-   ** 현재 유저와 래더 랭킹 페이지에 필요한 url을 만들어 fetch
-   ** 각각 렌더링 콜백을 넘겨주어 렌더링 진행
-   */
-  render: function () {
-    this.$el.html(this.template());
-    const current_user_url = "users/" + App.current_user.id + "?for=profile";
-    Helper.fetch(current_user_url, {
-      success_callback: this.renderMyRatingCallback.bind(this),
-    });
+  beforePage: function () {
+    if (this.page === 1) return;
+    App.router.navigate("#/ladder/" + (this.page - 1));
+  },
 
-    const ladder_users_url = "users/?for=ladder_index&page=" + this.page;
-    Helper.fetch(ladder_users_url, {
-      success_callback: this.renderUserRankingCallback.bind(this),
-    });
+  nextPage: function () {
+    if (this.is_last_page === true) return;
+    App.router.navigate("#/ladder/" + (this.page + 1));
+  },
 
-    return this;
+  //  승급전 참여 버튼 클릭시 게임 인덱스 뷰로 이동
+  joinLadder: function () {
+    if (App.current_user.isWorking()) return this.alert();
+    App.router.navigate("#/matches?match_type=ladder");
+  },
+
+  joinCasualLadder: function () {
+    if (App.current_user.isWorking()) return this.alert();
+    App.router.navigate("#/matches?match_type=casual_ladder");
+  },
+
+  alert: function () {
+    Helper.info({
+      subject: "래더 신청 불가능",
+      description: "다른 유저와 듀얼 신청 중에는 래더 신청이 불가능합니다.",
+    });
   },
 
   close: function () {

@@ -9,17 +9,17 @@ export let UserRankingView = Backbone.View.extend({
     this.child_views = [];
   },
 
-  addOne: function (user) {
-    let child_view = new App.View.UserProfileCardView();
-    this.child_views.push(child_view);
-    this.$("#user-profile-card-list").append(child_view.render(user).$el);
-  },
-
   render: function (users_data) {
     this.$el.html(this.template());
     this.$("#user-profile-card-list").html("");
     users_data.forEach(this.addOne, this);
     return this;
+  },
+
+  addOne: function (user) {
+    let child_view = new App.View.UserProfileCardView();
+    this.child_views.push(child_view);
+    this.$("#user-profile-card-list").append(child_view.render(user).$el);
   },
 
   close: function () {

@@ -52,6 +52,10 @@ class Guild < ApplicationRecord
     !self.wars.find_by_status(["progress", "pending"]).nil?
   end
 
+  def current_war
+    self.wars.find_by_status(["progress", "pending"])
+  end
+
   def cancel_rest_of_war_request
     self.requests.where(status: "pending").update_all(status: "canceled")
   end
@@ -81,7 +85,7 @@ class Guild < ApplicationRecord
     match_type << "tournament" if request.include_tournament
     matches = []
     Scorecard.where(user_id: self.users.ids).each do |scorecard|
-      if scorecard.opponent_user.in_guild&.id == opponent_guild.id && match_type.include?(scorecard.match.match_type)
+      if scorecard.match.status == "completed" && scorecard.opponent_user.in_guild&.id == opponent_guild.id && match_type.include?(scorecard.match.match_type)
         match = scorecard.match
         if request.start_date <= match.updated_at
           matches << {

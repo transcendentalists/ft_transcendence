@@ -108,18 +108,18 @@ import { GuildMemberCardButtonsView } from "./views/guild/guild_member_card_butt
 import { GuildMemberProfileCardView } from "./views/guild/guild_member_profile_card_view";
 
 /** war views */
-import { WarRequestCardListView } from "./views/war/war_request_card_list_view";
-import { WarRequestCardView } from "./views/war/war_request_card_view";
-import { WarIndexView } from "./views/war/war_index_view";
-import { WarRequestCreateView } from "./views/war/war_request_create_view";
+import { WarBattleView } from "./views/war/war_battle_view";
 import { WarHistoryListView } from "./views/war/war_history_list_view";
 import { WarHistoryView } from "./views/war/war_history_view";
-import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_view";
-import { WarBattleView } from "./views/war/war_battle_view";
-import { WarStatusView } from "./views/war/war_status_view";
-import { WarRuleView } from "./views/war/war_rule_view";
+import { WarIndexView } from "./views/war/war_index_view";
 import { WarMatchHistoryListView } from "./views/war/war_match_history_list_view";
 import { WarMatchHistoryView } from "./views/war/war_match_history_view";
+import { WarRequestCardListView } from "./views/war/war_request_card_list_view";
+import { WarRequestCardView } from "./views/war/war_request_card_view";
+import { WarRequestCreateView } from "./views/war/war_request_create_view";
+import { WarRequestDetailModalView } from "./views/war/war_request_detail_modal_view";
+import { WarRuleView } from "./views/war/war_rule_view";
+import { WarStatusView } from "./views/war/war_status_view";
 
 /* CHANNEL */
 import { ConnectAppearanceChannel } from "channels/appearance_channel";

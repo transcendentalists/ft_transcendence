@@ -6,12 +6,12 @@ class GroupChatMembership < ApplicationRecord
     self.user_id == user.id
   end
 
-  def requested_by_myself?(current_user)
-    self.user_id == current_user.id
+  def requested_by_myself?(user)
+    self.user_id == user.id
   end
 
-  def can_be_destroyed_by?(current_user)
-    return requested_by_myself?(current_user) || can_be_kicked_by?(current_user)
+  def can_be_destroyed_by?(user)
+    requested_by_myself?(user) || can_be_kicked_by?(user)
   end
 
   def can_be_kicked_by?(user)

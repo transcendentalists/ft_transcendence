@@ -9,8 +9,8 @@ export let WarMatchHistoryView = Backbone.View.extend({
   render: function (data) {
     const match_type = data.match.match_type;
     const user_card = data.current_guild_user_scorecard;
-    const enemy_user_card = data.opponent_guild_user_scorecard;
-    const enemy_user = data.opponent_guild_user;
+    const enemy_user_card = data.enemy_guild_user_scorecard;
+    const enemy_user = data.enemy_guild_user;
     this.$el.html(
       this.template({
         match_type,

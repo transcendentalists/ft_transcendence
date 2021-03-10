@@ -1362,11 +1362,11 @@ body {
   margin-bottom: 1rem;
 }
 
-#war-index-view .opponent-guild {
+#war-index-view .enemy-guild {
   width: 32rem;
 }
 
-#war-index-view .opponent-guild-profile-view {
+#war-index-view .enemy-guild-profile-view {
   margin-bottom: 4rem;
   height: 13rem;
 }
@@ -1449,13 +1449,13 @@ body {
   margin-bottom: 0;
 }
 
-#war-index-view #opponent-guild-point {
+#war-index-view #enemy-guild-point {
   width: 50%;
   transform: scaleX(-1);
   margin-bottom: 0;
 }
 
-#war-index-view #opponent-guild-point .label {
+#war-index-view #enemy-guild-point .label {
   transform: scaleX(-1);
 }
 

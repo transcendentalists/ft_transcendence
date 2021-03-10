@@ -43,7 +43,7 @@ export let WarIndexView = Backbone.View.extend({
       guild: guild,
     });
     this.guild_profile_card_view
-      .setElement(this.$(".opponent-guild-profile-view"))
+      .setElement(this.$(".enemy-guild-profile-view"))
       .render();
   },
 

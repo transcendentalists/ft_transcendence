@@ -9,21 +9,21 @@ class War < ApplicationRecord
     self.where(status: "completed").order(updated_at: :desc).limit(5).map { |war|
       war_statuses = war.war_statuses
       current_guild_war_status = war_statuses.find_by_guild_id(guild_id)
-      opponent_guild_war_status = current_guild_war_status.opponent_guild_war_status
+      enemy_guild_war_status = current_guild_war_status.enemy_guild_war_status
       {
         point_of_current_guild: current_guild_war_status.point,
-        point_of_opponent_guild: opponent_guild_war_status.point,
-        opponent_guild_profile: opponent_guild_war_status.guild.profile,
-        war_result: war_result(current_guild_war_status, opponent_guild_war_status),
+        point_of_enemy_guild: enemy_guild_war_status.point,
+        enemy_guild_profile: enemy_guild_war_status.guild.profile,
+        war_result: war_result(current_guild_war_status, enemy_guild_war_status),
         bet_point: war.request.bet_point
       }
     }
   end
 
-  def self.war_result(current_guild_war_status, opponent_guild_war_status)
-    if current_guild_war_status.point > opponent_guild_war_status.point
+  def self.war_result(current_guild_war_status, enemy_guild_war_status)
+    if current_guild_war_status.point > enemy_guild_war_status.point
       "승"
-    elsif current_guild_war_status.point == opponent_guild_war_status.point
+    elsif current_guild_war_status.point == enemy_guild_war_status.point
       current_guild_war_status.enemy? ? "승" : "패"
     else
       "패"

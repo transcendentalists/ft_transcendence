@@ -82,21 +82,21 @@ class Guild < ApplicationRecord
     war = self.wars.find_by_status(["pending", "progress"])
     return if war.nil?
     my_guild_war_status = war.war_statuses.find_by_guild_id(self.id)
-    opponent_guild = my_guild_war_status.opponent_guild_war_status.guild
+    enemy_guild = my_guild_war_status.enemy_guild_war_status.guild
     request = war.request
     match_type = %w[war dual]
     match_type << "ladder" if request.include_ladder
     match_type << "tournament" if request.include_tournament
     matches = []
     Scorecard.where(user_id: self.users.ids).each do |scorecard|
-      if scorecard.opponent_user.in_guild&.id == opponent_guild.id && match_type.include?(scorecard.match.match_type)
+      if scorecard.enemy_user.in_guild&.id == enemy_guild.id && match_type.include?(scorecard.match.match_type)
         match = scorecard.match
         if request.start_date <= match.updated_at
           matches << {
             match: match,
-            opponent_guild_user: scorecard.opponent_user,
+            enemy_guild_user: scorecard.enemy_user,
             current_guild_user_scorecard: scorecard,
-            opponent_guild_user_scorecard: scorecard.opponent_scorecard,
+            enemy_guild_user_scorecard: scorecard.enemy_scorecard,
           }
         end
       end

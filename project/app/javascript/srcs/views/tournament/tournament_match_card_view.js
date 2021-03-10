@@ -1,21 +1,11 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let TournamentMatchCardView = Backbone.View.extend({
   template: _.template($("#tournament-match-card-view-template").html()),
   className: "tournament-match-card",
-
   events: {
     "click .play.button": "play",
   },
-
-  play: function (event) {
-    let match_id = event.target.getAttribute("data-match-id");
-    if (isNaN(match_id)) return;
-
-    App.router.navigate(`#/matches?match_type=tournament&match_id=${match_id}`);
-  },
-
-  initialize: function () {},
 
   /**
    ** 경기 시간이 10분(600,000ms) 내로 남았을 경우 참여가능
@@ -30,6 +20,13 @@ export let TournamentMatchCardView = Backbone.View.extend({
 
     this.$el.html(this.template(content));
     return this;
+  },
+
+  play: function (event) {
+    let match_id = event.target.getAttribute("data-match-id");
+    if (!Helper.isNumber(match_id)) return;
+
+    App.router.navigate(`#/matches?match_type=tournament&match_id=${match_id}`);
   },
 
   close: function () {

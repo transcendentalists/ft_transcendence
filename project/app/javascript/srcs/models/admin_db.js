@@ -72,7 +72,7 @@ export let AdminDB = Backbone.Model.extend({
   membership: function (query_hash) {
     let data = this.get(query_hash.resource) || [];
     let resource_id = query_hash.resource_id;
-    if (isNaN(resource_id)) return [];
+    if (!Helper.isNumber(resource_id)) return [];
 
     if (query_hash.resource == "guild_memberships")
       data = _.filter(data, (membership) => resource_id == membership.guild_id);

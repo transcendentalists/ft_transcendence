@@ -12,17 +12,12 @@ export let TournamentIndexView = Backbone.View.extend({
     this.open_tournaments_view = null;
   },
 
-  parseTournamentsData: function (data) {
-    this.my_tournaments = _.filter(
-      data.tournaments,
-      (tournament) => tournament.current_user_next_match !== null
-    );
-    this.open_tournaments = _.filter(
-      data.tournaments,
-      (tournament) =>
-        tournament.current_user_next_match === null &&
-        tournament.status == "pending"
-    );
+  render: function () {
+    this.$el.html(this.template());
+    Helper.fetch("tournaments?for=tournament_index", {
+      success_callback: this.renderTournamentsCallBack.bind(this),
+    });
+    return this;
   },
 
   renderTournamentsCallBack: function (data) {
@@ -43,12 +38,17 @@ export let TournamentIndexView = Backbone.View.extend({
     }
   },
 
-  render: function () {
-    this.$el.html(this.template());
-    Helper.fetch("tournaments?for=tournament_index", {
-      success_callback: this.renderTournamentsCallBack.bind(this),
-    });
-    return this;
+  parseTournamentsData: function (data) {
+    this.my_tournaments = _.filter(
+      data.tournaments,
+      (tournament) => tournament.current_user_next_match !== null
+    );
+    this.open_tournaments = _.filter(
+      data.tournaments,
+      (tournament) =>
+        tournament.current_user_next_match === null &&
+        tournament.status == "pending"
+    );
   },
 
   close: function () {

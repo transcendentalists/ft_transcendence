@@ -80,6 +80,10 @@ export let Helper = {
     );
   },
 
+  isNumber(number) {
+    return number && typeof +number === "number";
+  },
+
   isUserChatBanned: function (user_id) {
     return App.resources.chat_bans.isUserChatBanned(user_id);
   },

@@ -14,6 +14,21 @@ export let InviteView = Backbone.View.extend({
     this.$el.hide();
   },
 
+  render: function (invited_game) {
+    if (DualHelper.addListenToUserModel(this, invited_game.profile.id)) {
+      this.invited_game = invited_game;
+      App.current_user.working = true;
+      this.$el.html(
+        this.template({
+          profile: invited_game.profile,
+          rule_name: invited_game.rule_name,
+          target_score: invited_game.target_score,
+        })
+      );
+      this.$el.show();
+    }
+  },
+
   approve: function () {
     const url =
       "#/matches?match_type=dual&challenger_id=" +
@@ -29,21 +44,6 @@ export let InviteView = Backbone.View.extend({
   decline: function () {
     App.notification_channel.dualRequestDecline(this.invited_game.profile.id);
     this.close();
-  },
-
-  render: function (invited_game) {
-    if (DualHelper.addListenToUserModel(this, invited_game.profile.id)) {
-      this.invited_game = invited_game;
-      App.current_user.working = true;
-      this.$el.html(
-        this.template({
-          profile: invited_game.profile,
-          rule_name: invited_game.rule_name,
-          target_score: invited_game.target_score,
-        })
-      );
-      this.$el.show();
-    }
   },
 
   close: function () {

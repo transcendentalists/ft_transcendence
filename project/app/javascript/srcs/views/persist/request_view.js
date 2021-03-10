@@ -13,11 +13,6 @@ export let RequestView = Backbone.View.extend({
     this.$el.hide();
   },
 
-  cancel: function () {
-    App.notification_channel.dualRequestCancel(this.enemy.id);
-    this.close();
-  },
-
   render: function (enemy) {
     if (DualHelper.addListenToUserModel(this, enemy.id)) {
       App.current_user.is_challenger = true;
@@ -25,6 +20,11 @@ export let RequestView = Backbone.View.extend({
       this.$el.html(this.template(enemy));
       this.$el.show();
     }
+  },
+
+  cancel: function () {
+    App.notification_channel.dualRequestCancel(this.enemy.id);
+    this.close();
   },
 
   close: function () {

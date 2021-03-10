@@ -4,9 +4,10 @@ export let DualHelper = {
   addListenToUserModel: function (view, user_id) {
     let user_model = Helper.getUser(user_id);
 
-    if (user_model == undefined || user_model.get("status") == "offline") {
+    if (!user_model || user_model.get("status") === "offline") {
       return false;
     }
+
     view.listenTo(
       user_model,
       "change:status",

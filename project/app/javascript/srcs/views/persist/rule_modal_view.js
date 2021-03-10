@@ -3,16 +3,15 @@ import { App, DualHelper } from "srcs/internal";
 export let RuleModalView = Backbone.View.extend({
   template: _.template($("#rule-modal-view-template").html()),
   el: "#rule-modal-view",
-
-  initialize: function () {
-    $("#rule-modal-view").modal("setting", {
-      closable: false,
-    });
-  },
-
   events: {
     "click .green.button": "submit",
     "click .cancel.button": "close",
+  },
+
+  initialize: function () {
+    $el.modal("setting", {
+      closable: false,
+    });
   },
 
   render: function (enemy) {
@@ -32,11 +31,6 @@ export let RuleModalView = Backbone.View.extend({
     $("#rule-modal-view.tiny.modal").modal("hide");
   },
 
-  close: function () {
-    this.clear();
-    App.current_user.working = false;
-  },
-
   submit: function () {
     let rule_id = $("select[name=rules]").val();
     let rule_name = $("select[name=rules] option:checked").text();
@@ -50,5 +44,10 @@ export let RuleModalView = Backbone.View.extend({
     );
     App.app_view.request_view.render(this.enemy.attributes);
     this.clear();
+  },
+
+  close: function () {
+    this.clear();
+    App.current_user.working = false;
   },
 });

@@ -15,13 +15,6 @@ export let UserIndexButtonsView = Backbone.View.extend({
     this.invite_button = this.setInviteButton(user);
   },
 
-  setInviteButton: function (user) {
-    if (this.is_current_user || user.get("guild") !== null) return false;
-
-    const current_user_position = App.current_user.get("guild")?.position;
-    return ["master", "officer"].includes(current_user_position);
-  },
-
   render: function () {
     this.$el.html(
       this.template({
@@ -32,6 +25,13 @@ export let UserIndexButtonsView = Backbone.View.extend({
     if (App.current_user.two_factor_auth)
       this.$("#two-factor-toggle input").trigger("click");
     return this;
+  },
+
+  setInviteButton: function (user) {
+    if (this.is_current_user || user.get("guild") !== null) return false;
+
+    const current_user_position = App.current_user.get("guild")?.position;
+    return ["master", "officer"].includes(current_user_position);
   },
 
   changeTwoFactorAuth: function () {

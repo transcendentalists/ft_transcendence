@@ -29,10 +29,10 @@ export const GameBall = Backbone.Model.extend({
   },
 
   applyAddonBall: function () {
-    if (this.engine_spec["invisible"]) {
+    if (this.engine_spec.invisible) {
       this.opacity = _.max([this.opacity - 0.04, 0.1]);
     }
-    if (this.engine_spec["dwindle"] && this.event_count % 4 == 0) {
+    if (this.engine_spec.dwindle && this.event_count % 4 == 0) {
       this.radius = _.max([this.radius - 1, 1]);
     }
   },

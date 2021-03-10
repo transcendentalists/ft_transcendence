@@ -26,15 +26,13 @@ export let ChatRoomCreateView = Backbone.View.extend({
 
   submit: function () {
     let input_data = {};
-    input_data["title"] = $("input[name=title]").val();
-    input_data["owner_id"] = App.current_user.id;
-    input_data["password"] = $("input[name=password]").val();
-    input_data["room_type"] = $("input[name=room_type]").is(":checked")
+    input_data.title = $("input[name=title]").val();
+    input_data.owner_id = App.current_user.id;
+    input_data.password = $("input[name=password]").val();
+    input_data.room_type = $("input[name=room_type]").is(":checked")
       ? "private"
       : "public";
-    input_data["max_member_count"] = +$(
-      ".max-member-count option:selected"
-    ).val();
+    input_data.max_member_count = +$(".max-member-count option:selected").val();
 
     Helper.fetch("group_chat_rooms", this.createRoomParams(input_data));
   },

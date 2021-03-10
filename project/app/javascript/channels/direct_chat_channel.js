@@ -22,7 +22,7 @@ export function ConnectDirectChatChannel(message_collection, room_id) {
       },
 
       speak(current_user_message) {
-        current_user_message["room_id"] = room_id;
+        current_user_message.room_id = room_id;
         this.perform("speak", current_user_message);
       },
     }

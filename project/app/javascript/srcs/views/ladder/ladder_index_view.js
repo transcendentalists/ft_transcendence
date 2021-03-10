@@ -52,9 +52,7 @@ export let LadderIndexView = Backbone.View.extend({
    */
   renderMyRatingCallback: function (data) {
     this.my_rating_view = new App.View.MyRatingView();
-    this.my_rating_view
-      .setElement(this.$("#my-rating-view"))
-      .render(data["user"]);
+    this.my_rating_view.setElement(this.$("#my-rating-view")).render(data.user);
   },
 
   /**

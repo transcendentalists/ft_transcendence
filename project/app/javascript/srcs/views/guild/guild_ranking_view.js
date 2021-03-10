@@ -4,9 +4,20 @@ export let GuildRankingView = Backbone.View.extend({
   template: _.template($("#guild-ranking-view-template").html()),
   id: "guild-ranking-view",
   className: "ui text container",
+  defaultText: "<span>존재하는 길드가 없습니다.</span>",
 
   initialize: function () {
     this.child_views = [];
+  },
+
+  render: function (guilds) {
+    if (!guilds.length) {
+      this.$el.html(this.defaultText);
+    } else {
+      this.$el.html(this.template());
+      guilds.forEach(this.addOne, this);
+    }
+    return this;
   },
 
   addOne: function (guild) {
@@ -15,16 +26,6 @@ export let GuildRankingView = Backbone.View.extend({
     });
     this.child_views.push(child_view);
     this.$("#guild-profile-card-list").append(child_view.render().$el);
-  },
-
-  render: function (guilds) {
-    if (!guilds.length) {
-      this.$el.html("<span>존재하는 길드가 없습니다.</span>");
-    } else {
-      this.$el.html(this.template());
-      guilds.forEach(this.addOne, this);
-    }
-    return this;
   },
 
   close: function () {

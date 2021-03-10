@@ -12,20 +12,27 @@ export let GuildProfileCardView = Backbone.View.extend({
   render: function () {
     const current_user_guild_id = App.current_user.get("guild")?.id;
     const current_user_guild_position = App.current_user.get("guild")?.position;
+    const guild = this.guild;
+
     this.$el.html(
       this.template({
-        guild: this.guild,
-        current_user_guild_id: current_user_guild_id,
-        current_user_guild_position: current_user_guild_position,
+        guild,
+        current_user_guild_id,
+        current_user_guild_position,
       })
     );
+
+    return this;
+  },
+
+  renderButtons: function () {
+    this.renderButtons();
     this.buttons_view = new App.View.GuildProfileCardButtonsView({
       guild: this.guild,
     });
     this.buttons_view
       .setElement(this.$("#guild-profile-card-buttons-view"))
       .render();
-    return this;
   },
 
   close: function () {

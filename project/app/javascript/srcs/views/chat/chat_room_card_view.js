@@ -12,14 +12,14 @@ export let ChatRoomCardView = Backbone.View.extend({
     this.room_id = null;
   },
 
-  join: function (event) {
-    this.room_id = event.target.getAttribute("data-room-id");
-    App.router.navigate(`#/chatrooms/${this.room_id}`);
-  },
-
   render: function (room) {
     this.$el.html(this.template(room));
     return this;
+  },
+
+  join: function (event) {
+    this.room_id = event.target.getAttribute("data-room-id");
+    App.router.navigate(`#/chatrooms/${this.room_id}`);
   },
 
   close: function () {

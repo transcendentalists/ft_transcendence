@@ -11,8 +11,28 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
     this.chat_bans = self.chat_bans;
     this.chat_members = self.chat_room_members;
     this.current_user_membership = self.parent.current_user_membership;
-    this.friends = App.app_view.appearance_view.friends;
-    this.online_users = App.app_view.appearance_view.online_users;
+    this.friends = App.resources.friends;
+    this.online_users = App.resources.online_users;
+  },
+
+  render: function (options) {
+    this.member = options.member;
+    if (this.member.id == App.current_user.id) return;
+    this.$el.html(
+      this.template({
+        user: options.member.attributes,
+        current_user_position: this.current_user_membership.get("position"),
+        banned: Helper.isUserChatBanned(this.member.id),
+        is_friend: Helper.isUserFriend(this.member.id),
+      })
+    );
+    this.$el.css("position", "fixed");
+    this.$el.css("top", options.client_y);
+    this.$el.css("left", _.min([options.client_x, 80]));
+    this.$el.css("z-index", 103);
+    this.$el.css("display", "block");
+    $(this.menu).on("click", this.menuAction.bind(this));
+    return this;
   },
 
   menuAction: function (e) {
@@ -46,7 +66,7 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
   },
 
   createFriend: function (user_id) {
-    let user = DualHelper.getUserModelInAppearanceCollections(user_id);
+    let user = Helper.getUser(user_id);
     if (user !== undefined) {
       this.friends.createFriendship(user);
       this.online_users.remove(user);
@@ -61,7 +81,7 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
   },
 
   destroyFriend: function (friend_id) {
-    let friend = DualHelper.getUserModelInAppearanceCollections(friend_id);
+    let friend = Helper.getUser(friend_id);
     this.friends.destroyFriendship(friend);
   },
 
@@ -72,26 +92,6 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
     if (friend == undefined) this.createFriend(user_id);
     else this.destroyFriend(user_id);
     this.hide();
-  },
-
-  render: function (options) {
-    this.member = options.member;
-    if (this.member.id == App.current_user.id) return;
-    this.$el.html(
-      this.template({
-        user: options.member.attributes,
-        current_user_position: this.current_user_membership.get("position"),
-        banned: Helper.isUserChatBanned(this.member.id),
-        is_friend: Helper.isUserFriend(this.member.id),
-      })
-    );
-    this.$el.css("position", "fixed");
-    this.$el.css("top", options.client_y);
-    this.$el.css("left", _.min([options.client_x, 80]));
-    this.$el.css("z-index", 103);
-    this.$el.css("display", "block");
-    $(this.menu).on("click", this.menuAction.bind(this));
-    return this;
   },
 
   hide: function () {

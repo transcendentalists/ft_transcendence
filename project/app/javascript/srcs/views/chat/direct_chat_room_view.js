@@ -5,7 +5,6 @@ export let DirectChatRoomView = Backbone.View.extend({
     this.chat_user = options.chat_user;
     this.chat_user.fetch();
     this.parent = options.parent;
-
     this.chat_messages = new App.Collection.DirectChatMessages({
       current_user: App.current_user,
       chat_user: this.chat_user,

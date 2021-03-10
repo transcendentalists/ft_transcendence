@@ -13,6 +13,31 @@ export let WarIndexView = Backbone.View.extend({
     this.war_match_history_list_view = null;
   },
 
+  render: function () {
+    const current_user_guild = App.current_user.get("guild");
+    const current_user_guild_in_war = current_user_guild?.in_war;
+    this.$el.html(
+      this.template({
+        current_user_guild: current_user_guild,
+        current_user_guild_in_war: current_user_guild_in_war,
+      })
+    );
+    if (current_user_guild && current_user_guild_in_war) {
+      Helper.fetch(`guilds/${current_user_guild.id}/wars?for=index`, {
+        success_callback: this.renderChildViews.bind(this),
+      });
+    }
+    return this;
+  },
+
+  renderChildViews: function (data) {
+    this.renderGuildProfileCardView(data.guild);
+    this.renderWarStatusView(data.status);
+    this.renderWarRuleView(data.rules_of_war);
+    this.renderWarBattleView();
+    this.renderWarMatchHistory(data.matches);
+  },
+
   renderGuildProfileCardView: function (guild) {
     this.guild_profile_card_view = new App.View.GuildProfileCardView({
       guild: guild,
@@ -44,31 +69,6 @@ export let WarIndexView = Backbone.View.extend({
     this.war_match_history_list_view
       .setElement(this.$(".war-match-history-list-view"))
       .render(war_matches);
-  },
-
-  renderChildViews: function (data) {
-    this.renderGuildProfileCardView(data.guild);
-    this.renderWarStatusView(data.status);
-    this.renderWarRuleView(data.rules_of_war);
-    this.renderWarBattleView();
-    this.renderWarMatchHistory(data.matches);
-  },
-
-  render: function () {
-    const current_user_guild = App.current_user.get("guild");
-    const current_user_guild_in_war = current_user_guild?.in_war;
-    this.$el.html(
-      this.template({
-        current_user_guild: current_user_guild,
-        current_user_guild_in_war: current_user_guild_in_war,
-      })
-    );
-    if (current_user_guild && current_user_guild_in_war) {
-      Helper.fetch(`guilds/${current_user_guild.id}/wars?for=index`, {
-        success_callback: this.renderChildViews.bind(this),
-      });
-    }
-    return this;
   },
 
   close: function () {

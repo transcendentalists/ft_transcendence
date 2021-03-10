@@ -121,17 +121,19 @@ export let AdminIndexView = Backbone.View.extend({
     this.optionsRender(this.resource);
   },
 
-  setDatabase: function () {
+  setDatabase: function (data) {
+    this.db = new App.Model.AdminDB(data.db);
+    for (let key of Object.keys(this.child_selects))
+      this.child_selects[key].setDB(this.db);
+    this.optionsRender(this.resource);
+  },
+
+  requestDatabase: function () {
     Helper.fetch("admin/db", {
       headers: {
         admin: App.current_user.id,
       },
-      success_callback: function (data) {
-        this.db = new App.Model.AdminDB(data.db);
-        for (let key of Object.keys(this.child_selects))
-          this.child_selects[key].setDB(this.db);
-        this.optionsRender(this.resource);
-      }.bind(this),
+      success_callback: this.setDatabase.bind(this),
       fail_callback: () => {
         App.router.navigate("#/errors/400");
       },
@@ -158,7 +160,7 @@ export let AdminIndexView = Backbone.View.extend({
       this.child_selects[type] = child_select;
     }, this);
     this.listenValueChange();
-    this.setDatabase();
+    this.requestDatabase();
     return this;
   },
 

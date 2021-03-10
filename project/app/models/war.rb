@@ -46,4 +46,11 @@ class War < ApplicationRecord
       Hash[keys.zip values]
     end
   end
+
+  def match_types
+    match_type = %w[war dual]
+    match_type << "ladder" if self.request.include_ladder?
+    match_type << "tournament" if self.request.include_tournament?
+    match_type
+  end
 end

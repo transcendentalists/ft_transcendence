@@ -84,9 +84,7 @@ class Guild < ApplicationRecord
     my_guild_war_status = war.war_statuses.find_by_guild_id!(self.id)
     enemy_guild = my_guild_war_status.enemy_status.guild
     request = war.request
-    match_type = %w[war dual]
-    match_type << "ladder" if request.include_ladder
-    match_type << "tournament" if request.include_tournament
+    match_type = war.match_types
     matches = []
     Scorecard.where(user_id: self.users.ids).each do |scorecard|
       if scorecard.match.status == "completed" &&

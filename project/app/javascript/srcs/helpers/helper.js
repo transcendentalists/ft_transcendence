@@ -73,6 +73,13 @@ export let Helper = {
     return $("meta[name=csrf-token]")[0].getAttribute("content");
   },
 
+  getUser: function (user_id) {
+    return (
+      App.resources.friends.get(user_id) ||
+      App.resources.online_users.get(user_id)
+    );
+  },
+
   isUserChatBanned: function (user_id) {
     return App.resources.chat_bans.isUserChatBanned(user_id);
   },

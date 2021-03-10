@@ -85,7 +85,7 @@ class WarRequest < ApplicationRecord
       bet_point: self.bet_point,
       start_date: self.start_date.to_date,
       end_date: self.end_date.to_date,
-      rule: self.rule.name,
+      rule: self.rule,
       target_match_score: self.target_match_score,
       max_no_reply_count: self.max_no_reply_count,
       war_time: self.war_time.hour,

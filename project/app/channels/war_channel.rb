@@ -13,6 +13,7 @@ class WarChannel < ApplicationCable::Channel
       {
         type: "request",
         guild_id: data["guild_id"],
+        match_id: data["match_id"],
       },
     )
   end

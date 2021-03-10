@@ -76,7 +76,7 @@ class GameChannel < ApplicationCable::Channel
       ActionCable.server.broadcast(
         "war_channel_#{@match.eventable_id.to_s}",
         {
-          type: "match_end",
+          type: "end",
         },
       )
     end
@@ -114,7 +114,7 @@ class GameChannel < ApplicationCable::Channel
       ActionCable.server.broadcast(
         "war_channel_#{@match.eventable_id.to_s}",
         {
-          type: "match_canceled",
+          type: "canceled",
         },
       )
     end

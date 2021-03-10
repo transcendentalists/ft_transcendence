@@ -87,8 +87,8 @@ export let GameIndexView = Backbone.View.extend({
     } else if (this.match_type == "war" && this.war_id != null) {
       App.war_channel.battleRequest({
         war_id: this.war_id,
-        user_id: App.current_user.id,
         guild_id: App.current_user.get("guild").id,
+        match_id: this.match_id,
       });
     }
   },

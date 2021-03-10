@@ -53,7 +53,8 @@ class Match < ApplicationRecord
       ActionCable.server.broadcast(
         "war_channel_#{self.eventable_id.to_s}",
         {
-          type: "match_start",
+          type: "start",
+          match_id: self.id,
         },
       )
     end

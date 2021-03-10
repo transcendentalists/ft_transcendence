@@ -69,10 +69,11 @@ class GroupChatMembership < ApplicationRecord
     position = params[:position]
     return if position.nil?
     raise GroupChatMembershipError.new("포지션 변경 권한이 없습니다.", 403) unless self.can_be_position_changed_by?(options[:by]) 
+    raise GroupChatMembershipError.new("챗룸에는 1명 이상의 owner가 필요합니다.", 403) if self.room.only_one_member_exist?
 
     if position == "owner"
       owner_membership = self.room.memberships.find_by_user_id(self.room.owner.id)
-      owner_membership.update_position!("ghost")
+      owner_membership.update_position!("member")
       self.room.update!(owner_id: self.user_id)
     elsif self.position == "owner"
       self.room.make_another_member_owner!

@@ -83,6 +83,10 @@ class GroupChatRoom < ApplicationRecord
     BCrypt::Password::new(self.password) == input_password
   end
 
+  def only_one_member_exist?
+    self.memberships.reload.where.not(position: "ghost").count == 1
+  end
+
   def active_member_count
     self.memberships.where.not(position: "ghost").count
   end

@@ -21,23 +21,26 @@ export function ConnectGroupChatChannel(
       },
 
       received(message) {
-        const type = message.type;
-        if (type == "msg") {
-          message_collection.add(message);
-          message_collection.trigger("scroll");
-          return;
-        }
-
         const member = room_members.get(message.user_id);
-        if (type == "join") {
-          room_members.add(message.user);
-        } else if (type == "restore") {
-          member.set("position", "member");
-          member.trigger("restore", member);
-        } else if (type == "position") {
-          member.set("position", message.position);
-        } else if (message.type == "mute") {
-          member.set("mute", message.mute);
+
+        switch (message.type) {
+          case "msg":
+            message_collection.add(message);
+            message_collection.trigger("scroll");
+            break;
+          case "join":
+            room_members.add(message.user);
+            break;
+          case "restore":
+            member.set("position", "member");
+            member.trigger("restore", member);
+            break;
+          case "position":
+            member.set("position", message.position);
+            break;
+          case "mute":
+            member.set("mute", message.mute);
+            break;
         }
       },
 

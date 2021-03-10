@@ -69,24 +69,32 @@ export let GamePlayView = Backbone.View.extend({
    ** 2) score: 플레이어 실점시 서버에 실점 사실을 보고
    */
   operateEngine() {
-    if (this.collision(this.current_paddle, this.ball)) {
-      this.current_paddle.hit(this.ball);
-      return this.sendObjectSpec(this.ball.to_simple());
-    }
+    this.operateCollision();
     if (this.current_paddle.losePoint(this.ball)) {
-      this.sendObjectSpec(this.score.to_next());
-      this.channel.losePoint(
-        App.current_user.id,
-        this.current_paddle.side.toLowerCase()
-      );
-      this.ball.reset();
-      this.sendObjectSpec(this.ball.to_simple());
+      this.operateScore();
     } else if (this.enemy_paddle.near(this.ball)) {
       this.ball.delay_time = 5;
     } else if (this.ball.missPosition()) {
       this.ball.reset();
       this.sendObjectSpec(this.ball.to_simple());
     }
+  },
+
+  operateCollision: function () {
+    if (this.collision(this.current_paddle, this.ball)) {
+      this.current_paddle.hit(this.ball);
+      return this.sendObjectSpec(this.ball.to_simple());
+    }
+  },
+
+  operateScore: function () {
+    this.sendObjectSpec(this.score.to_next());
+    this.channel.losePoint(
+      App.current_user.id,
+      this.current_paddle.side.toLowerCase()
+    );
+    this.ball.reset();
+    this.sendObjectSpec(this.ball.to_simple());
   },
 
   /**

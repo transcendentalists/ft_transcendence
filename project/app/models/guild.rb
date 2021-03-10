@@ -74,7 +74,7 @@ class Guild < ApplicationRecord
   def make_another_member_master!
     return if self.memberships.count <= 1
 
-    master = self.memberships.find_by_position("master")
+    master = self.owner.guild_membership
     master.update(position: "member") unless master.nil?
     
     new_master = self.memberships.find_by_position("officer")

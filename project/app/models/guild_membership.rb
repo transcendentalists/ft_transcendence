@@ -64,7 +64,7 @@ class GuildMembership < ApplicationRecord
 
     ActiveRecord::Base.transaction do
       if position == "master"
-        owner_membership = self.guild.memberships.find_by_user_id(self.guild.owner.id)
+        owner_membership = self.guild.owner.guild_membership
         owner_membership.update!(position: "member")
         self.guild.update!(owner_id: self.user_id)
       elsif self.position == "master"

@@ -3,60 +3,88 @@ import { App, Helper } from "srcs/internal";
 export let WarBattleView = Backbone.View.extend({
   template: _.template($("#war-battle-view-template").html()),
 
-  initialize: function () {},
+  events: {
+    "click [data-event-name=request-battle]": "requestBattle",
+    "click [data-event-name=watch-battle]": "watchBattle",
+    "click [data-event-name=approve-battle]": "approveBattle",
+  },
 
-  // 버튼이 비활성화: 전쟁 시간 x
-  // 우리팀이 신청중일 때 
+  initialize: function (options) {
+    this.parent = options.parent;
+    this.interval = null;
+  },
 
-  render: function (battle) {
-    window.b = battle;
-    console.log(battle);
-    console.dir(battle);
-    // 2. 워타임인데 상대방이 게임 요청한 상태
-    // 3. 워타임인데 우리팀아 상대방에게 게임 요청한 상태
-    // 4. 워타임인데 네가 상대방에게 게임 요청한 상태 -- 이건 안해도 됨
-    // 5. 워타임인데 우리팀이랑 상대방이 게임을 실제로 하고 있는 상태
-    // 우리팀이 상대팀한테 게임 신청을 한 경우와 상대팀이 우리길드에게 게임신청을 한경우
-      // 차이를 알지 못한다.
+  requestBattle: function () {
+    const war_id = this.parent.war_id;
+    const rule_id = this.parent.rules_of_war.rule.id;
+    const target_match_score = this.parent.rules_of_war.target_match_score;
+    App.router.navigate(`#/matches?match_type=war&war_id=${war_id}&rule_id=${rule_id}&target_score=${target_match_score}`);
+  },
+  
+  approveBattle: function () {
+    App.router.navigate(`#/matches?match_type=war&match_id=${this.battle.match.id}`);
+  },
+
+  watchBattle: function () {
+    App.router.navigate(`#/matches/${this.battle.match.id}`);
+  },
+
+  setTemplateData: function (battle) {
+    this.countdown = false;
     this.template_data = {
       button: true,
-      message: "",
       button_message: "Battle",
     }
     if (battle.war_time == battle.current_hour) {
       if (battle.match === null) {
-        this.template_data.message = "상대 길드에 전투를 요청하시겠습니까?";
+        this.template_data.message = "상대 길드에 전투를<br>요청하시겠습니까?";
+        this.template_data.button_event = "request-battle";
       } else if (battle.match.status == "progress") {
-        this.template_data.message = "현재 진행 중인 전투가 있습니다.";
+        this.template_data.message = "현재 진행 중인 전투가<br>있습니다.";
         this.template_data.button_message = "관전 참여";
+        this.template_data.button_event = "watch-battle";
       } else if (battle.match.status == "pending") {
-        if (battle.is_my_guild == true) {            
-          this.template_data.message = "현재 아군이 전투 준비중에 있습니다.";
+        if (battle.is_my_guild_battle_request_to_opponent) {
+          this.template_data.message = "현재 아군이 전투 준비<br>중에 있습니다.";
           this.template_data.button = false;
         } else {
-          this.template_data.message = "상대 길드에서 전투를 요청하고 있습니다.";
+          this.template_data.message = "상대 길드에서 전투를<br>요청하고 있습니다.";
+          this.template_data.button_event = "approve-battle";
+          this.countdown = true;
         }
       }
     } else {
-      this.template_data.message = "지금은 전쟁 시간이 아닙니다";
+      this.template_data.message = "지금은 전쟁 시간이<br>아닙니다";
       this.template_data.button = false;
     }
+  },
+
+  updateView: function (data) {
+    if (this.interval) clearInterval(this.interval);
+    this.interval = null;
+    Helper.fetch(`guilds/${App.current_user.get("guild").id}/wars?for=battle`, {
+      success_callback: this.render.bind(this),
+    });
+  },
+
+  render: function (battle) {
+    this.battle = battle;
+    window.b = battle;
+    console.log(battle);
+    this.setTemplateData(battle);
     this.$el.html(this.template(this.template_data));
-    this.countDown(battle.wait_time);
-    // if (this.template_data.button) this.countdown(battle.wait_time);
+    if (this.countdown) this.renderCountDown(battle.wait_time);
     return this;
   },
 
   close: function () {
     if (this.interval) clearInterval(this.interval);
+    this.interval = null;
     this.remove();
   },
 
-  countDown: function (wait_time) {
-    this.$(".remain-time").empty();
-
+  renderCountDown: function (wait_time) {
     let $remain_time = this.$(".remain-time");
-
     let time = 300 - +wait_time;
     let min = parseInt(time / 60);
     let sec = time % 60;
@@ -71,7 +99,6 @@ export let WarBattleView = Backbone.View.extend({
           clearInterval(this.interval);
           this.interval = null;
           // $remain_time.empty();
-          // this.start();
         }
       }.bind(this),
       1000

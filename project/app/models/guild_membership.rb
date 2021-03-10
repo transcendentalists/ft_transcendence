@@ -41,7 +41,7 @@ class GuildMembership < ApplicationRecord
   def unregister!
     raise GuildMembershipError.new("길드에는 한명 이상의 유저가 존재해야 합니다.", 403) if self.guild.only_one_member_exist?
     self.guild.make_another_member_master! if self.master?
-    self.destroy
+    self.destroy!
   end
 
   def can_be_updated_by?(user)

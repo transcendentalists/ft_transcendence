@@ -99,6 +99,10 @@ body {
   margin-top: 2rem;
 }
 
+.close.icon {
+  cursor: pointer;
+}
+
 /* ==========================================================================
                                     PERSIST VIEW
        ========================================================================== */
@@ -406,6 +410,8 @@ body {
   bottom: 0;
   height: 10rem;
   width: 220px;
+  background-color: rgb(224, 225, 226);
+  justify-content: space-around;
 }
 
 /* IMAGE UPLOAD MODAL VIEW
@@ -428,7 +434,7 @@ body {
        ========================================================================== */
 
 .profile-trophy > i {
-  margin-left: 0.5rem;
+  margin-left: 0.5rem !important;
 }
 
 .profile-card .small.image {
@@ -1153,8 +1159,35 @@ body {
 }
 
 /* ==========================================================================
-     TOURNAMENT INDEX VIEW
-     ========================================================================== */
+  ADMIN INDEX VIEW
+========================================================================== */
+
+#admin-index-view {
+  min-width: 450px;
+  max-width: 450px;
+}
+
+#admin-index-view .menu {
+  width: 100%;
+}
+
+#admin-index-view .actions {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+#admin-index-view label {
+  font-size: 1.2rem;
+}
+
+#admin-index-view .admin-action {
+  margin-top: 4rem;
+  width: 100%;
+}
+
+/* ==========================================================================
+   TOURNAMENT INDEX VIEW
+   ========================================================================== */
 
 #tournament-index-view {
   max-width: 1024px;

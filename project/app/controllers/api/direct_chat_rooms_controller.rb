@@ -14,7 +14,7 @@ class Api::DirectChatRoomsController < ApplicationController
           user_id: user_id,
         )
       }
-    end
+  end
     render :json => {
       chat_messages: room ? room.messages.last(20) : nil
     }

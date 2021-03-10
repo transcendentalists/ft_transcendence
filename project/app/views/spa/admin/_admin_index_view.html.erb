@@ -1,0 +1,46 @@
+<script type="text/template" id="admin-index-view-template">
+  <div class="ui five item menu">
+    <a data-resource-name="users" class="item header">
+      유저
+    </a>
+    <a data-resource-name="group_chat_rooms" class="item">
+      채팅 채널
+    </a>
+    <a data-resource-name="group_chat_memberships" class="item">
+      채팅 멤버십
+    </a>
+    <a data-resource-name="guild_memberships" class="item">
+      길드 멤버십
+    </a>
+    <a data-resource-name="tournament" class="item">
+      토너먼트
+    </a>
+  </div>
+  <form class="ui form actions">
+    <div class="action field">
+      <label for="action">action</label>
+      <select name="action" type="text">
+        <option value="1">1</option>
+      </select>
+    </div>
+    <div class="resource field">
+    <label for="resource">resource</label>
+      <select name="resource" type="text">
+        <option value="2">2</option>
+      </select>
+    </div>
+    <div class="membership field">
+      <label for="membership">membership</label>
+      <select name="membership" type="text">
+        <option value="default">----------</option>
+      </select>
+    </div>
+    <div class="position disabled field">
+      <label for="position">position</label>
+      <select name="position" type="text">
+        <option value="default">----------</option>
+      </select>
+    </div>
+  </form>
+  <div class="ui teal admin-action button">실행하기</div>
+</script>

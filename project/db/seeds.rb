@@ -126,7 +126,7 @@ war_request_list = [
   {rule_id: 3, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 4 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 9 }).midnight, war_time: Time.zone.now.change({ hour: 12 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
   {rule_id: 4, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 5 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 10 }).midnight, war_time: Time.zone.now.change({ hour: 11 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
   # 테스트용
-  {rule_id: 1, bet_point: 100, start_date: Time.zone.yesterday.midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 13 }), war_time: Time.zone.now.change({ hour: 10 }), max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
+  {rule_id: 1, bet_point: 100, start_date: Time.zone.yesterday.midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 13 }), war_time: Time.zone.now, max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
 ]
 
 war_request_list.each do |war_request|

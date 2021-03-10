@@ -1,8 +1,14 @@
 import consumer from "./consumer";
 
-export function ConnectWarChannel() {
-  return consumer.subscriptions.create("WarChannel", {
+export function ConnectWarChannel(room_id) {
+  return consumer.subscriptions.create(
+  {
+    channel: "WarChannel",
+    room_id: room_id,
+  },
+  {
     connected() {
+      console.log("YOU ARE IN WAR_INDEX VIEW");
       // Called when the subscription is ready for use on the server
     },
 

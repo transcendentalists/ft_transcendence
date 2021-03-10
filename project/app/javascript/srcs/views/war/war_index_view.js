@@ -58,6 +58,11 @@ export let WarIndexView = Backbone.View.extend({
     this.renderWarMatchHistory(data.matches);
   },
 
+  joinWarChannelAndRenderWarIndexChilds: function(data) {
+    this.war_channel = App.Channel.ConnectWarChannel(data.war.id);
+    this.renderWarIndexChilds(data);
+  },
+
   render: function () {
     const current_user_guild = App.current_user.get("guild");
     const current_user_guild_in_war = current_user_guild?.in_war;
@@ -66,7 +71,7 @@ export let WarIndexView = Backbone.View.extend({
     );
     if (current_user_guild && current_user_guild_in_war) {
       Helper.fetch(`guilds/${current_user_guild.id}/wars?for=index`, {
-        success_callback: this.renderWarIndexChilds.bind(this),
+        success_callback: this.joinWarChannelAndRenderWarIndexChilds.bind(this),
       });
     }
     return this;

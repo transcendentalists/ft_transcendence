@@ -21,8 +21,8 @@ class Api::WarsController < ApplicationController
     status = my_guild_status.for_war_status_view(my_guild_status.guild)
     rules_of_war = my_guild_status.request.rules_of_war
     matches = my_guild_status.guild.war_match_history
-    keys = %w[guild status rules_of_war matches]
-    values = [opponent_guild_status.guild.profile, status, rules_of_war, matches]
+    keys = %w[guild status rules_of_war matches war]
+    values = [opponent_guild_status.guild.profile, status, rules_of_war, matches, war]
     war_index_data = Hash[keys.zip values]
   end
 end

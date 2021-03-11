@@ -11,7 +11,6 @@ Rails.application.routes.draw do
   namespace :api do
     resources :users, only: %i[index show create update destroy] do
       member do
-        patch :ban
         post 'session', to: 'users#login'
         delete 'session', to: 'users#logout'
       end

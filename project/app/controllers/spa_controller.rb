@@ -4,23 +4,21 @@ class SpaController < ApplicationController
   end
 
   def mail_auth
-    user = User.find(params[:user][:id])
-    if user.verification_code == params[:user][:verification_code]
+    begin
+      user = User.find(params[:user][:id])
+      verification_code = params[:user][:verification_code]
+      user.verification!(verification_code)
+      raise ServiceError.new unless user.offline?
       create_session user.id
       user.login(verification: true)
-      render :json => { current_user: user.to_simple }
-    else
-      render :json => { error: {
-        'type': 'login failure', 'msg': "인증번호가 맞지 않습니다."
-        }
-      }, :status => 401
+      render json: { current_user: user.to_simple }
+    rescue
+      render_error :Unauthorized, "인증번호가 맞지 않습니다."
     end
   end
 
   def index
-    if params.key?(:error)
-      redirect_to action: "ft_auth"
-    end
+    redirect_to action: "ft_auth" if params.key?(:error)
   end
 
   # 브라우저에 이전 로그인 기록이 남아있고,
@@ -30,6 +28,6 @@ class SpaController < ApplicationController
     id = cookies.encrypted[:service_id]
     return unless User.exists?(id)
     remove_session
-    head :no_content
+    head :no_content, status: 204
   end
 end

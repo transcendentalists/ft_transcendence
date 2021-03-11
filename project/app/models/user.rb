@@ -19,10 +19,19 @@ class User < ApplicationRecord
   has_many :tournaments, through: :tournament_memberships
   has_one_attached :avatar
   scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
-  validates :name, :email, uniqueness: true
+  validates :name, uniqueness: true, length: {minimum: 1}
+  validates :email, uniqueness: true, length: {minimum: 1}
+
+  def verification!(verification_code)
+    raise ServiceError.new unless self.verification_code == verification_code
+  end
+
+  def valid_password?(password)
+    return BCrypt::Password.new(self.password) == password
+  end
 
   def login(verification: false)
-    return self if two_factor_auth && !verification
+    return self if self.two_factor_auth? && !verification
 
     update_status('online')
     self
@@ -181,6 +190,7 @@ class User < ApplicationRecord
   end
 
   private
+
   def self.where_by_query(params)
     users = self.all
     params.except(:for, :user_id).each do |k, v|

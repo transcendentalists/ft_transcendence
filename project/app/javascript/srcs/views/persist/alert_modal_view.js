@@ -16,14 +16,14 @@ export let AlertModalView = Backbone.View.extend({
     this.data = data;
     this.$el.empty();
     this.$el.html(this.template(data));
-    this.modal_view = $("#alert-modal-view.tiny.modal");
-    this.modal_view.modal("show");
+    this.modal_view = "#alert-modal-view.tiny.modal";
+    $(this.modal_view).modal("show");
     return this;
   },
 
   close: function () {
     this.$el.empty();
-    this.modal_view.modal("hide");
+    $(this.modal_view).modal("hide");
   },
 
   approve: function () {

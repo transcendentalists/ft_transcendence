@@ -13,8 +13,9 @@ export let ImageUploadModalView = Backbone.View.extend({
   render: function (upload_callback) {
     this.upload_callback = upload_callback;
     this.$el.html(this.template());
-    this.upload_modal_view = $("#image-upload-modal-view.tiny.modal");
-    this.upload_modal_view.modal("show");
+
+    this.upload_modal_view = "#image-upload-modal-view.tiny.modal";
+    $(this.upload_modal_view).modal("show");
     this.message_field = this.$(".ui.negative.message");
     this.message_field.hide();
     return this;
@@ -48,6 +49,6 @@ export let ImageUploadModalView = Backbone.View.extend({
 
   close: function () {
     this.$el.empty();
-    this.upload_modal_view.modal("hide");
+    $(this.upload_modal_view).modal("hide");
   },
 });

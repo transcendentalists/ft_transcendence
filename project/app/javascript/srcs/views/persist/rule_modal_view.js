@@ -19,7 +19,8 @@ export let RuleModalView = Backbone.View.extend({
       this.enemy = enemy;
       App.current_user.working = true;
       this.$el.html(this.template());
-      $("#rule-modal-view.tiny.modal").modal("show");
+      this.modal_view = "#rule-modal-view.tiny.modal";
+      $(this.modal_view).modal("show");
       return this;
     }
   },
@@ -28,7 +29,7 @@ export let RuleModalView = Backbone.View.extend({
     this.stopListening();
     this.$el.empty();
     this.enemy = null;
-    $("#rule-modal-view.tiny.modal").modal("hide");
+    $(this.modal_view).modal("hide");
   },
 
   submit: function () {

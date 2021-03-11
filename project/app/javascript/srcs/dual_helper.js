@@ -8,7 +8,7 @@ export let DualHelper = {
     );
   },
 
-  showInfoMatchImposibleAndClose: function (user_model) {
+  showInfoMatchImpossibleAndClose: function (user_model) {
     if (
       this.el.id == "rule-modal-view" ||
       user_model.get("status") == "offline"
@@ -21,7 +21,7 @@ export let DualHelper = {
     }
   },
 
-  addLitsenToUserModel: function (view, user_id) {
+  addListenToUserModel: function (view, user_id) {
     let user_model = this.getUserModelInAppearanceCollections(user_id);
 
     if (user_model == undefined || user_model.get("status") == "offline") {
@@ -30,7 +30,7 @@ export let DualHelper = {
     view.listenTo(
       user_model,
       "change:status",
-      this.showInfoMatchImposibleAndClose
+      this.showInfoMatchImpossibleAndClose
     );
 
     return true;

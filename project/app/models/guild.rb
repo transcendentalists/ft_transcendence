@@ -1,6 +1,6 @@
 class Guild < ApplicationRecord
   belongs_to :owner, class_name: 'User', foreign_key: 'owner_id'
-  has_many :memberships, class_name: 'GuildMembership'
+  has_many :memberships, class_name: 'GuildMembership', dependent: :destroy
   has_many :war_statuses
   has_many :requests, through: :war_statuses
   has_many :wars, through: :requests
@@ -56,6 +56,14 @@ class Guild < ApplicationRecord
     self.wars.find_by_status(["progress", "pending"])
   end
 
+  def master
+    self.memberships.find_by_position("master")
+  end
+
+  def only_one_member_exist?
+    self.memberships.reload.count == 1
+  end
+
   def cancel_rest_of_war_request
     self.requests.where(status: "pending").update_all(status: "canceled")
   end
@@ -98,5 +106,17 @@ class Guild < ApplicationRecord
       end
     end
     matches.sort_by { |match| match[:match].updated_at }.reverse[..3]
+  end
+
+  def make_another_member_master!
+    return if self.memberships.count <= 1
+
+    master = self.owner.guild_membership
+    master.update(position: "member") unless master.nil?
+
+    new_master = self.memberships.find_by_position("officer")
+    new_master = self.memberships.find_by_position("member") if new_master.nil?
+    self.update!(owner_id: new_master.user_id)
+    new_master.update!(position: "master")
   end
 end

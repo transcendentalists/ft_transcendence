@@ -18,6 +18,8 @@ ENV BUNDLER_VERSION=2.2.2
 RUN gem update --system
 RUN gem install --default bundler -v 2.2.2
 
+RUN if [ ! -d "./tmp" ] ; then mkdir "./tmp" && mkdir "./tmp/db" ; fi
+
 COPY ./project/Gemfile ./project/Gemfile.lock ./
 RUN bundle install
 

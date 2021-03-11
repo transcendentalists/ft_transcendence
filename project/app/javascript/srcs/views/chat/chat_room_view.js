@@ -45,7 +45,9 @@ export let ChatRoomView = Backbone.View.extend({
     this.chat_message_list_view = new App.View.GroupChatMessageListView({
       parent: this,
     });
-    this.chat_messages.fetch({ reset: true });
+    this.chat_messages.fetch({
+      reset: true,
+    });
   },
 
   readyToRenderChatRoom: function (data) {

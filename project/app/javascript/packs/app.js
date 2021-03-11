@@ -1,6 +1,7 @@
 import * as semantic from "srcs/semantic-min";
 import * as range from "srcs/range";
-import { App } from "srcs/internal";
+import * as sync from "srcs/backbone.sync";
+import { App, Helper } from "srcs/internal";
 
 $(document).ready(function () {
   _.extend(window, Backbone.Events);
@@ -9,5 +10,6 @@ $(document).ready(function () {
   };
   App.initialize();
   window.app = App;
+  window.helper = Helper;
   Backbone.history.start();
 });

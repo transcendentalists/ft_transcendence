@@ -123,11 +123,13 @@ export let GameIndexView = Backbone.View.extend({
   recv: function (msg) {
     switch (msg.type) {
       case "PLAY":
+        if (this.spec) return;
         this.spec = msg;
         this.renderPlayerView();
         this.countDown();
         break;
       case "WATCH":
+        if (this.spec) return;
         if (this.is_player)
           this.play_view.sendObjectSpec(this.play_view.ball.to_simple());
         if (!Helper.isCurrentUser(msg.send_id)) return;

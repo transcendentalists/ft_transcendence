@@ -59,9 +59,9 @@ class Api::MatchesController < ApplicationController
 
   def create_war_match(user, params)
     war = War.find(params[:war_id])
+    match = nil
     war.with_lock do
       raise "War match 이미 진행 중" if war.pending_or_progress_battle_exist?
-
       create_params = {
         match_type: params[:match_type],
         status: 'pending',
@@ -69,16 +69,10 @@ class Api::MatchesController < ApplicationController
         target_score: params[:target_score],
       }
       match = war.matches.create(create_params)
-      p '---------------------------------'
-      p match
-      p '---------------------------------'
       card = match.scorecards.create(user_id: user.id, side: 'left')
       user.update_status('playing')
       war.set_schedule_at_no_reply_time(match)
     end
-    p '---------------------------------'
-    p match
-    p '---------------------------------'
     match
   end
 

@@ -109,9 +109,9 @@ export let GameIndexView = Backbone.View.extend({
   rejectMatchCallback: function () {
     Helper.info({
       subject: "잘못된 접근",
-      description: "잠시후 홈 화면으로 이동합니다.",
+      description: "잠시후 이전 화면으로 이동합니다.",
     });
-    setTimeout(this.redirectHomeCallback, 2000);
+    setTimeout(() => Backbone.history.history.back(), 1000);
   },
 
   redirectHome: function (type) {

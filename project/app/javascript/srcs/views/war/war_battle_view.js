@@ -12,6 +12,8 @@ export let WarBattleView = Backbone.View.extend({
   initialize: function (options) {
     this.parent = options.parent;
     this.interval = null;
+    this.countdown = false;
+    this.template_data = {};
   },
 
   requestBattle: function () {
@@ -33,52 +35,72 @@ export let WarBattleView = Backbone.View.extend({
     App.router.navigate(`#/matches/${this.battle.match.id}`);
   },
 
-  setTemplateData: function (battle) {
-    this.countdown = false;
-    this.template_data = {
-      button: true,
-      button_message: "Battle",
-    };
+  setTemplateData: function (options) {
+    this.template_data.message =
+      options.message || "지금은 전쟁 시간이 <br>아닙니다.";
+    this.template_data.button_message = options.button_message || "Battle";
+    this.template_data.button = options.button || true;
+    this.template_data.button_event = options.button_event || "";
+    this.countdown = options.countdown || false;
+  },
+
+  switchBattleView: function (battle) {
     if (battle.war_time == battle.current_hour) {
-      if (battle.match === null) {
-        this.template_data.message = "상대 길드에 전투를<br>요청하시겠습니까?";
-        this.template_data.button_event = "request-battle";
-      } else if (battle.match.status == "progress") {
-        this.template_data.message = "현재 진행 중인 전투가<br>있습니다.";
-        this.template_data.button_message = "관전 참여";
-        this.template_data.button_event = "watch-battle";
-      } else if (battle.match.status == "pending") {
-        if (battle.is_my_guild_request) {
-          this.template_data.message =
-            "현재 아군이 전투 준비<br>중에 있습니다.";
-          this.template_data.button = false;
-        } else {
-          this.template_data.message =
-            "상대 길드에서 전투를<br>요청하고 있습니다.";
-          this.template_data.button_event = "approve-battle";
-          this.countdown = true;
-        }
+      const status = battle.match?.status;
+      switch (status) {
+        case "progress":
+          this.setTemplateData({
+            message: "현재 진행 중인 전투가<br>있습니다.",
+            button_event: "watch-battle",
+            button_message: "관전 참여",
+          });
+          break;
+
+        case "pending":
+          if (battle.is_my_guild_request)
+            this.setTemplateData({
+              message: "현재 아군이 전투 준비<br>중에 있습니다.",
+              button: false,
+            });
+          else
+            this.setTemplateData({
+              message: "상대 길드에서 전투를<br>요청하고 있습니다.",
+              button_event: "approve-battle",
+              count_down: true,
+            });
+          break;
+
+        default:
+          this.setTemplateData({
+            message: "상대 길드에 전투를<br>요청하시겠습니까?",
+            button_event: "request-battle",
+          });
+          break;
       }
     } else {
-      this.template_data.message = "지금은 전쟁 시간이<br>아닙니다";
-      this.template_data.button = false;
+      this.setTemplateData({
+        message: "지금은 전쟁 시간이<br>아닙니다.",
+        button: false,
+      });
     }
   },
 
   updateBattleData: function (data) {
     switch (data.type) {
       case "request":
-        this.battle.match = {};
-        this.battle.match.id = data.match_id;
-        this.battle.match.status = "pending";
+        this.battle.match = {
+          id: data.match_id,
+          status: "pending",
+        };
         this.battle.is_my_guild_request =
           data.guild_id == App.current_user.get("guild").id;
         this.battle.wait_time = 0;
         break;
       case "start":
-        this.battle.match = {};
-        this.battle.match.id = data.match_id;
-        this.battle.match.status = "progress";
+        this.battle.match = {
+          id: data.match_id,
+          status: "progress",
+        };
         break;
       case "war_time_start":
         this.battle.current_hour = data.current_hour;
@@ -106,7 +128,7 @@ export let WarBattleView = Backbone.View.extend({
   render: function (battle) {
     this.battle = battle;
     console.log(battle);
-    this.setTemplateData(battle);
+    this.switchBattleView(battle);
     this.$el.html(this.template(this.template_data));
     if (this.countdown) this.renderCountDown(battle.wait_time);
     return this;
@@ -133,7 +155,6 @@ export let WarBattleView = Backbone.View.extend({
         if (time < 0) {
           clearInterval(this.interval);
           this.interval = null;
-          // $remain_time.empty();
         }
       }.bind(this),
       1000

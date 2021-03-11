@@ -29,29 +29,16 @@ class War < ApplicationRecord
       "패"
     end
   end
-  # private
-  # def get_war_index_data(war_id)
-  #   war = War.find_by_id(war_id)
-  #   request = war.request
-  #   my_guild_status = request.war_statuses.find_by_guild_id(params[:guild_id])
-  #   opponent_guild_status = my_guild_status.opponent_guild_war_status
-  #   status = my_guild_status.for_war_status_view(my_guild_status.guild)
-  #   rules_of_war = my_guild_status.request.rules_of_war
-  #   matches = my_guild_status.guild.war_match_history
-  #   battle = war.battle_data(params[:guild_id].to_i)
-  #   keys = %w[guild status rules_of_war matches war battle]
-  #   values = [opponent_guild_status.guild.profile, status, rules_of_war, matches, war, battle]
-  #   war_index_data = Hash[keys.zip values]
-  # end
+
   def battle_data(guild_id)
     war_match = self.matches.find_by_status(["pending", "progress"])
-    is_my_guild_battle_request_to_opponent = war_match.nil? ? nil : war_match.scorecards.first.user.in_guild.id == guild_id
+    is_my_guild_battle_request_to_enemy = war_match.nil? ? nil : war_match.scorecards.first.user.in_guild.id == guild_id
     wait_time = war_match&.status == "pending" ? Time.zone.now - war_match.updated_at : nil
     {
       current_hour: Time.zone.now.hour,
       match: war_match,
       war_time: self.request.war_time.hour,
-      is_my_guild_request: is_my_guild_battle_request_to_opponent,
+      is_my_guild_request: is_my_guild_battle_request_to_enemy,
       wait_time: wait_time.to_i,
     }
   end
@@ -99,7 +86,7 @@ class War < ApplicationRecord
   end
 
   def winner_status
-    self.loser_status.opponent_guild_war_status
+    self.loser_status.enemy_status
   end
 
   def loser_status

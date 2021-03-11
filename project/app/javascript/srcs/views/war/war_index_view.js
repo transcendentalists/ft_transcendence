@@ -24,7 +24,7 @@ export let WarIndexView = Backbone.View.extend({
         success_callback: this.joinWarChannelAndRenderWarIndexChilds.bind(this),
         fail_callback: (data) => {
           return App.router.navigate(
-            `#/errors/${data.code}/${data.type}/${data.msg}`
+            `#/errors/${data.error.code}/${data.error.type}/${data.error.msg}`
           );
         },
       });

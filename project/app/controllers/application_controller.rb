@@ -10,7 +10,18 @@ class ApplicationController < ActionController::Base
     user.notification("same_browser_connection")
   end
 
-  def render_error(type, msg, status_code)
+  def render_error(type, msg = nil)
+    error_hash = {
+      Unauthorized: ["요청을 수행할 권한이 없습니다.", 401],
+      InternalServerError: ["서버 내부에 문제가 있습니다." ,500],
+    }
+
+    if msg.nil?
+      msg =  error_hash.has_key?(type) ? error_hash[type][0] : "잘못된 요청입니다."
+    end
+
+    status_code = error_hash.has_key?(type) ? error_hash[type][1] : 400
+
     return render :json => { error: {
       'type': type, 'msg': msg, 'code': status_code
       }
@@ -18,13 +29,9 @@ class ApplicationController < ActionController::Base
   end
 
   def check_headers_and_find_current_user
-    if !request.headers['HTTP_CURRENT_USER']
-      return render_error("NOT VALID HEADERS", "필요한 요청 Header가 없습니다.", 400)
-    end
+    return render_error :Unauthorized if !request.headers['HTTP_CURRENT_USER']
     @current_user = User.find_by_id(request.headers['HTTP_CURRENT_USER'])
-    if @current_user.nil?
-      return render_error("NOT VALID HEADERS", "요청 Header의 값이 유효하지 않습니다.", 400)
-    end
+    return render_error :Unauthorized if @current_user.nil?
   end
 
   def current_user_is_admin_or_owner?

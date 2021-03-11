@@ -20,11 +20,8 @@ class Api::MatchesController < ApplicationController
     begin
       match = find_or_create_match(@current_user)
       render json: { match: { id: match.id } }
-    rescue => e
-      p '-------------------------------'
-      p e
-      p '-------------------------------'
-      return render_error("매치 생성 실패", "매치 생성에 실패했습니다.", 500)
+    rescue
+      render_error("매치 생성 실패", "매치 생성에 실패했습니다.", 400)
     end
   end
 
@@ -93,8 +90,15 @@ class Api::MatchesController < ApplicationController
 
   def join_match_for(user, match_id)
     match = Match.find(match_id)
-    card = Scorecard.create(user_id: user.id, match_id: match_id, side: 'right')
-    user.update_status('playing')
+    match.with_lock do
+      raise "Game already started" if match.users.count == 2
+      if match.match_type == "war"
+        enemy = match.users.first
+        raise "Users are same guild members" if user.in_guild.id == enemy.in_guild.id
+      end
+      Scorecard.create!(user_id: user.id, match_id: match_id, side: 'right')
+      user.update_status('playing')
+    end
     match
   end
 

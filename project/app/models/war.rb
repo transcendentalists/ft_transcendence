@@ -125,7 +125,11 @@ class War < ApplicationRecord
   end
 
   def set_schedule_at_no_reply_time(match)
-    self.job_reservation(Time.zone.now + 10.seconds, { type: "match_no_reply", match: match })
-    # self.job_reservation(Time.zone.now + 5.minutes, { type: "match_no_reply", match: match })
+    # self.job_reservation(Time.zone.now + 10.seconds, { type: "match_no_reply", match: match })
+    self.job_reservation(Time.zone.now + 5.minutes, { type: "match_no_reply", match: match })
+  end
+
+  def pending_or_progress_battle_exist?
+    !self.matches.find_by_status(["pending", "progress"]).nil?
   end
 end

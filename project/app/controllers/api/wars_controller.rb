@@ -3,9 +3,6 @@ class Api::WarsController < ApplicationController
     if params[:for] == "index"
       war_id = Guild.find_by_id(params[:guild_id]).wars.where.not(status: "completed").first
       render json: get_war_index_data(war_id)
-    elsif params[:for] == "battle"
-      war = Guild.find_by_id(params[:guild_id]).wars.where.not(status: "completed").first
-      render json: war.battle_data(params[:guild_id].to_i)
     elsif params[:guild_id]
       return render_error("Not Found", "Guild가 없습니다.", 404) unless Guild.exists?(params[:guild_id])
       war_history_list = Guild.find_by_id(params[:guild_id]).wars.for_war_history(params[:guild_id])

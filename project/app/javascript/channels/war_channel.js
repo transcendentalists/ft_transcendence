@@ -17,7 +17,7 @@ export function ConnectWarChannel(room_id) {
       received(data) {
         console.log(data);
         if (App.mainView.current_view.id == "war-index-view") {
-          App.mainView.current_view.war_battle_view.updateView(data);
+          App.mainView.current_view.war_battle_view?.updateView(data);
         } else if (
           data.type == "no_reply" &&
           data.user_id == App.current_user.id

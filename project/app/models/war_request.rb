@@ -6,7 +6,7 @@ class WarRequest < ApplicationRecord
   validates :status, inclusion: { in: ["pending", "accepted", "canceled"], message: "상태를 잘못 입력하셨습니다." }
   validates :rule_id, inclusion: { in: 1..7, message: "요청하신 룰이 존재하지 않습니다." }
   validates :target_match_score, inclusion: { in: [3, 5, 7, 10], message: "목표 점수를 잘못 입력하셨습니다." }
-  validates :max_no_reply_count, inclusion: { in: 3..10, message: "최대 미응답 회수를 잘못 입력하셨습니다." }
+  validates :max_no_reply_count, inclusion: { in: 3..10, message: "최대 미응답 횟수를 잘못 입력하셨습니다." }
   validates :bet_point, inclusion: { in: (100..1000).step(50), message: "배팅 포인트를 잘못 입력하셨습니다."}
   validates_with WarRequestCreateValidator, field: [ :start_date, :end_date, :war_time ], on: :create
   validates_with WarRequestUpdateValidator, field: [ :start_date, :end_date, :war_time ], on: :update

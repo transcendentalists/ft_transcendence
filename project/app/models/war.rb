@@ -56,8 +56,28 @@ class War < ApplicationRecord
 
   def end
     self.update(status: "completed")
+    self.update_guild_point
   end
 
+  def update_guild_point
+    bet_point = self.request.bet_point
+    winner_guild = self.winner_status.guild
+    looser_guild = self.loser_status.guild
+    winner_guild.increment!(:point, bet_point)
+    looser_guild.decrement!(:point, bet_point)
+  end
+
+  def winner_status
+    self.loser_status.opponent_guild_war_status
+  end
+
+  def loser_status
+    max_no_reply_count = self.request.max_no_reply_count
+    loser_status = self.war_statuses.find { |status| status.no_reply_count > max_no_reply_count }
+    return loser_status unless loser_status.nil?
+    return self.war_statuses.find_by_position("challenger") if self.war_statuses.first.point == self.war_statuses.second
+    return self.war_statuses.min_by{ |status| status.point }
+  end
   # private
   def job_reservation(until_time, options)
     WarJob.set(wait_until: until_time).perform_later(self, options)

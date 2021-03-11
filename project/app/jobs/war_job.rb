@@ -35,7 +35,7 @@ class WarJob < ApplicationJob
   end
 
   def match_no_reply
-    match = @options.match
+    match = @options[:match]
     return unless match.pending?
     waiting_user = match.scorecards.first.user
     no_reply_guild_war_status = @war.war_statuses.where.not(guild_id: waiting_user.in_guild.id).first

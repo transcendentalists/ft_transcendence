@@ -65,7 +65,7 @@ export let WarBattleView = Backbone.View.extend({
     }
   },
 
-  setBattleData: function (data) {
+  updateBattleData: function (data) {
     switch (data.type) {
       case "request":
         this.battle.match = {};
@@ -94,7 +94,7 @@ export let WarBattleView = Backbone.View.extend({
   updateView: function (data) {
     if (this.interval) clearInterval(this.interval);
     this.interval = null;
-    this.setBattleData(data);
+    this.updateBattleData(data);
     this.render(this.battle);
   },
 

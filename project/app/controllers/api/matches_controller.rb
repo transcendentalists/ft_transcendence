@@ -91,6 +91,7 @@ class Api::MatchesController < ApplicationController
     match = Match.create(create_params)
     card = Scorecard.create(user_id: user.id, match_id: match.id, side: 'left')
     user.update_status('playing')
+    War.find_by_id(params[:war_id]).set_schedule_at_no_reply_time(match) if match.match_type == "war"
     match
   end
 

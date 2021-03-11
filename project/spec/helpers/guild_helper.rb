@@ -1,7 +1,10 @@
 module GuildHelper
-  def create_guild(options = {owner: owner})
+  def create_guild(options = {owner: owner, name: "dummy", anagram: "@dum", point: 1500})
     owner_id = options[:owner].id
-    @guild = create(:guild, owner_id: owner_id)
+    name = options[:name]
+    anagram = options[:anagram]
+    point = options[:point]
+    @guild = create(:guild, owner_id: owner_id, name: name, anagram: anagram, point: point)
     @master = create(:guild_membership, guild_id: @guild.id, user_id: owner_id, position: "master")
     @officers = []
     @members = []

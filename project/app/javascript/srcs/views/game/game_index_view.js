@@ -12,7 +12,7 @@ export let GameIndexView = Backbone.View.extend({
    */
 
   initialize: function (match_id) {
-    if (match_id) Helper.authenticateREST(room_id);
+    if (match_id) Helper.authenticateREST(match_id);
     this.spec = null;
     this.channel = null;
     this.is_player = match_id == undefined ? true : false;

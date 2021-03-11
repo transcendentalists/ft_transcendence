@@ -73,7 +73,7 @@ export let OnlineUserListView = Backbone.View.extend({
 
   isMultipleLoginOfCurrentUser: function (user) {
     return (
-      this.App.current_user.equalTo(user) &&
+      App.current_user.equalTo(user) &&
       status === "online" &&
       App.current_user.get("status") === "online"
     );

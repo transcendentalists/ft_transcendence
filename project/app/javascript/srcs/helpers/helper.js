@@ -156,7 +156,6 @@ export let Helper = {
       res[parts[0]] = parts[1];
       return res;
     }, {});
-    console.log(result);
     if (!result.page) result.page = "1";
     return result;
   },

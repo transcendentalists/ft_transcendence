@@ -137,15 +137,14 @@ export let GameIndexView = Backbone.View.extend({
         break;
       case "WATCH":
         if (this.is_player)
-          this.play_view.sendObjectSpec(this.play_view.ball.to_simple());
+          this.play_view?.sendObjectSpec(this.play_view.ball.to_simple());
         if (!Helper.isCurrentUser(msg["send_id"])) return;
         this.spec = msg;
         this.renderPlayerView();
-        this.start();
         break;
       case "BROADCAST":
-        if (!this.play_view) return;
-        this.play_view.update(msg);
+        if (!this.play_view && this.spec) this.start();
+        this.play_view?.update(msg);
         break;
       case "END":
       case "ENEMY_GIVEUP":
@@ -205,7 +204,7 @@ export let GameIndexView = Backbone.View.extend({
    */
   start: function () {
     if (this.play_view) return;
-
+    
     this.play_view = new App.View.GamePlayView(this, this.spec);
     this.play_view.score.update(this.spec.score);
     this.play_view.render();

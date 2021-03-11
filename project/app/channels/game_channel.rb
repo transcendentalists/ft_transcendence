@@ -110,7 +110,7 @@ class GameChannel < ApplicationCable::Channel
       complete_by_giveup
     end
     current_user.update_status("online")
-    if (@match&.match_type == "war")
+    if (@match&.match_type == "war" && @match.users.ids.include?(current_user.id))
       ActionCable.server.broadcast(
         "war_channel_#{@match.eventable_id.to_s}",
         {

@@ -170,4 +170,21 @@ export let Helper = {
       timestamp.substr(11, 5)
     );
   },
+
+  translateRule: function (rule) {
+    const rule_name = {
+      classic: "기본 규칙",
+      accel_wall: "초스피드A",
+      accel_paddle: "초스피드B",
+      bound_wall: "불규칙 바운드A",
+      bound_paddle: "불규칙 바운드B",
+      invisible: "투명화",
+      dwindle: "스몰볼",
+    };
+
+    if (!rule.name) return rule_name[rule];
+
+    rule.name = rule_name[rule.name];
+    return rule;
+  },
 };

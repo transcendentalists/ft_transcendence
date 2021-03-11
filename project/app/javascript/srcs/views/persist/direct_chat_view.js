@@ -22,7 +22,7 @@ export let DirectChatView = Backbone.View.extend({
 
     this.$el.html(this.template(chat_user.attributes));
     this.message_field = this.$(".reply-field");
-    this.chat_room = findOrCreateChatRoomWith(chat_user);
+    this.chat_room = this.findOrCreateChatRoomWith(chat_user);
     this.chat_room.start();
     this.$el.show();
     setTimeout(this.scrollDown.bind(this), 500);

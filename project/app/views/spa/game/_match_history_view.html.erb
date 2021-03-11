@@ -13,6 +13,6 @@
   </div>
   <div class="enemy flex-container center-aligned">
     <img class="ui mini circular image" src="<%%= enemy_user.image_url %>">
-    <div><%%= enemy_user.name %></div>
+    <div><%%= enemy_user.name.length <= 10 ? enemy_user.name : enemy_user_name.slcie(0, 7) + '...' %></div>
   </div>
 </script>

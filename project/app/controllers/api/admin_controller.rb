@@ -2,7 +2,7 @@ class Api::AdminController < ApplicationController
   before_action :check_headers_and_find_current_user, only: [ :index ]
 
   def index
-    return render_error("UNAUTHORIZATION", "권한이 없습니다.", 403) unless current_user_is_admin_or_owner?
+    return render_error :Unauthorized unless current_user_is_admin_or_owner?
     user_id = @current_user.id
     begin
       resources = {
@@ -16,7 +16,7 @@ class Api::AdminController < ApplicationController
         guild_positions: ApplicationRecord.guild_positions
       }
     rescue
-      return render_error("FAILED TO LOAD RESOURCES", "관리할 데이터를 불러오는데 실패했습니다.", 500)
+      return render_error :InternalServerError
     end
 
     render json: { db: resources }

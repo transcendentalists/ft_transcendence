@@ -169,4 +169,7 @@ class GroupChatRoom < ApplicationRecord
 
     self.destroy!
   end
+
+
+  
 end

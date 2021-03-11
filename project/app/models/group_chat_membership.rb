@@ -72,8 +72,8 @@ class GroupChatMembership < ApplicationRecord
 
     position = params[:position]
     return if position.nil?
-    raise GroupChatMembershipError.new("포지션 변경 권한이 없습니다.", 403) unless self.can_be_position_changed_by?(options[:by]) 
-    raise GroupChatMembershipError.new("챗룸에는 1명 이상의 owner가 필요합니다.", 403) if self.room.only_one_member_exist?
+    raise ServiceError.new(:Forbidden) unless self.can_be_position_changed_by?(options[:by]) 
+    raise ServiceError.new(:Forbidden, "챗룸에는 1명 이상의 owner가 필요합니다.") if self.room.only_one_member_exist?
 
     if position == "owner"
       owner_membership = self.room.memberships.find_by_user_id(self.room.owner.id)
@@ -119,5 +119,17 @@ class GroupChatMembership < ApplicationRecord
     time = defaults.merge(args)
     ban_time = time[:hour].hours + time[:min].minutes + time[:sec].seconds
     self.update(ban_ends_at: Time.now + ban_time)
+  end
+
+  def let_out!(options = {by: self.user})
+    self.room.with_lock do
+      if self.room.active_member_count == 1
+        self.room.destroy!
+      else
+        self.room.make_another_member_owner! if self.position == "owner"
+        self.set_ban_time_from_now({ sec: 30 }) unless self.current_user?(options[:by])
+        self.update_position!("ghost")
+      end
+    end
   end
 end

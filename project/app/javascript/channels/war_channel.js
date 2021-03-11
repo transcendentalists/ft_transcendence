@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 import consumer from "./consumer";
 
 export function ConnectWarChannel(room_id) {
@@ -16,8 +16,20 @@ export function ConnectWarChannel(room_id) {
 
       received(data) {
         console.log(data);
-        if (App.mainView.current_view.id == "war-index-view")
+        if (App.mainView.current_view.id == "war-index-view") {
           App.mainView.current_view.war_battle_view.updateView(data);
+        } else if (
+          data.type == "no_reply" &&
+          data.user_id == App.current_user.id
+        ) {
+          Helper.info({
+            subject: "상대 길드 미응답",
+            description: "상대 길드가 응답하지 않아 배틀에서 승리하셨습니다!",
+          });
+          App.router.navigate(
+            `#/guilds/${App.current_user.get("guild").id}?page=1`
+          );
+        }
       },
 
       battleRequest(data) {

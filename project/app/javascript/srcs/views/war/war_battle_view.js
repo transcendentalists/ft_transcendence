@@ -86,6 +86,11 @@ export let WarBattleView = Backbone.View.extend({
       case "war_time_end":
         this.battle.current_hour = data.current_hour;
         break;
+      case "war_end":
+        App.router.navigate(
+          `#/guilds/${App.current_user.get("guild").id}?page=1`
+        );
+        break;
       default:
         this.battle.match = null;
     }

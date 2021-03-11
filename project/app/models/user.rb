@@ -196,5 +196,4 @@ class User < ApplicationRecord
       users
     end
   end
-
 end

@@ -12,7 +12,11 @@ class ApplicationController < ActionController::Base
 
   def render_error(type, msg = nil)
     error_hash = {
-      Unauthorized: ["요청을 수행할 권한이 없습니다.", 401],
+      BadRequest: ["잘못된 요청입니다.", 400],
+      Unauthorized: ["인증되지 않은 사용자입니다.", 401],
+      Forbidden: ["요청을 수행할 권한이 없습니다.", 403],
+      NotFound: ["요청받은 리소스를 찾을 수 없습니다.", 404],
+      Conflict: ["요청 수행 중 충돌이 발생했습니다."],
       InternalServerError: ["서버 내부에 문제가 있습니다." ,500],
     }
 

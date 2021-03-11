@@ -57,6 +57,12 @@ class War < ApplicationRecord
   def end
     self.update(status: "completed")
     self.update_guild_point
+    ActionCable.server.broadcast(
+      "war_channel_#{self.id.to_s}",
+      {
+        type: "war_end",
+      },
+    )
   end
 
   def update_guild_point
@@ -78,10 +84,28 @@ class War < ApplicationRecord
     return self.war_statuses.find_by_position("challenger") if self.war_statuses.first.point == self.war_statuses.second
     return self.war_statuses.min_by{ |status| status.point }
   end
+
+  def self.retry_set_schedule
+    where(status: ["pending", "progress"]).each { |war| war.set_next_schedule }
+  end
+
+  def set_next_schedule
+    self.set_schedule_at_start_date
+    self.set_schedule_at_end_date
+    progress_date = self.request.start_date
+    end_date = self.request.end_date
+    war_time = self.request.war_time.hour
+    while progress_date < end_date
+      self.set_schedule_at_war_time_start(progress_date.change(hour: war_time))
+      self.set_schedule_at_war_time_end(progress_date.change(hour: war_time))
+      progress_date += 1.day
+    end
+  end
+
   # private
   def job_reservation(until_time, options)
     WarJob.set(wait_until: until_time).perform_later(self, options)
-    puts "* Job reservation: #{self.id} at #{until_time}"
+    puts "* Job reservation: #{options[:type]}(id: #{self.id}) at #{until_time}"
   end
 
   def set_schedule_at_start_date
@@ -92,15 +116,16 @@ class War < ApplicationRecord
     self.job_reservation(self.request.end_date, { type: "war_end" })
   end
 
-  def set_schedule_at_war_time_start
-    self.job_reservation(Time.zone.now.change({ hour: self.request.war_time.hour }), { type: "war_time_start" })
+  def set_schedule_at_war_time_start(war_time)
+    self.job_reservation(war_time, { type: "war_time_start" })
   end
 
-  def set_schedule_at_war_time_end
-    self.job_reservation(Time.zone.now.change({ hour: self.request.war_time.hour + 1 }), { type: "war_time_end" })
+  def set_schedule_at_war_time_end(war_time)
+    self.job_reservation(war_time + 1.hour, { type: "war_time_end" })
   end
 
   def set_schedule_at_no_reply_time(match)
-    self.job_reservation(Time.zone.now + 5.minutes, { type: "match_no_reply", match: match })
+    self.job_reservation(Time.zone.now + 10.seconds, { type: "match_no_reply", match: match })
+    # self.job_reservation(Time.zone.now + 5.minutes, { type: "match_no_reply", match: match })
   end
 end

@@ -16,6 +16,7 @@ class WarJob < ApplicationJob
   end
 
   def war_start
+    return unless @war.status == "pending"
     @war.start
   end
 
@@ -26,12 +27,12 @@ class WarJob < ApplicationJob
 
   def war_time_start
     return unless @war.status == "progress"
-    broadcast_to_war_channel("war_time_start")
+    broadcast_to_war_channel({ type: "war_time_start", current_hour: Time.zone.now.hour })
   end
 
   def war_time_end
     return unless @war.status == "progress"
-    broadcast_to_war_channel("war_time_end")
+    broadcast_to_war_channel({ type: "war_time_end", current_hour: Time.zone.now.hour })
   end
 
   def match_no_reply
@@ -43,16 +44,10 @@ class WarJob < ApplicationJob
     no_reply_guild_war_status.save
     @war.end if no_reply_guild_war_status.no_reply_count > @war.request.max_no_reply_count
     match.cancel
-    broadcast_to_war_channel("no_reply")
+    broadcast_to_war_channel({ type: "no_reply", user_id: waiting_user.id })
   end
 
-  def broadcast_to_war_channel(type)
-    ActionCable.server.broadcast(
-      "war_channel_#{@war.id.to_s}",
-      {
-        type: type,
-        current_hour: Time.zone.now.hour,
-      },
-    )
+  def broadcast_to_war_channel(msg)
+    ActionCable.server.broadcast("war_channel_#{@war.id.to_s}", msg)
   end
 end

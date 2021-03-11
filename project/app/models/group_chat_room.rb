@@ -8,7 +8,7 @@ class GroupChatRoom < ApplicationRecord
   validates :title, presence: true, length: {minimum: 1, maximum: 16}, allow_blank: false
   validates :max_member_count, :inclusion => { :in => 2..10 }
   validates :room_type, inclusion: { in: ["public", "private"] }
-  scope :list_associated_with_current_user, -> (user) do
+  scope :list_associated_with_user, -> (user) do
     user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
       {
         id: chat_room.id,
@@ -64,15 +64,24 @@ class GroupChatRoom < ApplicationRecord
     }
   end
 
-  def self.generate(create_params)
+  def self.generate!(create_params)
     GroupChatRoom.transaction do
-      room = GroupChatRoom.create(create_params)
-      raise ActiveRecord::Rollback if !room.persisted? || !create_params.has_key?(:owner_id)
-      user = User.find_by_id(create_params[:owner_id])
-      membership = room.join(user, "owner")
-      raise ActiveRecord::Rollback if membership.nil? || !membership.persisted?
+      room = GroupChatRoom.create!(create_params)
+      user = User.find(create_params[:owner_id])
+      membership = room.join!(user, "owner")
       room
     end
+  end
+
+  def generate_channel_code
+    10.times do
+      code = ""
+      9.times { code << (65 + rand(25)).chr }
+      code.insert(3, '-')
+      code.insert(7, '-')
+      return code if GroupChatRoom.find_by_channel_code(code).nil?
+    end
+    nil
   end
 
   def locked?
@@ -123,7 +132,7 @@ class GroupChatRoom < ApplicationRecord
     self.owner_id == current_user.id
   end
 
-  def update_by_params(params)
+  def update_by_params!(params)
     if params[:password].blank?
       self.password = nil
     else
@@ -132,10 +141,14 @@ class GroupChatRoom < ApplicationRecord
     save!
   end
 
-  def join(user, position = "member")
-    return nil if user.nil?
-    return nil if self.active_member_count == self.max_member_count
-    membership = GroupChatMembership.create(user_id: user.id, group_chat_room_id: self.id, position: position)
+  def full?
+    self.active_member_count == self.max_member_count
+  end
+
+  def join!(user, position = "member")
+    raise ServiceError(:BadRequest) if user.nil?
+    raise ServiceError(:ServiceUnavailable, "허용 가능 인원을 초과했습니다.") if self.full?
+    membership = GroupChatMembership.create!(user_id: user.id, group_chat_room_id: self.id, position: position)
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.id.to_s}",
       {
@@ -149,6 +162,16 @@ class GroupChatRoom < ApplicationRecord
       }
     )
     membership
+  end
+
+  def enter!(user)
+    membership = self.memberships.find_by_user_id(user.id)
+    if membership.nil?
+      group_chat_room.join!(@current_user)
+    elsif membership.ghost?
+      raise ServiceError.new(:Forbidden, "아직 입장이 불가합니다.") if membership.banned?
+      membership.restore!
+    end  
   end
 
   def make_another_member_owner!
@@ -169,7 +192,5 @@ class GroupChatRoom < ApplicationRecord
 
     self.destroy!
   end
-
-
   
 end

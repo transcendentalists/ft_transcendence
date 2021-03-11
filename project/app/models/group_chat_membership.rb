@@ -47,12 +47,12 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def banned?
-    !self.ban_ends_at.nil? && self.ban_ends_at > Time.now
+    !self.ban_ends_at.nil? && self.ban_ends_at > Time.zone.now
   end
 
-  def restore
-    room = GroupChatRoom.find_by_id(self.group_chat_room_id)
-    return nil if room.active_member_count == room.max_member_count
+  def restore!
+    room = GroupChatRoom.find(self.group_chat_room_id)
+    raise ServiceError(:ServiceUnavailable, "허용 가능 인원을 초과했습니다.") if self.full?
     self.update!(position: "member")
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.group_chat_room_id.to_s}",

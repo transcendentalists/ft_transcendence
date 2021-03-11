@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
       NotFound: ["요청받은 리소스를 찾을 수 없습니다.", 404],
       Conflict: ["요청 수행 중 충돌이 발생했습니다.", 409],
       InternalServerError: ["서버 내부에 문제가 있습니다." ,500],
+      ServiceUnavailable: ["현재 해당 요청 해결에 어려움이 있습니다.", 503],
     }
 
     if msg.nil?

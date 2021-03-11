@@ -59,7 +59,7 @@ export let OnlineUserListView = Backbone.View.extend({
     const user = this.online_users.get(user_data.id);
     let status = user_data.status;
 
-    if (App.current_user.equalTo(user)) this.disconnectService();
+    if (this.isMultipleLoginOfCurrentUser(user)) this.disconnectService();
 
     if (user === undefined) {
       if (status === "online")
@@ -69,6 +69,14 @@ export let OnlineUserListView = Backbone.View.extend({
 
     user.set({ status: status });
     if (status === "offline") this.online_users.remove(user);
+  },
+
+  isMultipleLoginOfCurrentUser: function (user) {
+    return (
+      this.App.current_user.equalTo(user) &&
+      status === "online" &&
+      App.current_user.get("status") === "online"
+    );
   },
 
   disconnectService: function () {

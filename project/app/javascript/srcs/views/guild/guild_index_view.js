@@ -14,6 +14,7 @@ export let GuildIndexView = Backbone.View.extend({
     const query = Helper.parseHashQuery();
     Helper.authenticateREST(query.page);
     this.page = +query.page;
+
     this.is_last_page = false;
     this.current_user_guild = App.current_user.get("guild");
     this.guild_profile_card_view = null;
@@ -72,12 +73,12 @@ export let GuildIndexView = Backbone.View.extend({
   },
 
   beforePage: function () {
-    if (this.page === 1 || this.page === NaN) return;
+    if (this.page === 1) return;
     App.router.navigate(`#/guilds?page=${this.page - 1}`);
   },
 
   nextPage: function () {
-    if (this.is_last_page === true || this.page === NaN) return;
+    if (this.is_last_page === true) return;
     App.router.navigate(`#/guilds?page=${this.page + 1}`);
   },
 

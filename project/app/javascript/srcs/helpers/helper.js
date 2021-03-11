@@ -85,7 +85,7 @@ export let Helper = {
   },
 
   authenticateREST: function (number) {
-    if (!this.isNumber(number)) App.router.navigate("#/errors/400");
+    if (!this.isNumber(number)) App.router.navigate("#/errors/404");
   },
 
   isUserChatBanned: function (user_id) {
@@ -146,13 +146,18 @@ export let Helper = {
    */
   parseHashQuery: function () {
     let hash = window.location.hash.split("?");
-    if (hash.length == 1) return {};
+    if (hash.length == 1) {
+      hash.page = 1;
+      return hash;
+    }
     let query = hash[1];
     let result = query.split("&").reduce(function (res, item) {
       let parts = item.split("=");
       res[parts[0]] = parts[1];
       return res;
     }, {});
+    console.log(result);
+    if (!result.page) result.page = "1";
     return result;
   },
 

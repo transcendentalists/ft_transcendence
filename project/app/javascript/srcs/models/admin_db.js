@@ -1,3 +1,5 @@
+import { Helper } from "srcs/internal";
+
 export let AdminDB = Backbone.Model.extend({
   url: "/api/admin/db",
 

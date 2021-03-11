@@ -7,7 +7,7 @@ export let Router = Backbone.Router.extend({
     "users(/:param)": "usersController",
     "chatrooms(/:param)": "chatRoomsController",
     "guilds(/:param)": "guildsController",
-    "ladder(/:page)": "ladderController",
+    ladder: "ladderController",
     "live(/:live_type)": "liveController",
     "war(/:new)": "warController",
     "matches(/:id)": "matchesController",
@@ -52,8 +52,8 @@ export let Router = Backbone.Router.extend({
     else this.redirect_to(App.View.GuildDetailView, param, "guild");
   },
 
-  ladderController: function (page = 1) {
-    this.redirect_to(App.View.LadderIndexView, page, "ladder");
+  ladderController: function () {
+    this.redirect_to(App.View.LadderIndexView, null, "ladder");
   },
 
   liveController(live_type = "dual") {

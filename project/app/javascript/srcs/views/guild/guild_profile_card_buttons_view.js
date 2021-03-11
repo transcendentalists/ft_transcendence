@@ -38,7 +38,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
   },
 
   showGuild: function () {
-    App.router.navigate(`#/guilds/${this.guild.id}?page=1`);
+    App.router.navigate(`#/guilds/${this.guild.id}`);
   },
 
   leaveGuild: function () {

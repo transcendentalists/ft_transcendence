@@ -11,9 +11,11 @@ export let LadderIndexView = Backbone.View.extend({
     "click #join-casual-ladder-button": "joinCasualLadder",
   },
 
-  initialize: function (page) {
-    this.page = page ? +page : 1;
-    Helper.authenticateREST(this.page);
+  initialize: function () {
+    const query = Helper.parseHashQuery();
+    Helper.authenticateREST(query.page);
+    this.page = +query.page;
+
     this.is_last_page = false;
     this.my_rating_view = null;
     this.user_ranking_view = null;
@@ -63,12 +65,12 @@ export let LadderIndexView = Backbone.View.extend({
 
   beforePage: function () {
     if (this.page === 1) return;
-    App.router.navigate("#/ladder/" + (this.page - 1));
+    App.router.navigate(`#/ladder?page=${this.page - 1}`);
   },
 
   nextPage: function () {
     if (this.is_last_page === true) return;
-    App.router.navigate("#/ladder/" + (this.page + 1));
+    App.router.navigate(`#/ladder?page=${this.page + 1}`);
   },
 
   //  승급전 참여 버튼 클릭시 게임 인덱스 뷰로 이동

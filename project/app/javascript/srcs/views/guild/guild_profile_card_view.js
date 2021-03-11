@@ -21,12 +21,12 @@ export let GuildProfileCardView = Backbone.View.extend({
         current_user_guild_position,
       })
     );
+    this.renderButtons();
 
     return this;
   },
 
   renderButtons: function () {
-    this.renderButtons();
     this.buttons_view = new App.View.GuildProfileCardButtonsView({
       guild: this.guild,
     });

@@ -98,7 +98,7 @@ Guild.create([
 
 # Guild_id: 12, 13/ owner: test1, test6
 Guild.create([
-  {owner_id: 12, name: "test1", anagram: "@te1", image_url: "assets/lee.png", point: 900}, 
+  {owner_id: 12, name: "test1", anagram: "@te1", image_url: "assets/lee.png", point: 900},
   {owner_id: 17, name: "test2", anagram: "@te2", image_url: "assets/gun.png", point: 1000},
 ])
 
@@ -124,9 +124,9 @@ war_request_list = [
   {rule_id: 1, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 2 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 7 }).midnight, war_time: Time.zone.now.change({ hour: 14 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
   {rule_id: 2, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 3 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 8 }).midnight, war_time: Time.zone.now.change({ hour: 13 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
   {rule_id: 3, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 4 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 9 }).midnight, war_time: Time.zone.now.change({ hour: 12 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
-  {rule_id: 4, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 5 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 10 }).midnight, war_time: Time.zone.now.change({ hour: 11 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
+  {rule_id: 4, bet_point: 100, start_date: Time.zone.tomorrow.midnight, end_date: Time.zone.tomorrow.midnight + 3.days, war_time: Time.zone.now.change({ hour: 11 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
   # 테스트용
-  {rule_id: 1, bet_point: 100, start_date: Time.zone.yesterday.midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 13 }), war_time: Time.zone.now, max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
+  {rule_id: 1, bet_point: 100, start_date: Time.zone.yesterday.midnight, end_date: Time.zone.yesterday.midnight.change({ year: 2021, month: 3, day: 13 }) + 3.days, war_time: Time.zone.now, max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
 ]
 
 war_request_list.each do |war_request|
@@ -229,12 +229,12 @@ Scorecard.create([
   {user_id: 10, score: 0, result: "lose", match_id: 13, side: "right"},
   {user_id: 10, score: 0, result: "lose", match_id: 14, side: "right"},
 
-  {user_id: 1, score: 0, result: "wait", match_id: 15, side: "left"},  
-  {user_id: 4, score: 0, result: "wait", match_id: 15, side: "right"},  
-  {user_id: 2, score: 0, result: "wait", match_id: 16, side: "left"},  
-  {user_id: 5, score: 0, result: "wait", match_id: 16, side: "right"},  
-  {user_id: 3, score: 0, result: "wait", match_id: 17, side: "left"},  
-  {user_id: 6, score: 0, result: "wait", match_id: 17, side: "right"},  
+  {user_id: 1, score: 0, result: "wait", match_id: 15, side: "left"},
+  {user_id: 4, score: 0, result: "wait", match_id: 15, side: "right"},
+  {user_id: 2, score: 0, result: "wait", match_id: 16, side: "left"},
+  {user_id: 5, score: 0, result: "wait", match_id: 16, side: "right"},
+  {user_id: 3, score: 0, result: "wait", match_id: 17, side: "left"},
+  {user_id: 6, score: 0, result: "wait", match_id: 17, side: "right"},
 ])
 
 GroupChatRoom.create([

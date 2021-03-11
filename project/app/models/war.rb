@@ -32,13 +32,13 @@ class War < ApplicationRecord
 
   def battle_data(guild_id)
     war_match = self.matches.find_by_status(["pending", "progress"])
-    is_my_guild_battle_request_to_enemy = war_match.nil? ? nil : war_match.scorecards.first.user.in_guild.id == guild_id
+    is_my_guild_battle_requested_to_enemy = war_match.nil? ? nil : war_match.scorecards.first.user.in_guild.id == guild_id.to_i
     wait_time = war_match&.status == "pending" ? Time.zone.now - war_match.updated_at : nil
     {
       current_hour: Time.zone.now.hour,
       match: war_match,
       war_time: self.request.war_time.hour,
-      is_my_guild_request: is_my_guild_battle_request_to_enemy,
+      is_my_guild_request: is_my_guild_battle_requested_to_enemy,
       wait_time: wait_time.to_i,
     }
   end

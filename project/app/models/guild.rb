@@ -84,14 +84,14 @@ class Guild < ApplicationRecord
     enemy_guild = my_guild_war_status.enemy_status.guild
     request = war.request
     match_type = war.match_types
-    matches = []
+    match_histories = []
     Scorecard.where(user_id: self.users.ids).each do |scorecard|
       if scorecard.match.status == "completed" &&
         scorecard.enemy_user.in_guild&.id == enemy_guild.id &&
         match_type.include?(scorecard.match.match_type)
         match = scorecard.match
-        if request.start_date <= match.updated_at
-          matches << {
+        if war.created_at <= match.updated_at
+          match_histories << {
             match: match,
             enemy_guild_user: scorecard.enemy_user,
             current_guild_user_scorecard: scorecard,
@@ -100,7 +100,7 @@ class Guild < ApplicationRecord
         end
       end
     end
-    matches.sort_by { |match| match[:match].updated_at }.reverse[..3]
+    match_histories.sort_by { |match_history| match_history[:match].updated_at }.reverse[..3]
   end
 
   def make_another_member_master!

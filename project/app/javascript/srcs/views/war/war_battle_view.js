@@ -30,10 +30,7 @@ export let WarBattleView = Backbone.View.extend({
     );
   },
 
-  // render: function (battle) {
   render: function () {
-    // this.$el.html(this.template(battle));
-
     this.$el.html(this.template());
     this.countDown();
     return this;

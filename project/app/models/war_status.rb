@@ -3,12 +3,18 @@ class WarStatus < ApplicationRecord
   belongs_to :request, class_name: "WarRequest", :foreign_key => "war_request_id"
   validates_with WarStatusValidator, on: :create
 
-  def self.current_guild_war_status(current_guild_id)
-    self.find_by_guild_id(current_guild_id)
+  def enemy_status
+    war_statuses = self.request.war_statuses
+    war_statuses.first == self ? war_statuses.second : war_statuses.first
   end
 
-  def self.opponent_guild_war_status(current_guild_id)
-    self.where.not(guild_id: current_guild_id).first
+  def for_war_status_view
+    {
+      my_guild_point: self.point,
+      enemy_guild_point: self.enemy_status.point,
+      max_no_reply_count: self.request.max_no_reply_count,
+      no_reply_count: self.no_reply_count,
+    }
   end
 
   def enemy?
@@ -18,5 +24,4 @@ class WarStatus < ApplicationRecord
   def challenger?
     return self.position == "challenger"
   end
-
 end

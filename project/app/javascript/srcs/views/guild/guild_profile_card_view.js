@@ -19,13 +19,22 @@ export let GuildProfileCardView = Backbone.View.extend({
         current_user_guild_position: current_user_guild_position,
       })
     );
+    if (!this.isInWarIndex()) this.renderButtons();
+    return this;
+  },
+
+  isInWarIndex: function () {
+    const url = Backbone.history.getFragment().split("?")[0];
+    return url == "war";
+  },
+
+  renderButtons: function () {
     this.buttons_view = new App.View.GuildProfileCardButtonsView({
-      guild: this.guild
+      guild: this.guild,
     });
     this.buttons_view
       .setElement(this.$("#guild-profile-card-buttons-view"))
       .render();
-    return this;
   },
 
   close: function () {

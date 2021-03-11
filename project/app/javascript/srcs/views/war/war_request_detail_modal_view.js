@@ -24,6 +24,7 @@ export let WarRequestDetailModalView = Backbone.View.extend({
       method: "PATCH",
       body: { status: "accepted" },
       success_callback: () => {
+        App.current_user.get("guild").in_war = true;
         App.router.navigate("#/war");
         this.close();
       },

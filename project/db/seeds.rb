@@ -96,8 +96,15 @@ Guild.create([
   {owner_id: 11, name: "42seoul", anagram: "@42se", image_url: "assets/gun.png", point: 1000},
 ])
 
+# Guild_id: 12, 13/ owner: test1, test6
+Guild.create([
+  {owner_id: 12, name: "test1", anagram: "@te1", image_url: "assets/lee.png", point: 900}, 
+  {owner_id: 17, name: "test2", anagram: "@te2", image_url: "assets/gun.png", point: 1000},
+])
+
 WarRequest.create([
   {rule_id: 1, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 19 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 25 }), war_time: Time.zone.now.change({ hour: 10 }), max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
+  # {rule_id: 1, bet_point: 100, start_date: Time.zone.yesterday.midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 11 }), war_time: Time.zone.now.change({ hour: 10 }), max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
   {rule_id: 2, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 20 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 26 }).midnight, war_time: Time.zone.now.change({ hour: 11 }), max_no_reply_count: 4, include_ladder: false, include_tournament: true, target_match_score: 5, status: "pending"},
   {rule_id: 3, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 21 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 27 }).midnight, war_time: Time.zone.now.change({ hour: 12 }), max_no_reply_count: 5, include_ladder: true, include_tournament: false, target_match_score: 7, status: "pending"},
   {rule_id: 4, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 22 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 24 }).midnight, war_time: Time.zone.now.change({ hour: 13 }), max_no_reply_count: 6, include_ladder: true, include_tournament: true, target_match_score: 10, status: "pending"},
@@ -105,20 +112,28 @@ WarRequest.create([
   {rule_id: 6, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 24 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 25 }).midnight, war_time: Time.zone.now.change({ hour: 15 }), max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 5, status: "pending"},
   {rule_id: 7, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 25 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 28 }).midnight, war_time: Time.zone.now.change({ hour: 16 }), max_no_reply_count: 9, include_ladder: true, include_tournament: true, target_match_score: 7, status: "pending"},
   {rule_id: 1, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 26 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 29 }).midnight, war_time: Time.zone.now.change({ hour: 17 }), max_no_reply_count: 10, include_ladder: false, include_tournament: false, target_match_score: 10, status: "pending"},
-  {rule_id: 2, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 27 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 30 }).midnight, war_time: Time.zone.now.change({ hour: 18 }), max_no_reply_count: 3, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
-  {rule_id: 3, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 28 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 31 }).midnight, war_time: Time.zone.now.change({ hour: 19 }), max_no_reply_count: 5, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
-  {rule_id: 4, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 29 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 4, day: 4 }).midnight, war_time: Time.zone.now.change({ hour: 18 }), max_no_reply_count: 8, include_ladder: true, include_tournament: false, target_match_score: 7, status: "accepted"},
-  {rule_id: 5, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 30 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 4, day: 5 }).midnight, war_time: Time.zone.now.change({ hour: 17 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 10, status: "accepted"},
-  {rule_id: 6, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 31 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 4, day: 5 }).midnight, war_time: Time.zone.now.change({ hour: 16 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
-  {rule_id: 7, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 4, day: 1 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 4, day: 4 }).midnight, war_time: Time.zone.now.change({ hour: 15 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
-  {rule_id: 1, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 4, day: 2 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 4, day: 7 }).midnight, war_time: Time.zone.now.change({ hour: 14 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
-  {rule_id: 2, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 4, day: 3 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 4, day: 8 }).midnight, war_time: Time.zone.now.change({ hour: 13 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
-  {rule_id: 3, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 4, day: 4 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 4, day: 9 }).midnight, war_time: Time.zone.now.change({ hour: 12 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
-  {rule_id: 4, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 4, day: 5 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 4, day: 10 }).midnight, war_time: Time.zone.now.change({ hour: 11 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
 ])
 
+war_request_list = [
+  {rule_id: 2, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 5 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 6 }).midnight, war_time: Time.zone.now.change({ hour: 18 }), max_no_reply_count: 3, include_ladder: false, include_tournament: false, target_match_score: 3, status: "pending"},
+  {rule_id: 3, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 4 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 6 }).midnight, war_time: Time.zone.now.change({ hour: 19 }), max_no_reply_count: 5, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
+  {rule_id: 4, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 3 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 4 }).midnight, war_time: Time.zone.now.change({ hour: 18 }), max_no_reply_count: 8, include_ladder: true, include_tournament: false, target_match_score: 7, status: "accepted"},
+  {rule_id: 5, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 2 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 5 }).midnight, war_time: Time.zone.now.change({ hour: 17 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 10, status: "accepted"},
+  {rule_id: 6, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 3, day: 1 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 5 }).midnight, war_time: Time.zone.now.change({ hour: 16 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
+  {rule_id: 7, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 1 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 4 }).midnight, war_time: Time.zone.now.change({ hour: 15 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
+  {rule_id: 1, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 2 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 7 }).midnight, war_time: Time.zone.now.change({ hour: 14 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
+  {rule_id: 2, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 3 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 8 }).midnight, war_time: Time.zone.now.change({ hour: 13 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
+  {rule_id: 3, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 4 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 9 }).midnight, war_time: Time.zone.now.change({ hour: 12 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
+  {rule_id: 4, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 5 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 10 }).midnight, war_time: Time.zone.now.change({ hour: 11 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
+  # 테스트용
+  {rule_id: 1, bet_point: 100, start_date: Time.zone.yesterday.midnight, end_date: Time.zone.now.change({ year: 2021, month: 3, day: 13 }), war_time: Time.zone.now.change({ hour: 10 }), max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
+]
+
+war_request_list.each do |war_request|
+  WarRequest.new(war_request).save(validate: false)
+end
+
 War.create([
-  {war_request_id: 1, status: "progress"},
   {war_request_id: 10, status: "completed"},
   {war_request_id: 11, status: "completed"},
   {war_request_id: 12, status: "completed"},
@@ -128,6 +143,10 @@ War.create([
   {war_request_id: 16, status: "completed"},
   {war_request_id: 17, status: "completed"},
   {war_request_id: 18, status: "pending"},
+])
+
+War.create([
+  {war_request_id: 19, status: "progress"},
 ])
 
 Match.create([
@@ -148,6 +167,36 @@ Match.create([
   {rule_id: 1, status: "pending", eventable_type: "Tournament", eventable_id: 1, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-04 15pm')},
   {rule_id: 2, status: "pending", eventable_type: "Tournament", eventable_id: 2, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-04 16pm')},
   {rule_id: 3, status: "pending", eventable_type: "Tournament", eventable_id: 3, match_type: "tournament", start_time: Time.find_zone('Seoul').parse('2021-03-04 17pm')},
+])
+
+Match.create([
+  # TODO: updated_at 시간을 어제와 지금 사이로 만들기
+  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.zone.yesterday},
+  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.zone.yesterday},
+  {rule_id: 1, status: "completed", match_type: "ladder", updated_at: Time.zone.yesterday},
+  {rule_id: 1, status: "completed", match_type: "ladder", updated_at: Time.zone.yesterday},
+  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.zone.yesterday},
+  {rule_id: 1, status: "completed", match_type: "dual", updated_at: Time.zone.yesterday},
+])
+
+Scorecard.create([
+  {user_id: 12, score: 3, result: "win", match_id: 18, side: "left"},
+  {user_id: 17, score: 2, result: "lose", match_id: 18, side: "right"},
+
+  {user_id: 12, score: 3, result: "lose", match_id: 19, side: "left"},
+  {user_id: 17, score: 2, result: "win", match_id: 19, side: "right"},
+
+  {user_id: 13, score: 3, result: "win", match_id: 20, side: "left"},
+  {user_id: 18, score: 2, result: "lose", match_id: 20, side: "right"},
+
+  {user_id: 14, score: 3, result: "lose", match_id: 21, side: "left"},
+  {user_id: 19, score: 2, result: "win", match_id: 21, side: "right"},
+
+  {user_id: 15, score: 3, result: "lose", match_id: 22, side: "left"},
+  {user_id: 20, score: 2, result: "win", match_id: 22, side: "right"},
+
+  {user_id: 16, score: 3, result: "lose", match_id: 23, side: "left"},
+  {user_id: 21, score: 2, result: "win", match_id: 23, side: "right"},
 ])
 
 Scorecard.create([
@@ -236,7 +285,6 @@ GroupChatMembership.create([
   {user_id: 9, group_chat_room_id: 1, position: "member", ban_ends_at: nil},
   {user_id: 10, group_chat_room_id: 1, position: "member", ban_ends_at: nil},
   {user_id: 11, group_chat_room_id: 1, position: "member", ban_ends_at: nil},
-
 ])
 
 DirectChatRoom.create([
@@ -304,18 +352,23 @@ GuildMembership.create([
   {user_id: 7, guild_id: 7, position: "master"},
   {user_id: 8, guild_id: 8, position: "master"},
   {user_id: 9, guild_id: 9, position: "master"},
-  {user_id: 10, guild_id: 10, position: "master"},
-  {user_id: 11, guild_id: 11, position: "master"},
-  {user_id: 12, guild_id: 1, position: "officer"},
-  {user_id: 13, guild_id: 2, position: "officer"},
-  {user_id: 14, guild_id: 3, position: "officer"},
-  {user_id: 15, guild_id: 4, position: "officer"},
-  {user_id: 16, guild_id: 5, position: "officer"},
-  {user_id: 17, guild_id: 6, position: "officer"},
-  {user_id: 18, guild_id: 7, position: "officer"},
-  {user_id: 19, guild_id: 8, position: "officer"},
-  {user_id: 20, guild_id: 9, position: "officer"},
-  {user_id: 21, guild_id: 10, position: "officer"},
+  {user_id: 10, guild_id: 1, position: "officer"},
+  {user_id: 11, guild_id: 1, position: "officer"},
+
+  # test1 길드원 test1 ~ test5
+  {user_id: 12, guild_id: 12, position: "master"},
+  {user_id: 13, guild_id: 12, position: "officer"},
+  {user_id: 14, guild_id: 12, position: "member"},
+  {user_id: 15, guild_id: 12, position: "member"},
+  {user_id: 16, guild_id: 12, position: "member"},
+
+  # test2 길드원 test6~ test10
+  {user_id: 17, guild_id: 13, position: "master"},
+  {user_id: 18, guild_id: 13, position: "officer"},
+  {user_id: 19, guild_id: 13, position: "member"},
+  {user_id: 20, guild_id: 13, position: "member"},
+  {user_id: 21, guild_id: 13, position: "member"},
+
   {user_id: 22, guild_id: 11, position: "officer"},
   {user_id: 23, guild_id: 1, position: "officer"},
   {user_id: 24, guild_id: 3, position: "member"},
@@ -379,29 +432,22 @@ TournamentMembership.create([
 ])
 
 WarStatus.create([
-  # war progress 상태
-  {guild_id: 8, war_request_id: 1, position: "challenger", point: "400"},
-  {guild_id: 9, war_request_id: 1, position: "enemy", point: "400"},
-  # request pending 상태
-  # 1번이 워 리퀘스트(아무거나)를 수락하면 3 4 번 길드의 리퀘스트에 1번길드가 보낸 요청(9, 10번 리퀘)이 없어야함.
-  # 1번이 워 리퀘스트를 수락하면 나머지 리퀘스트들이 canceled로 처리된다.
-  {guild_id: 3, war_request_id: 2, position: "challenger"},
-  {guild_id: 1, war_request_id: 2, position: "enemy"},
-  {guild_id: 4, war_request_id: 3, position: "challenger"},
-  {guild_id: 1, war_request_id: 3, position: "enemy"},
-  {guild_id: 5, war_request_id: 4, position: "challenger"},
-  {guild_id: 1, war_request_id: 4, position: "enemy"},
-  {guild_id: 6, war_request_id: 5, position: "challenger"},
-  {guild_id: 1, war_request_id: 5, position: "enemy"},
-  {guild_id: 3, war_request_id: 6, position: "challenger"},
-  {guild_id: 2, war_request_id: 6, position: "enemy"},
-  {guild_id: 4, war_request_id: 7, position: "challenger"},
-  {guild_id: 2, war_request_id: 7, position: "enemy"},
-  {guild_id: 5, war_request_id: 8, position: "challenger"},
-  {guild_id: 2, war_request_id: 8, position: "enemy"},
-  {guild_id: 1, war_request_id: 9, position: "challenger"},
-  {guild_id: 3, war_request_id: 9, position: "enemy"},
-  # war completed 상태
+  {guild_id: 3, war_request_id: 2, position: "challenger", point: "400"},
+  {guild_id: 1, war_request_id: 2, position: "enemy", point: "300"},
+  {guild_id: 4, war_request_id: 3, position: "challenger", point: "400"},
+  {guild_id: 1, war_request_id: 3, position: "enemy", point: "300"},
+  {guild_id: 5, war_request_id: 4, position: "challenger", point: "400"},
+  {guild_id: 1, war_request_id: 4, position: "enemy", point: "300"},
+  {guild_id: 6, war_request_id: 5, position: "challenger", point: "400"},
+  {guild_id: 1, war_request_id: 5, position: "enemy", point: "300"},
+  {guild_id: 3, war_request_id: 6, position: "challenger", point: "400"},
+  {guild_id: 2, war_request_id: 6, position: "enemy", point: "300"},
+  {guild_id: 4, war_request_id: 7, position: "challenger", point: "400"},
+  {guild_id: 2, war_request_id: 7, position: "enemy", point: "300"},
+  {guild_id: 5, war_request_id: 8, position: "challenger", point: "400"},
+  {guild_id: 2, war_request_id: 8, position: "enemy", point: "300"},
+  {guild_id: 1, war_request_id: 9, position: "challenger", point: "400"},
+  {guild_id: 3, war_request_id: 9, position: "enemy", point: "300"},
   {guild_id: 1, war_request_id: 10, position: "challenger", point: "200"},
   {guild_id: 4, war_request_id: 10, position: "enemy", point: "300"},
   {guild_id: 2, war_request_id: 11, position: "challenger", point: "500"},
@@ -421,4 +467,11 @@ WarStatus.create([
   # war pending 상태
   {guild_id: 10, war_request_id: 18, position: "challenger"},
   {guild_id: 11, war_request_id: 18, position: "enemy"},
+])
+
+
+WarStatus.create([
+  # war progress 상태
+  {guild_id: 12, war_request_id: 19, position: "challenger", point: "50", no_reply_count: 1},
+  {guild_id: 13, war_request_id: 19, position: "enemy", point: "250", no_reply_count: 2}
 ])

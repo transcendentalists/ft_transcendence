@@ -37,7 +37,10 @@ export let GuildInvitationView = Backbone.View.extend({
     const url = `users/${App.current_user.id}/guild_invitations/${this.guild_invitation_id}`;
     Helper.fetch(url, {
       method: "DELETE",
-      success_callback: () => this.close(),
+      success_callback: () => {
+        this.close();
+        this.trigger("decline");
+      },
       fail_callback: Helper.defaultErrorHandler,
     });
   },

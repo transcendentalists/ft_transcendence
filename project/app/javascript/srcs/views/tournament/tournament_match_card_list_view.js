@@ -1,13 +1,20 @@
 import { App } from "srcs/internal";
 
 export let TournamentMatchCardListView = Backbone.View.extend({
+  el: "#my-tournaments-view",
+  defaultText: "<span>현재 참여중인 토너먼트가 없습니다.</span>",
+
   initialize: function () {
     this.child_views = [];
   },
 
   render: function (tournament_matches) {
-    this.$el.empty();
-    tournament_matches.forEach(this.addOne, this);
+    if (!tournament_matches || tournament_matches.length === 0)
+      this.$el.append(this.defaultText);
+    else {
+      this.$el.empty();
+      tournament_matches.forEach(this.addOne, this);
+    }
     return this;
   },
 

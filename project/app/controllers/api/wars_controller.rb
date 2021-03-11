@@ -1,29 +1,21 @@
 class Api::WarsController < ApplicationController
   def index
-    if params[:for] == "index"
-      war_id = Guild.find_by_id(params[:guild_id]).wars.where.not(status: "completed").first
-      render json: get_war_index_data(war_id)
-    elsif params[:guild_id]
-      return render_error("Not Found", "Guild가 없습니다.", 404) unless Guild.exists?(params[:guild_id])
-      war_history_list = Guild.find_by_id(params[:guild_id]).wars.for_war_history(params[:guild_id])
-      render json: { wars: war_history_list }
-    else
-      render plain: "This is war " + params[:war_id] + "'s matches"
+    begin
+      if params[:for] == "index"
+        war = Guild.find(params[:guild_id])&.wars.where.not(status: "completed").first
+        index_data = war.index_data!(params[:guild_id])
+        render json: index_data
+      elsif params[:guild_id]
+        guild = Guild.find(params[:guild_id])
+        war_history_list = guild.wars.for_war_history(params[:guild_id])
+        render json: { wars: war_history_list }
+      else
+        render plain: "This is war " + params[:war_id] + "'s matches"
+      end
+    rescue ActiveRecord::RecordNotFound
+      return render_error("Not Found", "요청하신 정보를 찾을 수 없습니다.", 404)
+    rescue
+      return render_error("Bad Request", "잘못된 요청입니다.", 400)
     end
-  end
-
-  private
-  def get_war_index_data(war_id)
-    war = War.find_by_id(war_id)
-    request = war.request
-    my_guild_status = request.war_statuses.find_by_guild_id(params[:guild_id])
-    opponent_guild_status = my_guild_status.opponent_guild_war_status
-    status = my_guild_status.for_war_status_view(my_guild_status.guild)
-    rules_of_war = my_guild_status.request.rules_of_war
-    matches = my_guild_status.guild.war_match_history
-    battle = war.battle_data(params[:guild_id].to_i)
-    keys = %w[guild status rules_of_war matches war battle]
-    values = [opponent_guild_status.guild.profile, status, rules_of_war, matches, war, battle]
-    war_index_data = Hash[keys.zip values]
   end
 end

@@ -27,7 +27,7 @@ class GuildMembership < ApplicationRecord
     guild = self.guild&.to_simple
     guild['membership_id'] = self.id
     guild['position'] = self.position
-    guild[:in_war] = self.guild&.in_war?
+    guild['in_war'] = self.guild.in_war?
     guild
   end
 

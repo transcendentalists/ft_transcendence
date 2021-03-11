@@ -13,12 +13,39 @@ export let WarIndexView = Backbone.View.extend({
     this.war_match_history_list_view = null;
   },
 
+  render: function () {
+    const current_user_guild = App.current_user.get("guild");
+    const current_user_guild_in_war = current_user_guild?.in_war;
+    this.$el.html(
+      this.template({ current_user_guild, current_user_guild_in_war })
+    );
+    if (current_user_guild && current_user_guild_in_war) {
+      Helper.fetch(`guilds/${current_user_guild.id}/wars?for=index`, {
+        success_callback: this.joinWarChannelAndRenderWarIndexChilds.bind(this),
+        fail_callback: (data) => {
+          return App.router.navigate(
+            `#/errors/${data.code}/${data.type}/${data.msg}`
+          );
+        },
+      });
+    }
+    return this;
+  },
+
+  renderChildViews: function (data) {
+    this.renderGuildProfileCardView(data.guild);
+    this.renderWarStatusView(data.status);
+    this.renderWarRuleView(data.rules_of_war);
+    this.renderWarBattleView();
+    this.renderWarMatchHistory(data.matches);
+  },
+
   renderGuildProfileCardView: function (guild) {
     this.guild_profile_card_view = new App.View.GuildProfileCardView({
-      guild: guild
+      guild: guild,
     });
     this.guild_profile_card_view
-      .setElement(this.$(".opponent-guild-profile-view"))
+      .setElement(this.$(".enemy-guild-profile-view"))
       .render();
   },
 
@@ -32,9 +59,7 @@ export let WarIndexView = Backbone.View.extend({
   renderWarRuleView: function (rule) {
     this.rules_of_war = rule;
     this.war_rule_view = new App.View.WarRuleView();
-    this.war_rule_view
-      .setElement(this.$(".war-rule-view"))
-      .render(rule);
+    this.war_rule_view.setElement(this.$(".war-rule-view")).render(rule);
   },
 
   renderWarBattleView: function (battle) {
@@ -43,7 +68,7 @@ export let WarIndexView = Backbone.View.extend({
       .setElement(this.$(".war-battle-view"))
       .render(battle);
   },
-  
+
   renderWarMatchHistory: function (war_matches) {
     this.war_match_history_list_view = new App.View.WarMatchHistoryListView();
     this.war_match_history_list_view
@@ -66,26 +91,13 @@ export let WarIndexView = Backbone.View.extend({
     this.renderWarIndexChilds(data);
   },
 
-  render: function () {
-    const current_user_guild = App.current_user.get("guild");
-    const current_user_guild_in_war = current_user_guild?.in_war;
-    this.$el.html(
-      this.template({ current_user_guild: current_user_guild, current_user_guild_in_war: current_user_guild_in_war })
-    );
-    if (current_user_guild && current_user_guild_in_war) {
-      Helper.fetch(`guilds/${current_user_guild.id}/wars?for=index`, {
-        success_callback: this.joinWarChannelAndRenderWarIndexChilds.bind(this),
-      });
-    }
-    return this;
-  },
-
   close: function () {
     if (this.guild_profile_card_view) this.guild_profile_card_view.close();
     if (this.war_status_view) this.war_status_view.close();
     if (this.war_rule_view) this.war_rule_view.close();
     if (this.war_battle_view) this.war_battle_view.close();
-    if (this.war_match_history_list_view) this.war_match_history_list_view.close();
+    if (this.war_match_history_list_view)
+      this.war_match_history_list_view.close();
     this.remove();
   },
 });

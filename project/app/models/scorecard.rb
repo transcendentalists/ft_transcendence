@@ -3,11 +3,11 @@ class Scorecard < ApplicationRecord
   belongs_to :match
   has_one :rule, through: :match
 
-  def opponent_user
+  def enemy_user
     self.match.users.where.not(id: self.user_id).first
   end
 
-  def opponent_scorecard
+  def enemy_scorecard
     self.match.scorecards.where.not(user_id: self.user_id).first
   end
 

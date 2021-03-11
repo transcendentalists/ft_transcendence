@@ -718,6 +718,10 @@ body {
   margin-right: 1rem;
 }
 
+#guild-detail-view .member-list .row.flex-container.baseline {
+  width: 19rem;
+}
+
 #guild-detail-view .member-list .stat {
   margin-right: 1rem;
 }

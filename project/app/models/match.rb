@@ -112,17 +112,12 @@ class Match < ApplicationRecord
 
   def update_user_point
     return if self.match_type != "ladder"
-    self.users.each do |user|
-      point = user.id == self.winner.id ? 20 : 5
-      user.increment!(:point, point)
-    end
+    self.winner.increment!(:point, 10)
+    self.loser.increment!(:point, 2)
   end
 
   def update_guild_point
-    self.users.each do |user|
-      point = user.id == self.winner.id ? 20 : 5
-      user.in_guild.increment!(:point, point) if user.in_guild?
-    end
+    self.winner.in_guild&.increment!(:point, 5)
   end
 
   def complete(options = {type: "END"})

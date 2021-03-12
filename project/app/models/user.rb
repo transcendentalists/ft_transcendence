@@ -102,7 +102,8 @@ class User < ApplicationRecord
   end
 
   def tier
-    [ "cooper", "bronze", "silver", "gold", "diamond" ][self.point / 100]
+    return "diamond" if self.point >= 400
+    [ "cooper", "bronze", "silver", "gold" ][self.point / 100]
   end
 
   def game_stat

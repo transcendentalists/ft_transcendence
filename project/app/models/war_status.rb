@@ -26,7 +26,7 @@ class WarStatus < ApplicationRecord
   end
 
   def increase_point
-    self.increment!(:point, 20)
+    self.increment!(:point, 10)
   end
 
   def self.same_point?

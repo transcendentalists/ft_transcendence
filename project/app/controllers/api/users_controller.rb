@@ -112,7 +112,7 @@ class Api::UsersController < ApplicationController
     rescue ServiceError => e
       render_error(e.type, e.message);
     rescue
-      render_error(:InternalServerError, "유저 계정 제한에 실패했습니다.")
+      render_error(:Conflict, "유저 계정 제한에 실패했습니다.")
     end
   end
 

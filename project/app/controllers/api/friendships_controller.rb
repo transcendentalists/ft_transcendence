@@ -23,7 +23,7 @@ class Api::FriendshipsController < ApplicationController
     begin
       friendship = Friendship.find_by_user_id_and_friend_id(params[:user_id], params[:id])
       friendship.destroy!
-      head :no_content
+      head :no_content, status: 204
     rescue
       render_error :Conflict
     end

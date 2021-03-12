@@ -16,7 +16,7 @@ class Api::AdminController < ApplicationController
         guild_positions: ApplicationRecord.guild_positions
       }
     rescue
-      return render_error :InternalServerError
+      return render_error :Conflict
     end
 
     render json: { db: resources }

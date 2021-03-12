@@ -9,7 +9,7 @@ class Api::GroupChatMembershipsController < ApplicationController
     rescue ServiceError => e
       render_error(e.type, e.message)
     rescue
-      render_error :InternalServerError
+      render_error :Conflict
     end
   end
 
@@ -22,7 +22,7 @@ class Api::GroupChatMembershipsController < ApplicationController
     rescue ServiceError => e
       render_error(e.type, e.message)
     rescue
-      render_error :InternalServerError
+      render_error :Conflict
     end
   end
 

@@ -51,7 +51,7 @@ class Api::GroupChatRoomsController < ApplicationController
     rescue ServiceError => e
       render_error(e.type, e.message)
     rescue
-      render_error :InternalServerError
+      render_error :Conflict
     end
   end
 
@@ -64,7 +64,7 @@ class Api::GroupChatRoomsController < ApplicationController
     rescue ServiceError => e
       render_error(e.type, e.message)
     rescue
-      render_error :InternalServerError
+      render_error :Conflict
     end
   end
 
@@ -75,7 +75,7 @@ class Api::GroupChatRoomsController < ApplicationController
       room.let_all_out_and_destroy!
       head :no_content, status: 204
     rescue
-      render_error :InternalServerError
+      render_error :Conflict
     end
   end
 

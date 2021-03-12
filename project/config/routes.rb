@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resources :matches, only: [:index]
       resources :friendships, only: %i[index create destroy]
       resources :direct_chat_rooms, only: %i[get show]
-      resources :guild_invitations, only: %i[index show create destroy]
+      resources :guild_invitations, only: %i[index create destroy]
       resources :chat_bans, only: %i[index show create destroy]
     end
 

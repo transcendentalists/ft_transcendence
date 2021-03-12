@@ -1,13 +1,13 @@
 class ApplicationController < ActionController::Base
-  # TODO: 'protect... null_session' 코드는 CSRF token 인증 생략 위해 임시로 추가함.
-  protect_from_forgery with: :null_session
-
   def create_session(id)
     cookies.encrypted[:service_id] = id
   end
 
   def remove_session
+    user = User.find_by_id(cookies.encrypted[:service_id])
     cookies.encrypted[:service_id] = 0
+    user.logout if !user.nil? && !user.offline?
+    user.notification("same_browser_connection")
   end
 
   def render_error(type, msg, status_code)
@@ -30,10 +30,5 @@ class ApplicationController < ActionController::Base
   def current_user_is_admin_or_owner?
     admin_id = request.headers['HTTP_ADMIN']
     !admin_id.nil? && ["web_admin", "web_owner"].include?(User.find_by_id(admin_id)&.position)
-  end
-  
-  def current_user_is_owner?
-    admin_id = request.headers['HTTP_ADMIN']
-    !admin_id.nil? && User.find_by_id(admin_id)&.position == "web_owner"
   end
 end

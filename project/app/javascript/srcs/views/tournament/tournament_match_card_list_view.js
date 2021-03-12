@@ -5,17 +5,17 @@ export let TournamentMatchCardListView = Backbone.View.extend({
     this.child_views = [];
   },
 
+  render: function (tournament_matches) {
+    this.$el.empty();
+    tournament_matches.forEach(this.addOne, this);
+    return this;
+  },
+
   addOne: function (tournament_match) {
     if (this.child_views.length == 0) this.$el.empty();
     let tournament_match_card_view = new App.View.TournamentMatchCardView();
     this.child_views.push(tournament_match_card_view);
     this.$el.append(tournament_match_card_view.render(tournament_match).$el);
-  },
-
-  render: function (tournament_matches) {
-    this.$el.empty();
-    tournament_matches.forEach(this.addOne, this);
-    return this;
   },
 
   close: function () {

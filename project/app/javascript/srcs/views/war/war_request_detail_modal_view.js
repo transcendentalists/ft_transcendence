@@ -29,7 +29,7 @@ export let WarRequestDetailModalView = Backbone.View.extend({
       },
       fail_callback: (data) => {
         this.close();
-        Helper.info({ error: data.error });
+        Helper.defaultErrorHandler(data);
       },
     });
   },
@@ -46,13 +46,13 @@ export let WarRequestDetailModalView = Backbone.View.extend({
       },
       fail_callback: (data) => {
         this.close();
-        Helper.info({ error: data.error });
+        Helper.defaultErrorHandler(data);
       },
     });
   },
 
   render: function () {
-    this.war_request["current_user_position"] = App.current_user.get(
+    this.war_request.current_user_position = App.current_user.get(
       "guild"
     ).position;
     this.$el.html(this.template(this.war_request));

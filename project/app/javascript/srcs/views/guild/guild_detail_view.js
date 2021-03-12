@@ -12,7 +12,9 @@ export let GuildDetailView = Backbone.View.extend({
 
   initialize: function (guild_id) {
     const query = Helper.parseHashQuery();
+    Helper.authenticateREST(query.page);
     this.page = +query.page;
+
     this.guild_id = guild_id;
     this.is_last_page = false;
     this.guild_profile_card_view = null;
@@ -22,43 +24,6 @@ export let GuildDetailView = Backbone.View.extend({
     this.guild_members_profile_url = `guilds/${this.guild_id}/memberships?for=member_list&page=${this.page}`;
     this.war_history_url = `guilds/${this.guild_id}/wars`;
     App.current_user.fetch({ data: { for: "profile" } });
-  },
-
-  beforePage: function () {
-    if (this.page === 1 || this.page === NaN) return;
-    App.router.navigate(`#/guilds/${this.guild_id}?page=${this.page - 1}`);
-  },
-
-  nextPage: function () {
-    if (this.is_last_page === true || this.page === NaN) return;
-    App.router.navigate(`#/guilds/${this.guild_id}?page=${this.page + 1}`);
-  },
-
-  renderGuildProfileCard: function (data) {
-    this.guild_profile_card_view = new App.View.GuildProfileCardView({
-      guild: data.guild
-    });
-    this.guild_profile_card_view
-      .setElement(this.$(".current-user-guild.guild-profile-card"))
-      .render();
-  },
-
-  renderGuildMemberList: function (data) {
-    const guild_memberships = data.guild_memberships;
-    if (guild_memberships.length < 10) this.is_last_page = true;
-    this.guild_member_list_view = new App.View.GuildMemberListView({
-      guild_id: this.guild_id
-    });
-    this.guild_member_list_view
-      .setElement(this.$(".member-list"))
-      .render(guild_memberships);
-  },
-
-  renderWarHistory: function (data) {
-    this.war_history_list_view = new App.View.WarHistoryListView();
-    this.war_history_list_view
-      .setElement(this.$(".war-history-list"))
-      .render(data.wars);
   },
 
   render: function () {
@@ -77,6 +42,43 @@ export let GuildDetailView = Backbone.View.extend({
     });
 
     return this;
+  },
+
+  renderGuildMemberList: function (data) {
+    const guild_memberships = data.guild_memberships;
+    if (guild_memberships.length < 10) this.is_last_page = true;
+    this.guild_member_list_view = new App.View.GuildMemberListView({
+      guild_id: this.guild_id,
+    });
+    this.guild_member_list_view
+      .setElement(this.$(".member-list"))
+      .render(guild_memberships);
+  },
+
+  renderWarHistory: function (data) {
+    this.war_history_list_view = new App.View.WarHistoryListView();
+    this.war_history_list_view
+      .setElement(this.$(".war-history-list"))
+      .render(data.wars);
+  },
+
+  renderGuildProfileCard: function (data) {
+    this.guild_profile_card_view = new App.View.GuildProfileCardView({
+      guild: data.guild,
+    });
+    this.guild_profile_card_view
+      .setElement(this.$(".current-user-guild.guild-profile-card"))
+      .render();
+  },
+
+  beforePage: function () {
+    if (this.page === 1 || this.page === NaN) return;
+    App.router.navigate(`#/guilds/${this.guild_id}?page=${this.page - 1}`);
+  },
+
+  nextPage: function () {
+    if (this.is_last_page === true || this.page === NaN) return;
+    App.router.navigate(`#/guilds/${this.guild_id}?page=${this.page + 1}`);
   },
 
   close: function () {

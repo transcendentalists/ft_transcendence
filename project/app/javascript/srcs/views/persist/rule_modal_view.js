@@ -1,18 +1,17 @@
-import { App, Helper, DualHelper } from "srcs/internal";
+import { App, DualHelper } from "srcs/internal";
 
 export let RuleModalView = Backbone.View.extend({
   template: _.template($("#rule-modal-view-template").html()),
   el: "#rule-modal-view",
-
-  initialize: function () {
-    $("#rule-modal-view").modal("setting", {
-      closable: false,
-    });
-  },
-
   events: {
     "click .green.button": "submit",
     "click .cancel.button": "close",
+  },
+
+  initialize: function () {
+    $("#rule-modal-view.tiny.modal").modal("setting", {
+      closable: false,
+    });
   },
 
   render: function (enemy) {
@@ -20,7 +19,8 @@ export let RuleModalView = Backbone.View.extend({
       this.enemy = enemy;
       App.current_user.working = true;
       this.$el.html(this.template());
-      $("#rule-modal-view.tiny.modal").modal("show");
+      this.modal_view = "#rule-modal-view.tiny.modal";
+      $(this.modal_view).modal("show");
       return this;
     }
   },
@@ -29,12 +29,7 @@ export let RuleModalView = Backbone.View.extend({
     this.stopListening();
     this.$el.empty();
     this.enemy = null;
-    $("#rule-modal-view.tiny.modal").modal("hide");
-  },
-
-  close: function () {
-    this.clear();
-    App.current_user.working = false;
+    $(this.modal_view).modal("hide");
   },
 
   submit: function () {
@@ -48,7 +43,12 @@ export let RuleModalView = Backbone.View.extend({
       rule_name,
       target_score
     );
-    App.appView.request_view.render(this.enemy.attributes);
+    App.app_view.request_view.render(this.enemy.attributes);
     this.clear();
+  },
+
+  close: function () {
+    this.clear();
+    App.current_user.working = false;
   },
 });

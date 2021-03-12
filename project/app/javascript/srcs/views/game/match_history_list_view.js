@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let MatchHistoryListView = Backbone.View.extend({
   el: ".match-history-list",
@@ -8,18 +8,17 @@ export let MatchHistoryListView = Backbone.View.extend({
     this.child_views = [];
   },
 
+  render: function (match_history_list) {
+    if (!match_history_list.matches?.length) return;
+    this.$el.empty();
+    match_history_list.matches.forEach(this.addOne, this);
+    return this;
+  },
+
   addOne: function (match_history) {
     let child_view = new App.View.MatchHistoryView(this.user_id);
     this.child_views.push(child_view);
     this.$el.append(child_view.render(match_history).$el);
-  },
-
-  render: function (match_history_list) {
-    if (!match_history_list.hasOwnProperty("matches")) return;
-    if (match_history_list["matches"].length == 0) return;
-    this.$el.empty();
-    match_history_list["matches"].forEach(this.addOne, this);
-    return this;
   },
 
   close: function () {

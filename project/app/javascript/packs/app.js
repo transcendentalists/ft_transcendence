@@ -1,5 +1,5 @@
-import * as semantic from "srcs/semantic-min";
-import * as sync from "srcs/backbone.sync";
+import * as semantic from "srcs/lib/semantic-min";
+import * as sync from "srcs/config/backbone.config";
 import { App, Helper } from "srcs/internal";
 
 $(document).ready(function () {
@@ -7,7 +7,7 @@ $(document).ready(function () {
   window.onresize = function () {
     window.trigger("resize");
   };
-  App.initialize();
+  App.start();
   window.app = App;
   window.helper = Helper;
   Backbone.history.start();

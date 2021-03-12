@@ -32,6 +32,10 @@ class User < ApplicationRecord
     update_status('offline')
   end
 
+  def offline?
+    self.status == "offline"
+  end
+
   def web_owner?
     self.position == "web_owner"
   end
@@ -52,7 +56,11 @@ class User < ApplicationRecord
   def service_ban!
     self.update_status("offline")
     self.update!(position: "ghost")
-    ActionCable.server.broadcast("notification_channel_#{self.id.to_s}", {type: "service_ban"})
+    self.notification("service_ban")
+  end
+
+  def notification(type)
+    ActionCable.server.broadcast("notification_channel_#{self.id.to_s}", {type: type})
   end
 
   def self.onlineUsersWithoutFriends(params)

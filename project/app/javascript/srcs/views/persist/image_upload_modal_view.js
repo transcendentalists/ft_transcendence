@@ -1,5 +1,3 @@
-import { Helper } from "srcs/internal";
-
 export let ImageUploadModalView = Backbone.View.extend({
   template: _.template($("#image-upload-modal-view-template").html()),
   warning_message_template: _.template($("#warning-message-template").html()),
@@ -8,16 +6,19 @@ export let ImageUploadModalView = Backbone.View.extend({
 
   initialize: function () {
     this.upload_callback = null;
+    this.message_field = null;
+    this.upload_modal_view = null;
   },
 
-  renderWarning: function (msg) {
-    this.$(".ui.negative.message").html(
-      this.warning_message_template({
-        type: "업로드 에러",
-        msg: msg,
-      })
-    );
-    this.$(".ui.negative.message").show();
+  render: function (upload_callback) {
+    this.upload_callback = upload_callback;
+    this.$el.html(this.template());
+
+    this.upload_modal_view = "#image-upload-modal-view.tiny.modal";
+    $(this.upload_modal_view).modal("show");
+    this.message_field = this.$(".ui.negative.message");
+    this.message_field.hide();
+    return this;
   },
 
   uploadFile: function () {
@@ -36,16 +37,18 @@ export let ImageUploadModalView = Backbone.View.extend({
     }
   },
 
-  render: function (upload_callback) {
-    this.upload_callback = upload_callback;
-    this.$el.html(this.template());
-    $("#image-upload-modal-view.tiny.modal").modal("show");
-    this.$(".ui.negative.message").hide();
-    return this;
+  renderWarning: function (msg) {
+    this.message_field.html(
+      this.warning_message_template({
+        type: "업로드 에러",
+        msg: msg,
+      })
+    );
+    this.message_field.show();
   },
 
   close: function () {
     this.$el.empty();
-    $("#image-upload-modal-view.tiny.modal").modal("hide");
+    $(this.upload_modal_view).modal("hide");
   },
 });

@@ -1,5 +1,4 @@
-import { App, Helper } from "srcs/internal";
-import { DualHelper } from "srcs/dual_helper";
+import { App, Helper, DualHelper } from "srcs/internal";
 
 export let ChatRoomMemberMenuView = Backbone.View.extend({
   el: "#chat-room-member-menu-view",
@@ -12,67 +11,8 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
     this.chat_bans = self.chat_bans;
     this.chat_members = self.chat_room_members;
     this.current_user_membership = self.parent.current_user_membership;
-    this.friends = App.appView.appearance_view.friends;
-    this.online_users = App.appView.appearance_view.online_users;
-  },
-
-  menuAction: function (e) {
-    const event = e.target.getAttribute("data-event-name");
-    const member = this.parent.chat_room_members.get(this.member.id);
-    const params = {
-      current_user: this.current_user_membership,
-      member: member,
-    };
-
-    this.hide();
-    switch (event) {
-      case "direct-chat":
-        return App.appView.direct_chat_view.render(member);
-      case "toggle-ban":
-        return this.chat_bans.createOrDestroyChatBan(member.id);
-      case "toggle-friend":
-        return this.toggleFriendship();
-      case "battle":
-        return App.current_user.dualRequestTo(member);
-      case "give-admin-position":
-        return this.chat_members.giveAdminPosition(params);
-      case "remove-admin-position":
-        return this.chat_members.removeAdminPosition(params);
-      case "toggle-mute":
-        return this.chat_members.toggleMute(params);
-      case "kick":
-        return this.chat_members.letOutOfChatRoom(member);
-      default:
-    }
-  },
-
-  createFriend: function (user_id) {
-    let user = DualHelper.getUserModelInAppearanceCollections(user_id);
-    if (user !== undefined) {
-      this.friends.createFriendship(user);
-      this.online_users.remove(user);
-    } else {
-      Helper.fetch(`users/${user_id}?for=appearance`, {
-        success_callback: function (data) {
-          let user = new App.Model.User(data.user);
-          this.friends.createFriendship(user);
-        }.bind(this),
-      });
-    }
-  },
-
-  destroyFriend: function (friend_id) {
-    let friend = DualHelper.getUserModelInAppearanceCollections(friend_id);
-    this.friends.destroyFriendship(friend);
-  },
-
-  toggleFriendship: function () {
-    const user_id = this.member.id;
-    const friend = this.friends.get(user_id);
-
-    if (friend == undefined) this.createFriend(user_id);
-    else this.destroyFriend(user_id);
-    this.hide();
+    this.friends = App.resources.friends;
+    this.online_users = App.resources.online_users;
   },
 
   render: function (options) {
@@ -93,6 +33,65 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
     this.$el.css("display", "block");
     $(this.menu).on("click", this.menuAction.bind(this));
     return this;
+  },
+
+  menuAction: function (e) {
+    const event = e.target.getAttribute("data-event-name");
+    const member = this.parent.chat_room_members.get(this.member.id);
+    const params = {
+      current_user: this.current_user_membership,
+      member: member,
+    };
+
+    this.hide();
+    switch (event) {
+      case "direct-chat":
+        return App.app_view.direct_chat_view.render(member);
+      case "toggle-ban":
+        return this.chat_bans.createOrDestroyChatBan(member.id);
+      case "toggle-friend":
+        return this.toggleFriendship();
+      case "battle":
+        return App.current_user.dualRequestTo(member);
+      case "give-admin-position":
+        return this.chat_members.giveAdminPosition(params);
+      case "remove-admin-position":
+        return this.chat_members.removeAdminPosition(params);
+      case "toggle-mute":
+        return this.chat_members.toggleMute(params);
+      case "kick":
+        return this.chat_members.letOutOfChatRoom(member);
+      default:
+    }
+  },
+
+  createFriend: function (user_id) {
+    let user = Helper.getUser(user_id);
+    if (user !== undefined) {
+      this.friends.createFriendship(user);
+      this.online_users.remove(user);
+    } else {
+      Helper.fetch(`users/${user_id}?for=appearance`, {
+        success_callback: function (data) {
+          let user = new App.Model.User(data.user);
+          this.friends.createFriendship(user);
+        }.bind(this),
+      });
+    }
+  },
+
+  destroyFriend: function (friend_id) {
+    let friend = Helper.getUser(friend_id);
+    this.friends.destroyFriendship(friend);
+  },
+
+  toggleFriendship: function () {
+    const user_id = this.member.id;
+    const friend = this.friends.get(user_id);
+
+    if (friend == undefined) this.createFriend(user_id);
+    else this.destroyFriend(user_id);
+    this.hide();
   },
 
   hide: function () {

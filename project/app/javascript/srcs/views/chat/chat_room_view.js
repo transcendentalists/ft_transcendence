@@ -10,9 +10,11 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   initialize: function (room_id) {
+    Helper.authenticateREST(room_id);
+    if (!Helper.isNumber(room_id)) return App.router.navigate("#/errors/404");
     this.room_id = room_id;
-    this.chat_message_list_view = null; // chat_message_collection
-    this.chat_room_member_list_view = null; // chat_members
+    this.chat_message_list_view = null;
+    this.chat_room_member_list_view = null;
     this.chat_room_menu_view = null;
     this.chat_messages = null;
     this.chat_room_members = null;
@@ -20,34 +22,32 @@ export let ChatRoomView = Backbone.View.extend({
     this.channel = null;
   },
 
-  hideMemberMenu: function (event) {
-    if (this.chat_room_member_list_view)
-      this.chat_room_member_list_view.hideMemberMenu(event);
+  render: function () {
+    this.tryEnteringChatRoom();
+    return this;
   },
 
-  send: function () {
-    let msg = this.$el.find(".reply-field").val();
-    if (msg == "") return;
-    if (this.channel == null) return;
-    this.$el.find(".reply-field").val("");
-    this.channel.speak({
-      image_url: App.current_user.get("image_url"),
-      name: App.current_user.get("name"),
-      created_at: new Date(),
-      message: msg,
-      type: "msg",
-      user_id: App.current_user.id,
+  tryEnteringChatRoom: function (password = null) {
+    let headers = {};
+    if (password !== null) headers.Authorization = password;
+
+    Helper.fetch(`group_chat_rooms/${this.room_id}`, {
+      headers: headers,
+      success_callback: this.enterChatRoom.bind(this),
+      fail_callback: this.enterFailCallback.bind(this),
     });
   },
 
-  fetchAndRenderChatMessages: function () {
-    this.chat_messages = new App.Collection.GroupChatMessages(this.room_id);
-    this.chat_message_list_view = new App.View.GroupChatMessageListView({
-      parent: this,
-    });
-    this.chat_messages.fetch({
-      reset: true,
-    });
+  enterChatRoom: function (data) {
+    this.$el.html(this.template());
+
+    this.readyToRenderChatRoom(data);
+
+    this.chat_room_member_list_view.render();
+    this.chat_room_menu_view.render();
+    this.fetchAndRenderChatMessages();
+
+    this.connectChannelAndListenEvent();
   },
 
   readyToRenderChatRoom: function (data) {
@@ -71,6 +71,16 @@ export let ChatRoomView = Backbone.View.extend({
     this.chat_room_menu_view.setElement(this.$("#chat-room-menu-view"));
   },
 
+  fetchAndRenderChatMessages: function () {
+    this.chat_messages = new App.Collection.GroupChatMessages(this.room_id);
+    this.chat_message_list_view = new App.View.GroupChatMessageListView({
+      parent: this,
+    });
+    this.chat_messages.fetch({
+      reset: true,
+    });
+  },
+
   connectChannelAndListenEvent: function () {
     this.channel = App.Channel.ConnectGroupChatChannel(
       this.chat_messages,
@@ -83,31 +93,6 @@ export let ChatRoomView = Backbone.View.extend({
       "change:position",
       this.letOutIfKicked
     );
-  },
-
-  enterChatRoom: function (data) {
-    this.$el.html(this.template());
-
-    this.readyToRenderChatRoom(data);
-
-    this.chat_room_member_list_view.render();
-    this.chat_room_menu_view.render();
-    this.fetchAndRenderChatMessages();
-
-    this.connectChannelAndListenEvent();
-  },
-
-  showPasswordInputModal: function () {
-    Helper.input({
-      subject: "입장 검사",
-      description: "룸 입장을 위해 비밀번호를 입력해주세요.",
-      success_callback: function (password) {
-        this.tryEnteringChatRoom(password);
-      }.bind(this),
-      cancel_callback: function () {
-        App.router.navigate("#/chatrooms");
-      },
-    });
   },
 
   /**
@@ -134,15 +119,37 @@ export let ChatRoomView = Backbone.View.extend({
     }
   },
 
-  tryEnteringChatRoom: function (password = null) {
-    let headers = {};
-    if (password !== null) headers.Authorization = password;
-
-    Helper.fetch(`group_chat_rooms/${this.room_id}`, {
-      headers: headers,
-      success_callback: this.enterChatRoom.bind(this),
-      fail_callback: this.enterFailCallback.bind(this),
+  showPasswordInputModal: function () {
+    Helper.input({
+      subject: "입장 검사",
+      description: "룸 입장을 위해 비밀번호를 입력해주세요.",
+      success_callback: function (password) {
+        this.tryEnteringChatRoom(password);
+      }.bind(this),
+      cancel_callback: function () {
+        App.router.navigate("#/chatrooms");
+      },
     });
+  },
+
+  send: function () {
+    let msg = this.$el.find(".reply-field").val();
+    if (msg == "") return;
+    if (this.channel == null) return;
+    this.$el.find(".reply-field").val("");
+    this.channel.speak({
+      image_url: App.current_user.get("image_url"),
+      name: App.current_user.get("name"),
+      created_at: new Date(),
+      message: msg,
+      type: "msg",
+      user_id: App.current_user.id,
+    });
+  },
+
+  hideMemberMenu: function (event) {
+    if (this.chat_room_member_list_view)
+      this.chat_room_member_list_view.hideMemberMenu(event);
   },
 
   letOutIfKicked: function (chat_room_member) {
@@ -155,11 +162,6 @@ export let ChatRoomView = Backbone.View.extend({
         description: "챗룸에서 강제 퇴장되었습니다.",
       });
     }
-  },
-
-  render: function () {
-    this.tryEnteringChatRoom();
-    return this;
   },
 
   close: function () {

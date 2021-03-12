@@ -1,4 +1,4 @@
-import { App } from "../internal";
+import { App } from "srcs/internal";
 
 export let ChatBan = Backbone.Model.extend({
   urlRoot: function () {

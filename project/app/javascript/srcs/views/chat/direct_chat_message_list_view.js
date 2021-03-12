@@ -18,6 +18,17 @@ export let DirectChatMessageListView = Backbone.View.extend({
     this.channel = null;
   },
 
+  render: function () {
+    this.listenTo(this.message_list, "add", this.addOne);
+    this.listenTo(this.message_list, "reset", this.addAll);
+    this.listenTo(this.message_list, "scroll", this.scrollDown);
+    this.channel = App.Channel.ConnectDirectChatChannel(
+      this.message_list,
+      this.room_id
+    );
+    return this;
+  },
+
   scrollDown: function () {
     $("#direct-chat-view .comments").animate(
       {
@@ -36,7 +47,7 @@ export let DirectChatMessageListView = Backbone.View.extend({
           ? this.chat_user
           : this.current_user,
       template:
-        message.get("user_id") != App.current_user.id
+        message.get("user_id") == this.chat_user.id
           ? this.general_user_message_template
           : this.current_user_message_template,
     });
@@ -47,18 +58,6 @@ export let DirectChatMessageListView = Backbone.View.extend({
   addAll: function () {
     this.child_views.forEach((child_view) => child_view.close());
     this.message_list.forEach((message) => this.addOne(message));
-  },
-
-  render: function () {
-    this.listenTo(this.message_list, "add", this.addOne);
-    this.listenTo(this.message_list, "reset", this.addAll);
-    this.listenTo(this.message_list, "scroll", this.scrollDown);
-    this.channel = App.Channel.ConnectDirectChatChannel(
-      this.message_list,
-      this,
-      this.room_id
-    );
-    return this;
   },
 
   stop: function () {

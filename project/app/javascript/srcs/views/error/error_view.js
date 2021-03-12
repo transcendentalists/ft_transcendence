@@ -36,8 +36,7 @@ export let ErrorView = Backbone.View.extend({
 
     this.error_hash = error_hash;
     this.error_code = error_hash.error_code;
-    if (!this.error_set.hasOwnProperty(this.error_code))
-      this.error_code = "100";
+    if (!this.error_set[this.error_code]) this.error_code = "100";
   },
 
   to_json: function () {

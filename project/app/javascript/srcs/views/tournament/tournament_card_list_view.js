@@ -6,6 +6,12 @@ export let TournamentCardListView = Backbone.View.extend({
     this.child_views = [];
   },
 
+  render: function (tournaments) {
+    this.$el.empty();
+    tournaments.forEach(this.addOne, this);
+    return this;
+  },
+
   addOne: function (tournament) {
     if (this.child_views.length == 0) this.$el.empty();
     let tournament_card_view = new App.View.TournamentCardView({
@@ -24,12 +30,6 @@ export let TournamentCardListView = Backbone.View.extend({
     options.tournament_card_view.close();
     if (this.$el.find(".tournament-card").length == 0)
       this.showDefaultMessage();
-  },
-
-  render: function (tournaments) {
-    this.$el.empty();
-    tournaments.forEach(this.addOne, this);
-    return this;
   },
 
   close: function () {

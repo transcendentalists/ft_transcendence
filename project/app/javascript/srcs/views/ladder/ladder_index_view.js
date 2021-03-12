@@ -11,63 +11,14 @@ export let LadderIndexView = Backbone.View.extend({
     "click #join-casual-ladder-button": "joinCasualLadder",
   },
 
-  initialize: function (page) {
-    this.page = page ? +page : 1;
+  initialize: function () {
+    const query = Helper.parseHashQuery();
+    Helper.authenticateREST(query.page);
+    this.page = +query.page;
+
     this.is_last_page = false;
     this.my_rating_view = null;
     this.user_ranking_view = null;
-  },
-
-  beforePage: function () {
-    if (this.page === 1) return;
-    App.router.navigate("#/ladder/" + (this.page - 1));
-  },
-
-  nextPage: function () {
-    if (this.is_last_page === true) return;
-    App.router.navigate("#/ladder/" + (this.page + 1));
-  },
-
-  alert: function () {
-    Helper.info({
-      subject: "래더 신청 불가능",
-      description: "다른 유저와 듀얼 신청 중에는 래더 신청이 불가능합니다.",
-    });
-  },
-
-  //  승급전 참여 버튼 클릭시 게임 인덱스 뷰로 이동
-  joinLadder: function () {
-    if (App.current_user.isWorking()) return this.alert();
-    App.router.navigate("#/matches?match_type=ladder");
-  },
-
-  joinCasualLadder: function () {
-    if (App.current_user.isWorking()) return this.alert();
-    App.router.navigate("#/matches?match_type=casual_ladder");
-  },
-
-  /**
-   ** 서버에 현재 유저의 프로필 페이지를 요청하고
-   ** 수신한 데이터를 프로필 템플릿으로 렌더링하는 콜백
-   */
-  renderMyRatingCallback: function (data) {
-    this.my_rating_view = new App.View.MyRatingView();
-    this.my_rating_view
-      .setElement(this.$("#my-rating-view"))
-      .render(data["user"]);
-  },
-
-  /**
-   ** 서버에 래더 인덱스 페이지들을 요청하고 마지막페이지인지 검사
-   ** 유저들을 랭킹 순으로 템플릿에 추가한 뒤
-   ** 수신한 유저랭킹 프로필 정보들을 렌더링하는 콜백
-   */
-  renderUserRankingCallback: function (data) {
-    this.user_ranking_view = new App.View.UserRankingView();
-    if (data.users.length < 10) this.is_last_page = true;
-    this.user_ranking_view
-      .setElement(this.$("#user-ranking-view"))
-      .render(data.users);
   },
 
   /*
@@ -88,6 +39,56 @@ export let LadderIndexView = Backbone.View.extend({
     });
 
     return this;
+  },
+
+  /**
+   ** 서버에 현재 유저의 프로필 페이지를 요청하고
+   ** 수신한 데이터를 프로필 템플릿으로 렌더링하는 콜백
+   */
+  renderMyRatingCallback: function (data) {
+    this.my_rating_view = new App.View.MyRatingView();
+    this.my_rating_view.setElement(this.$("#my-rating-view")).render(data.user);
+  },
+
+  /**
+   ** 서버에 래더 인덱스 페이지들을 요청하고 마지막페이지인지 검사
+   ** 유저들을 랭킹 순으로 템플릿에 추가한 뒤
+   ** 수신한 유저랭킹 프로필 정보들을 렌더링하는 콜백
+   */
+  renderUserRankingCallback: function (data) {
+    this.user_ranking_view = new App.View.UserRankingView();
+    if (data.users.length < 10) this.is_last_page = true;
+    this.user_ranking_view
+      .setElement(this.$("#user-ranking-view"))
+      .render(data.users);
+  },
+
+  beforePage: function () {
+    if (this.page === 1) return;
+    App.router.navigate(`#/ladder?page=${this.page - 1}`);
+  },
+
+  nextPage: function () {
+    if (this.is_last_page === true) return;
+    App.router.navigate(`#/ladder?page=${this.page + 1}`);
+  },
+
+  //  승급전 참여 버튼 클릭시 게임 인덱스 뷰로 이동
+  joinLadder: function () {
+    if (App.current_user.isWorking()) return this.alert();
+    App.router.navigate("#/matches?match_type=ladder");
+  },
+
+  joinCasualLadder: function () {
+    if (App.current_user.isWorking()) return this.alert();
+    App.router.navigate("#/matches?match_type=casual_ladder");
+  },
+
+  alert: function () {
+    Helper.info({
+      subject: "래더 신청 불가능",
+      description: "다른 유저와 듀얼 신청 중에는 래더 신청이 불가능합니다.",
+    });
   },
 
   close: function () {

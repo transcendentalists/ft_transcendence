@@ -12,6 +12,7 @@ export let GameIndexView = Backbone.View.extend({
    */
 
   initialize: function (match_id) {
+    if (match_id) Helper.authenticateREST(match_id);
     this.spec = null;
     this.channel = null;
     this.is_player = match_id == undefined ? true : false;
@@ -34,11 +35,11 @@ export let GameIndexView = Backbone.View.extend({
     };
 
     params = Object.assign({}, default_hash, params);
-    this.challenger_id = params["challenger_id"];
-    this.rule_id = params["rule_id"];
-    this.target_score = params["target_score"];
-    this.match_id = params["match_id"];
-    this.match_type = params["match_type"];
+    this.challenger_id = params.challenger_id;
+    this.rule_id = params.rule_id;
+    this.target_score = params.target_score;
+    this.match_id = params.match_id;
+    this.match_type = params.match_type;
   },
 
   /**
@@ -129,7 +130,7 @@ export let GameIndexView = Backbone.View.extend({
       case "WATCH":
         if (this.is_player)
           this.play_view.sendObjectSpec(this.play_view.ball.to_simple());
-        if (!Helper.isCurrentUser(msg["send_id"])) return;
+        if (!Helper.isCurrentUser(msg.send_id)) return;
         this.spec = msg;
         this.renderPlayerView();
         this.start();
@@ -159,10 +160,10 @@ export let GameIndexView = Backbone.View.extend({
     this.right_player_view = new App.View.UserProfileCardView();
     this.$(".vs-icon").html("VS");
     this.$("#left-game-player-view").append(
-      this.left_player_view.render(this.spec["left"]).$el
+      this.left_player_view.render(this.spec.left).$el
     );
     this.$("#right-game-player-view").append(
-      this.right_player_view.render(this.spec["right"]).$el
+      this.right_player_view.render(this.spec.right).$el
     );
   },
 

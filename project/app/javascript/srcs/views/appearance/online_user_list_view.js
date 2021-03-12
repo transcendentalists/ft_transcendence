@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let OnlineUserListView = Backbone.View.extend({
   template: _.template($("#appearance-online-user-list-view").html()),
@@ -13,7 +13,6 @@ export let OnlineUserListView = Backbone.View.extend({
 
     this.listenTo(this.online_users, "add", this.addOne);
     this.listenTo(this.online_users, "reset", this.addAll);
-    // this.listenTo(this.online_users, "remove", this.deleteOne);
   },
 
   render: function () {
@@ -37,9 +36,8 @@ export let OnlineUserListView = Backbone.View.extend({
   },
 
   addOne: function (user) {
-    if (App.current_user.get("id") === user.get("id")) {
-      return;
-    }
+    if (App.current_user.equalTo(user)) return;
+
     this.online_user_unit = new App.View.UserUnitView({
       parent: this,
       model: user,
@@ -61,6 +59,8 @@ export let OnlineUserListView = Backbone.View.extend({
     const user = this.online_users.get(user_data.id);
     let status = user_data.status;
 
+    if (this.isMultipleLoginOfCurrentUser(user)) this.disconnectService();
+
     if (user === undefined) {
       if (status === "online")
         this.online_users.add(new App.Model.User(user_data));
@@ -69,5 +69,21 @@ export let OnlineUserListView = Backbone.View.extend({
 
     user.set({ status: status });
     if (status === "offline") this.online_users.remove(user);
+  },
+
+  isMultipleLoginOfCurrentUser: function (user) {
+    return (
+      App.current_user.equalTo(user) &&
+      status === "online" &&
+      App.current_user.get("status") === "online"
+    );
+  },
+
+  disconnectService: function () {
+    Helper.info({
+      subject: "중복 접속",
+      description: "같은 계정의 트렌센던스 접속이 감지되었습니다.",
+    });
+    setTimeout(App.restart.bind(App), 2000);
   },
 });

@@ -1,10 +1,6 @@
-import consumer from "./consumer";
+import consumer from "channels/consumer";
 
-export function ConnectDirectChatChannel(
-  message_collection,
-  chat_room,
-  room_id
-) {
+export function ConnectDirectChatChannel(message_collection, room_id) {
   return consumer.subscriptions.create(
     {
       channel: "DirectChatChannel",
@@ -26,7 +22,7 @@ export function ConnectDirectChatChannel(
       },
 
       speak(current_user_message) {
-        current_user_message["room_id"] = room_id;
+        current_user_message.room_id = room_id;
         this.perform("speak", current_user_message);
       },
     }

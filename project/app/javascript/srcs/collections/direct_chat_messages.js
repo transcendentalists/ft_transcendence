@@ -1,6 +1,6 @@
 import { ChatMessage } from "srcs/models/chat_message";
 
-export let ChatMessages = Backbone.Collection.extend({
+export let DirectChatMessages = Backbone.Collection.extend({
   model: ChatMessage,
 
   initialize: function (options) {

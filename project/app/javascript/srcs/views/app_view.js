@@ -26,20 +26,19 @@ export let AppView = Backbone.View.extend({
     );
     App.notification_channel = this.notification_channel;
 
-    // this.invite_view.render();
-    // this.direct_chat_view.render();
-
     return this;
   },
 
   restart: function () {
     this.appearance_view.close();
     this.nav_bar_view.close();
+    this.main_view.close();
 
     this.input_modal_view.close();
     this.rule_modal_view.close();
     this.alert_modal_view.close();
     this.info_modal_view.close();
+    this.image_upload_modal_view.close();
 
     this.invite_view.close();
     this.request_view.close();

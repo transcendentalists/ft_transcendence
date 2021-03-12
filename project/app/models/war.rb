@@ -146,4 +146,8 @@ class War < ApplicationRecord
   def pending_or_progress_battle_exist?
     !self.matches.find_by_status(["pending", "progress"]).nil?
   end
+
+  def broadcast(msg)
+    ActionCable.server.broadcast("war_channel_#{self.id.to_s}", msg)
+  end
 end

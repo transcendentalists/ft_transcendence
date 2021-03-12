@@ -50,7 +50,7 @@ export let Helper = {
   },
 
   isCurrentView: function (view_name) {
-    return $("#main-view-container").has(view_name).length > 0;
+    return App.mainView.current_view?.id == view_name;
   },
 
   isUserChatBanned: function (user_id) {

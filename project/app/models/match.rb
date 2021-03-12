@@ -49,16 +49,7 @@ class Match < ApplicationRecord
     self.update(status: "progress", start_time: Time.zone.now())
     self.scorecards.update_all(result: "progress")
     self.broadcast({type: "PLAY"})
-    if (self.match_type == "war")
-      ActionCable.server.broadcast(
-        "war_channel_#{self.eventable_id.to_s}",
-        {
-          type: "start",
-          match_id: self.id,
-          loading_time: 0,
-        },
-      )
-    end
+    self.eventable.broadcast({ type: "start", match_id: self.id, loading_time: 0 }) if (self.match_type == "war")
   end
 
   # broadcast type
@@ -115,6 +106,11 @@ class Match < ApplicationRecord
   end
 
   def complete(options = {type: "END"})
+    if self.users.in_same_war?
+      war = self.winner.in_guild.current_war
+      war_status = war.war_statuses.find_by_guild_id(self.winner.in_guild.id)
+      war_status.increase_point if war.match_types.include?(self.match_type)
+    end
     self.update(status: "completed")
     self.broadcast({type: options[:type]})
     self.eventable.broadcast({type: "end"}) if self.match_type == "war"
@@ -172,12 +168,6 @@ class Match < ApplicationRecord
   # 게임의 승패에 따라 유저의 포인트를 업데이트
   def update_game_status
     self.update(status: "completed")
-
-    if self.users.in_same_war?
-      war = self.winner.in_guild.current_war
-      war_status = war.war_statuses.find_by_guild_id(self.winner.in_guild.id)
-      war_status.increase_point if war.match_types.include?(self.match_type)
-    end
 
     # ladder 매치를 진행한 경우, 유저의 랭킹 포인트를 증가
     return if self.match_type != "ladder"

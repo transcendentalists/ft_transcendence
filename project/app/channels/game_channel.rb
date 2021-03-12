@@ -67,11 +67,6 @@ class GameChannel < ApplicationCable::Channel
     winner_id = current_user.enemy
     @match.complete({type: "ENEMY_GIVEUP"})
 
-    if @match.users.in_same_war?
-      war = @match.winner.in_guild.current_war
-      war_status = war.war_statuses.find_by_guild_id(@match.winner.in_guild.id)
-      war_status.increase_point if war.match_types.include?(@match.match_type)
-    end
     stop_all_streams
   end
 

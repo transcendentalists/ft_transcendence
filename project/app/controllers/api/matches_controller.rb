@@ -29,7 +29,7 @@ class Api::MatchesController < ApplicationController
     if ["ladder", "casual_ladder"].include?(params[:match_type])
       find_or_create_ladder_match_for({ type: params[:match_type] })
     else
-      params[:match_id].nil? ? create_match_by(params) : find_and_join_match_by(params[:match_id])
+      params[:match_id].nil? ? create_match : find_and_join_match_by(params[:match_id])
     end
   end
 
@@ -52,8 +52,8 @@ class Api::MatchesController < ApplicationController
   end
 
   # 현재 create_match_type은 war가 아닐 경우 dual
-  def create_match_by(params)
-    return create_war_match_by(params) if params[:match_type] == "war"
+  def create_match
+    return create_war_match if params[:match_type] == "war"
     ActiveRecord::Base.transaction do
       match = Match.create(create_params)
       match.scorecards.create(user_id: @current_user.id, side: 'left')
@@ -62,7 +62,7 @@ class Api::MatchesController < ApplicationController
     match
   end
 
-  def create_war_match_by(params)
+  def create_war_match
     war = War.find(params[:war_id])
     match = nil
     war.with_lock do
@@ -94,6 +94,6 @@ class Api::MatchesController < ApplicationController
   end
 
   def create_params
-    permit(:match_type, :rule_id, :target_score)
+    params.permit(:match_type, :rule_id, :target_score)
   end
 end

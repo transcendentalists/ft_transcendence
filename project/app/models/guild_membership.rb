@@ -40,7 +40,7 @@ class GuildMembership < ApplicationRecord
   end
 
   def unregister!
-    raise GuildMembershipError.new("길드에는 한명 이상의 유저가 존재해야 합니다.", 403) if self.guild.only_one_member_exist?
+    raise ServiceError.new(:BadRequest, "길드에는 한명 이상의 유저가 존재해야 합니다.") if self.guild.only_one_member_exist?
     self.guild.make_another_member_master! if self.master?
     self.destroy!
   end
@@ -59,9 +59,9 @@ class GuildMembership < ApplicationRecord
   end
 
   def update_position!(position, options = { by: self })
-    raise GuildMembershipError.new("이미 해당 유저의 포지션은 #{position}입니다.", 400) if self.position == position
-    raise GuildMembershipError.new("길드에는 한명의 master가 필요합니다.", 400) if self.guild.only_one_member_exist?
-    raise GuildMembershipError.new("접근 권한이 없습니다.", 403) unless self.can_be_updated_by?(options[:by])
+    raise ServiceError.new(:BadRequest, "이미 해당 유저의 포지션은 #{position}입니다.") if self.position == position
+    raise ServiceError.new(:BadRequest, "길드에는 한명의 master가 필요합니다.") if self.guild.only_one_member_exist?
+    raise ServiceError.new(:Forbidden, "접근 권한이 없습니다.") unless self.can_be_updated_by?(options[:by])
 
     ActiveRecord::Base.transaction do
       if position == "master"

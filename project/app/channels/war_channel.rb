@@ -1,13 +1,14 @@
 class WarChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "war_channel_#{params[:room_id].to_s}"
+    stream_from "war_channel_#{params[:war_id].to_s}"
   end
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def battle_request(data)
+  # 한 길드의 유저가 전투 버튼을 눌렀을 때에만 호출
+  def request_battle(data)
     ActionCable.server.broadcast(
       "war_channel_#{data['war_id'].to_s}",
       {

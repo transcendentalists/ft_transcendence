@@ -118,9 +118,8 @@ class GroupChatRoom < ApplicationRecord
     members
   end
 
-  # TODO: web_admin도 할 수 있도록 추후 수정할 것.
   def can_be_update_by?(current_user)
-    self.owner_id == current_user.id
+    self.owner_id == current_user.id || current_user.can_service_manage?
   end
 
   def update_by_params(params)

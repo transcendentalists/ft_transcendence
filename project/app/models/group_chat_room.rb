@@ -5,9 +5,11 @@ class GroupChatRoom < ApplicationRecord
   has_many :messages, class_name: "ChatMessage", as: :room, dependent: :destroy
   has_many :memberships, class_name: "GroupChatMembership", dependent: :destroy
   has_many :users, through: :memberships, source: :user
+
   validates :title, presence: true, length: {minimum: 1, maximum: 16}, allow_blank: false
   validates :max_member_count, :inclusion => { :in => 2..10 }
   validates :room_type, inclusion: { in: ["public", "private"] }
+
   scope :list_associated_with_user, -> (user) do
     user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
       {
@@ -49,7 +51,7 @@ class GroupChatRoom < ApplicationRecord
       }
     })
   }
-
+  
   def for_admin_format
     {
       id: self.id,
@@ -62,6 +64,12 @@ class GroupChatRoom < ApplicationRecord
         }
       }
     }
+  end
+
+  def for_chat_room_format
+    hash_key_format = [ :id, :room_type, :title, :max_member_count, 
+                          :current_member_count, :channel_code ]
+    self.slice(*hash_key_format)
   end
 
   def self.generate!(create_params)
@@ -84,64 +92,14 @@ class GroupChatRoom < ApplicationRecord
     nil
   end
 
-  def locked?
-    !self.password.blank?
-  end
-
-  def valid_password?(input_password)
-    BCrypt::Password::new(self.password) == input_password
-  end
-
-  def only_one_member_exist?
-    self.memberships.reload.where.not(position: "ghost").count == 1
-  end
-
-  def active_member_count
-    self.memberships.where.not(position: "ghost").count
-  end
-
-  def for_chat_room_format
-    hash_key_format = [ :id, :room_type, :title, :max_member_count, 
-                          :current_member_count, :channel_code ]
-    self.slice(*hash_key_format)
-  end
-
-  def membership_by_user(user)
+  def enter!(user)
     membership = self.memberships.find_by_user_id(user.id)
-
-    { membership_id: membership.id,
-      position: membership.position,
-      mute:     membership.mute      }
-  end
-
-  def members
-    members = []
-    self.memberships.each do |membership|
-      member_hash = User.find_by_id(membership.user_id).for_chat_room_format.merge({
-        membership_id: membership.id,
-        position: membership.position,
-        mute: membership.mute
-      })
-      members.push(member_hash)
-    end
-    members
-  end
-
-  def can_be_update_by?(current_user)
-    self.owner_id == current_user.id || current_user.can_service_manage?
-  end
-
-  def update_by_params!(params)
-    if params[:password].blank?
-      self.password = nil
-    else
-      self.password = BCrypt::Password::create(params[:password]) 
-    end
-    save!
-  end
-
-  def full?
-    self.active_member_count == self.max_member_count
+    if membership.nil?
+      group_chat_room.join!(@current_user)
+    elsif membership.ghost?
+      raise ServiceError.new(:Forbidden, "아직 입장이 불가합니다.") if membership.banned?
+      membership.restore!
+    end  
   end
 
   def join!(user, position = "member")
@@ -163,14 +121,17 @@ class GroupChatRoom < ApplicationRecord
     membership
   end
 
-  def enter!(user)
-    membership = self.memberships.find_by_user_id(user.id)
-    if membership.nil?
-      group_chat_room.join!(@current_user)
-    elsif membership.ghost?
-      raise ServiceError.new(:Forbidden, "아직 입장이 불가합니다.") if membership.banned?
-      membership.restore!
-    end  
+  def can_be_update_by?(current_user)
+    self.owner_id == current_user.id || current_user.can_service_manage?
+  end
+
+  def update_by_params!(params)
+    if params[:password].blank?
+      self.password = nil
+    else
+      self.password = BCrypt::Password::create(params[:password]) 
+    end
+    save!
   end
 
   def make_another_member_owner!
@@ -191,5 +152,47 @@ class GroupChatRoom < ApplicationRecord
 
     self.destroy!
   end
-  
+
+  def locked?
+    !self.password.blank?
+  end
+
+  def valid_password?(input_password)
+    BCrypt::Password::new(self.password) == input_password
+  end
+
+  def only_one_member_exist?
+    self.memberships.reload.where.not(position: "ghost").count == 1
+  end
+
+  def active_member_count
+    self.memberships.where.not(position: "ghost").count
+  end
+
+  def membership_by_user(user)
+    membership = self.memberships.find_by_user_id(user.id)
+    {
+      membership_id: membership.id,
+      position: membership.position,
+      mute: membership.mute
+    }
+  end
+
+  def members
+    members = []
+    self.memberships.each do |membership|
+      member_hash = User.find_by_id(membership.user_id)
+      .for_chat_room_format.merge({
+        membership_id: membership.id,
+        position: membership.position,
+        mute: membership.mute
+      })
+      members.push(member_hash)
+    end
+    members
+  end
+
+  def full?
+    self.active_member_count == self.max_member_count
+  end 
 end

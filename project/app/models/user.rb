@@ -120,7 +120,7 @@ class User < ApplicationRecord
   end
 
   def profile
-    permitted = ["id", "name", "title", "image_url", "position"]
+    permitted = ["id", "name", "title", "image_url", "position", "point"]
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
     stat.merge!(self.game_stat)
     stat[:achievement] = self.achievement
@@ -150,7 +150,6 @@ class User < ApplicationRecord
     self.update(status: status)
     ActionCable.server.broadcast('appearance_channel', make_user_data(status))
   end
-
 
   def for_chat_room_format
     hash_key_format = [:id, :name, :status, :image_url]
@@ -185,6 +184,10 @@ class User < ApplicationRecord
 
   def already_received_guild_invitation_by?(user)
     !self.guild_invitations.find_by_user_id(user.id).nil?
+  end
+
+  def in_guild?
+    !self.in_guild.nil?
   end
 
   private

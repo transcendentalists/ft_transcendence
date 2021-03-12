@@ -79,7 +79,7 @@ class Guild < ApplicationRecord
   def profile(index = nil, page = nil)
     self.to_simple.merge({
       num_of_number: self.memberships.count,
-      rank: self.rank(index, page)
+      rank: self.rank(index, page),
       owner: self.owner.name
     })
   end
@@ -93,7 +93,7 @@ class Guild < ApplicationRecord
     if index.nil?
       Guild.order(point: :desc).index(self) + 1
     else
-      (10 * (page - 1)) + index + 1,
+      (10 * (page - 1)) + index + 1
     end
   end
 

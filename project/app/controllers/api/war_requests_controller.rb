@@ -17,19 +17,19 @@ class Api::WarRequestsController < ApplicationController
 
   def create
     begin
-      params = create_params
       guild = Guild.find(params[:guild_id])
       unless WarRequest.can_be_created_by?({ current_user: @current_user, guild: guild })
         raise ServiceError.new(:Forbidden)
       end
       raise ServiceError.new if guild.already_request_to?(params[:enemy_guild_id])
+      war_request = nil
       ActiveRecord::Base.transaction do
-        war_request = WarRequest.create_by!(params)
+        war_request = WarRequest.create_by!(create_params)
       end
       render json: { war_request_id: war_request.id }
     rescue ActiveRecord::RecordNotFound
       render_error :NotFound
-    rescue ActiveRecord::RecordInvalid
+    rescue ActiveRecord::RecordInvalid => e
       key =  e.record.errors.attribute_names.first
       error_message = e.record.errors.messages[key].first
       render_error(:BadRequest, error_message) 
@@ -56,7 +56,7 @@ class Api::WarRequestsController < ApplicationController
       head :no_content, status: 204
     rescue ActiveRecord::RecordNotFound
       render_error :NotFound
-    rescue ActiveRecord::RecordInvalid
+    rescue ActiveRecord::RecordInvalid => e
       key =  e.record.errors.attribute_names.first
       error_message = e.record.errors.messages[key].first
       render_error(:BadRequest, error_message) 
@@ -70,10 +70,19 @@ class Api::WarRequestsController < ApplicationController
   private
 
   def create_params
-    params.require(:guild_id)
-    params.require(:enemy_guild_id)
-    params.require(:war_duration)
-    params.require(:war_request).permit(:rule_id, :bet_point, :start_date, :war_time, :max_no_reply_count, :include_ladder, :include_tournament, :target_match_score)
-    params
+    start_date = Time.zone.strptime(params[:start_date], "%Y-%m-%d")
+    {
+      rule_id: params[:rule_id],
+      bet_point: params[:bet_point],
+      start_date: start_date,
+      end_date: start_date + params[:war_duration].days,
+      war_time: Time.zone.now.change({ hour: params[:war_time] }),
+      max_no_reply_count: params[:max_no_reply_count],
+      include_ladder: params[:include_ladder],
+      include_tournament: params[:include_tournament],
+      target_match_score: params[:target_match_score],
+      guild_id: params[:guild_id],
+      enemy_guild_id: params[:enemy_guild_id],
+    }
   end
 end

@@ -60,7 +60,7 @@ export let ChatRoomMemberMenuView = Backbone.View.extend({
       case "toggle-mute":
         return this.chat_members.toggleMute(params);
       case "kick":
-        return this.chat_members.letOutOfChatRoom(member);
+        return this.chat_members.renderBanTimeModal(member);
       default:
     }
   },

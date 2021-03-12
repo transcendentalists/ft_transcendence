@@ -41,7 +41,7 @@ class GroupChatMembership < ApplicationRecord
 
     position_grade[membership.position] >= position_grade["owner"]
   end
-      
+
   def ghost?
     self.position == "ghost"
   end
@@ -72,7 +72,7 @@ class GroupChatMembership < ApplicationRecord
 
     position = params[:position]
     return if position.nil?
-    raise GroupChatMembershipError.new("포지션 변경 권한이 없습니다.", 403) unless self.can_be_position_changed_by?(options[:by]) 
+    raise GroupChatMembershipError.new("포지션 변경 권한이 없습니다.", 403) unless self.can_be_position_changed_by?(options[:by])
     raise GroupChatMembershipError.new("챗룸에는 1명 이상의 owner가 필요합니다.", 403) if self.room.only_one_member_exist?
 
     if position == "owner"
@@ -82,7 +82,7 @@ class GroupChatMembership < ApplicationRecord
     elsif self.position == "owner"
       self.room.make_another_member_owner!
     end
-    self.update_position!(position) 
+    self.update_position!(position)
   end
 
   def update_mute!(mute)
@@ -115,9 +115,8 @@ class GroupChatMembership < ApplicationRecord
 
   def set_ban_time_from_now(args)
     defaults = { hour: 0, min: 0, sec: 0 }
-
     time = defaults.merge(args)
     ban_time = time[:hour].hours + time[:min].minutes + time[:sec].seconds
-    self.update(ban_ends_at: Time.now + ban_time)
+    self.update(ban_ends_at: Time.zone.now + ban_time)
   end
 end

@@ -1,3 +1,4 @@
+import * as range from "srcs/range";
 import * as semantic from "srcs/lib/semantic-min";
 import * as sync from "srcs/config/backbone.config";
 import { App, Helper } from "srcs/internal";

@@ -10,7 +10,7 @@ export let TournamentCardListView = Backbone.View.extend({
 
   render: function (tournaments) {
     if (!tournaments || tournaments.length === 0)
-      this.$el.append(this.defaultText);
+      this.$el.html(this.defaultText);
     else {
       this.$el.empty();
       tournaments.forEach(this.addOne, this);
@@ -28,7 +28,7 @@ export let TournamentCardListView = Backbone.View.extend({
   },
 
   showDefaultMessage: function () {
-    this.$el.html("<span>현재 열려있는 토너먼트가 없습니다.<span>");
+    this.$el.html(this.defaultText);
   },
 
   moveCardToMyTournamentsView: function (options) {

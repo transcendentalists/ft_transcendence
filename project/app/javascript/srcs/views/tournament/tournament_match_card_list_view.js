@@ -10,7 +10,7 @@ export let TournamentMatchCardListView = Backbone.View.extend({
 
   render: function (tournament_matches) {
     if (!tournament_matches || tournament_matches.length === 0)
-      this.$el.append(this.defaultText);
+      this.$el.html(this.defaultText);
     else {
       this.$el.empty();
       tournament_matches.forEach(this.addOne, this);

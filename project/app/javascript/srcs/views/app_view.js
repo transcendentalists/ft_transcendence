@@ -25,6 +25,7 @@ export let AppView = Backbone.View.extend({
       App.current_user.id
     );
     App.notification_channel = this.notification_channel;
+    App.war_channel = null;
 
     return this;
   },

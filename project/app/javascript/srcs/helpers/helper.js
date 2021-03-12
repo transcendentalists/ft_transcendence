@@ -98,6 +98,10 @@ export let Helper = {
     return App.app_view.appearance_view.friends.get(user_id) !== undefined;
   },
 
+  isCurrentView: function (view_name) {
+    return App.main_view.current_view?.id == view_name;
+  },
+
   isCurrentUser: function (user_id) {
     return App.current_user.id == user_id;
   },
@@ -158,7 +162,6 @@ export let Helper = {
       res[parts[0]] = parts[1];
       return res;
     }, {});
-    console.log(result);
     if (!result.page) result.page = "1";
     return result;
   },

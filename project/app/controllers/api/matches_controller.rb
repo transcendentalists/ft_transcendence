@@ -19,9 +19,8 @@ class Api::MatchesController < ApplicationController
   def create
     begin
       raise ServiceError.new(:BadRequest) unless params[:user_id]
-        user = User.find(params[:user_id])
-        match = find_or_create_match!(user)
-        render json: { match: match.create_response({by: user}) }
+        match = find_or_create_match!
+        render json: { match: { id: match.id } }
       end
     rescue ServiceError => e
       render_error(e.type, e.message)
@@ -32,54 +31,47 @@ class Api::MatchesController < ApplicationController
 
   private
 
-  def find_or_create_match!(user)
-    match_type, match_id, rule_id, target_score = params.values_at(:match_type, :match_id, :rule_id, :target_score)
+  def find_or_create_match!
+    match_type, match_id = params.values_at(:match_type, :match_id)
     if ["ladder", "casual_ladder"].include?(match_type)
-      find_or_create_ladder_match_for(user, { type: match_type } )
-    elsif match_type == "dual"
+      Match.find_or_create_ladder_match_by!({ by: @current_user, type: match_type } )
+    else
       if match_id.nil?
-        create_dual_match_for(user, rule_id, target_score)
+        create_match!
       else
-        join_dual_match_for(user, match_id)
+        Match.find_and_join_match_by!({by: @current_user, match_id: match_id})
       end
     end
   end
 
-  def find_or_create_ladder_match_for(user, options = {type: "casual_ladder"} )
-    return nil if user.playing?
+  # 현재 create_match_type은 war가 아닐 경우 dual
+  def create_match!
+    return create_war_match! if params[:match_type] == "war"
+
     ActiveRecord::Base.transaction do
-      @match = Match.where(match_type: options[:type], status: "pending").last
-      @match = Match.create(match_type: options[:type], rule_id: 1) if @match.nil?
-      @match.with_lock do
-        user_count = Scorecard.where(match_id: @match.id).count
-        if user_count >= 2
-          @match = Match.create(match_type: options[:type], rule_id: 1)
-        end
-        side = @match.users.count == 0 ? "left" : "right"
-        card = Scorecard.create(user_id: user.id, match_id: @match.id, side: side)
-        user.update_status("playing")
+      match = Match.create(create_params)
+      match.scorecards.create(user_id: @current_user.id, side: 'left')
+      @current_user.update_status('playing')
+    end
+    match
+  end
+
+  def create_war_match!
+    war = War.find(params[:war_id])
+    match = nil
+    war.with_lock do
+      raise ServiceError.new if war.pending_or_progress_battle_exist?
+      ActiveRecord::Base.transaction do
+        match = war.matches.create!(create_params)
+        match.scorecards.create!(user_id: @current_user.id, side: 'left')
+        @current_user.update_status('playing')
+        war.set_schedule_at_no_reply_time(match)
       end
     end
-    @match
-  end
-
-  def create_dual_match_for(user, rule_id, target_score)
-    match =
-      Match.create(
-        match_type: 'dual',
-        status: 'pending',
-        rule_id: rule_id,
-        target_score: target_score,
-      )
-    card = Scorecard.create(user_id: user.id, match_id: match.id, side: 'left')
-    user.update_status('playing')
     match
   end
 
-  def join_dual_match_for(user, match_id)
-    match = Match.find(match_id)
-    card = Scorecard.create(user_id: user.id, match_id: match_id, side: 'right')
-    user.update_status('playing')
-    match
+  def create_params
+    params.permit(:match_type, :rule_id, :target_score)
   end
 end

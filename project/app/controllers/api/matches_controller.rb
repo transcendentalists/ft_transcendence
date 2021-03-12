@@ -1,43 +1,40 @@
 class Api::MatchesController < ApplicationController
   before_action :check_headers_and_find_current_user, only: [ :create ]
 
+  #TODO: 현재 버전에서 else case로 들어오는 요청 없음
   def index
     if params[:user_id]
       match_history_list = Match.for_user_index(params[:user_id])
       render json: { matches: match_history_list }
-    elsif params[:war_id]
-      render plain: 'This is war ' + params[:war_id] + "'s matches"
     elsif params[:for] == "live"
-      render json: {
-        matches: Match.for_live(params[:match_type])
-      }
+      render json: { matches: Match.for_live(params[:match_type]) }
     else
-      render plain: 'get /api/matches/index'
+      render json: { matches: Match.all }
     end
   end
 
   def create
     begin
-      match = find_or_create_match(@current_user)
+      match = find_or_create_match
       render json: { match: { id: match.id } }
     rescue
+      #TODO: Conflict
       render_error("매치 생성 실패", "매치 생성에 실패했습니다.", 400)
     end
   end
 
   private
 
-  def find_or_create_match(user)
+  def find_or_create_match
     if ["ladder", "casual_ladder"].include?(params[:match_type])
-      match = find_or_create_ladder_match_for(user, { type: params[:match_type]} )
+      find_or_create_ladder_match_for({ type: params[:match_type] })
     else
-      match = params[:match_id].nil? ? create_match_for(user, params) : join_match_for(user, params[:match_id])
+      params[:match_id].nil? ? create_match_by(params) : find_and_join_match_by(params[:match_id])
     end
-    match
   end
 
-  def find_or_create_ladder_match_for(user, options = {type: "casual_ladder"} )
-    return nil if user.playing?
+  def find_or_create_ladder_match_for(options = {type: "casual_ladder"} )
+    return nil if @current_user.playing?
     ActiveRecord::Base.transaction do
       @match = Match.where(match_type: options[:type], status: "pending").last
       @match = Match.create(match_type: options[:type], rule_id: 1) if @match.nil?
@@ -47,59 +44,56 @@ class Api::MatchesController < ApplicationController
           @match = Match.create(match_type: options[:type], rule_id: 1)
         end
         side = @match.users.count == 0 ? "left" : "right"
-        card = Scorecard.create(user_id: user.id, match_id: @match.id, side: side)
-        user.update_status("playing")
+        @match.scorecards.create(user_id: @current_user.id, side: side)
+        @current_user.update_status("playing")
       end
     end
     @match
   end
 
-  def create_war_match(user, params)
+  # 현재 create_match_type은 war가 아닐 경우 dual
+  def create_match_by(params)
+    return create_war_match_by(params) if params[:match_type] == "war"
+    ActiveRecord::Base.transaction do
+      match = Match.create(create_params)
+      match.scorecards.create(user_id: @current_user.id, side: 'left')
+      @current_user.update_status('playing')
+    end
+    match
+  end
+
+  def create_war_match_by(params)
     war = War.find(params[:war_id])
     match = nil
     war.with_lock do
+      #TODO: BadRequest ServiceError
       raise "War match 이미 진행 중" if war.pending_or_progress_battle_exist?
-      create_params = {
-        match_type: params[:match_type],
-        status: 'pending',
-        rule_id: params[:rule_id],
-        target_score: params[:target_score],
-      }
+
       match = war.matches.create(create_params)
-      card = match.scorecards.create(user_id: user.id, side: 'left')
-      user.update_status('playing')
+      match.scorecards.create(user_id: @current_user.id, side: 'left')
+      @current_user.update_status('playing')
       war.set_schedule_at_no_reply_time(match)
     end
     match
   end
 
-  def create_match_for(user, params)
-    return create_war_match(user, params) if params[:match_type] == "war"
-
-    create_params = {
-      match_type: params[:match_type],
-      status: 'pending',
-      rule_id: params[:rule_id],
-      target_score: params[:target_score],
-    }
-    match = Match.create(create_params)
-    card = Scorecard.create(user_id: user.id, match_id: match.id, side: 'left')
-    user.update_status('playing')
-    match
-  end
-
-  def join_match_for(user, match_id)
+  def find_and_join_match_by(match_id)
     match = Match.find(match_id)
     match.with_lock do
+      #TODO: BadRequest
       raise "Game already started" if match.users.count == 2
       if match.match_type == "war"
         enemy = match.users.first
-        raise "Users are same guild members" if user.in_guild.id == enemy.in_guild.id
+        #TODO: BadRequest
+        raise "Users are same guild members" if @current_user.in_guild.id == enemy.in_guild.id
       end
-      Scorecard.create!(user_id: user.id, match_id: match_id, side: 'right')
-      user.update_status('playing')
+      match.scorecards.create!(user_id: @current_user.id, side: 'right')
+      @current_user.update_status('playing')
     end
     match
   end
 
+  def create_params
+    permit(:match_type, :rule_id, :target_score)
+  end
 end

@@ -1,4 +1,4 @@
-import { App } from "srcs/internal";
+import { App, Helper } from "srcs/internal";
 
 export let LiveCardView = Backbone.View.extend({
   template: _.template($("#live-card-view-template").html()),
@@ -19,6 +19,7 @@ export let LiveCardView = Backbone.View.extend({
   render: function (match) {
     this.match_id = match.id;
     match.title = this.title(match);
+    match.rule = Helper.translateRule(match.rule);
     this.$el.html(this.template(match));
     return this;
   },

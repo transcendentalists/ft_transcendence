@@ -15,27 +15,21 @@ export let TournamentIndexView = Backbone.View.extend({
   render: function () {
     this.$el.html(this.template());
     Helper.fetch("tournaments?for=tournament_index", {
-      success_callback: this.renderTournamentsCallBack.bind(this),
+      success_callback: this.renderTournaments.bind(this),
     });
     return this;
   },
 
-  renderTournamentsCallBack: function (data) {
+  renderTournaments: function (data) {
     this.parseTournamentsData(data);
 
-    this.my_tournaments_view = new App.View.TournamentMatchCardListView().setElement(
-      this.$("#my-tournaments-view")
-    );
-    if (this.my_tournaments.length > 0) {
-      this.my_tournaments_view.render(this.my_tournaments);
-    }
+    this.my_tournament_list_view = new App.View.TournamentMatchCardListView();
+    this.my_tournament_list_view.render(this.my_tournaments);
 
-    this.open_tournaments_view = new App.View.TournamentCardListView({
+    this.open_tournament_list_view = new App.View.TournamentCardListView({
       parent: this,
-    }).setElement(this.$("#open-tournaments-view"));
-    if (this.open_tournaments.length > 0) {
-      this.open_tournaments_view.render(this.open_tournaments);
-    }
+    });
+    this.open_tournament_list_view.render(this.open_tournaments);
   },
 
   parseTournamentsData: function (data) {
@@ -54,8 +48,8 @@ export let TournamentIndexView = Backbone.View.extend({
   close: function () {
     this.my_tournaments = null;
     this.open_tournaments = null;
-    if (this.my_tournaments_view) this.my_tournaments_view.close();
-    if (this.open_tournaments_view) this.open_tournaments_view.close();
+    if (this.my_tournament_list_view) this.my_tournament_list_view.close();
+    if (this.open_tournament_list_view) this.open_tournament_list_view.close();
     this.remove();
   },
 });

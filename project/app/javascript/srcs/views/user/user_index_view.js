@@ -59,6 +59,21 @@ export let UserIndexView = Backbone.View.extend({
           .setElement(this.$("#guild-invitation-list-view"))
           .render(data.guild_invitations),
     });
+
+    this.listenDeclineInvitation();
+  },
+
+  listenDeclineInvitation: function () {
+    this.listenTo(
+      this.guild_invitations_view,
+      "decline",
+      this.renderDefaultText
+    );
+  },
+
+  renderDefaultText: function () {
+    if (this.$(".card").length !== 0) return;
+    this.guild_invitations_view.renderDefaultText();
   },
 
   renderMatchHistory: function () {

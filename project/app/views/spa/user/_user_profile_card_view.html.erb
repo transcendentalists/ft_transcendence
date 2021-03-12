@@ -3,7 +3,7 @@
   <div class="content flex-container column-direction">
 
     <div class="row flex-container baseline">
-      <div class="name"><%%= name %></div>
+      <div class="name"><%%= name.length <= 10 ? name : name.slice(0, 7) + '...' %></div>
       <div class="rank"> <strong><%%= title %></strong> | <%%= rank %>위</div>
     </div>
     <div class="row">

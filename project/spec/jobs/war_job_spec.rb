@@ -8,7 +8,7 @@ RSpec.describe WarJob, type: :job do
   include GuildHelper
   include MatchHelper
 
-  it "war에 포함된 타입의 매치가 끝나면, 승자에게 war포인트가 분배된다." do
+  it "war 매치에서 challenger가 승리하였다면, 승자만 20 war point 증가" do
     master_1 = create(:user)
     master_2 = create(:user)
 
@@ -18,7 +18,6 @@ RSpec.describe WarJob, type: :job do
     # war에는 dual, ladder 타입의 매치가 포함됨.
     war = create_war({challenger: guild_1, enemy: guild_2, match_types: ["war, dual"]})
 
-    # 1. war 매치에서 challenger가 승리하였다면, 승자만 20 war point 증가
     war_match = create_match({eventable_id: war.id, left_user: master_1, right_user: master_2, match_type: "war"})
 
     challenger_status = war.reload.war_statuses.find_by_position("challenger")
@@ -33,7 +32,17 @@ RSpec.describe WarJob, type: :job do
     after_enemy_point = before_enemy_point
     expect(challenger_status.reload.point).to eq(after_challenger_point)
     expect(enemy_status.reload.point).to eq(after_enemy_point)
+  end
 
+  it "dual 매치에서 challenger가 승리하였다면, 승자만 20 war point 증가" do
+    master_1 = create(:user)
+    master_2 = create(:user)
+
+    guild_1 = create_guild({owner: master_1, name: "testone", anagram: "@on", point: 1000})
+    guild_2 = create_guild({owner: master_2, name: "testtwo", anagram: "@tw", point: 1500})
+
+    # war에는 dual, ladder 타입의 매치가 포함됨.
+    war = create_war({challenger: guild_1, enemy: guild_2, match_types: ["war, dual"]})
 
     # 2. dual 매치에서 challenger가 승리하였다면, 승자만 20 war point 증가
     dual_match = create_match({eventable_id: war.id, left_user: master_1, right_user: master_2, match_type: "dual"})
@@ -52,6 +61,18 @@ RSpec.describe WarJob, type: :job do
     expect(enemy_status.reload.point).to eq(after_enemy_point)
 
 
+  end
+
+  it "ladder 매치에서 challenger가 승리하였다면, 양 쪽 다 포인트 변화없음." do
+    master_1 = create(:user)
+    master_2 = create(:user)
+
+    guild_1 = create_guild({owner: master_1, name: "testone", anagram: "@on", point: 1000})
+    guild_2 = create_guild({owner: master_2, name: "testtwo", anagram: "@tw", point: 1500})
+
+    # war에는 dual, ladder 타입의 매치가 포함됨.
+    war = create_war({challenger: guild_1, enemy: guild_2, match_types: ["war, dual"]})
+
     # 3. ladder 매치에서 challenger가 승리하였다면, 양 쪽 다 포인트 변화없음.
     ladder_match = create_match({eventable_id: war.id, left_user: master_1, right_user: master_2, match_type: "ladder"})
 
@@ -69,6 +90,18 @@ RSpec.describe WarJob, type: :job do
     expect(enemy_status.reload.point).to eq(after_enemy_point)
 
 
+  end
+
+  it "tournament 매치에서 challenger가 승리하였다면, 양 쪽 다 포인트 변화없음." do
+    master_1 = create(:user)
+    master_2 = create(:user)
+
+    guild_1 = create_guild({owner: master_1, name: "testone", anagram: "@on", point: 1000})
+    guild_2 = create_guild({owner: master_2, name: "testtwo", anagram: "@tw", point: 1500})
+
+    # war에는 dual, ladder 타입의 매치가 포함됨.
+    war = create_war({challenger: guild_1, enemy: guild_2, match_types: ["war, dual"]})
+
     # 4. tournament 매치에서 challenger가 승리하였다면, 양 쪽 다 포인트 변화없음.
     tournament_match = create_match({eventable_id: war.id, left_user: master_1, right_user: master_2, match_type: "tournament"})
 
@@ -85,5 +118,4 @@ RSpec.describe WarJob, type: :job do
     expect(challenger_status.reload.point).to eq(after_challenger_point)
     expect(enemy_status.reload.point).to eq(after_enemy_point)
   end
-
 end

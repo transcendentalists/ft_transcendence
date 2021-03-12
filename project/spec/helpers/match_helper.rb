@@ -35,27 +35,7 @@ module MatchHelper
     match.scorecards.each do |card|
       card.update(result: card.score == @match.target_score ? "win" : "lose")
     end
-    update_game_status(match)
     match.complete({type: "END"})
-  end
-
-  def update_game_status(match)
-    match.update(status: "completed")
-
-    if match.users.in_same_war?
-      war = match.winner.in_guild.current_war
-      war_status = war.war_statuses.find_by_guild_id(match.winner.in_guild.id)
-      war_status.increase_point if war.match_types.include?(match.match_type)
-    end
-
-    return if match.match_type != "ladder"
-    match.users.each do |user|
-      if user.id == match.winner.id
-        user.update(point: user.point + 20)
-      else
-        user.update(point: user.point + 5)
-      end
-    end
   end
 
 end

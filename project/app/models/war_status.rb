@@ -26,7 +26,11 @@ class WarStatus < ApplicationRecord
   end
 
   def increase_point
-    self.point += 20
-    self.save
+    self.increment!(:point, 20)
+  end
+
+  def self.same_point?
+    return false unless self.count == 2
+    self.first.point == self.second.point
   end
 end

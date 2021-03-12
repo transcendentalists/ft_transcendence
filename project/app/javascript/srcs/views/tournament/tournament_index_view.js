@@ -23,13 +23,13 @@ export let TournamentIndexView = Backbone.View.extend({
   renderTournaments: function (data) {
     this.parseTournamentsData(data);
 
-    this.my_tournaments_view = new App.View.TournamentMatchCardListView();
-    this.my_tournaments_view.render(this.my_tournaments);
+    this.my_tournament_list_view = new App.View.TournamentMatchCardListView();
+    this.my_tournament_list_view.render(this.my_tournaments);
 
-    this.open_tournaments_view = new App.View.TournamentCardListView({
+    this.open_tournament_list_view = new App.View.TournamentCardListView({
       parent: this,
     });
-    this.open_tournaments_view.render(this.open_tournaments);
+    this.open_tournament_list_view.render(this.open_tournaments);
   },
 
   parseTournamentsData: function (data) {
@@ -48,8 +48,8 @@ export let TournamentIndexView = Backbone.View.extend({
   close: function () {
     this.my_tournaments = null;
     this.open_tournaments = null;
-    if (this.my_tournaments_view) this.my_tournaments_view.close();
-    if (this.open_tournaments_view) this.open_tournaments_view.close();
+    if (this.my_tournament_list_view) this.my_tournament_list_view.close();
+    if (this.open_tournament_list_view) this.open_tournament_list_view.close();
     this.remove();
   },
 });

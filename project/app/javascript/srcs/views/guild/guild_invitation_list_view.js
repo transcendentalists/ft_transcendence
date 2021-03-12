@@ -16,7 +16,7 @@ export let GuildInvitationListView = Backbone.View.extend({
   },
 
   renderDefaultText: function () {
-    this.$el.append(this.defaultText);
+    this.$el.html(this.defaultText);
   },
 
   addOne: function (guild_invitation) {

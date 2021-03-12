@@ -17,17 +17,16 @@ export let WarIndexView = Backbone.View.extend({
     const current_user_guild = App.current_user.get("guild");
     const current_user_guild_in_war = current_user_guild?.in_war;
     this.$el.html(
-      this.template({
-        current_user_guild,
-        current_user_guild_in_war,
-      })
+      this.template({ current_user_guild, current_user_guild_in_war })
     );
-    if (current_user_guild_in_war) {
+    if (current_user_guild && current_user_guild_in_war) {
       Helper.fetch(`guilds/${current_user_guild.id}/wars?for=index`, {
-        success_callback: this.renderChildViews.bind(this),
+        success_callback: this.joinWarChannelAndRenderWarIndexChildViews.bind(
+          this
+        ),
         fail_callback: (data) => {
           return App.router.navigate(
-            `#/errors/${data.code}/${data.type}/${data.msg}`
+            `#/errors/${data.error.code}/${data.error.type}/${data.error.msg}`
           );
         },
       });
@@ -35,12 +34,11 @@ export let WarIndexView = Backbone.View.extend({
     return this;
   },
 
-  renderChildViews: function (data) {
-    this.renderGuildProfileCardView(data.guild);
-    this.renderWarStatusView(data.status);
-    this.renderWarRuleView(data.rules_of_war);
-    this.renderWarBattleView();
-    this.renderWarMatchHistory(data.matches);
+  joinWarChannelAndRenderWarIndexChildViews: function (data) {
+    this.war_id = data.war.id;
+    if (App.war_channel == null)
+      App.war_channel = App.Channel.ConnectWarChannel(data.war.id);
+    this.renderWarIndexChildViews(data);
   },
 
   renderGuildProfileCardView: function (guild) {
@@ -60,13 +58,14 @@ export let WarIndexView = Backbone.View.extend({
   },
 
   renderWarRuleView: function (rule) {
+    this.rules_of_war = rule;
     this.war_rule_view = new App.View.WarRuleView();
     this.war_rule_view.setElement(this.$(".war-rule-view")).render(rule);
   },
 
-  renderWarBattleView: function () {
-    this.war_battle_view = new App.View.WarBattleView();
-    this.war_battle_view.setElement(this.$(".war-battle-view")).render();
+  renderWarBattleView: function (battle) {
+    this.war_battle_view = new App.View.WarBattleView({ parent: this });
+    this.war_battle_view.setElement(this.$(".war-battle-view")).render(battle);
   },
 
   renderWarMatchHistory: function (war_matches) {
@@ -74,6 +73,14 @@ export let WarIndexView = Backbone.View.extend({
     this.war_match_history_list_view
       .setElement(this.$(".war-match-history-list-view"))
       .render(war_matches);
+  },
+
+  renderWarIndexChildViews: function (data) {
+    this.renderGuildProfileCardView(data.guild);
+    this.renderWarStatusView(data.status);
+    this.renderWarRuleView(data.rules_of_war);
+    this.renderWarBattleView(data.battle);
+    this.renderWarMatchHistory(data.matches);
   },
 
   close: function () {

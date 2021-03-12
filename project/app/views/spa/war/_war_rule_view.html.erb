@@ -1,8 +1,9 @@
 <script type="text/template" id="war-rule-view-template">
   <div class="ui card">
  <div class="content">
+      <%# TODO: rule name friendly하게 변경 %>
       <div class="content">
-        <strong>규칙:</strong> <%%= rule %>
+        <strong>규칙:</strong> <%%= rule.name %>
       </div>
       <div class="content">
         <strong>목표 게임 점수:</strong> <%%= target_match_score %>
@@ -23,6 +24,6 @@
       <div class="content">
         <strong>전쟁 기간:</strong> <%%= start_date + ' ~ ' + end_date %>
       </div>
-    </div> 
+    </div>
   </div>
 </script>

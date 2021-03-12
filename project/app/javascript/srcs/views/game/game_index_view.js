@@ -28,6 +28,7 @@ export let GameIndexView = Backbone.View.extend({
     let params = Helper.parseHashQuery();
     let default_hash = {
       challenger_id: null,
+      war_id: null,
       rule_id: "1",
       target_score: "3",
       match_id: match_id,
@@ -35,6 +36,7 @@ export let GameIndexView = Backbone.View.extend({
 
     params = Object.assign({}, default_hash, params);
     this.challenger_id = params["challenger_id"];
+    this.war_id = params["war_id"];
     this.rule_id = params["rule_id"];
     this.target_score = params["target_score"];
     this.match_id = params["match_id"];
@@ -60,6 +62,7 @@ export let GameIndexView = Backbone.View.extend({
         rule_id: this.rule_id,
         target_score: this.target_score,
         match_id: this.match_id,
+        war_id: this.war_id,
       },
     });
   },
@@ -81,6 +84,12 @@ export let GameIndexView = Backbone.View.extend({
         this.challenger_id,
         this.match_id
       );
+    } else if (this.match_type == "war" && this.war_id != null) {
+      App.war_channel.requestBattle({
+        war_id: this.war_id,
+        guild_id: App.current_user.get("guild").id,
+        match_id: this.match_id,
+      });
     }
   },
 
@@ -89,6 +98,10 @@ export let GameIndexView = Backbone.View.extend({
       END: ["게임종료", "게임이 종료되었습니다."],
       ENEMY_GIVEUP: ["게임종료", "유저가 게임을 기권하였습니다."],
       STOP: ["잘못된 접근", "취소/종료되었거나 유효하지 않은 게임입니다."],
+      LOADING: [
+        "게임 미시작",
+        "아직 게임이 시작되지 않았습니다. 잠시 후에 접근해주세요.",
+      ],
     };
 
     Helper.info({
@@ -100,9 +113,9 @@ export let GameIndexView = Backbone.View.extend({
   rejectMatchCallback: function () {
     Helper.info({
       subject: "잘못된 접근",
-      description: "잠시후 홈 화면으로 이동합니다.",
+      description: "잠시후 이전 화면으로 이동합니다.",
     });
-    setTimeout(this.redirectHomeCallback, 2000);
+    setTimeout(() => Backbone.history.history.back(), 1000);
   },
 
   redirectHome: function (type) {
@@ -132,10 +145,10 @@ export let GameIndexView = Backbone.View.extend({
         if (!Helper.isCurrentUser(msg["send_id"])) return;
         this.spec = msg;
         this.renderPlayerView();
-        this.start();
+        if (!this.play_view) this.start();
         break;
       case "BROADCAST":
-        if (!this.play_view) return;
+        if (!this.spec) return;
         this.play_view.update(msg);
         break;
       case "END":
@@ -143,6 +156,9 @@ export let GameIndexView = Backbone.View.extend({
         if (this.play_view) this.play_view.stopRender();
         if (this.clear_id) clearInterval(this.clear_id);
         this.redirectHome(msg.type);
+        break;
+      case "LOADING":
+        if (!this.is_player) this.redirectHome(msg.type);
         break;
       case "STOP":
         this.redirectHome(msg.type);

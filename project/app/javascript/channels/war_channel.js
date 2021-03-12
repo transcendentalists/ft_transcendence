@@ -1,17 +1,45 @@
+import { App, Helper } from "srcs/internal";
 import consumer from "./consumer";
 
-export function ConnectWarChannel() {
-  return consumer.subscriptions.create("WarChannel", {
-    connected() {
-      // Called when the subscription is ready for use on the server
+export function ConnectWarChannel(war_id) {
+  return consumer.subscriptions.create(
+    {
+      channel: "WarChannel",
+      war_id: war_id,
     },
+    {
+      connected() {},
 
-    disconnected() {
-      // Called when the subscription has been terminated by the server
-    },
+      disconnected() {
+        this.unsubscribe();
+      },
 
-    received(data) {
-      // Called when there's incoming data on the websocket for this channel
-    },
-  });
+      received(data) {
+        if (data.type === "no_reply" && Helper.isCurrentUser(data.user_id)) {
+          Helper.info({
+            subject: "상대 길드 미응답",
+            description: "상대 길드가 응답하지 않아 배틀에서 승리하셨습니다!",
+          });
+          /* TODO: page=1 생략 */
+          App.router.navigate(
+            `#/guilds/${App.current_user.get("guild").id}?page=1`
+          );
+        } else if (Helper.isCurrentView("war-index-view")) {
+          this.updateWarBattleView(data);
+        }
+      },
+
+      updateWarBattleView(data) {
+        App.mainView.current_view.war_battle_view?.updateView(data);
+      },
+
+      requestBattle(data) {
+        this.perform("request_battle", {
+          war_id: data.war_id,
+          guild_id: data.guild_id,
+          match_id: data.match_id,
+        });
+      },
+    }
+  );
 }

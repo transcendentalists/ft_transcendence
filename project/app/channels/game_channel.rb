@@ -9,6 +9,7 @@ class GameChannel < ApplicationCable::Channel
 
     @match = Match.find_by_id(params[:match_id])
     return stop(params[:match_id]) if @match.nil? || @match.completed_or_canceled?
+    return loading(params[:match_id]) if !@match.reload.loading_end? && !@match.player?(current_user)
     current_user.ready_for_match(@match) if @match.player?(current_user)
     return if @match.pending? && !@match.ready_to_start?
 
@@ -21,10 +22,9 @@ class GameChannel < ApplicationCable::Channel
     speak({match_id: match_id, type: "STOP", message: "INVALID MATCH", send_id: current_user.id })
   end
 
-  # 토너먼트의 경우 바로 게임을 시작할 수 없으므로 일찍 들어온 경우 대기 메시지 전송
-  # 이후 처리는 토너먼트 구현시 상세 설계 필요
-  def wait_start
-    speak({match_id: @match.id, type: "WAIT", message: "NOT YET STARTED", start_time: @match.start_time, send_id: current_user.id })
+  # 유효하지 않은 매치 접근시 예외처리
+  def loading(match_id)
+    speak({match_id: match_id, type: "LOADING", message: "아직 경기가 시작되지 않았습니다.", send_id: current_user.id })
   end
 
   def speak(msg)
@@ -42,19 +42,6 @@ class GameChannel < ApplicationCable::Channel
     complete_by_match_end(card.user.id) if (@match.target_score == card.score)
   end
 
-  # 게임의 승패에 따라 유저의 포인트를 업데이트
-  def update_game_status
-    @match.update(status: "completed")
-    return if @match.match_type != "ladder"
-    @match.users.each do |user|
-      if user.id == @match.winner.id
-        user.update(point: user.point + 20)
-      else
-        user.update(point: user.point + 5)
-      end
-    end
-  end
-
   # 1) 게임이 정상적으로 종료된 경우에 스코어카드를 기준으로 승/패를 업데이트
   # 2) 유저의 상태를 "progress" -> "online"으로 변경
   # -> TODO: user.rb 퍼블릭 메서드 구현시 변경
@@ -63,7 +50,7 @@ class GameChannel < ApplicationCable::Channel
     @match.scorecards.each do |card|
       card.update(result: card.score == @match.target_score ? "win" : "lose")
     end
-    update_game_status
+    @match.update_game_status
     @match.complete({type: "END"})
     stop_all_streams
   end
@@ -79,6 +66,7 @@ class GameChannel < ApplicationCable::Channel
     end
     winner_id = current_user.enemy
     @match.complete({type: "ENEMY_GIVEUP"})
+
     stop_all_streams
   end
 
@@ -89,6 +77,5 @@ class GameChannel < ApplicationCable::Channel
       complete_by_giveup
     end
     current_user.update_status("online")
-    # Any cleanup needed when channel is unsubscribed
   end
 end

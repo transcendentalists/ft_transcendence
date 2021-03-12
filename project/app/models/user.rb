@@ -61,6 +61,12 @@ class User < ApplicationRecord
     users = select_by_query(users, params) unless params[:for].nil?
   end
 
+  def self.in_same_war?
+    return false unless self.count == 2
+    return false if !self.first.in_guild&.in_war? || !self.second.in_guild&.in_war?
+    self.first.in_guild.current_war == self.second.in_guild.current_war
+  end
+
   def playing?
     self.status == "playing"
   end

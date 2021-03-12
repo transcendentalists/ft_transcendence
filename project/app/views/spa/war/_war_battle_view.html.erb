@@ -2,36 +2,20 @@
   <div class="ui card">
     <div class="content">
       <div class="description">
-        <%% if (true) { %>
-        <p>전쟁 가능한 시간이<br>아닙니다.</p>
-        <%% } else if (false) { %>
-        <p>상대 길드에서 전투를<br>요청하고 있습니다.</p>
-        <%% } else if (false) { %>
-        <p>우리 길드의 누군가가<br>전투를 준비하고 있습니다.</p>
-        <%% } else { %>
-        <p>상대 길드에 전투를 요청하시겠습니까?</p>
-        <%% } %>
+        <%%= message %>
       </div>
     </div>
-    <div class="extra content">
-      <div class="ui centered grid">
-        <div class="row">
 
-        <%% if (false) { %>
-          <button class="ui red basic button" data-request-value="battle">
-            Battle (<span class="remain-time"></span>)
-          </button>
-        <%% } else if (false) { %>
-          <button class="ui primary basic button" data-request-value="battle">
-            Battle (<span class="remain-time"></span>) 
-          </button>
-        <%% } else { %>
-          <button class="ui red basic disabled button" data-request-value="battle">
-            Battle
-          </button>
-        <%% } %>
+    <%% if (button) { %>
+      <div class="extra content">
+        <div class="ui centered grid">
+          <div class="row">
+            <button class="ui red basic button" data-event-name=<%%= button_event %>>
+              <%%= button_message %> <span class="remain-time"></span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    <%% } %>
   </div>
 </script>

@@ -24,4 +24,13 @@ class WarStatus < ApplicationRecord
   def challenger?
     return self.position == "challenger"
   end
+
+  def increase_point
+    self.increment!(:point, 20)
+  end
+
+  def self.same_point?
+    return false unless self.count == 2
+    self.first.point == self.second.point
+  end
 end

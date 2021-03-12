@@ -105,6 +105,7 @@ class Match < ApplicationRecord
   def cancel
     self.update(status: "canceled")
     self.scorecards.update_all(result: "canceled")
+    self.eventable.broadcast({type: "cancel"}) if self.match_type == "war"
   end
 
   def end_by_giveup_on_tournament
@@ -116,6 +117,7 @@ class Match < ApplicationRecord
   def complete(options = {type: "END"})
     self.update(status: "completed")
     self.broadcast({type: options[:type]})
+    self.eventable.broadcast({type: "end"}) if self.match_type == "war"
   end
 
   def enemy_of(user)
@@ -165,6 +167,27 @@ class Match < ApplicationRecord
 
   def loading_end?
     self.status == "progress" && Time.zone.now > self.start_time + 10.seconds
+  end
+
+  # 게임의 승패에 따라 유저의 포인트를 업데이트
+  def update_game_status
+    self.update(status: "completed")
+
+    if self.users.in_same_war?
+      war = self.winner.in_guild.current_war
+      war_status = war.war_statuses.find_by_guild_id(self.winner.in_guild.id)
+      war_status.increase_point if war.match_types.include?(self.match_type)
+    end
+
+    # ladder 매치를 진행한 경우, 유저의 랭킹 포인트를 증가
+    return if self.match_type != "ladder"
+    self.users.each do |user|
+      if user.id == self.winner.id
+        user.update(point: user.point + 20)
+      else
+        user.update(point: user.point + 5)
+      end
+    end
   end
 
   private

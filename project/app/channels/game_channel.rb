@@ -42,26 +42,6 @@ class GameChannel < ApplicationCable::Channel
     complete_by_match_end(card.user.id) if (@match.target_score == card.score)
   end
 
-  # 게임의 승패에 따라 유저의 포인트를 업데이트
-  def update_game_status
-    @match.update(status: "completed")
-
-    if @match.users.in_same_war?
-      war = @match.winner.in_guild.current_war
-      war_status = war.war_statuses.find_by_guild_id(@match.winner.in_guild.id)
-      war_status.increase_point if war.match_types.include?(@match.match_type)
-    end
-
-    return if @match.match_type != "ladder"
-    @match.users.each do |user|
-      if user.id == @match.winner.id
-        user.update(point: user.point + 20)
-      else
-        user.update(point: user.point + 5)
-      end
-    end
-  end
-
   # 1) 게임이 정상적으로 종료된 경우에 스코어카드를 기준으로 승/패를 업데이트
   # 2) 유저의 상태를 "progress" -> "online"으로 변경
   # -> TODO: user.rb 퍼블릭 메서드 구현시 변경
@@ -70,16 +50,8 @@ class GameChannel < ApplicationCable::Channel
     @match.scorecards.each do |card|
       card.update(result: card.score == @match.target_score ? "win" : "lose")
     end
-    update_game_status
+    @match.update_game_status
     @match.complete({type: "END"})
-    if (@match.match_type == "war")
-      ActionCable.server.broadcast(
-        "war_channel_#{@match.eventable_id.to_s}",
-        {
-          type: "end",
-        },
-      )
-    end
     stop_all_streams
   end
 
@@ -110,14 +82,5 @@ class GameChannel < ApplicationCable::Channel
       complete_by_giveup
     end
     current_user.update_status("online")
-    if (@match&.match_type == "war" && @match.users.ids.include?(current_user.id))
-      ActionCable.server.broadcast(
-        "war_channel_#{@match.eventable_id.to_s}",
-        {
-          type: "canceled",
-        },
-      )
-    end
-    # Any cleanup needed when channel is unsubscribed
   end
 end

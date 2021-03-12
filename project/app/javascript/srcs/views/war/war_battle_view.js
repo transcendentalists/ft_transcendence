@@ -18,7 +18,6 @@ export let WarBattleView = Backbone.View.extend({
 
   render: function (battle) {
     this.battle = battle;
-    console.log(battle);
     this.switchTemplate(battle);
     this.$el.html(this.template(this.template_data));
     if (this.countdown) this.renderCountDown(battle.wait_time);

@@ -1,5 +1,7 @@
 class Api::WarsController < ApplicationController
   def index
+    # params[:for] == index -> war_index_view 응답
+    # params[:guild_id] -> guild_detail_view 응답
     begin
       if params[:for] == "index"
         war = Guild.find(params[:guild_id])&.wars.where.not(status: "completed").first

@@ -97,7 +97,7 @@ export let Helper = {
   },
 
   isCurrentView: function (view_name) {
-    return App.mainView.current_view?.id == view_name;
+    return App.main_view.current_view?.id == view_name;
   },
 
   isCurrentUser: function (user_id) {

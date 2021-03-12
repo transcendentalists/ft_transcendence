@@ -30,7 +30,7 @@ export function ConnectWarChannel(war_id) {
       },
 
       updateWarBattleView(data) {
-        App.mainView.current_view.war_battle_view?.updateView(data);
+        App.main_view.current_view.war_battle_view?.updateView(data);
       },
 
       requestBattle(data) {

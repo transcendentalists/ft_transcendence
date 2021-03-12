@@ -21,7 +21,9 @@ export let WarIndexView = Backbone.View.extend({
     );
     if (current_user_guild && current_user_guild_in_war) {
       Helper.fetch(`guilds/${current_user_guild.id}/wars?for=index`, {
-        success_callback: this.joinWarChannelAndRenderWarIndexChilds.bind(this),
+        success_callback: this.joinWarChannelAndRenderWarIndexChildViews.bind(
+          this
+        ),
         fail_callback: (data) => {
           return App.router.navigate(
             `#/errors/${data.error.code}/${data.error.type}/${data.error.msg}`
@@ -32,12 +34,11 @@ export let WarIndexView = Backbone.View.extend({
     return this;
   },
 
-  renderChildViews: function (data) {
-    this.renderGuildProfileCardView(data.guild);
-    this.renderWarStatusView(data.status);
-    this.renderWarRuleView(data.rules_of_war);
-    this.renderWarBattleView();
-    this.renderWarMatchHistory(data.matches);
+  joinWarChannelAndRenderWarIndexChildViews: function (data) {
+    this.war_id = data.war.id;
+    if (App.war_channel == null)
+      App.war_channel = App.Channel.ConnectWarChannel(data.war.id);
+    this.renderWarIndexChildViews(data);
   },
 
   renderGuildProfileCardView: function (guild) {
@@ -64,9 +65,7 @@ export let WarIndexView = Backbone.View.extend({
 
   renderWarBattleView: function (battle) {
     this.war_battle_view = new App.View.WarBattleView({ parent: this });
-    this.war_battle_view
-      .setElement(this.$(".war-battle-view"))
-      .render(battle);
+    this.war_battle_view.setElement(this.$(".war-battle-view")).render(battle);
   },
 
   renderWarMatchHistory: function (war_matches) {
@@ -76,19 +75,12 @@ export let WarIndexView = Backbone.View.extend({
       .render(war_matches);
   },
 
-  renderWarIndexChilds: function(data) {
+  renderWarIndexChildViews: function (data) {
     this.renderGuildProfileCardView(data.guild);
     this.renderWarStatusView(data.status);
     this.renderWarRuleView(data.rules_of_war);
     this.renderWarBattleView(data.battle);
     this.renderWarMatchHistory(data.matches);
-  },
-
-  joinWarChannelAndRenderWarIndexChilds: function(data) {
-    this.war_id = data.war.id;
-    if (App.war_channel == null)
-      App.war_channel = App.Channel.ConnectWarChannel(data.war.id);
-    this.renderWarIndexChilds(data);
   },
 
   close: function () {

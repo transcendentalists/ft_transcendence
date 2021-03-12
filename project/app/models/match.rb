@@ -55,6 +55,7 @@ class Match < ApplicationRecord
         {
           type: "start",
           match_id: self.id,
+          loading_time: 0,
         },
       )
     end
@@ -160,6 +161,10 @@ class Match < ApplicationRecord
   def ready_to_start?
     return false if self.tournament? && self.before_tournament_time?
     self.scorecards.reload.where(result: "ready").count == 2
+  end
+
+  def loading_end?
+    self.status == "progress" && Time.zone.now > self.start_time + 10.seconds
   end
 
   private

@@ -42,17 +42,17 @@ class Tournament < ApplicationRecord
     })
   end
 
-  def enroll(user)
+  def enroll!(user)
     if self.start_date.midnight.past?
-      raise StandardError.new("등록 기간을 초과했습니다.")
+      raise ServiceError.new(:BadRequest, "등록 기간을 초과했습니다.")
     elsif self.memberships.count == self.max_user_count
-      raise StandardError.new("정원이 마감되었습니다.")
+      raise ServiceError.new(:BadRequest, "정원이 마감되었습니다.")
     elsif self.status != "pending"
-      raise StandardError.new("토너먼트가 등록이 불가능한 상태입니다.")
+      raise ServiceError.new(:BadRequest, "토너먼트가 등록이 불가능한 상태입니다.")
     elsif !self.memberships.find_by_user_id(user.id).nil?
-      raise StandardError.new("이미 등록한 토너먼트입니다.")
+      raise ServiceError.new(:BadRequest, "이미 등록한 토너먼트입니다.")
     elsif self.overlapped_schedule?(user)
-      raise StandardError.new("다른 토너먼트 스케쥴과 중복됩니다.")
+      raise ServiceError.new(:BadRequest, "다른 토너먼트 스케쥴과 중복됩니다.")
     end
 
     TournamentMembership.create!(

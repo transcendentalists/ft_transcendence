@@ -50,7 +50,6 @@ class GameChannel < ApplicationCable::Channel
     @match.scorecards.each do |card|
       card.update(result: card.score == @match.target_score ? "win" : "lose")
     end
-    @match.update_game_status
     @match.complete({type: "END"})
     stop_all_streams
   end

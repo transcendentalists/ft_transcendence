@@ -48,7 +48,7 @@ class Api::WarRequestsController < ApplicationController
 
       ActiveRecord::Base.transaction do
         if params[:status] == "accepted"
-          war_request.enemy.accept!(war_request)
+          war_request.enemy.accept_request!(war_request)
         else
           war_request.update!(status: params[:status])
         end

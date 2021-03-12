@@ -199,7 +199,7 @@ class Tournament < ApplicationRecord
     user.can_service_manage?
   end
 
-  def self.create_by(params)
+  def self.create_by!(params)
     start_date = DateTime.strptime(params[:start_date], "%Y-%m-%d")
     tournament_time = Time.zone.now.change({ hour: params[:tournament_time] })
     tournament_hash = {
@@ -211,7 +211,7 @@ class Tournament < ApplicationRecord
       incentive_gift: params[:incentive_gift],
       target_match_score: params[:target_match_score]
     }
-    tournament_hash.merge!({ incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
+    tournament_hash.merge!({incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
 
     self.create!(tournament_hash)
   end

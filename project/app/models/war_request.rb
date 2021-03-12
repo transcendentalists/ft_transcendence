@@ -50,13 +50,8 @@ class WarRequest < ApplicationRecord
   end
 
   def can_be_updated_by(user)
-    if user.in_guild.nil? ||
-      user.in_guild.id != self.war_statuses.find_by_position("enemy").guild.id ||
-      user.guild_membership.position == "member"
-      return false
-    else
-      return true
-    end
+    return false if user.in_guild.nil? || user.guild_membership.position == "member"
+    return user.in_guild.id == self.enemy.guild.id
   end
 
   def enemy

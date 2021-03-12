@@ -98,6 +98,10 @@ export let GameIndexView = Backbone.View.extend({
       END: ["게임종료", "게임이 종료되었습니다."],
       ENEMY_GIVEUP: ["게임종료", "유저가 게임을 기권하였습니다."],
       STOP: ["잘못된 접근", "취소/종료되었거나 유효하지 않은 게임입니다."],
+      LOADING: [
+        "게임 미시작",
+        "아직 게임이 시작되지 않았습니다. 잠시 후에 접근해주세요.",
+      ],
     };
 
     Helper.info({
@@ -137,20 +141,24 @@ export let GameIndexView = Backbone.View.extend({
         break;
       case "WATCH":
         if (this.is_player)
-          this.play_view?.sendObjectSpec(this.play_view.ball.to_simple());
+          this.play_view.sendObjectSpec(this.play_view.ball.to_simple());
         if (!Helper.isCurrentUser(msg["send_id"])) return;
         this.spec = msg;
         this.renderPlayerView();
+        if (!this.play_view) this.start();
         break;
       case "BROADCAST":
-        if (!this.play_view && this.spec) this.start();
-        this.play_view?.update(msg);
+        if (!this.spec) return;
+        this.play_view.update(msg);
         break;
       case "END":
       case "ENEMY_GIVEUP":
         if (this.play_view) this.play_view.stopRender();
         if (this.clear_id) clearInterval(this.clear_id);
         this.redirectHome(msg.type);
+        break;
+      case "LOADING":
+        if (!this.is_player) this.redirectHome(msg.type);
         break;
       case "STOP":
         this.redirectHome(msg.type);
@@ -204,7 +212,7 @@ export let GameIndexView = Backbone.View.extend({
    */
   start: function () {
     if (this.play_view) return;
-    
+
     this.play_view = new App.View.GamePlayView(this, this.spec);
     this.play_view.score.update(this.spec.score);
     this.play_view.render();

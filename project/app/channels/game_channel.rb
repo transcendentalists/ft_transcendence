@@ -9,6 +9,7 @@ class GameChannel < ApplicationCable::Channel
 
     @match = Match.find_by_id(params[:match_id])
     return stop(params[:match_id]) if @match.nil? || @match.completed_or_canceled?
+    return loading(params[:match_id]) if !@match.reload.loading_end? && !@match.player?(current_user)
     current_user.ready_for_match(@match) if @match.player?(current_user)
     return if @match.pending? && !@match.ready_to_start?
 
@@ -21,10 +22,9 @@ class GameChannel < ApplicationCable::Channel
     speak({match_id: match_id, type: "STOP", message: "INVALID MATCH", send_id: current_user.id })
   end
 
-  # 토너먼트의 경우 바로 게임을 시작할 수 없으므로 일찍 들어온 경우 대기 메시지 전송
-  # 이후 처리는 토너먼트 구현시 상세 설계 필요
-  def wait_start
-    speak({match_id: @match.id, type: "WAIT", message: "NOT YET STARTED", start_time: @match.start_time, send_id: current_user.id })
+  # 유효하지 않은 매치 접근시 예외처리
+  def loading(match_id)
+    speak({match_id: match_id, type: "LOADING", message: "아직 경기가 시작되지 않았습니다.", send_id: current_user.id })
   end
 
   def speak(msg)

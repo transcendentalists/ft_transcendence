@@ -15,12 +15,7 @@ export function ConnectWarChannel(war_id) {
       },
 
       received(data) {
-        if (Helper.isCurrentView("war-index-view")) {
-          this.updateWarBattleView(data);
-        } else if (
-          data.type === "no_reply" &&
-          Helper.isCurrentUser(data.user_id)
-        ) {
+        if (data.type === "no_reply" && Helper.isCurrentUser(data.user_id)) {
           Helper.info({
             subject: "상대 길드 미응답",
             description: "상대 길드가 응답하지 않아 배틀에서 승리하셨습니다!",
@@ -29,6 +24,8 @@ export function ConnectWarChannel(war_id) {
           App.router.navigate(
             `#/guilds/${App.current_user.get("guild").id}?page=1`
           );
+        } else if (Helper.isCurrentView("war-index-view")) {
+          this.updateWarBattleView(data);
         }
       },
 

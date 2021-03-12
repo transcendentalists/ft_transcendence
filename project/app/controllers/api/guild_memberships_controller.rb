@@ -7,7 +7,7 @@ class Api::GuildMembershipsController < ApplicationController
       if params[:for] == "member_list"
         guild_memberships = GuildMembership.for_members_ranking(params[:guild_id], params[:page])
       else
-        ServiceError.new :BadRequest
+        raise ServiceError.new :BadRequest
       end
       render json: { guild_memberships: guild_memberships }
     rescue ServiceError => e

@@ -5,7 +5,7 @@ class Api::WarsController < ApplicationController
     begin
       if params[:for] == "index"
         war = Guild.find(params[:guild_id])&.wars.where.not(status: "completed").first
-        index_data = war.index_data!(params[:guild_id])
+        index_data = war.index_data!(params[:guild_id].to_i)
         render json: index_data
       elsif params[:guild_id]
         guild = Guild.find(params[:guild_id])

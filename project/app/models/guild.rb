@@ -52,6 +52,10 @@ class Guild < ApplicationRecord
     !self.wars.find_by_status(["progress", "pending"]).nil?
   end
 
+  def current_war
+    self.wars.find_by_status(["progress", "pending"])
+  end
+
   def master
     self.memberships.find_by_position("master")
   end
@@ -64,11 +68,45 @@ class Guild < ApplicationRecord
     self.requests.where(status: "pending").update_all(status: "canceled")
   end
 
-  def accept(war_request)
-    war_request.update(status: "accepted")
+  def accept!(war_request)
+    war_request.update!(status: "accepted")
     war_request.enemy.cancel_rest_of_war_request
     war_request.challenger.cancel_rest_of_war_request
-    War.create(war_request_id: war_request.id, status: "pending")
+    war = War.create!(war_request_id: war_request.id, status: "pending")
+    war.set_next_schedule
+    war
+  end
+
+  def already_request_to?(enemy_guild_id)
+    self.requests.where(status: "pending").each do |request|
+      return true if request.enemy.id == enemy_guild_id
+    end
+    false
+  end
+
+  def current_war_match_history!
+    war = self.wars.find_by_status!(["pending", "progress"])
+    my_guild_war_status = war.war_statuses.find_by_guild_id!(self.id)
+    enemy_guild = my_guild_war_status.enemy_status.guild
+    request = war.request
+    match_type = war.match_types
+    match_histories = []
+    Scorecard.where(user_id: self.users.ids).each do |scorecard|
+      if scorecard.match.status == "completed" &&
+        scorecard.enemy_user.in_guild&.id == enemy_guild.id &&
+        match_type.include?(scorecard.match.match_type)
+        match = scorecard.match
+        if war.created_at <= match.updated_at
+          match_histories << {
+            match: match,
+            enemy_guild_user: scorecard.enemy_user,
+            current_guild_user_scorecard: scorecard,
+            enemy_guild_user_scorecard: scorecard.enemy_scorecard,
+          }
+        end
+      end
+    end
+    match_histories.sort_by { |match_history| match_history[:match].updated_at }.reverse[..3]
   end
 
   def make_another_member_master!
@@ -76,7 +114,7 @@ class Guild < ApplicationRecord
 
     master = self.owner.guild_membership
     master.update(position: "member") unless master.nil?
-    
+
     new_master = self.memberships.find_by_position("officer")
     new_master = self.memberships.find_by_position("member") if new_master.nil?
     self.update!(owner_id: new_master.user_id)

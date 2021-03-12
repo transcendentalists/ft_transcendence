@@ -1,0 +1,32 @@
+<script type="text/template" id="war-status-view-template">
+  <div class="ui card">
+    <div class="content">
+      <h4 class="ui sub header">포인트 현황</h4>
+      <div class="war-point row">
+        <div class="flex-container center-aligned baseline">
+          <div class="ui green progress" data-value=<%%= my_guild_point %> data-total=<%%= total_point %> id="my-guild-point">
+            <div class="bar">
+            </div>
+            <div class="label"><%%= my_guild_point %>P</div>
+          </div>
+          <a class="ui circular label">
+            VS
+          </a>
+          <div class="ui red progress" data-value=<%%= enemy_guild_point %> data-total=<%%= total_point %> id="enemy-guild-point">
+            <div class="bar">
+            </div>
+            <div class="label"><%%= enemy_guild_point %>P</div>
+          </div>
+        </div>
+      </div>
+      <h4 class="no-reply-count ui sub header">미응답 횟수 (최대 가능 미응답 수 초과시 자동 패배)</h4>
+      <div class="row">
+        <div class="ui progress warning" data-value=<%%= no_reply_count %> data-total=<%%= max_no_reply_count %> id="no-reply-count">
+          <div class="bar">
+          </div>
+          <div class="label">패배까지 남은 가능 미응답 횟수 <%%= max_no_reply_count - no_reply_count %>회</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>

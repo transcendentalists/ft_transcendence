@@ -96,6 +96,10 @@ export let Helper = {
     return App.app_view.appearance_view.friends.get(user_id) !== undefined;
   },
 
+  isCurrentView: function (view_name) {
+    return App.mainView.current_view?.id == view_name;
+  },
+
   isCurrentUser: function (user_id) {
     return App.current_user.id == user_id;
   },

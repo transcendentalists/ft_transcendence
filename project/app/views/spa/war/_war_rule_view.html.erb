@@ -1,0 +1,29 @@
+<script type="text/template" id="war-rule-view-template">
+  <div class="ui card">
+ <div class="content">
+      <%# TODO: rule name friendly하게 변경 %>
+      <div class="content">
+        <strong>규칙:</strong> <%%= rule.name %>
+      </div>
+      <div class="content">
+        <strong>목표 게임 점수:</strong> <%%= target_match_score %>
+      </div>
+      <div class="content">
+        <strong>배팅 포인트:</strong> <%%= bet_point %>
+      </div>
+      <div class="content">
+        <strong>범위:</strong> <%%= (include_ladder) ? "래더 포함, " : "래더 미포함, " %>
+        <%%= (include_tournament) ? "토너먼트 포함" : "토너먼트 미포함" %>
+      </div>
+      <div class="content">
+        <strong>최대 미응답 가능 횟수:</strong> <%%= + max_no_reply_count %>
+      </div>
+      <div class="content">
+        <strong>워 타임:</strong> <%%= war_time + ':00 ~ ' + (war_time + 1) + ':00' %>
+      </div>
+      <div class="content">
+        <strong>전쟁 기간:</strong> <%%= start_date + ' ~ ' + end_date %>
+      </div>
+    </div>
+  </div>
+</script>

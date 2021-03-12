@@ -2,6 +2,7 @@ import { App, Helper } from "srcs/internal";
 
 export let GuildDetailView = Backbone.View.extend({
   template: _.template($("#guild-detail-view-template").html()),
+  warning_message_template: _.template($("#warning-message-template").html()),
   id: "guild-detail-view",
   className: "top-margin",
 
@@ -39,6 +40,7 @@ export let GuildDetailView = Backbone.View.extend({
 
     Helper.fetch(this.war_history_url, {
       success_callback: this.renderWarHistory.bind(this),
+      fail_callback: this.renderWarHistoryFailCallback.bind(this),
     });
 
     return this;
@@ -60,6 +62,14 @@ export let GuildDetailView = Backbone.View.extend({
     this.war_history_list_view
       .setElement(this.$(".war-history-list"))
       .render(data.wars);
+  },
+
+  renderWarHistoryFailCallback: function (data) {
+    this.$(".ui.negative.message").empty();
+    this.$(".ui.negative.message").append(
+      this.warning_message_template(data.error)
+    );
+    this.$(".ui.negative.message").show();
   },
 
   renderGuildProfileCard: function (data) {

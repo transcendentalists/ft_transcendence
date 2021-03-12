@@ -103,6 +103,84 @@ body {
   cursor: pointer;
 }
 
+/* ==========================================================================
+     SEMANTIC RANGE
+     ========================================================================== */
+
+.ui.range {
+  width: 100%;
+  height: 20px;
+}
+
+.ui.range .inner {
+  margin: 0 10px 0 10px;
+  height: 20px;
+  position: relative;
+}
+
+.ui.range .inner:hover {
+  cursor: pointer;
+}
+
+.ui.range .inner .track {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  top: 9px;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ui.inverted.range .inner .track {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.ui.range .inner .track-fill {
+  position: absolute;
+  width: 0;
+  height: 4px;
+  border-radius: 4px;
+  top: 9px;
+  left: 0;
+  background-color: #1b1c1d;
+}
+
+.ui.inverted.range .inner .track-fill {
+  background-color: #545454;
+}
+
+.ui.range .inner .thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -webkit-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -o-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  border-radius: 100%;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15),
+    0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+}
+
+.ui.range.disabled {
+  opacity: 0.5;
+}
+
+.ui.range.disabled .inner:hover {
+  cursor: auto;
+}
+
+.ui.range.disabled .inner .track-fill {
+  background: #ccc;
+}
+
+/* ==========================================================================
+                                    PERSIST VIEW
+   ========================================================================== */
+
 @media (max-width: 1024px) {
   .hide-tablet {
     display: none;
@@ -736,7 +814,7 @@ body {
 }
 
 /* ==========================================================================
-   GUILD DETAIL VIEW
+     GUILD DETAIL VIEW
    ========================================================================== */
 
 #guild-detail-view .small.image {
@@ -773,6 +851,10 @@ body {
 
 #guild-detail-view .guild-profile-view .stat {
   margin-right: 1rem;
+}
+
+#guild-detail-view .member-list .row.flex-container.baseline {
+  width: 19rem;
 }
 
 #guild-detail-view .member-list .stat {
@@ -860,6 +942,63 @@ body {
 }
 
 #guild-create-view .anagram-input-header > i {
+  margin-left: 0.3rem;
+}
+
+/* ==========================================================================
+   WAR REQUEST CREATE VIEW
+   ========================================================================== */
+
+#war-request-create-view {
+  width: 550px;
+}
+
+#war-request-create-view .ui.large.label {
+  margin-bottom: 1rem;
+}
+
+#war-request-create-view .ui.segment.flex-container {
+  margin-top: 0;
+}
+
+#war-request-create-view .inline.fields {
+  align-items: baseline;
+}
+
+#war-request-create-view .inline.fields > label {
+  margin-top: 1rem;
+  margin-right: 2rem;
+}
+
+#war-request-create-view .minimum-value {
+  width: 6rem;
+}
+
+#war-request-create-view .maximum-value {
+  width: 6rem;
+  text-align: end;
+}
+
+#war-request-create-view .display-value {
+  text-align: center;
+}
+
+#war-request-create-view .max-no-reply-header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0;
+}
+
+#war-request-create-view .max-no-reply-header > label {
+  display: block;
+  margin: 0em 0em 0.28571429rem 0em;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.92857143em;
+  font-weight: bold;
+  text-transform: none;
+}
+
+#war-request-create-view .max-no-reply-header > i {
   margin-left: 0.3rem;
 }
 
@@ -1301,4 +1440,154 @@ body {
 
 .profile-card .rank {
   margin-left: 1rem;
+}
+
+/* ==========================================================================
+     WAR INDEX VIEW
+     ========================================================================== */
+
+#war-index-view .ui.header {
+  margin-bottom: 1rem;
+}
+
+#war-index-view .enemy-guild {
+  width: 32rem;
+}
+
+#war-index-view .enemy-guild-profile-view {
+  margin-bottom: 4rem;
+  height: 13rem;
+}
+
+#war-index-view .small.image {
+  margin-bottom: 0;
+  width: 150px !important;
+  height: 150px !important;
+  min-width: 150px;
+  min-height: 150px;
+}
+
+#war-index-view .war-battle {
+  width: 16rem;
+  margin-left: auto;
+}
+
+#war-index-view .war-battle-view {
+  margin-bottom: 4rem;
+}
+
+#war-index-view .war-battle-view .ui.card {
+  width: 24rem;
+  height: 13rem;
+  margin-right: 1rem;
+}
+
+#war-index-view .war-battle-view .ui.card .content .description {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+#war-index-view .war-status {
+  margin-left: auto;
+}
+
+#war-index-view .war-status-view {
+  margin-bottom: 4rem;
+  width: 100%;
+}
+
+#war-index-view .war-status-view .ui.card {
+  width: 336px;
+  height: 200px;
+}
+
+#war-index-view .war-status-view .content {
+  margin-top: 0.8rem;
+}
+
+#war-index-view .war-status-view .ui.circular.label {
+  place-self: flex-end;
+}
+
+#war-index-view .war-status-view .war-point.row {
+  margin-bottom: 1rem;
+}
+
+#war-index-view .war-status-view .sub.header {
+  margin-bottom: 0.5rem;
+}
+
+#war-index-view .war-status-view .no-reply-count {
+  margin-top: 2.5rem;
+}
+
+#war-index-view .war-rule-view {
+  margin-bottom: 4rem;
+  width: 100%;
+  margin-right: 1rem;
+}
+
+#war-index-view .war-rule-view .ui.card {
+  width: 336px;
+  height: 200px;
+}
+
+#war-index-view #my-guild-point {
+  width: 50%;
+  margin-bottom: 0;
+}
+
+#war-index-view #enemy-guild-point {
+  width: 50%;
+  transform: scaleX(-1);
+  margin-bottom: 0;
+}
+
+#war-index-view #enemy-guild-point .label {
+  transform: scaleX(-1);
+}
+
+#war-index-view .war-match-history-list-view {
+  margin-bottom: 4rem;
+  padding-top: 1.5rem;
+}
+
+#war-index-view .war-match-history-view {
+  justify-content: space-between;
+  align-items: stretch;
+  height: 33px;
+  margin-bottom: 1.5rem;
+}
+
+#war-index-view .war-match-history-view .label {
+  width: 15vw;
+  min-width: 100px;
+  font-size: 1rem;
+  text-align: center;
+  margin-right: 2rem;
+}
+
+#war-index-view .war-match-history-view .button {
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16.5rem;
+}
+
+#war-index-view .war-match-history-view .right.button {
+  margin-right: 1.5rem;
+}
+
+#war-index-view .war-match-history-view .enemy {
+  width: 20vw;
+}
+
+#war-index-view .war-match-history-view .enemy div:nth-child(2) {
+  margin-left: 1rem;
+}
+
+#war-index-view .war-match-history-view div[data-text] {
+  font-size: 1.2rem;
+  margin-top: -0.4rem;
 }

@@ -1,0 +1,33 @@
+<script type="text/template" id="war-index-view-template">
+  <h1 class="ui header guild-index-header">Current War</h1>
+  <%% if (current_user_guild == null) { %>
+    <span>소속된 길드가 없습니다.</span>
+  <%% } else if (!current_user_guild_in_war) { %>
+    <span>진행 중인 전쟁이 없습니다.</span>
+  <%% } else { %>
+    <div class="ui text container">
+      <div class="flex-container">
+        <div class="enemy-guild">
+          <h2 class="enemy-guild-header ui header">상대 길드</h2>
+          <div class="enemy-guild-profile-view guild-profile-card ui segment flex-container center-aligned"></div>
+        </div>
+        <div class="war-battle">
+          <h2 class="war-battle-header ui header">Battle</h2>
+          <div class="war-battle-view"></div>
+        </div>
+      </div>
+      <div class="flex-container">
+        <div class="war-rule">
+          <h2 class="war-rule-header ui header">전쟁 규칙</h2>
+          <div class="war-rule-view"></div>
+        </div>
+        <div class="war-status">
+          <h2 class="war-status-header ui header">전쟁 상태</h2>
+          <div class="war-status-view"></div>
+        </div>
+      </div>
+      <h2 class="war-match-history-header ui header">대전 기록</h2>
+      <div class="war-match-history-list-view flex-container column-direction"></div>
+    </div>
+  <%% } %>
+</script>

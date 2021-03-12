@@ -21,9 +21,13 @@ export let GuildProfileCardView = Backbone.View.extend({
         current_user_guild_position,
       })
     );
-    this.renderButtons();
-
+    if (!this.isInWarIndex()) this.renderButtons();
     return this;
+  },
+
+  isInWarIndex: function () {
+    const url = Backbone.history.getFragment().split("?")[0];
+    return url == "war";
   },
 
   renderButtons: function () {

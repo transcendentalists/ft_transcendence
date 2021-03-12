@@ -1,76 +1,69 @@
 class Api::WarRequestsController < ApplicationController
-  before_action :check_headers_and_find_current_user, only: [ :update, :create ]
+  before_action :check_headers_and_find_current_user
 
   def index
-    if params[:for] == "guild_index"
-      render json: { war_requests: WarRequest.for_guild_index(params[:guild_id]) }
-    else
-      render plain: params[:guild_id] + " guild's war requests index"
+    begin
+      if params[:for] == "guild_index"
+        render json: { war_requests: WarRequest.for_guild_index(params[:guild_id]) }
+      else
+        render_error :BadRequest
+      end
+    rescue ActiveRecord::RecordNotFound
+      render_error :NotFound
+    rescue
+      render_error :Conflict
     end
   end
 
   def create
-    ActiveRecord::Base.transaction do
-      begin
-        params = create_params
-        guild = Guild.find_by_id(params[:guild_id])
-        raise WarRequestError.new("권한이 없습니다.", 403) unless WarRequest.can_be_created_by?({
-          current_user: @current_user,
-          guild: guild
-        })
-        raise WarRequestError.new("이미 요청한 전쟁이 있습니다.") if guild.already_request_to?(params[:enemy_guild_id])
-        war_request = WarRequest.create_by!(params)
-      rescue => e
-        if e.class == ActionController::UnpermittedParameters
-          render_error("전쟁 요청 실패", "허용되지 않은 데이터가 보내졌습니다.", 400)
-        elsif e.class == ActionController::ParameterMissing
-          render_error("전쟁 요청 실패", "전송되지 않은 정보가 있습니다.", 400)
-        elsif e.class == ActiveRecord::RecordInvalid
-          key =  e.record.errors.attribute_names.first
-          error_message = e.record.errors.messages[key].first
-          render_error("전쟁 요청 실패", error_message, 400)
-        elsif e.class == ArgumentError && e.message == "invalid date"
-          render_error("전쟁 요청 실패", "유효하지 않은 날짜 형식입니다.", 400)
-        elsif e.class == WarRequestError
-          render_error("전쟁 요청 실패", e.message, e.status_code)
-        else
-          render_error("전쟁 요청 실패", "잘못된 요청입니다.", 400)
-        end
-        raise ActiveRecord::Rollback
-      else
-        return render json: { war_request_id: war_request.id }
+    begin
+      params = create_params
+      guild = Guild.find(params[:guild_id])
+      unless WarRequest.can_be_created_by?({ current_user: @current_user, guild: guild })
+        raise ServiceError.new(:Forbidden)
       end
+      raise ServiceError.new if guild.already_request_to?(params[:enemy_guild_id])
+      ActiveRecord::Base.transaction do
+        war_request = WarRequest.create_by!(params)
+      end
+      render json: { war_request_id: war_request.id }
+    rescue ActiveRecord::RecordNotFound
+      render_error :NotFound
+    rescue ActiveRecord::RecordInvalid
+      key =  e.record.errors.attribute_names.first
+      error_message = e.record.errors.messages[key].first
+      render_error(:BadRequest, error_message) 
+    rescue ServiceError => e
+      render_error(e.type, e.message)
+    rescue
+      render_error :Conflict
     end
   end
 
   def update
-    ActiveRecord::Base.transaction do
-      begin
-        war_request = WarRequest.find(params[:id])
-        raise WarRequestError.new("접근 권한이 없습니다.", 403) unless war_request.can_be_updated_by(@current_user)
-        raise WarRequestError.new("이미 수락되었거나 취소된 전쟁입니다.", 404) unless war_request.status == "pending"
+    begin
+      war_request = WarRequest.find(params[:id])
+      raise ServiceError.new(:Forbidden) unless war_request.can_be_updated_by(@current_user)
+      raise ServiceError.new(:BadRequest) unless war_request.status == "pending"
+
+      ActiveRecord::Base.transaction do
         if params[:status] == "accepted"
           war_request.enemy.accept!(war_request)
         else
-          war_request.update!(status: params[:status]) if params[:status]
+          war_request.update!(status: params[:status])
         end
-        head :no_content, status: 204
-      rescue ActiveRecord::RecordNotFound
-        render_error("전쟁 제안 검색 에러", "요청하신 전쟁 제안이 존재하지 않습니다.", 404)
-      rescue WarRequestError => e
-        render_error("전쟁 수락 에러", e.message, e.status_code)
-        raise ActiveRecord::Rollback
-      rescue => e
-        p e
-        key =  e.record.errors.attribute_names.first
-        error_message = e.record.errors.messages[key].first
-        render_error("전쟁 수락 실패", error_message, 400)
-        raise ActiveRecord::Rollback
-      # rescue => e
-      #   render_error("전쟁 수락 실패", "유효하지 않은 요청입니다.", 400)
-      else
-        head :no_content, status: 204
       end
+      head :no_content, status: 204
+    rescue ActiveRecord::RecordNotFound
+      render_error :NotFound
+    rescue ActiveRecord::RecordInvalid
+      key =  e.record.errors.attribute_names.first
+      error_message = e.record.errors.messages[key].first
+      render_error(:BadRequest, error_message) 
+    rescue ServiceError => e
+      render_error(e.type, e.message)
+    rescue
+      render_error :BadRequest
     end
   end
 

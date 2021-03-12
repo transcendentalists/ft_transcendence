@@ -5,7 +5,7 @@ class War < ApplicationRecord
   has_many :war_statuses, through: :request
   validates :status, inclusion: { in: ["pending", "progress", "completed"] }
 
-  def self.for_war_history(guild_id)
+  def self.for_war_history!(guild_id)
     self.where(status: "completed").order(updated_at: :desc).limit(5).map { |war|
       war_statuses = war.war_statuses
       current_guild_war_status = war_statuses.find_by_guild_id!(guild_id)

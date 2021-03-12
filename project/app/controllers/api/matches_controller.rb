@@ -19,9 +19,8 @@ class Api::MatchesController < ApplicationController
   def create
     begin
       raise ServiceError.new(:BadRequest) unless params[:user_id]
-        match = find_or_create_match!
-        render json: { match: { id: match.id } }
-      end
+      match = find_or_create_match!
+      render json: { match: { id: match.id } }
     rescue ServiceError => e
       render_error(e.type, e.message)
     rescue

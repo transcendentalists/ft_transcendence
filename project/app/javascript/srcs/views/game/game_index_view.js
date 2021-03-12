@@ -99,6 +99,7 @@ export let GameIndexView = Backbone.View.extend({
       END: ["게임종료", "게임이 종료되었습니다."],
       ENEMY_GIVEUP: ["게임종료", "유저가 게임을 기권하였습니다."],
       STOP: ["잘못된 접근", "취소/종료되었거나 유효하지 않은 게임입니다."],
+      CONFLICT: ["충돌", "점수를 갱신하는 데 문제가 발생했습니다."],
       LOADING: [
         "게임 미시작",
         "아직 게임이 시작되지 않았습니다. 잠시 후에 접근해주세요.",
@@ -164,6 +165,7 @@ export let GameIndexView = Backbone.View.extend({
         if (!this.is_player) this.redirectHome(msg.type);
         break;
       case "STOP":
+      case "CONFLICT":
         this.redirectHome(msg.type);
         break;
     }

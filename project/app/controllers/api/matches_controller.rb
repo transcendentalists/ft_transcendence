@@ -1,67 +1,48 @@
 class Api::MatchesController < ApplicationController
+  before_action :check_headers_and_find_current_user
+
   def index
-    if params[:user_id]
-      match_history_list = Match.for_user_index(params[:user_id])
-      render json: { matches: match_history_list }
-    elsif params[:war_id]
-      render plain: 'This is war ' + params[:war_id] + "'s matches"
-    elsif params[:for] == "live"
-      render json: {
-        matches: Match.for_live(params[:match_type])
-      }
-    else
-      render plain: 'get /api/matches/index'
+    begin
+      if params[:user_id]
+        match_history_list = Match.for_user_index(params[:user_id])
+        render json: { matches: match_history_list }
+      elsif params[:for] == "live"
+        render json: { matches: Match.for_live(params[:match_type]) }
+      else
+        render_error :BadRequest
+      end
+    rescue
+      render_error :Conflict
     end
   end
 
   def create
-    if params[:user_id]
-      user = User.find(params[:user_id])
-      match = find_or_create_match(user)
-      render json: {
-               match: {
-                 id: match.id,
-                 match_type: params[:match_type],
-                 user: {
-                   id: user.id,
-                 },
-               },
-             }
-    elsif params[:war_id]
-      render plain: 'war creates ' + params[:war_id] + "'s matches"
-    else
-      render plain: 'post /api/matches/create'
+    begin
+      raise ServiceError.new(:BadRequest) unless params[:user_id]
+        user = User.find(params[:user_id])
+        match = find_or_create_match!(user)
+        render json: { match: match.create_response({by: user}) }
+      end
+    rescue ServiceError => e
+      render_error(e.type, e.message)
+    rescue
+      render_error :Conflict
     end
-  end
-
-  def join
-    if params[:id]
-      render plain: 'You just joined ' + params[:id] + ' match'
-    else
-      render plain:
-               'The war id is ' + params[:war_id] + ' and the match is ' +
-                 params[:match_id]
-    end
-  end
-
-  def report
-    render plain: 'You just finished ' + params[:id] + ' match'
   end
 
   private
 
-  def find_or_create_match(user)
-    if ["ladder", "casual_ladder"].include?(params[:match_type])
-      match = find_or_create_ladder_match_for(user, { type: params[:match_type]} )
-    elsif params[:match_type] == 'dual'
-      match =
-        if params[:match_id].nil?
-          create_dual_match_for(user, params[:rule_id], params[:target_score])
-        else
-          join_dual_match_for(user, params[:match_id])
-        end
+  def find_or_create_match!(user)
+    match_type, match_id, rule_id, target_score = params.values_at(:match_type, :match_id, :rule_id, :target_score)
+    if ["ladder", "casual_ladder"].include?(match_type)
+      find_or_create_ladder_match_for(user, { type: match_type } )
+    elsif match_type == "dual"
+      if match_id.nil?
+        create_dual_match_for(user, rule_id, target_score)
+      else
+        join_dual_match_for(user, match_id)
+      end
     end
-    match
   end
 
   def find_or_create_ladder_match_for(user, options = {type: "casual_ladder"} )

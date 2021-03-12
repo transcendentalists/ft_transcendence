@@ -153,6 +153,14 @@ class Match < ApplicationRecord
     self.scorecards.reload.where(result: "ready").count == 2
   end
 
+  def create_response(options)
+    {
+      id: self.id,
+      match_type: self.match_type,
+      user: { id: options[:by].id },
+    }
+  end
+  
   private
 
   def before_tournament_time?

@@ -25,20 +25,13 @@ Rails.application.routes.draw do
       resources :tournament_memberships, path: 'memberships', only: [:create]
     end
 
-    resources :matches, only: %i[index create] do
-      member do
-        patch :report, to: 'matches#report'
-        patch :join, to: 'matches#join'
-      end
-    end
+    resources :matches, only: %i[index create]
 
     resources :wars, only: [] do
-      resources :matches, only: %i[index create] do
-        patch :join, to: 'matches#join'
-      end
+      resources :matches, only: %i[index create]
     end
 
-    resources :guilds, only: %i[index create update show] do
+    resources :guilds, only: %i[index create show] do
       resources :guild_memberships, path: 'memberships', only: %i[index create update destroy]
       resources :wars, only: [:index]
       resources :war_requests, only: %i[index create update]

@@ -23,9 +23,12 @@ class SpaController < ApplicationController
     end
   end
 
+  # 브라우저에 이전 로그인 기록이 남아있고,
+  # 해당 유저가 오프라인이 아닐 경우 강제 로그아웃을 진행하여
+  # 계정을 보호하고 브라우저당 동시 접속 제한
   def destroy
     id = cookies.encrypted[:service_id]
-    return if not User.exists?(id)
+    return unless User.exists?(id)
     remove_session
     head :no_content
   end

@@ -16,6 +16,17 @@ export let WarRequestDetailModalView = Backbone.View.extend({
     this.war_request = this.parent.war_request;
   },
 
+  render: function () {
+    this.war_request.current_user_position = App.current_user.get(
+      "guild"
+    ).position;
+    this.war_request.rule_name = Helper.translateRule(
+      this.war_request.rule_name
+    );
+    this.$el.html(this.template(this.war_request));
+    return this;
+  },
+
   acceptWarRequest: function () {
     const accept_war_request_url = `guilds/${
       App.current_user.get("guild").id
@@ -30,7 +41,7 @@ export let WarRequestDetailModalView = Backbone.View.extend({
       },
       fail_callback: (data) => {
         this.close();
-        Helper.info({ error: data.error });
+        Helper.defaultErrorHandler(data);
       },
     });
   },
@@ -42,22 +53,12 @@ export let WarRequestDetailModalView = Backbone.View.extend({
     Helper.fetch(decline_war_request_url, {
       method: "PATCH",
       body: { status: "canceled" },
-      success_callback: () => {
-        this.parent.close();
-      },
+      success_callback: () => this.parent.close(),
       fail_callback: (data) => {
         this.close();
-        Helper.info({ error: data.error });
+        Helper.defaultErrorHandler(data);
       },
     });
-  },
-
-  render: function () {
-    this.war_request["current_user_position"] = App.current_user.get(
-      "guild"
-    ).position;
-    this.$el.html(this.template(this.war_request));
-    return this;
   },
 
   close: function () {

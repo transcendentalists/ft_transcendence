@@ -14,29 +14,51 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
     this.guild = options.guild;
   },
 
+  render: function () {
+    const current_user_guild_id = App.current_user.get("guild")?.id;
+    const current_user_guild_position = App.current_user.get("guild")?.position;
+    const guild = this.guild;
+    const guild_show_button = this.isInGuildIndex();
+
+    this.$el.html(
+      this.template({
+        guild,
+        current_user_guild_id,
+        current_user_guild_position,
+        guild_show_button,
+      })
+    );
+
+    return this;
+  },
+
+  isInGuildIndex: function () {
+    const url = Backbone.history.getFragment().split("?")[0];
+    return url == "guilds";
+  },
+
   showGuild: function () {
-    App.router.navigate(`#/guilds/${this.guild.id}?page=1`);
+    App.router.navigate(`#/guilds/${this.guild.id}`);
   },
 
   leaveGuild: function () {
-    const url = `guilds/${this.guild.id}/memberships/${
+    const leave_guild_url = `guilds/${this.guild.id}/memberships/${
       App.current_user.get("guild").membership_id
     }`;
-    Helper.fetch(url, {
+
+    Helper.fetch(leave_guild_url, {
       method: "DELETE",
       success_callback: () => {
         App.current_user.set("guild", null);
         App.router.navigate("#/guilds?page=1", true);
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 
   joinGuild: function () {
-    const url = `guilds/${this.guild.id}/memberships`;
-    Helper.fetch(url, {
+    const join_guild_url = `guilds/${this.guild.id}/memberships`;
+    Helper.fetch(join_guild_url, {
       method: "POST",
       body: {
         user: {
@@ -51,9 +73,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
           true
         );
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 
@@ -61,25 +81,6 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
     App.router.navigate(
       `#/war/new?enemy_id=${this.guild.id}&enemy_name=${this.guild.name}`
     );
-  },
-
-  isInGuildIndex: function () {
-    const url = Backbone.history.getFragment().split("?")[0];
-    return url == "guilds" ? true : false;
-  },
-
-  render: function () {
-    const current_user_guild_id = App.current_user.get("guild")?.id;
-    const current_user_guild_position = App.current_user.get("guild")?.position;
-    this.$el.html(
-      this.template({
-        guild: this.guild,
-        current_user_guild_id: current_user_guild_id,
-        current_user_guild_position: current_user_guild_position,
-        guild_show_button: this.isInGuildIndex(),
-      })
-    );
-    return this;
   },
 
   close: function () {

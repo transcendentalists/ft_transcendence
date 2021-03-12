@@ -12,7 +12,9 @@ export let GuildIndexView = Backbone.View.extend({
 
   initialize: function () {
     const query = Helper.parseHashQuery();
+    Helper.authenticateREST(query.page);
     this.page = +query.page;
+
     this.is_last_page = false;
     this.current_user_guild = App.current_user.get("guild");
     this.guild_profile_card_view = null;
@@ -23,14 +25,22 @@ export let GuildIndexView = Backbone.View.extend({
     this.guild_ranking_url = `guilds?for=guild_index&page=${this.page}`;
   },
 
-  beforePage: function () {
-    if (this.page === 1 || this.page === NaN) return;
-    App.router.navigate(`#/guilds?page=${this.page - 1}`);
-  },
-
-  nextPage: function () {
-    if (this.is_last_page === true || this.page === NaN) return;
-    App.router.navigate(`#/guilds?page=${this.page + 1}`);
+  render: function () {
+    this.$el.html(
+      this.template({ current_user_guild: this.current_user_guild })
+    );
+    if (this.current_user_guild) {
+      Helper.fetch(this.current_user_guild_profile_url, {
+        success_callback: this.renderGuildProfileCardView.bind(this),
+      });
+      Helper.fetch(this.war_requests_url, {
+        success_callback: this.renderWarRequestCardListView.bind(this),
+      });
+    }
+    Helper.fetch(this.guild_ranking_url, {
+      success_callback: this.renderGuildRankingCardListView.bind(this),
+    });
+    return this;
   },
 
   renderGuildProfileCardView: function (data) {
@@ -58,26 +68,18 @@ export let GuildIndexView = Backbone.View.extend({
       .render(data.guilds);
   },
 
-  render: function () {
-    this.$el.html(
-      this.template({ current_user_guild: this.current_user_guild })
-    );
-    if (this.current_user_guild) {
-      Helper.fetch(this.current_user_guild_profile_url, {
-        success_callback: this.renderGuildProfileCardView.bind(this),
-      });
-      Helper.fetch(this.war_requests_url, {
-        success_callback: this.renderWarRequestCardListView.bind(this),
-      });
-    }
-    Helper.fetch(this.guild_ranking_url, {
-      success_callback: this.renderGuildRankingCardListView.bind(this),
-    });
-    return this;
-  },
-
   createGuild: function () {
     App.router.navigate("#/guilds/new");
+  },
+
+  beforePage: function () {
+    if (this.page === 1) return;
+    App.router.navigate(`#/guilds?page=${this.page - 1}`);
+  },
+
+  nextPage: function () {
+    if (this.is_last_page === true) return;
+    App.router.navigate(`#/guilds?page=${this.page + 1}`);
   },
 
   close: function () {

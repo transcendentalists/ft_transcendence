@@ -9,6 +9,44 @@ export let TournamentCreateView = Backbone.View.extend({
     "click .cancel.button": "cancel",
   },
 
+  render: function () {
+    const min_date = this.getMinDate();
+    const max_date = this.getMaxDate();
+    this.$el.html(
+      this.template({
+        min_date: min_date,
+        max_date: max_date,
+      })
+    );
+    return this;
+  },
+
+  getMinDate: function () {
+    let now = new Date();
+    now.setDate(now.getDate() + 1);
+    const min_iso_time = now.getTime() - now.getTimezoneOffset() * 60000;
+    return new Date(min_iso_time).toISOString().substr(0, 10);
+  },
+
+  getMaxDate: function () {
+    let now = new Date();
+    now.setDate(now.getDate() + 60);
+    const max_iso_time = now.getTime() - now.getTimezoneOffset() * 60000;
+    return new Date(max_iso_time).toISOString().substr(0, 10);
+  },
+
+  submit: function () {
+    let input_data = this.getInputData();
+    Helper.fetch("tournaments", {
+      method: "POST",
+      body: {
+        tournament: input_data,
+      },
+      success_callback: () => App.router.navigate("#/tournaments"),
+      fail_callback: Helper.defaultErrorHandler,
+    });
+  },
+
   getInputData: function () {
     const input_field = [
       "title",
@@ -42,46 +80,8 @@ export let TournamentCreateView = Backbone.View.extend({
     return input_data;
   },
 
-  submit: function () {
-    let input_data = this.getInputData();
-    Helper.fetch("tournaments", {
-      method: "POST",
-      body: {
-        tournament: input_data,
-      },
-      success_callback: () => App.router.navigate("#/tournaments"),
-      fail_callback: (data) => Helper.info({ error: data.error }),
-    });
-  },
-
   cancel: function () {
     Backbone.history.history.back();
-  },
-
-  getMaxDate: function () {
-    let now = new Date();
-    now.setDate(now.getDate() + 60);
-    const max_iso_time = now.getTime() - now.getTimezoneOffset() * 60000;
-    return new Date(max_iso_time).toISOString().substr(0, 10);
-  },
-
-  getMinDate: function () {
-    let now = new Date();
-    now.setDate(now.getDate() + 1);
-    const min_iso_time = now.getTime() - now.getTimezoneOffset() * 60000;
-    return new Date(min_iso_time).toISOString().substr(0, 10);
-  },
-
-  render: function () {
-    const min_date = this.getMinDate();
-    const max_date = this.getMaxDate();
-    this.$el.html(
-      this.template({
-        min_date: min_date,
-        max_date: max_date,
-      })
-    );
-    return this;
   },
 
   close: function () {

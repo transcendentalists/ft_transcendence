@@ -13,7 +13,9 @@ export let GuildDetailView = Backbone.View.extend({
 
   initialize: function (guild_id) {
     const query = Helper.parseHashQuery();
+    Helper.authenticateREST(query.page);
     this.page = +query.page;
+
     this.guild_id = guild_id;
     this.is_last_page = false;
     this.guild_profile_card_view = null;
@@ -25,23 +27,23 @@ export let GuildDetailView = Backbone.View.extend({
     App.current_user.fetch({ data: { for: "profile" } });
   },
 
-  beforePage: function () {
-    if (this.page === 1 || this.page === NaN) return;
-    App.router.navigate(`#/guilds/${this.guild_id}?page=${this.page - 1}`);
-  },
+  render: function () {
+    this.$el.html(this.template());
 
-  nextPage: function () {
-    if (this.is_last_page === true || this.page === NaN) return;
-    App.router.navigate(`#/guilds/${this.guild_id}?page=${this.page + 1}`);
-  },
-
-  renderGuildProfileCard: function (data) {
-    this.guild_profile_card_view = new App.View.GuildProfileCardView({
-      guild: data.guild,
+    Helper.fetch(this.current_user_guild_profile_url, {
+      success_callback: this.renderGuildProfileCard.bind(this),
     });
-    this.guild_profile_card_view
-      .setElement(this.$(".current-user-guild.guild-profile-card"))
-      .render();
+
+    Helper.fetch(this.guild_members_profile_url, {
+      success_callback: this.renderGuildMemberList.bind(this),
+    });
+
+    Helper.fetch(this.war_history_url, {
+      success_callback: this.renderWarHistory.bind(this),
+      fail_callback: this.renderWarHistoryFailCallback.bind(this),
+    });
+
+    return this;
   },
 
   renderGuildMemberList: function (data) {
@@ -70,24 +72,23 @@ export let GuildDetailView = Backbone.View.extend({
     this.$(".ui.negative.message").show();
   },
 
-  render: function () {
-    this.$el.html(this.template());
-    this.$(".ui.negative.message").hide();
-
-    Helper.fetch(this.current_user_guild_profile_url, {
-      success_callback: this.renderGuildProfileCard.bind(this),
+  renderGuildProfileCard: function (data) {
+    this.guild_profile_card_view = new App.View.GuildProfileCardView({
+      guild: data.guild,
     });
+    this.guild_profile_card_view
+      .setElement(this.$(".current-user-guild.guild-profile-card"))
+      .render();
+  },
 
-    Helper.fetch(this.guild_members_profile_url, {
-      success_callback: this.renderGuildMemberList.bind(this),
-    });
+  beforePage: function () {
+    if (this.page === 1 || this.page === NaN) return;
+    App.router.navigate(`#/guilds/${this.guild_id}?page=${this.page - 1}`);
+  },
 
-    Helper.fetch(this.war_history_url, {
-      success_callback: this.renderWarHistory.bind(this),
-      fail_callback: this.renderWarHistoryFailCallback.bind(this),
-    });
-
-    return this;
+  nextPage: function () {
+    if (this.is_last_page === true || this.page === NaN) return;
+    App.router.navigate(`#/guilds/${this.guild_id}?page=${this.page + 1}`);
   },
 
   close: function () {

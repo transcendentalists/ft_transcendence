@@ -8,7 +8,12 @@ export let GuildInvitationView = Backbone.View.extend({
     "click .decline.button": "decline",
   },
 
-  initialize: function () {},
+  render: function (guild_invitation) {
+    this.guild_invitation_id = guild_invitation.id;
+    this.guild_id = guild_invitation.guild.id;
+    this.$el.html(this.template(guild_invitation));
+    return this;
+  },
 
   approve: function () {
     const url = `/guilds/${this.guild_id}/memberships`;
@@ -24,9 +29,7 @@ export let GuildInvitationView = Backbone.View.extend({
         App.current_user.set("guild", data.guild_membership);
         App.router.navigate(`#/users/${App.current_user.id}`, true);
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 
@@ -36,18 +39,10 @@ export let GuildInvitationView = Backbone.View.extend({
       method: "DELETE",
       success_callback: () => {
         this.close();
+        this.trigger("decline");
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
-  },
-
-  render: function (guild_invitation) {
-    this.guild_invitation_id = guild_invitation.id;
-    this.guild_id = guild_invitation.guild.id;
-    this.$el.html(this.template(guild_invitation));
-    return this;
   },
 
   close: function () {

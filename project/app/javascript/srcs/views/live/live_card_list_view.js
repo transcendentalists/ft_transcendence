@@ -7,19 +7,19 @@ export let LiveCardListView = Backbone.View.extend({
     this.child_views = [];
   },
 
+  render: function (matches) {
+    if (!matches || !matches.length) return;
+    this.$el.empty();
+    matches.forEach(this.addOne, this);
+    return this;
+  },
+
   addOne: function (match) {
     let live_card_view = new App.View.LiveCardView({
       parent: this,
     });
     this.child_views.push(live_card_view);
     this.$el.append(live_card_view.render(match).$el);
-  },
-
-  render: function (matches) {
-    if (!matches || matches.length == 0) return;
-    this.$el.empty();
-    matches.forEach(this.addOne, this);
-    return this;
   },
 
   close: function () {

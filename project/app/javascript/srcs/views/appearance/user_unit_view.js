@@ -20,8 +20,18 @@ export let UserUnitView = Backbone.View.extend({
     this.listenTo(this.model, "create_user_menu", this.createUserMenu);
   },
 
+  render: function () {
+    this.$el.html(
+      this.template({
+        name: this.model.get("name"),
+        status: this.model.get("status"),
+      })
+    );
+    return this;
+  },
+
   destroyAndCreateUserMenu: function () {
-    App.appView.appearance_view.trigger("destroy_user_menu_all");
+    App.app_view.appearance_view.trigger("destroy_user_menu_all");
     this.model.trigger("create_user_menu");
   },
 
@@ -34,16 +44,6 @@ export let UserUnitView = Backbone.View.extend({
       is_friend: this.is_friend,
     });
     $("#root").append(this.user_menu_view.render(position).$el);
-  },
-
-  render: function () {
-    this.$el.html(
-      this.template({
-        name: this.model.get("name"),
-        status: this.model.get("status"),
-      })
-    );
-    return this;
   },
 
   changeStatus: function () {

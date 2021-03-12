@@ -5,7 +5,7 @@ class GroupChatRoom < ApplicationRecord
   has_many :messages, class_name: "ChatMessage", as: :room, dependent: :destroy
   has_many :memberships, class_name: "GroupChatMembership", dependent: :destroy
   has_many :users, through: :memberships, source: :user
-  validates :title, presence: true, length: {minimum: 1, maximum: 20}, allow_blank: false
+  validates :title, presence: true, length: {minimum: 1, maximum: 16}, allow_blank: false
   validates :max_member_count, :inclusion => { :in => 2..10 }
   validates :room_type, inclusion: { in: ["public", "private"] }
   scope :list_associated_with_current_user, -> (user) do

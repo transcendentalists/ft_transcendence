@@ -16,11 +16,22 @@ export let GuildCreateView = Backbone.View.extend({
     this.name = null;
     this.anagram = null;
     this.image = null;
+    this.message_field = null;
+    this.warning_message = null;
+  },
+
+  render: function () {
+    this.$el.html(this.template());
+    this.message_field = this.$(".ui.negative.message");
+    this.message_field.hide();
+    this.name = document.forms[0][input_name].value;
+    return this;
   },
 
   submit: function () {
     this.parseGuildParams();
     if (this.checkValidOfImage()) this.createGuild();
+    else this.renderWarning(this.warning_message);
   },
 
   parseGuildParams: function () {
@@ -30,29 +41,17 @@ export let GuildCreateView = Backbone.View.extend({
   },
 
   checkValidOfImage: function () {
-    let warning_message = null;
     const allowed_image_format = ["image/png", "image/jpeg", "image/jpg"];
     if (this.image === undefined) {
-      warning_message = "이미지가 설정되어 있지 않습니다.";
+      this.warning_message = "이미지가 설정되어 있지 않습니다.";
     } else if (!allowed_image_format.includes(this.image.type)) {
-      warning_message = "지원하지 않는 이미지 포맷입니다.";
+      this.warning_message = "지원하지 않는 이미지 포맷입니다.";
     } else if (this.image.size >= 1048576) {
-      warning_message = "이미지 사이즈는 1MB 미만여야합니다.";
+      this.warning_message = "이미지 사이즈는 1MB 미만여야합니다.";
     } else {
       return true;
     }
-    this.renderWarning(warning_message);
     return false;
-  },
-
-  renderWarning: function (msg) {
-    this.$(".ui.negative.message").html(
-      this.warning_message_template({
-        type: "업로드 에러",
-        msg: msg,
-      })
-    );
-    this.$(".ui.negative.message").show();
   },
 
   createGuild: async function () {
@@ -67,9 +66,7 @@ export let GuildCreateView = Backbone.View.extend({
         App.current_user.set("guild", data.guild_membership);
         App.router.navigate("#/guilds?page=1");
       },
-      fail_callback: (data) => {
-        Helper.info({ error: data.error });
-      },
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 
@@ -79,6 +76,17 @@ export let GuildCreateView = Backbone.View.extend({
     form_data.append("anagram", this.anagram);
     form_data.append("file", this.image);
     return form_data;
+  },
+
+  renderWarning: function (msg) {
+    if (!msg) return;
+    this.message_field.html(
+      this.warning_message_template({
+        type: "업로드 에러",
+        msg: msg,
+      })
+    );
+    this.message_field.show();
   },
 
   cancel: function () {
@@ -92,12 +100,6 @@ export let GuildCreateView = Backbone.View.extend({
         "아나그램은 길드 이름에 포함된 글자들만을 사용하여 만들어지는 어구입니다.<br>\
         또한 아나그램은 길드 이름보다 같거나 짧아야 합니다.",
     });
-  },
-
-  render: function () {
-    this.$el.html(this.template());
-    this.$(".ui.negative.message").hide();
-    return this;
   },
 
   close: function () {

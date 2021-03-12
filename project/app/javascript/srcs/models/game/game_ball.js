@@ -1,4 +1,4 @@
-import * as Draw from "srcs/draw";
+import * as Draw from "srcs/lib/draw";
 
 export const GameBall = Backbone.Model.extend({
   initialize: function (self, rule) {
@@ -8,10 +8,10 @@ export const GameBall = Backbone.Model.extend({
     this.x = this.cvs.width / 2;
     this.y = this.cvs.height / 2;
     this.radius = 10;
-    this.speed = 3;
-    this.accel_speed = 0.2;
-    this.velocityX = 3;
-    this.velocityY = 3;
+    this.speed = 3.5;
+    this.accel_speed = 0.3;
+    this.velocityX = 3.5;
+    this.velocityY = 3.5;
     this.opacity = 1;
     this.color = "WHITE";
     this.event_count = 0;
@@ -29,10 +29,10 @@ export const GameBall = Backbone.Model.extend({
   },
 
   applyAddonBall: function () {
-    if (this.engine_spec["invisible"]) {
+    if (this.engine_spec.invisible) {
       this.opacity = _.max([this.opacity - 0.04, 0.1]);
     }
-    if (this.engine_spec["dwindle"] && this.event_count % 4 == 0) {
+    if (this.engine_spec.dwindle && this.event_count % 4 == 0) {
       this.radius = _.max([this.radius - 1, 1]);
     }
   },
@@ -63,23 +63,17 @@ export const GameBall = Backbone.Model.extend({
   },
 
   applyEngineSpec: function (situation) {
-    if (
-      this.engine_spec["invisible"] == true ||
-      this.engine_spec["dwindle"] == true
-    )
-      this.applyAddonBall();
+    const spec_hash = {
+      invisible: this.applyAddonBall,
+      dwindle: this.applyAddonBall,
+      bound_wall: this.applyAddonBound,
+      bound_paddle: this.applyAddonBound,
+      accel_wall: this.applyAddonSpeed,
+      accel_paddle: this.applyAddonSpeed,
+    };
 
-    if (
-      this.engine_spec["bound_wall"] == true ||
-      this.engine_spec["bound_paddle"] == true
-    )
-      this.applyAddonBound(situation);
-
-    if (
-      this.engine_spec["accel_wall"] == true ||
-      this.engine_spec["accel_paddle"] == true
-    )
-      this.applyAddonSpeed(situation);
+    for (let spec in spec_hash)
+      if (this.engine_spec[spec]) spec_hash[spec].call(this, situation);
 
     this.event_count += 1;
   },
@@ -116,7 +110,7 @@ export const GameBall = Backbone.Model.extend({
       this.radius,
       this.color,
       this.opacity
-    ); // draw com paddle
+    );
     return this;
   },
 
@@ -149,6 +143,7 @@ export const GameBall = Backbone.Model.extend({
     this.event_count = +data.event_count;
     this.freeze_time = +data.freeze_time;
     this.accel_time = +data.accel_time;
+    this.delay_time = 0;
   },
 
   missPosition: function () {

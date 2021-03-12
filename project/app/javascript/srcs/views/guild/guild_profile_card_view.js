@@ -1,4 +1,4 @@
-import { App, Helper } from "srcs/internal";
+import { App } from "srcs/internal";
 
 export let GuildProfileCardView = Backbone.View.extend({
   template: _.template($("#guild-profile-card-template").html()),
@@ -12,11 +12,13 @@ export let GuildProfileCardView = Backbone.View.extend({
   render: function () {
     const current_user_guild_id = App.current_user.get("guild")?.id;
     const current_user_guild_position = App.current_user.get("guild")?.position;
+    const guild = this.guild;
+
     this.$el.html(
       this.template({
-        guild: this.guild,
-        current_user_guild_id: current_user_guild_id,
-        current_user_guild_position: current_user_guild_position,
+        guild,
+        current_user_guild_id,
+        current_user_guild_position,
       })
     );
     if (!this.isInWarIndex()) this.renderButtons();

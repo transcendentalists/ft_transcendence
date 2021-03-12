@@ -6,8 +6,20 @@ export let AppearanceView = Backbone.View.extend({
 
   initialize: function () {
     this.chat_bans = App.resources.chat_bans;
-    this.online_users = new App.Collection.Users();
     this.friends = new App.Collection.Friends();
+    this.online_users = new App.Collection.Users();
+    App.resources.friends = this.friends;
+    App.resources.online_users = this.online_users;
+  },
+
+  render: function () {
+    this.chat_bans.fetch();
+    this.appearance_channel = App.Channel.ConnectAppearanceChannel();
+    this.$el.html(this.template());
+
+    this.renderFriendListView();
+    this.renderOnlineUserListView();
+    this.renderMainButtonsView();
   },
 
   renderFriendListView: function () {
@@ -35,14 +47,16 @@ export let AppearanceView = Backbone.View.extend({
     });
   },
 
-  render: function () {
-    this.chat_bans.fetch();
-    this.appearance_channel = App.Channel.ConnectAppearanceChannel();
-    this.$el.html(this.template());
+  updateUserList: function (user_data) {
+    if (this.isFriend(user_data.id)) {
+      this.friends_list_view.updateUserList(user_data);
+    } else {
+      this.online_user_list_view.updateUserList(user_data);
+    }
+  },
 
-    this.renderFriendListView();
-    this.renderOnlineUserListView();
-    this.renderMainButtonsView();
+  isFriend: function (user_id) {
+    return this.friends.get(user_id) !== undefined;
   },
 
   close: function () {
@@ -50,17 +64,5 @@ export let AppearanceView = Backbone.View.extend({
     this.friends_list_view.close();
     this.main_buttons_view.close();
     this.$el.empty();
-  },
-
-  isFriend: function (id) {
-    return this.friends.get(id) !== undefined;
-  },
-
-  updateUserList: function (user_data) {
-    if (this.isFriend(user_data.id)) {
-      this.friends_list_view.updateUserList(user_data);
-    } else {
-      this.online_user_list_view.updateUserList(user_data);
-    }
   },
 });

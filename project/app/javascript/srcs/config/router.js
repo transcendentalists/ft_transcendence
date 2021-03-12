@@ -1,72 +1,69 @@
-import { Helper } from "./helper";
-import { App } from "./internal";
+import { App } from "srcs/internal";
 
 export let Router = Backbone.Router.extend({
   routes: {
     "": "sessionsController",
-    "auth/github/callback": "authController",
     "sessions/new": "sessionsController",
     "users(/:param)": "usersController",
     "chatrooms(/:param)": "chatRoomsController",
     "guilds(/:param)": "guildsController",
-    "ladder(/:page)": "ladderController",
+    ladder: "ladderController",
     "live(/:live_type)": "liveController",
     "war(/:new)": "warController",
     "matches(/:id)": "matchesController",
     "tournaments(/:param)": "tournamentsController",
-    "admin(/:param)": "adminController",
+    admin: "adminController",
     "errors/:id(/:type)(/:msg)": "errorsController",
     "*exception": "errorsController",
   },
 
-  authController: function () {
-    console.log("github login success!");
-  },
-
-  redirect_to: function (viewPrototype, param) {
+  redirect_to: function (viewPrototype, param, menu) {
     if (!App.current_user.sign_in) {
       return this.navigate("#/sessions/new");
     }
-    App.mainView.render(viewPrototype, param);
+    App.app_view.nav_bar_view.changeActiveItem(menu);
+    App.main_view.render(viewPrototype, param);
   },
 
   sessionsController: function () {
-    if (App.current_user.sign_in)
+    if (App.current_user.sign_in) {
       return this.navigate("#/users/" + App.current_user.id);
-    else App.mainView.render(App.View.SignInView);
+    } else App.main_view.render(App.View.SignInView);
   },
 
   usersController: function (param) {
-    if (param === "new") return App.mainView.render(App.View.SignUpView);
-    this.redirect_to(App.View.UserIndexView, param);
+    if (param === "new") return App.main_view.render(App.View.SignUpView);
+    const menu = App.current_user.id == param ? "home" : "ladder";
+    this.redirect_to(App.View.UserIndexView, param, menu);
   },
 
   chatRoomsController: function (param) {
-    if (param === null) this.redirect_to(App.View.ChatIndexView);
+    if (param === null) this.redirect_to(App.View.ChatIndexView, null, "chat");
     else if (param === "new")
-      this.redirect_to(App.View.ChatRoomCreateView, param);
-    else this.redirect_to(App.View.ChatRoomView, param);
+      this.redirect_to(App.View.ChatRoomCreateView, param, "chat");
+    else this.redirect_to(App.View.ChatRoomView, param, "chat");
   },
 
   guildsController: function (param) {
     if (param === null) {
-      this.redirect_to(App.View.GuildIndexView);
+      this.redirect_to(App.View.GuildIndexView, null, "guild");
     } else if (param === "new")
-      this.redirect_to(App.View.GuildCreateView, param);
-    else this.redirect_to(App.View.GuildDetailView, param);
+      this.redirect_to(App.View.GuildCreateView, param, "guild");
+    else this.redirect_to(App.View.GuildDetailView, param, "guild");
   },
 
-  ladderController: function (page = 1) {
-    this.redirect_to(App.View.LadderIndexView, page);
+  ladderController: function () {
+    this.redirect_to(App.View.LadderIndexView, null, "ladder");
   },
 
   liveController(live_type = "dual") {
-    this.redirect_to(App.View.LiveIndexView, live_type);
+    this.redirect_to(App.View.LiveIndexView, live_type, "live");
   },
 
   warController(param) {
-    if (param === null) this.redirect_to(App.View.WarIndexView);
-    else if (param === "new") this.redirect_to(App.View.WarRequestCreateView, param);
+    if (param === null) this.redirect_to(App.View.WarIndexView, null, "war");
+    else if (param === "new")
+      this.redirect_to(App.View.WarCreateView, param, "war");
     else this.navigate("#/errors/101");
   },
 
@@ -75,13 +72,14 @@ export let Router = Backbone.Router.extend({
   },
 
   tournamentsController(param) {
-    if (param === null) this.redirect_to(App.View.TournamentIndexView);
+    if (param === null)
+      this.redirect_to(App.View.TournamentIndexView, null, "tournament");
     else if (param === "new")
-      this.redirect_to(App.View.TournamentCreateView, param);
+      this.redirect_to(App.View.TournamentCreateView, param, "tournament");
     else this.navigate("#/errors/102");
   },
 
-  adminController(param) {
+  adminController() {
     if (!App.current_user.sign_in || App.current_user.get("position") == "user")
       return this.navigate("#/errors/103");
 

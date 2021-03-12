@@ -9,6 +9,11 @@ export let MainButtonsView = Backbone.View.extend({
     "click .logout.button ": "logout",
   },
 
+  render: function (options = { position: "user" }) {
+    this.$el.html(this.template(options));
+    return this;
+  },
+
   redirectAdminPage: function () {
     App.router.navigate("#/admin");
   },
@@ -26,11 +31,6 @@ export let MainButtonsView = Backbone.View.extend({
 
   logout: function () {
     App.restart();
-  },
-
-  render: function (options = { position: "user" }) {
-    this.$el.html(this.template(options));
-    return this;
   },
 
   close: function () {

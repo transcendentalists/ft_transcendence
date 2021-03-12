@@ -13,6 +13,36 @@ export let ChatIndexView = Backbone.View.extend({
     this.$el.html(this.template());
   },
 
+  render: function () {
+    const my_chat_room_url = "group_chat_rooms?for=my_group_chat_room_list";
+    Helper.fetch(my_chat_room_url, {
+      success_callback: this.renderMyChatRoomCallback.bind(this),
+    });
+
+    const public_chat_room_url = "group_chat_rooms?room_type=public";
+    Helper.fetch(public_chat_room_url, {
+      success_callback: this.renderPublicChatRoomCallback.bind(this),
+    });
+
+    return this;
+  },
+
+  renderMyChatRoomCallback: function (data) {
+    if (!data.group_chat_rooms) return;
+    this.my_chat_room_list_view = new App.View.ChatRoomCardListView();
+    this.my_chat_room_list_view.setElement(this.$("#my-chat-room-list-view"));
+    this.my_chat_room_list_view.render(data.group_chat_rooms);
+  },
+
+  renderPublicChatRoomCallback: function (data) {
+    if (!data.group_chat_rooms) return;
+    this.public_chat_room_list_view = new App.View.ChatRoomCardListView();
+    this.public_chat_room_list_view.setElement(
+      this.$("#public-chat-room-list-view")
+    );
+    this.public_chat_room_list_view.render(data.group_chat_rooms);
+  },
+
   createChatRoom: function () {
     App.router.navigate("#/chatrooms/new");
   },
@@ -26,36 +56,6 @@ export let ChatIndexView = Backbone.View.extend({
         App.router.navigate("#/chatrooms/" + data.group_chat_rooms.id);
       }.bind(this),
     });
-  },
-
-  renderMyChatRoomCallback: function (data) {
-    if (!data["group_chat_rooms"]) return;
-    this.my_chat_room_list_view = new App.View.ChatRoomCardListView();
-    this.my_chat_room_list_view.setElement(this.$("#my-chat-room-list-view"));
-    this.my_chat_room_list_view.render(data.group_chat_rooms);
-  },
-
-  renderPublicChatRoomCallback: function (data) {
-    if (!data["group_chat_rooms"]) return;
-    this.public_chat_room_list_view = new App.View.ChatRoomCardListView();
-    this.public_chat_room_list_view.setElement(
-      this.$("#public-chat-room-list-view")
-    );
-    this.public_chat_room_list_view.render(data.group_chat_rooms);
-  },
-
-  render: function () {
-    const my_chat_room_url = "group_chat_rooms?for=my_group_chat_room_list";
-    Helper.fetch(my_chat_room_url, {
-      success_callback: this.renderMyChatRoomCallback.bind(this),
-    });
-
-    const public_chat_room_url = "group_chat_rooms?room_type=public";
-    Helper.fetch(public_chat_room_url, {
-      success_callback: this.renderPublicChatRoomCallback.bind(this),
-    });
-
-    return this;
   },
 
   close: function () {

@@ -1,5 +1,4 @@
-import { App } from "srcs/internal";
-import { Helper } from "../../helper";
+import { App, Helper } from "srcs/internal";
 
 export let UserIndexView = Backbone.View.extend({
   id: "user-index-view",
@@ -7,29 +6,44 @@ export let UserIndexView = Backbone.View.extend({
   template: _.template($("#user-index-view-template").html()),
 
   initialize: function (user_id) {
+    Helper.authenticateREST(user_id);
     this.user_id = user_id;
     this.model = new App.Model.User({ id: this.user_id });
-    this.user_profile_view = new App.View.UserProfileCardView();
+    this.user_index_buttons_view = null;
+    this.user_profile_view = null;
+    this.guild_invitations_view = null;
+    this.match_history_view = null;
+  },
+
+  render: function () {
+    this.$el.html(
+      this.template({ is_current_user: Helper.isCurrentUser(this.user_id) })
+    );
+
     this.model.fetch({
       data: { for: "profile" },
-      success: function (data) {
-        this.user_profile_view.render(data.toJSON());
+      success: function (user) {
+        this.renderUserProfile(user);
         this.renderUserIndexButtons();
       }.bind(this),
     });
 
-    this.user_index_buttons_view = null;
-    this.guild_invitations_view = null;
-    this.match_history_view = null;
+    this.renderGuildInvitations();
+    this.renderMatchHistory();
+
+    return this;
+  },
+
+  renderUserProfile: function (user) {
+    this.user_profile_view = new App.View.UserProfileCardView();
+    this.$(".user-profile-view").append(
+      this.user_profile_view.render(user.toJSON()).$el
+    );
   },
 
   renderUserIndexButtons: function () {
     this.buttons_view = new App.View.UserIndexButtonsView(this.model);
     this.buttons_view.setElement(this.$("#user-index-buttons-view")).render();
-  },
-
-  renderUserProfile: function () {
-    this.$(".user-profile-view").append(this.user_profile_view.$el);
   },
 
   renderGuildInvitations: function () {
@@ -40,12 +54,26 @@ export let UserIndexView = Backbone.View.extend({
       "users/" + App.current_user.id + "/guild_invitations";
 
     Helper.fetch(guild_invitations_url, {
-      success_callback: function (data) {
+      success_callback: (data) =>
         this.guild_invitations_view
           .setElement(this.$("#guild-invitation-list-view"))
-          .render(data.guild_invitations);
-      }.bind(this),
+          .render(data.guild_invitations),
     });
+
+    this.listenDeclineInvitation();
+  },
+
+  listenDeclineInvitation: function () {
+    this.listenTo(
+      this.guild_invitations_view,
+      "decline",
+      this.renderDefaultText
+    );
+  },
+
+  renderDefaultText: function () {
+    if (this.$(".card").length !== 0) return;
+    this.guild_invitations_view.renderDefaultText();
   },
 
   renderMatchHistory: function () {
@@ -54,28 +82,15 @@ export let UserIndexView = Backbone.View.extend({
     const match_history_url = "users/" + this.user_id + "/matches";
 
     Helper.fetch(match_history_url, {
-      success_callback: function (match_history_list) {
+      success_callback: (match_history_list) =>
         this.match_history_view
           .setElement(this.$(".match-history-list-view"))
-          .render(match_history_list);
-      }.bind(this),
+          .render(match_history_list),
     });
   },
 
-  render: function () {
-    this.$el.html(
-      this.template({ is_current_user: Helper.isCurrentUser(this.user_id) })
-    );
-
-    this.renderUserProfile();
-    this.renderGuildInvitations();
-    this.renderMatchHistory();
-
-    return this;
-  },
-
   close: function () {
-    if (this.user_index_buttons_view) this.user_index_buttons_view.close();
+    if (this.buttons_view) this.buttons_view.close();
     if (this.user_profile_view) this.user_profile_view.close();
     if (this.guild_invitations_view) this.guild_invitations_view.close();
     if (this.match_history_view) this.match_history_view.close();

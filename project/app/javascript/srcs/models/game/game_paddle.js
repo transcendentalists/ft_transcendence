@@ -1,4 +1,4 @@
-import * as Draw from "srcs/draw";
+import * as Draw from "srcs/lib/draw";
 
 export const GamePaddle = Backbone.Model.extend({
   initialize: function (color, side, self) {
@@ -66,7 +66,7 @@ export const GamePaddle = Backbone.Model.extend({
   },
 
   update: function (data) {
-    this.y = +data["y"];
+    this.y = +data.y;
   },
 
   render: function () {

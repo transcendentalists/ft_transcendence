@@ -1,4 +1,4 @@
-import { App, Helper } from "srcs/internal";
+import { Helper } from "srcs/internal";
 
 export let AdminDB = Backbone.Model.extend({
   url: "/api/admin/db",
@@ -52,9 +52,7 @@ export let AdminDB = Backbone.Model.extend({
   },
 
   resourceText: function (resource) {
-    if (resource.hasOwnProperty("title"))
-      return `${resource.title}(${resource.channel_code})`;
-    else return resource.name;
+    return resource.name || `${resource.title}(${resource.channel_code})`;
   },
 
   resource: function (query_hash) {
@@ -76,7 +74,7 @@ export let AdminDB = Backbone.Model.extend({
   membership: function (query_hash) {
     let data = this.get(query_hash.resource) || [];
     let resource_id = query_hash.resource_id;
-    if (isNaN(resource_id)) return [];
+    if (!Helper.isNumber(resource_id)) return [];
 
     if (query_hash.resource == "guild_memberships")
       data = _.filter(data, (membership) => resource_id == membership.guild_id);

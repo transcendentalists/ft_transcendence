@@ -18,11 +18,47 @@ export let ChatRoomMenuView = Backbone.View.extend({
       App.current_user.id
     );
 
+    this.listenToChangeMemberPosition();
+  },
+
+  listenToChangeMemberPosition: function () {
     this.listenTo(
       this.current_user_as_room_member,
       "change:position",
       this.showOrHideButtonsByPosition
     );
+  },
+
+  render: function () {
+    this.$el.html(this.template(this.room));
+    this.showOrHideButtonsByPosition();
+    return this;
+  },
+
+  showOrHideButtonsByPosition: function () {
+    if (this.current_user_as_room_member.get("position") == "owner") {
+      this.showAuthorizedButtonsToOwner();
+    } else {
+      this.hideAuthorizedButtonsToOwner();
+    }
+  },
+
+  showAuthorizedButtonsToOwner: function () {
+    this.$el.find(".owner-auth").show();
+  },
+
+  hideAuthorizedButtonsToOwner: function () {
+    this.$el.find(".owner-auth").hide();
+  },
+
+  renderChangeRoomPasswordModal: function () {
+    Helper.input({
+      subject: "새로운 비밀번호 입력",
+      description: "비밀번호 미입력시 누구나 들어올 수 있습니다.",
+      success_callback: function (password) {
+        this.changePasswordRequest(password);
+      }.bind(this),
+    });
   },
 
   changePasswordRequest: function (password) {
@@ -36,16 +72,6 @@ export let ChatRoomMenuView = Backbone.View.extend({
     });
   },
 
-  renderChangeRoomPasswordModal: function () {
-    Helper.input({
-      subject: "새로운 비밀번호 입력",
-      description: "비밀번호 미입력시 누구나 들어올 수 있습니다.",
-      success_callback: function (password) {
-        this.changePasswordRequest(password);
-      }.bind(this),
-    });
-  },
-
   backToChatRoomList: function () {
     App.router.navigate("#/chatrooms");
   },
@@ -55,29 +81,7 @@ export let ChatRoomMenuView = Backbone.View.extend({
     await this.chat_room_members.letOutOfChatRoom(
       this.current_user_as_room_member
     );
-    App.router.navigate("#/chatrooms");
-  },
-
-  showAuthorizedButtonsToOwner: function () {
-    this.$el.find(".owner-auth").show();
-  },
-
-  hideAuthorizedButtonsToOwner: function () {
-    this.$el.find(".owner-auth").hide();
-  },
-
-  showOrHideButtonsByPosition: function () {
-    if (this.current_user_as_room_member.get("position") == "owner") {
-      this.showAuthorizedButtonsToOwner();
-    } else {
-      this.hideAuthorizedButtonsToOwner();
-    }
-  },
-
-  render: function () {
-    this.$el.html(this.template(this.room));
-    this.showOrHideButtonsByPosition();
-    return this;
+    this.backToChatRoomList();
   },
 
   close: function () {

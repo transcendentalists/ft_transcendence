@@ -24,17 +24,9 @@ export let FriendsListView = Backbone.View.extend({
     return this;
   },
 
-  close: function () {
-    for (let child_view of this.child_views) {
-      child_view.close();
-    }
-    this.remove();
-  },
-
   addOne: function (user) {
-    if (App.current_user.get("id") === user.get("id")) {
-      return;
-    }
+    if (App.current_user.equalTo(user)) return;
+
     this.friend_user_unit = new App.View.UserUnitView({
       parent: this,
       model: user,
@@ -57,7 +49,13 @@ export let FriendsListView = Backbone.View.extend({
 
   updateUserList: function (user_data) {
     const friend = this.friends.get(user_data.id);
-    if (friend)
-      friend.set({ status: user_data.status });
+    if (friend) friend.set({ status: user_data.status });
+  },
+
+  close: function () {
+    for (let child_view of this.child_views) {
+      child_view.close();
+    }
+    this.remove();
   },
 });

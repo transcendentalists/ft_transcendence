@@ -22,7 +22,7 @@ module ApplicationCable
     end
 
     def report_error(e)
-      p e.message
+      p "Connection Error: #{e.message}"
     end
   end
 end

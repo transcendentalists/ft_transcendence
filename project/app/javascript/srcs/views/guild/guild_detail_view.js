@@ -29,6 +29,7 @@ export let GuildDetailView = Backbone.View.extend({
 
   render: function () {
     this.$el.html(this.template());
+    this.$(".ui.negative.message").hide();
 
     Helper.fetch(this.current_user_guild_profile_url, {
       success_callback: this.renderGuildProfileCard.bind(this),

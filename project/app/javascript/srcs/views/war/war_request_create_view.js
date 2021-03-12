@@ -70,7 +70,7 @@ export let WarRequestCreateView = Backbone.View.extend({
       description:
         "전쟁 시간에 상대 길드가 매치를 신청하고<br>\
         10분 이내에 응답하지 않는 경우 미응답 처리가 됩니다.<br>\
-        미응답을 최대 미응답수만큼 하게되면 해당 전쟁을 패배하게 됩니다.",
+        미응답 수가 최대 미응답수를 초과하면 해당 전쟁에서 패배하게 됩니다.",
     });
   },
 

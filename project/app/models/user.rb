@@ -62,10 +62,9 @@ class User < ApplicationRecord
   end
 
   def self.in_same_war?
-    false unless self.count == 2
-    self.first.in_guild&.in_war? &&
-      self.last.in_guild&.in_war? &&
-      self.first.in_guild&.current_war == self.last.in_guild&.current_war
+    return false unless self.count == 2
+    return false if !self.first.in_guild&.in_war? || !self.second.in_guild&.in_war?
+    self.first.in_guild.current_war == self.second.in_guild.current_war
   end
 
   def playing?

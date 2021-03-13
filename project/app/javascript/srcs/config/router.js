@@ -63,7 +63,7 @@ export let Router = Backbone.Router.extend({
   warController(param) {
     if (param === null) this.redirect_to(App.View.WarIndexView, null, "war");
     else if (param === "new")
-      this.redirect_to(App.View.WarCreateView, param, "war");
+      this.redirect_to(App.View.WarRequestCreateView, param, "war");
     else this.navigate("#/errors/101");
   },
 

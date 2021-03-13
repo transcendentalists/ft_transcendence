@@ -8,17 +8,21 @@ class NotificationChannel < ApplicationCable::Channel
   end
 
   def dual_request(data)
-    ActionCable.server.broadcast(
-      "notification_channel_#{data['id'].to_s}",
-      {
-        type: 'dual',
-        status: 'request',
-        profile: current_user.profile,
-        rule_id: data['rule_id'],
-        rule_name: data['rule_name'],
-        target_score: data['target_score'],
-      },
-    )
+    begin
+      ActionCable.server.broadcast(
+        "notification_channel_#{data['id'].to_s}",
+        {
+          type: 'dual',
+          status: 'request',
+          profile: current_user.profile,
+          rule_id: data['rule_id'],
+          rule_name: data['rule_name'],
+          target_score: data['target_score'],
+        },
+      )
+    rescue => e
+      put "[ERROR][NotificationChannel_#{data['id']}][dual_request] #{e.message}"
+    end
   end
 
   def dual_declined(challenger)

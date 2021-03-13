@@ -153,9 +153,9 @@ export let ChatRoomView = Backbone.View.extend({
   },
 
   letOutIfKicked: function (chat_room_member) {
-    if (chat_room_member.get("position") != "ghost") return;
+    if (chat_room_member.get("position") !== "ghost") return;
 
-    if (App.current_user.get("id") == chat_room_member.get("id")) {
+    if (App.current_user.equalTo(chat_room_member)) {
       App.router.navigate("#/chatrooms");
       Helper.info({
         subject: "강제 퇴장",

@@ -38,7 +38,40 @@ class Match < ApplicationRecord
     }
   end
 
-  def start
+  def self.find_or_create_ladder_match_by!(options = {by: nil, type: "casual_ladder"} )
+    user, match_type = options.values_at(:by, :type)
+    raise ServiceError.new :BadRequest if user.nil? || user.playing?
+    match = nil
+    ActiveRecord::Base.transaction do
+      match = Match.where(match_type: match_type, status: "pending").last
+      match = Match.create!(match_type: match_type, rule_id: 1) if match.nil?
+      match.with_lock do
+        user_count = Scorecard.where(match_id: match.id).count
+        match = Match.create!(match_type: match_type, rule_id: 1) if user_count >= 2
+        side = match.users.count == 0 ? "left" : "right"
+        match.scorecards.create!(user_id: user.id, side: side)
+        user.update_status("playing")
+      end
+    end
+    match
+  end
+
+  def self.find_and_join_match_by!(options = {by: user, match_id: match_id})
+    match_id, user = options.values_at(:match_id, :by)
+    match = Match.find(match_id)
+    match.with_lock do
+      raise ServiceError.new(:BadRequest) if match.users.count == 2
+      if match.match_type == "war"
+        enemy = match.users.first
+        raise ServiceError.new(:BadRequest) if user.in_guild.id == enemy.in_guild.id
+      end
+      match.scorecards.create!(user_id: user.id, side: 'right')
+      ser.update_status('playing')
+    end
+    match
+  end
+
+  def start!
     return if self.status != "pending"
 
     if self.match_type == "tournament"
@@ -46,7 +79,7 @@ class Match < ApplicationRecord
       return self.cancel if ready_count == 0
       return self.end_by_giveup_on_tournament if ready_count == 1
     end
-    self.update(status: "progress", start_time: Time.zone.now())
+    self.update!(status: "progress", start_time: Time.zone.now())
     self.scorecards.update_all(result: "progress")
     self.broadcast({type: "PLAY"})
     self.eventable.broadcast({ type: "start", match_id: self.id, loading_time: 0 }) if (self.match_type == "war")
@@ -63,18 +96,20 @@ class Match < ApplicationRecord
       match_id: self.id,
       send_id: options[:send_id] || -1,
     }
-
-    if ["PLAY", "WATCH"].include?(options[:type])
-      msg.merge!({
-        left: self.left_user.profile,
-        right: self.right_user.profile,
-        target_score: self.target_score,
-        score: {left: self.left_score, right: self.right_score},
-        rule: self.rule,
-      })
-    end
+    
+    msg.merge! self.start_message if ["PLAY", "WATCH"].include?(options[:type])
 
     ActionCable.server.broadcast("game_channel_#{self.id.to_s}", msg)
+  end
+
+  def start_message
+    {
+      left: self.left_user.profile,
+      right: self.right_user.profile,
+      target_score: self.target_score,
+      score: {left: self.left_score, right: self.right_score},
+      rule: self.rule,
+    }
   end
 
   def winner
@@ -93,6 +128,17 @@ class Match < ApplicationRecord
     self.scorecards.find_by_side('right').user
   end
 
+  def complete(options = {type: "END"})
+    if self.users.in_same_war?
+      war = self.winner.in_guild.current_war
+      war_status = war.war_statuses.find_by_guild_id(self.winner.in_guild.id)
+      war_status.increase_point if war.match_types.include?(self.match_type)
+    end
+    self.update(status: "completed")
+    self.broadcast({type: options[:type]})
+    self.eventable.broadcast({type: "end"}) if self.match_type == "war"
+  end
+
   def cancel
     self.update(status: "canceled")
     self.scorecards.update_all(result: "canceled")
@@ -105,15 +151,19 @@ class Match < ApplicationRecord
     self.complete({type: "ENEMY_GIVEUP"})
   end
 
-  def complete(options = {type: "END"})
-    if self.users.in_same_war?
-      war = self.winner.in_guild.current_war
-      war_status = war.war_statuses.find_by_guild_id(self.winner.in_guild.id)
-      war_status.increase_point if war.match_types.include?(self.match_type)
-    end
+  # 게임의 승패에 따라 유저의 포인트를 업데이트
+  def update_game_status
     self.update(status: "completed")
-    self.broadcast({type: options[:type]})
-    self.eventable.broadcast({type: "end"}) if self.match_type == "war"
+
+    # ladder 매치를 진행한 경우, 유저의 랭킹 포인트를 증가
+    return if self.match_type != "ladder"
+    self.users.each do |user|
+      if user.id == self.winner.id
+        user.update(point: user.point + 20)
+      else
+        user.update(point: user.point + 5)
+      end
+    end
   end
 
   def enemy_of(user)
@@ -163,21 +213,6 @@ class Match < ApplicationRecord
 
   def loading_end?
     self.status == "progress" && Time.zone.now > self.start_time + 10.seconds
-  end
-
-  # 게임의 승패에 따라 유저의 포인트를 업데이트
-  def update_game_status
-    self.update(status: "completed")
-
-    # ladder 매치를 진행한 경우, 유저의 랭킹 포인트를 증가
-    return if self.match_type != "ladder"
-    self.users.each do |user|
-      if user.id == self.winner.id
-        user.update(point: user.point + 20)
-      else
-        user.update(point: user.point + 5)
-      end
-    end
   end
 
   private

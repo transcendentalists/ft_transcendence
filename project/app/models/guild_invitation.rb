@@ -2,6 +2,7 @@ class GuildInvitation < ApplicationRecord
   belongs_to :guild
   belongs_to :user
   belongs_to :invited_user, class_name: "User"
+
   validates_with GuildInvitationValidator, field: [ :user_id, :invited_user_id, :guild_id ]
 
   scope :for_user_index, -> (user_id) do

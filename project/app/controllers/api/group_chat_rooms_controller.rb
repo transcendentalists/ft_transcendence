@@ -1,86 +1,81 @@
 class Api::GroupChatRoomsController < ApplicationController
   before_action :check_headers_and_find_current_user, only: [ :index, :show, :update, :destroy]
   
-  # list_all scope 미구현 상태(admin 개발시 구현)
   def index
-    if params[:for] == 'my_group_chat_room_list'
-      group_chat_rooms = GroupChatRoom.list_associated_with_current_user(@current_user)
-    elsif params[:channel_code]
-      group_chat_rooms = GroupChatRoom.matching_channel_code(params[:channel_code], @current_user)
-      return render_error("NOT FOUND", "채널을 찾을 수 없습니다.", 404) if group_chat_rooms.nil?
-    elsif params[:room_type]
-      group_chat_rooms = GroupChatRoom.list_filtered_by_type(params[:room_type], @current_user)
-    else
-      group_chat_rooms = GroupChatRoom.list_all(@current_user)
+    begin
+      if params[:for] == "my_group_chat_room_list"
+        group_chat_rooms = GroupChatRoom.list_associated_with_user(@current_user)
+      elsif params[:channel_code]
+        group_chat_rooms = GroupChatRoom.matching_channel_code(params[:channel_code], @current_user)
+        raise ServiceError.new if group_chat_rooms.nil?
+      elsif params[:room_type]
+        group_chat_rooms = GroupChatRoom.list_filtered_by_type(params[:room_type], @current_user)
+      else
+        group_chat_rooms = GroupChatRoom.list_all(@current_user)
+      end
+      render json: { group_chat_rooms: group_chat_rooms }
+    rescue
+      render_error :NotFound
     end
-    render :json => { group_chat_rooms: group_chat_rooms }
   end
 
   def create
-    room = params[:group_chat_room]
-    return render_error("not found", "group_chat_room key가 없습니다.", 404) if room.nil?
-    if room.has_key?(:password) && room[:password] != ""
-      room[:password] = BCrypt::Password.create(room[:password]) 
-    else
-      room[:password] = nil
-    end
-    room[:channel_code] = generate_chat_room_code
-    return render_error("create failed", "이미 개설된 룸이 너무 많습니다. 관리자에게 문의하세요.", 503) if room[:channel_code].nil?
-    room = GroupChatRoom.generate(create_params)
-    return render_error("create failed", "parameter가 유효하지 않습니다.", 403) if room.nil?
-    render :json => { group_chat_room: room }
+    begin
+      room = params[:group_chat_room]
+      room[:password] = room[:password].blank? ? BCrypt::Password.create(room[:password]) : nil
+      room[:channel_code] = GroupChatRoom.generate_channel_code
+      raise ServiceError.new(:ServiceUnavailable) if room[:channel_code].nil?
+      room = GroupChatRoom.generate!(create_params)
+      render :json => { group_chat_room: room }
+    rescue ServiceError => e
+      render_error(e.type, e.message)
+    rescue
+      render_error(:Conflict)
+    end    
   end
 
   def show
-    group_chat_room = GroupChatRoom.find_by_id(params[:id])
-    return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", 404) if group_chat_room.nil?
-
-    if group_chat_room.locked?
-      return render_error("EMPTY PASSWORD", "Password가 입력되지 않았습니다.", 401) unless password_entered?
-      return render_error("INVALID PASSWORD", "Password가 일치하지 않습니다.", 403) unless valid_password?(group_chat_room)
+    begin
+      group_chat_room = GroupChatRoom.find(params[:id])
+      if group_chat_room.locked?
+        return render_error(:Unauthorized) unless password_entered?
+        return render_error(:Forbidden) unless valid_password?(group_chat_room)
+      end
+      group_chat_room.enter!(@current_user)
+      render json: { 
+        group_chat_room: group_chat_room.for_chat_room_format,
+        owner: group_chat_room.owner.for_chat_room_format,
+        current_user: group_chat_room.membership_by_user(@current_user),
+        chat_room_members: group_chat_room.members
+      }  
+    rescue ServiceError => e
+      render_error(e.type, e.message)
+    rescue
+      render_error :Conflict
     end
-
-    # TODO: 웹 관리자일 때의 처리 추가 필요
-    membership = group_chat_room.memberships.find_by_user_id(@current_user.id)
-    
-    if membership.nil?
-      membership = group_chat_room.join(@current_user)
-    elsif membership.ghost?
-      membership = membership.restore
-    end
-    
-    return render_error("OVERSTAFFED", "입장 가능인원을 초과했습니다.", 403) if membership.nil?
-    return render_error("FORBIDDEN", "아직 입장이 불가합니다.", 403) if membership.banned?
-
-    render json: { 
-      group_chat_room: group_chat_room.for_chat_room_format,
-      owner: group_chat_room.owner.for_chat_room_format,
-      current_user: group_chat_room.membership_by_user(@current_user),
-      chat_room_members: group_chat_room.members
-    }
   end
 
   def update
-    group_chat_room = GroupChatRoom.find_by_id(params[:id])
-    return render_error("NOT FOUND", "ChatRoom을 찾을 수 없습니다.", 404) if group_chat_room.nil? 
-    return render_error("UNAUTHORIZED", "권한이 없습니다.", 403) if !group_chat_room.can_be_update_by?(@current_user)
-    
     begin
-      group_chat_room.update_by_params update_chat_room_params
+      room = GroupChatRoom.find(params[:id])
+      raise ServiceError.new(:Forbidden) unless room.can_be_update_by?(@current_user)
+      room.update_by_params! update_params
+      head :no_content, status: 204
+    rescue ServiceError => e
+      render_error(e.type, e.message)
     rescue
-      return render_error("FAILED TO UPDATE", "업데이트를 실패했습니다.", 500)
+      render_error :Conflict
     end
-    head :no_content, status: 204
   end
 
   def destroy
-    return render_error("FORBIDDEN", "서비스 매니저만 챗룸을 삭제할 수 있습니다.", 403) unless current_user_is_admin_or_owner?
+    return render_error(:Forbidden) unless current_user_is_admin_or_owner?
     begin
-      group_chat_room = GroupChatRoom.find_by_id(params[:id])
-      group_chat_room.let_all_out_and_destroy!
-      return head :no_content, status: 204
+      room = GroupChatRoom.find(params[:id])
+      room.let_all_out_and_destroy!
+      head :no_content, status: 204
     rescue
-      return render_error("챗룸 삭제 실패", "챗룸 삭제에 실패했습니다.", 500)
+      render_error :Conflict
     end
   end
 
@@ -94,23 +89,11 @@ class Api::GroupChatRoomsController < ApplicationController
     group_chat_room.valid_password?(request.headers['Authorization'])
   end
 
-  def update_chat_room_params
-    params.require(:group_chat_room).permit(:password)
-  end
-
   def create_params
     params.require(:group_chat_room).permit(:owner_id, :room_type, :max_member_count, :title, :password, :channel_code)
   end
 
-  def generate_chat_room_code
-    10.times do
-      code = ""
-      9.times { code << (65 + rand(25)).chr }
-      code.insert(3, '-')
-      code.insert(7, '-')
-      return code if GroupChatRoom.find_by_channel_code(code).nil?
-    end
-    nil
+  def update_params
+    params.require(:group_chat_room).permit(:password)
   end
-
 end

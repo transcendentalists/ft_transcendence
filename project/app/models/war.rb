@@ -5,7 +5,7 @@ class War < ApplicationRecord
   has_many :war_statuses, through: :request
   validates :status, inclusion: { in: ["pending", "progress", "completed"] }
 
-  def self.for_war_history(guild_id)
+  def self.for_war_history!(guild_id)
     self.where(status: "completed").order(updated_at: :desc).limit(5).map { |war|
       war_statuses = war.war_statuses
       current_guild_war_status = war_statuses.find_by_guild_id!(guild_id)
@@ -98,6 +98,14 @@ class War < ApplicationRecord
     return self.war_statuses.min_by{ |status| status.point }
   end
 
+  def pending_or_progress_battle_exist?
+    !self.matches.find_by_status(["pending", "progress"]).nil?
+  end
+
+  def broadcast(msg)
+    ActionCable.server.broadcast("war_channel_#{self.id.to_s}", msg)
+  end
+
   def self.retry_set_schedule
     where(status: ["pending", "progress"]).each { |war| war.set_next_schedule }
   end
@@ -115,12 +123,7 @@ class War < ApplicationRecord
     end
   end
 
-  # private
-  def job_reservation(until_time, options)
-    return if until_time.past?
-    WarJob.set(wait_until: until_time).perform_later(self, options)
-    puts "* Job reservation: #{options[:type]}(id: #{self.id}) at #{until_time}"
-  end
+  private
 
   def set_schedule_at_start_date
     self.job_reservation(self.request.start_date, { type: "war_start" })
@@ -141,12 +144,10 @@ class War < ApplicationRecord
   def set_schedule_at_no_reply_time(match)
     self.job_reservation(Time.zone.now + 5.minutes, { type: "match_no_reply", match: match })
   end
-
-  def pending_or_progress_battle_exist?
-    !self.matches.find_by_status(["pending", "progress"]).nil?
-  end
-
-  def broadcast(msg)
-    ActionCable.server.broadcast("war_channel_#{self.id.to_s}", msg)
+  
+  def job_reservation(until_time, options)
+    return if until_time.past?
+    WarJob.set(wait_until: until_time).perform_later(self, options)
+    puts "* Job reservation: #{options[:type]}(id: #{self.id}) at #{until_time}"
   end
 end

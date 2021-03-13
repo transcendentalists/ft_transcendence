@@ -4,4 +4,4 @@ class ServiceError < StandardError
     @type = type
     @message = nil
   end
-end 
+end

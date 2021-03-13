@@ -56,7 +56,7 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def update_position!(position)
-    raise GroupChatMembershipError.new("이미 해당 유저의 포지션은 #{position}입니다.", 400) if self.position == position
+    raise ServiceError.new("이미 해당 유저의 포지션은 #{position}입니다.", 400) if self.position == position
 
     self.update!(position: position)
     self.boradcst :position

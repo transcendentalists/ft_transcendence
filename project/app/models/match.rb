@@ -71,7 +71,7 @@ class Match < ApplicationRecord
     match
   end
 
-  def start
+  def start!
     return if self.status != "pending"
 
     if self.match_type == "tournament"
@@ -79,7 +79,7 @@ class Match < ApplicationRecord
       return self.cancel if ready_count == 0
       return self.end_by_giveup_on_tournament if ready_count == 1
     end
-    self.update(status: "progress", start_time: Time.zone.now())
+    self.update!(status: "progress", start_time: Time.zone.now())
     self.scorecards.update_all(result: "progress")
     self.broadcast({type: "PLAY"})
     self.eventable.broadcast({ type: "start", match_id: self.id, loading_time: 0 }) if (self.match_type == "war")

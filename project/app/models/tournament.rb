@@ -77,9 +77,9 @@ class Tournament < ApplicationRecord
     [2,4,8,16,32].find { |round| round >= num_of_progress }
   end
 
-  def start
+  def start!
     status = self.memberships.count < 8 ? "canceled" : "progress"
-    self.update(status: status)
+    self.update!(status: status)
     self.memberships.update_all(status: status)
   end
 
@@ -102,11 +102,11 @@ class Tournament < ApplicationRecord
     )
   end
 
-  def complete
+  def complete!
     if !self.winner.nil? && self.incentive_title
-      self.winner.update(title: self.incentive_title)
+      self.winner.update!(title: self.incentive_title)
     end
-    self.update(status: "completed")
+    self.update!(status: "completed")
     self.progress_memberships.update_all(status: "completed")
   end
 

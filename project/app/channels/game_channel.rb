@@ -16,7 +16,7 @@ class GameChannel < ApplicationCable::Channel
       return if @match.pending? && !@match.ready_to_start?
 
       if @match.ready_to_start? 
-        @match.start
+        @match.start!
       else
         @match.broadcast({type: "WATCH", send_id: current_user.id})
       end
@@ -52,7 +52,7 @@ class GameChannel < ApplicationCable::Channel
     begin
       ActiveRecord::Base.transaction do
         @match.scorecards.each do |card|
-          card.update(result: card.score == @match.target_score ? "win" : "lose")
+          card.update!(result: card.score == @match.target_score ? "win" : "lose")
         end
         @match.complete({type: "END"})
       end
@@ -69,7 +69,7 @@ class GameChannel < ApplicationCable::Channel
     raise GameError.new(:STOP) if @match.status == "completed"
     ActiveRecord::Base.transaction do
       @match.scorecards.each do |card|
-        card.update(result: card.user.id == current_user.id ? "lose" : "win")
+        card.update!(result: card.user.id == current_user.id ? "lose" : "win")
       end
       winner_id = current_user.enemy
       @match.complete({type: "ENEMY_GIVEUP"})    

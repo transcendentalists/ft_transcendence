@@ -37,6 +37,15 @@ class Guild < ApplicationRecord
     }
   end
 
+  def for_user_profile(user)
+    simple = self.to_simple
+    simple.merge!({
+      membership_id: user.guild_membership.id,
+      position: user.guild_membership.position,
+      in_war: self.in_war?
+    })
+  end
+
   def already_request_to?(enemy_guild_id)
     self.requests.where(status: "pending").each do |request|
       return true if request.enemy.id == enemy_guild_id

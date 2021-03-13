@@ -41,7 +41,7 @@ class Api::UsersController < ApplicationController
       user = User.includes(:in_guild, :scorecards, :tournament_memberships).find(params[:id])
       case params[:for]
       when "appearance"
-        render :json => { user: user.make_user_data(user.status) }
+        render :json => { user: user.for_appearance(user.status) }
       when "profile"
         render :json => { user: user.profile }
       else

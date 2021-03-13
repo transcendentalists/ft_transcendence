@@ -41,6 +41,7 @@ class Match < ApplicationRecord
   def self.find_or_create_ladder_match_by!(options = {by: nil, type: "casual_ladder"} )
     user, match_type = options.values_at(:by, :type)
     raise ServiceError.new :BadRequest if user.nil? || user.playing?
+    match = nil
     ActiveRecord::Base.transaction do
       match = Match.where(match_type: match_type, status: "pending").last
       match = Match.create!(match_type: match_type, rule_id: 1) if match.nil?

@@ -27,7 +27,9 @@ export let Helper = {
         : body;
     }
 
-    const prefix = hash_args.prefix ? hash_args.prefix : "api/";
+    const prefix = hash_args.hasOwnProperty("prefix")
+      ? hash_args.prefix
+      : "api/";
     let data = {};
     let success = false;
 

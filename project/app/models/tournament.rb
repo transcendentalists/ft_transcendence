@@ -23,6 +23,31 @@ class Tournament < ApplicationRecord
     }
   end
 
+  def self.can_be_created_by?(user)
+    user.can_service_manage?
+  end
+
+  def self.create_by!(params)
+    start_date = DateTime.strptime(params[:start_date], "%Y-%m-%d")
+    tournament_time = Time.zone.now.change({ hour: params[:tournament_time] })
+    tournament_hash = tournament_hash(params)
+    tournament_hash.merge!({incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
+
+    self.create!(tournament_hash)
+  end
+
+  def tournament_hash(params)
+    {
+      title: params[:title],
+      rule_id: params[:rule_id],
+      max_user_count: params[:max_user_count],
+      start_date: start_date,
+      tournament_time: tournament_time,
+      incentive_gift: params[:incentive_gift],
+      target_match_score: params[:target_match_score]
+    }
+  end
+
   def to_simple
     permitted = %w[id title max_user_count registered_user_count start_date 
                     tournament_time incentive_title incentive_gift status
@@ -42,23 +67,55 @@ class Tournament < ApplicationRecord
     })
   end
 
-  def enroll(user)
+  def today_round
+    num_of_progress = self.progress_memberships.count
+    [2,4,8,16,32].find { |round| round >= num_of_progress } 
+  end
+
+  def tomorrow_round
+    num_of_progress = self.progress_memberships.count / 2 + 1
+    [2,4,8,16,32].find { |round| round >= num_of_progress }
+  end
+
+  def start!
+    status = self.memberships.count < 8 ? "canceled" : "progress"
+    self.update!(status: status)
+    self.memberships.update_all(status: status)
+  end
+
+  def enroll!(user)
     if self.start_date.midnight.past?
-      raise StandardError.new("등록 기간을 초과했습니다.")
+      raise ServiceError.new(:BadRequest, "등록 기간을 초과했습니다.")
     elsif self.memberships.count == self.max_user_count
-      raise StandardError.new("정원이 마감되었습니다.")
+      raise ServiceError.new(:BadRequest, "정원이 마감되었습니다.")
     elsif self.status != "pending"
-      raise StandardError.new("토너먼트가 등록이 불가능한 상태입니다.")
+      raise ServiceError.new(:BadRequest, "토너먼트가 등록이 불가능한 상태입니다.")
     elsif !self.memberships.find_by_user_id(user.id).nil?
-      raise StandardError.new("이미 등록한 토너먼트입니다.")
+      raise ServiceError.new(:BadRequest, "이미 등록한 토너먼트입니다.")
     elsif self.overlapped_schedule?(user)
-      raise StandardError.new("다른 토너먼트 스케쥴과 중복됩니다.")
+      raise ServiceError.new(:BadRequest, "다른 토너먼트 스케쥴과 중복됩니다.")
     end
 
     TournamentMembership.create!(
       user_id: user.id,
       tournament_id: self.id,
     )
+  end
+
+  def complete!
+    if !self.winner.nil? && self.incentive_title
+      self.winner.update!(title: self.incentive_title)
+    end
+    self.update!(status: "completed")
+    self.progress_memberships.update_all(status: "completed")
+  end
+
+  def update_progress_memberships(params)
+    self.progress_memberships.update_all(params)
+  end
+
+  def progress_memberships
+    self.memberships.where(status: "progress")
   end
 
   def match_hour
@@ -122,26 +179,8 @@ class Tournament < ApplicationRecord
     Time.zone.now.change({ hour: self.tournament_time.hour })
   end
 
-  def tomorrow_round
-    num_of_progress = self.progress_memberships.count / 2 + 1
-    [2,4,8,16,32].find { |round| round >= num_of_progress }
-  end
-
-  def today_round
-    num_of_progress = self.progress_memberships.count
-    [2,4,8,16,32].find { |round| round >= num_of_progress } 
-  end
-
   def last_match
     self.matches.order(start_time: :desc).first
-  end
-
-  def progress_memberships
-    self.memberships.where(status: "progress")
-  end
-
-  def update_progress_memberships(params)
-    self.progress_memberships.update_all(params)
   end
 
   def first_date?(datetime)
@@ -150,12 +189,6 @@ class Tournament < ApplicationRecord
 
   def last_date?
     self.status == "progress" && self.today_round == 2 && Time.zone.now.hour >= self.tournament_time.hour
-  end
-
-  def start
-    status = self.memberships.count < 8 ? "canceled" : "progress"
-    self.update(status: status)
-    self.memberships.update_all(status: status)
   end
 
   def canceled?
@@ -168,14 +201,6 @@ class Tournament < ApplicationRecord
 
   def winner
     self.memberships.find_by_result("gold")&.user
-  end
-
-  def complete
-    if !self.winner.nil? && self.incentive_title
-      self.winner.update(title: self.incentive_title)
-    end
-    self.update(status: "completed")
-    self.progress_memberships.update_all(status: "completed")
   end
 
   # 서버 재시작 후 해제된 모든 토너먼트의 스케쥴 재설정(개발 완료 후 주석해제 필요)
@@ -193,27 +218,6 @@ class Tournament < ApplicationRecord
     else
       self.set_schedule_at_tournament_time
     end
-  end
-
-  def self.can_be_created_by?(user)
-    user.can_service_manage?
-  end
-
-  def self.create_by(params)
-    start_date = DateTime.strptime(params[:start_date], "%Y-%m-%d")
-    tournament_time = Time.zone.now.change({ hour: params[:tournament_time] })
-    tournament_hash = {
-      title: params[:title],
-      rule_id: params[:rule_id],
-      max_user_count: params[:max_user_count],
-      start_date: start_date,
-      tournament_time: tournament_time,
-      incentive_gift: params[:incentive_gift],
-      target_match_score: params[:target_match_score]
-    }
-    tournament_hash.merge!({ incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
-
-    self.create!(tournament_hash)
   end
 
   private

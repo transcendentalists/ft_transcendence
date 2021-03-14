@@ -68,6 +68,10 @@ body {
   align-items: center;
 }
 
+.flex-container.center {
+  justify-content: center;
+}
+
 .flex-container.baseline {
   align-items: baseline;
 }

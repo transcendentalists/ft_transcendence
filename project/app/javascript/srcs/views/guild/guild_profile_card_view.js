@@ -27,7 +27,7 @@ export let GuildProfileCardView = Backbone.View.extend({
 
   isInWarIndex: function () {
     const url = Backbone.history.getFragment().split("?")[0];
-    return url == "war";
+    return url === "war";
   },
 
   renderButtons: function () {
@@ -35,7 +35,7 @@ export let GuildProfileCardView = Backbone.View.extend({
       guild: this.guild,
     });
     this.buttons_view
-      .setElement(this.$("#guild-profile-card-buttons-view"))
+      .setElement(this.$(".guild-profile-card-buttons-view"))
       .render();
   },
 

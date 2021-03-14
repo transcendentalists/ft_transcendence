@@ -34,7 +34,7 @@ export let GuildProfileCardButtonsView = Backbone.View.extend({
 
   isInGuildIndex: function () {
     const url = Backbone.history.getFragment().split("?")[0];
-    return url == "guilds";
+    return url === "guilds";
   },
 
   showGuild: function () {

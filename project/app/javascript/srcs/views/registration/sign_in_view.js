@@ -76,7 +76,7 @@ export let SignInView = Backbone.View.extend({
     this.current_user_id = data.current_user.id;
     App.current_user.two_factor_auth = data.current_user.two_factor_auth;
     if (data.current_user.two_factor_auth) {
-      this.status = "verification";
+      this.status = "auth";
       this.submit_unlock();
       this.login_field.hide();
       this.auth_field.show();
@@ -105,7 +105,7 @@ export let SignInView = Backbone.View.extend({
     return {
       method: "POST",
       success_callback: this.authSuccessCallback.bind(this),
-      fail_callback: this.showWarningMessage(data).bind(this),
+      fail_callback: this.showWarningMessage.bind(this),
       prefix: "",
       body: {
         user: {

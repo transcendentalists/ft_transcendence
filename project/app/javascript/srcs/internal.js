@@ -134,7 +134,6 @@ import { UserProfileCardView } from "./views/user/user_profile_card_view";
 
 /** war views */
 import { WarBattleView } from "./views/war/war_battle_view";
-import { WarCreateView } from "./views/war/war_battle_view";
 import { WarHistoryListView } from "./views/war/war_history_list_view";
 import { WarHistoryView } from "./views/war/war_history_view";
 import { WarIndexView } from "./views/war/war_index_view";
@@ -263,7 +262,6 @@ export let App = {
     UserIndexView,
     UserProfileCardView,
     WarBattleView,
-    WarCreateView,
     WarHistoryListView,
     WarHistoryView,
     WarIndexView,

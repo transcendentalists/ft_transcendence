@@ -10,7 +10,7 @@ class WarRequest < ApplicationRecord
   validates :bet_point, inclusion: { in: (100..1000).step(50), message: "배팅 포인트를 잘못 입력하셨습니다."}
   validates_with WarRequestCreateValidator, field: [ :start_date, :end_date, :war_time ], on: :create
   validates_with WarRequestUpdateValidator, field: [ :start_date, :end_date, :war_time ], on: :update
-
+  
   scope :for_guild_index, -> (guild_id) do
     WarRequest.joins(:war_statuses).where(war_statuses: {guild_id: guild_id, position: "enemy"}, status: "pending")
     .order(start_date: :asc)
@@ -32,44 +32,26 @@ class WarRequest < ApplicationRecord
     current_user.in_guild&.id == guild.id && current_user.guild_membership.master?
   end
 
-  def can_be_updated_by(user)
-    if user.in_guild.nil? ||
-      user.in_guild.id != self.war_statuses.find_by_position("enemy").guild.id ||
-      user.guild_membership.position == "member"
-      return false
-    else
-      return true
-    end
-  end
-
-  def create_war_statuses_by_guild_ids!(options)
-    self.war_statuses.create!(guild_id: options[:challenger_guild_id], position: "challenger")
-    self.war_statuses.create!(guild_id: options[:enemy_guild_id], position: "enemy")
-  end
-
   def self.create_by!(params)
-    start_date = Time.zone.strptime(params[:start_date], "%Y-%m-%d")
-    war_request = self.new(
-      rule_id: params[:rule_id],
-      bet_point: params[:bet_point],
-      start_date: start_date,
-      end_date: start_date + params[:war_duration].days,
-      war_time: Time.zone.now.change({ hour: params[:war_time] }),
-      max_no_reply_count: params[:max_no_reply_count],
-      include_ladder: params[:include_ladder],
-      include_tournament: params[:include_tournament],
-      target_match_score: params[:target_match_score],
-    )
-    if war_request.invalid?
-      @error_message = war_request.errors[war_request.errors.attribute_names.first].first
-      raise WarRequestError.new(@error_message)
-    end
-    war_request.save!
+    guild_id, enemy_guild_id = params.values_at(:guild_id, :enemy_guild_id)
+    war_request = self.create(params.except(:guild_id, :enemy_guild_id))
     war_request.create_war_statuses_by_guild_ids!({
       challenger_guild_id: params[:guild_id],
       enemy_guild_id: params[:enemy_guild_id]
     })
     war_request
+  end
+
+  def create_war_statuses_by_guild_ids!(options)
+    self.war_statuses.create!([
+      { guild_id: options[:challenger_guild_id], position: "challenger" },
+      { guild_id: options[:enemy_guild_id], position: "enemy" }
+    ])
+  end
+
+  def can_be_updated_by(user)
+    return false if user.in_guild.nil? || user.guild_membership.position == "member"
+    return user.in_guild.id == self.enemy.guild.id
   end
 
   def enemy

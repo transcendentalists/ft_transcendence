@@ -14,4 +14,15 @@ class Scorecard < ApplicationRecord
   def ready
     self.update(result: "ready")
   end
+  
+  def with_war?(match_types)
+    return false if !self.completed? || self.users.in_same_war?
+    match_types.include?(self.match.match_type)
+  end
+
+  private
+
+  def completed?
+    self.match.status == "completed"
+  end
 end

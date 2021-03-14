@@ -19,6 +19,7 @@ class TournamentJob < ApplicationJob
       end
     rescue => e
       put "[ERROR][TournamentJob_#{@tournament.id}] #{e.message}"
+    end
   end
 
   def operate_tournament!

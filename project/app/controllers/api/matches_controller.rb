@@ -46,7 +46,7 @@ class Api::MatchesController < ApplicationController
   # 현재 create_match_type은 war가 아닐 경우 dual
   def create_match!
     return create_war_match! if params[:match_type] == "war"
-
+    match = nil
     ActiveRecord::Base.transaction do
       match = Match.create(create_params)
       match.scorecards.create(user_id: @current_user.id, side: 'left')

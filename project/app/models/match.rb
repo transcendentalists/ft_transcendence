@@ -66,7 +66,7 @@ class Match < ApplicationRecord
         raise ServiceError.new(:BadRequest) if user.in_guild.id == enemy.in_guild.id
       end
       match.scorecards.create!(user_id: user.id, side: 'right')
-      ser.update_status('playing')
+      user.update_status('playing')
     end
     match
   end

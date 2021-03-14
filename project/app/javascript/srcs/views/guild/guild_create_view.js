@@ -24,7 +24,6 @@ export let GuildCreateView = Backbone.View.extend({
     this.$el.html(this.template());
     this.message_field = this.$(".ui.negative.message");
     this.message_field.hide();
-    this.name = document.forms[0][input_name].value;
     return this;
   },
 

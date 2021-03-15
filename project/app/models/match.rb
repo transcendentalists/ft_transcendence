@@ -96,7 +96,7 @@ class Match < ApplicationRecord
       match_id: self.id,
       send_id: options[:send_id] || -1,
     }
-    
+
     msg.merge! self.start_message if ["PLAY", "WATCH"].include?(options[:type])
 
     ActionCable.server.broadcast("game_channel_#{self.id.to_s}", msg)
@@ -134,9 +134,13 @@ class Match < ApplicationRecord
       war_status = war.war_statuses.find_by_guild_id(self.winner.in_guild.id)
       war_status.increase_point if war.match_types.include?(self.match_type)
     end
+    self.users.each do |user|
+      user.update_status("online")
+    end
     self.update(status: "completed")
     self.broadcast({type: options[:type]})
     self.eventable.broadcast({type: "end"}) if self.match_type == "war"
+    self.update_points
   end
 
   def cancel
@@ -151,15 +155,6 @@ class Match < ApplicationRecord
     self.complete({type: "ENEMY_GIVEUP"})
   end
 
-  def complete(options = {type: "END"})
-    if self.users.in_same_war?
-      war = self.winner.in_guild.current_war
-      war_status = war.war_statuses.find_by_guild_id(self.winner.in_guild.id)
-      war_status.increase_point if war.match_types.include?(self.match_type)
-    end
-    self.update_points
-  end
-  
   def update_points
     self.update_user_point
     self.update_guild_point

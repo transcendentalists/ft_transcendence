@@ -11,11 +11,11 @@ class GameChannel < ApplicationCable::Channel
       @match = Match.find_by_id(params[:match_id])
       raise GameError.new(:STOP) if @match.nil? || @match.completed_or_canceled?
       raise GameError.new(:LOADING) if !@match.reload.loading_end? && !@match.player?(current_user)
-    
+
       current_user.ready_for_match(@match) if @match.player?(current_user)
       return if @match.pending? && !@match.ready_to_start?
 
-      if @match.ready_to_start? 
+      if @match.ready_to_start?
         @match.start!
       else
         @match.broadcast({type: "WATCH", send_id: current_user.id})
@@ -40,7 +40,7 @@ class GameChannel < ApplicationCable::Channel
       @match.reload
       card = @match.scorecards.where.not(side: msg['side']).first
       card.increment!(:score, 1)
-      complete_by_match_end(card.user.id) if (@match.target_score == card.score)      
+      complete_by_match_end(card.user.id) if (@match.target_score == card.score)
     rescue => e
       @match.cancel
       broadcast :CONFLICT
@@ -71,8 +71,7 @@ class GameChannel < ApplicationCable::Channel
       @match.scorecards.each do |card|
         card.update!(result: card.user.id == current_user.id ? "lose" : "win")
       end
-      winner_id = current_user.enemy
-      @match.complete({type: "ENEMY_GIVEUP"})    
+      @match.complete({type: "ENEMY_GIVEUP"})
     end
     stop_all_streams
   end
@@ -88,7 +87,6 @@ class GameChannel < ApplicationCable::Channel
       elsif current_user.playing?
         complete_by_giveup
       end
-      current_user.update_status("online")
     rescue
       broadcast :STOP
     end

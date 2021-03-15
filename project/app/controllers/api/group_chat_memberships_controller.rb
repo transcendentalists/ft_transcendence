@@ -4,7 +4,9 @@ class Api::GroupChatMembershipsController < ApplicationController
   def update
     begin
       membership = GroupChatMembership.find(params[:id])
-      membership.update_by_params!({by: @current_user, params: update_params})
+      ActiveRecord::Base.transaction do
+        membership.update_by_params!({by: @current_user, params: update_params})
+      end
       render json: { group_chat_membership: membership }
     rescue ServiceError => e
       perror e

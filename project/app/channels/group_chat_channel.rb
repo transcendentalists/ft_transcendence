@@ -9,12 +9,13 @@ class GroupChatChannel < ApplicationCable::Channel
       raise ServiceError.new(:NotFound) if membership.nil?
       return if membership.mute?
 
-      ChatMessage.create!(
+      message = ChatMessage.create!(
         user_id: msg['user_id'],
         room_type: 'GroupChatRoom',
         room_id: msg['room_id'],
         message: msg['message']
       )
+      msg['created_at'] = message.created_at
       ActionCable.server.broadcast("group_chat_channel_#{msg['room_id']}", msg)
     rescue => e
       put "[ERROR][GroupChatChannel_#{msg['room_id']}][speak] #{e.message}"

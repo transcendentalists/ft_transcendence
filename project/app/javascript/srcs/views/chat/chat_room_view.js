@@ -140,7 +140,6 @@ export let ChatRoomView = Backbone.View.extend({
     this.channel.speak({
       image_url: App.current_user.get("image_url"),
       name: App.current_user.get("name"),
-      created_at: new Date(),
       message: msg,
       type: "msg",
       user_id: App.current_user.id,

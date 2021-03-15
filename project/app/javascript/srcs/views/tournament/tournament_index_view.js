@@ -8,8 +8,8 @@ export let TournamentIndexView = Backbone.View.extend({
   initialize: function () {
     this.my_tournaments = [];
     this.open_tournaments = [];
-    this.my_tournaments_view = null;
-    this.open_tournaments_view = null;
+    this.my_tournament_list_view = null;
+    this.open_tournament_list_view = null;
   },
 
   render: function () {

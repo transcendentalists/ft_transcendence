@@ -81,7 +81,7 @@ class GroupChatRoom < ApplicationRecord
     end
   end
 
-  def generate_channel_code
+  def self.generate_channel_code
     10.times do
       code = ""
       9.times { code << (65 + rand(25)).chr }

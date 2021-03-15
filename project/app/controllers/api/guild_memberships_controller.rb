@@ -21,7 +21,7 @@ class Api::GuildMembershipsController < ApplicationController
 
   def create
     begin
-      ServiceError.new(:Forbidden) if @current_user.id != params[:user][:id]
+      ServiceError.new(:Forbidden) if @current_user.id != params[:user][:id] || @current_user.in_guild?
       ServiceError.new(:NotFound) unless Guild.exists?(params[:guild_id])
       guild_membership = GuildMembership.create!(create_params)
       @current_user.guild_invitations.destroy_all

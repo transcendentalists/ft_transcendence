@@ -32,7 +32,7 @@ export let TournamentCardListView = Backbone.View.extend({
   },
 
   moveCardToMyTournamentsView: function (options) {
-    this.parent.my_tournaments_view.addOne(options.data.tournament_match);
+    this.parent.my_tournament_list_view.addOne(options.data.tournament_match);
     options.tournament_card_view.close();
     if (this.$(".tournament-card").length == 0) this.showDefaultMessage();
   },

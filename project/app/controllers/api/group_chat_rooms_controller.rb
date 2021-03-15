@@ -23,7 +23,7 @@ class Api::GroupChatRoomsController < ApplicationController
   def create
     begin
       room = params[:group_chat_room]
-      room[:password] = room[:password].blank? ? BCrypt::Password.create(room[:password]) : nil
+      room[:password] = room[:password].blank? ? nil : BCrypt::Password.create(room[:password])
       room[:channel_code] = GroupChatRoom.generate_channel_code
       raise ServiceError.new(:ServiceUnavailable) if room[:channel_code].nil?
       room = GroupChatRoom.generate!(create_params)

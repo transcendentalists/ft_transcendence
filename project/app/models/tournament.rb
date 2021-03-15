@@ -28,28 +28,26 @@ class Tournament < ApplicationRecord
   end
 
   def self.create_by!(params)
-    start_date = DateTime.strptime(params[:start_date], "%Y-%m-%d")
-    tournament_time = Time.zone.now.change({ hour: params[:tournament_time] })
-    tournament_hash = tournament_hash(params)
-    tournament_hash.merge!({incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
+    tournament = self.tournament_hash(params)
+    tournament.merge!({incentive_title: params[:incentive_title]}) unless params[:incentive_title].nil?
 
-    self.create!(tournament_hash)
+    self.create!(tournament)
   end
 
-  def tournament_hash(params)
+  def self.tournament_hash(params)
     {
       title: params[:title],
       rule_id: params[:rule_id],
       max_user_count: params[:max_user_count],
-      start_date: start_date,
-      tournament_time: tournament_time,
+      start_date: DateTime.strptime(params[:start_date], "%Y-%m-%d"),
+      tournament_time: Time.zone.now.change({ hour: params[:tournament_time] }),
       incentive_gift: params[:incentive_gift],
       target_match_score: params[:target_match_score]
     }
   end
 
   def to_simple
-    permitted = %w[id title max_user_count registered_user_count start_date 
+    permitted = %w[id title max_user_count registered_user_count start_date
                     tournament_time incentive_title incentive_gift status
                     target_match_score]
     stat = self.attributes.filter { |field, value| permitted.include?(field) }
@@ -69,7 +67,7 @@ class Tournament < ApplicationRecord
 
   def today_round
     num_of_progress = self.progress_memberships.count
-    [2,4,8,16,32].find { |round| round >= num_of_progress } 
+    [2,4,8,16,32].find { |round| round >= num_of_progress }
   end
 
   def tomorrow_round
@@ -143,7 +141,7 @@ class Tournament < ApplicationRecord
 
   def next_match_of(user)
     membership = self.memberships.reload.find_by_user_id(user.id)
-  
+
     return nil if membership.nil? || membership.completed? || membership.defeated?
     return nil if self.last_date?
 
@@ -247,7 +245,7 @@ class Tournament < ApplicationRecord
     {
       id: -1,
       name: "상대 미정",
-      image_url: "assets/default_avatar.png",
+      image_url: "/assets/default_avatar.png",
     }
   end
 end

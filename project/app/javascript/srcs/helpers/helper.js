@@ -77,8 +77,8 @@ export let Helper = {
 
   getUser: function (user_id) {
     return (
-      App.resources.friends.get(user_id) ||
-      App.resources.online_users.get(user_id)
+      App.resources.friends?.get(user_id) ||
+      App.resources.online_users?.get(user_id)
     );
   },
 

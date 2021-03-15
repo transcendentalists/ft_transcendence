@@ -3,6 +3,6 @@ class ServiceError < StandardError
 
   def initialize(type = :BadRequest, msg = nil)
     @type = type
-    @message = nil
+    @message = msg
   end
 end

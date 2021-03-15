@@ -84,11 +84,18 @@ export let SignInView = Backbone.View.extend({
   },
 
   showWarningMessage: function (data) {
+    const message_hash = {
+      401: "입력하신 비밀번호가 일치하지 않습니다.",
+      403: "로그인이 금지되었습니다, 관리자에게 문의해주세요.",
+      404: "ID를 찾을 수 없습니다.",
+    };
+
     this.message_field.empty();
     this.message_field.append(
-      this.warning_message_template(
-        data.error || { type: "서비스 에러", msg: "잠시 후 다시 시도해주세요." }
-      )
+      this.warning_message_template({
+        type: "로그인 실패",
+        msg: message_hash[data.error.code] || "잠시 후 다시 시도해주세요.",
+      })
     );
     this.message_field.show();
     this.submit_unlock();

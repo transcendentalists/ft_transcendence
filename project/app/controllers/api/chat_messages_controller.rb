@@ -9,7 +9,8 @@ class Api::ChatMessagesController < ApplicationController
         chat_messages = GroupChatRoom.find(params[:group_chat_room_id])&.messages&.last(20)
       end
       render json: { chat_messages: chat_messages }
-    rescue
+    rescue => e
+      perror e
       render_error :NotFound
     end
   end

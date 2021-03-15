@@ -1,6 +1,6 @@
 class Api::GroupChatRoomsController < ApplicationController
   before_action :check_headers_and_find_current_user, only: [ :index, :show, :update, :destroy]
-  
+
   def index
     begin
       if params[:for] == "my_group_chat_room_list"
@@ -14,7 +14,8 @@ class Api::GroupChatRoomsController < ApplicationController
         group_chat_rooms = GroupChatRoom.list_all(@current_user)
       end
       render json: { group_chat_rooms: group_chat_rooms }
-    rescue
+    rescue => e
+      perror e
       render_error :NotFound
     end
   end
@@ -28,10 +29,12 @@ class Api::GroupChatRoomsController < ApplicationController
       room = GroupChatRoom.generate!(create_params)
       render :json => { group_chat_room: room }
     rescue ServiceError => e
+      perror e
       render_error(e.type, e.message)
-    rescue
+    rescue => e
+      perror e
       render_error(:Conflict)
-    end    
+    end
   end
 
   def show
@@ -42,15 +45,17 @@ class Api::GroupChatRoomsController < ApplicationController
         return render_error(:Forbidden) unless valid_password?(group_chat_room)
       end
       group_chat_room.enter!(@current_user)
-      render json: { 
+      render json: {
         group_chat_room: group_chat_room.for_chat_room_format,
         owner: group_chat_room.owner.for_chat_room_format,
         current_user: group_chat_room.membership_by_user(@current_user),
         chat_room_members: group_chat_room.members
-      }  
+      }
     rescue ServiceError => e
+      perror e
       render_error(e.type, e.message)
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -62,8 +67,10 @@ class Api::GroupChatRoomsController < ApplicationController
       room.update_by_params! update_params
       head :no_content, status: 204
     rescue ServiceError => e
+      perror e
       render_error(e.type, e.message)
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -74,13 +81,14 @@ class Api::GroupChatRoomsController < ApplicationController
       room = GroupChatRoom.find(params[:id])
       room.let_all_out_and_destroy!
       head :no_content, status: 204
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
 
   private
-  
+
   def password_entered?
     !request.headers['Authorization'].nil?
   end

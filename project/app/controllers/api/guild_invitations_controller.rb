@@ -4,8 +4,9 @@ class Api::GuildInvitationsController < ApplicationController
   def index
     begin
       guild_invitations = GuildInvitation.for_user_index(params[:user_id])
-      render json: { guild_invitations: guild_invitations }      
-    rescue
+      render json: { guild_invitations: guild_invitations }
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -19,7 +20,8 @@ class Api::GuildInvitationsController < ApplicationController
       key =  e.record.errors.attribute_names.first
       error_message = e.record.errors.messages[key].first
       render_error(:BadRequest, error_message)
-    rescue
+    rescue => e
+      perror e
       render_error :BadRequest
     end
   end
@@ -31,8 +33,10 @@ class Api::GuildInvitationsController < ApplicationController
       guild_invitation.destroy!
       head :no_content, status: 204
     rescue ServiceError => e
+      perror e
       render_error e.type
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end

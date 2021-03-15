@@ -11,7 +11,8 @@ class Api::MatchesController < ApplicationController
       else
         render_error :BadRequest
       end
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -22,8 +23,10 @@ class Api::MatchesController < ApplicationController
       match = find_or_create_match!
       render json: { match: { id: match.id } }
     rescue ServiceError => e
+      perror e
       render_error(e.type, e.message)
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end

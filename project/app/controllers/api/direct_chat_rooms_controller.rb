@@ -1,11 +1,6 @@
 class Api::DirectChatRoomsController < ApplicationController
   include Api::DirectChatRoomsHelper
 
-  def index
-    symbol = get_symbol(params[:user_id], params[:id])
-    render json: { result: symbol }
-  end
-
   def show
     begin
       symbol = get_symbol(params[:user_id], params[:id])
@@ -18,8 +13,10 @@ class Api::DirectChatRoomsController < ApplicationController
       end
       render json: { chat_messages: room&.messages.last(20) }
     rescue ServiceError => e
+      perror e
       render_error(e.type, e.message)
-    rescue 
+    rescue => e
+      perror e
       render_error(:Conflict)
     end
   end

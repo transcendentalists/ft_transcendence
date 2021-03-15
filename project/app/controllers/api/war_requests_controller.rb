@@ -8,9 +8,11 @@ class Api::WarRequestsController < ApplicationController
       else
         render_error :BadRequest
       end
-    rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound =>e
+      perror e
       render_error :NotFound
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -27,15 +29,19 @@ class Api::WarRequestsController < ApplicationController
         war_request = WarRequest.create_by!(create_params)
       end
       render json: { war_request_id: war_request.id }
-    rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound => e
+      perror e
       render_error :NotFound
     rescue ActiveRecord::RecordInvalid => e
       key =  e.record.errors.attribute_names.first
       error_message = e.record.errors.messages[key].first
-      render_error(:BadRequest, error_message) 
+      render_error(:BadRequest, error_message)
+      perror e
     rescue ServiceError => e
       render_error(e.type, e.message)
-    rescue
+      perror e
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -43,26 +49,42 @@ class Api::WarRequestsController < ApplicationController
   def update
     begin
       war_request = WarRequest.find(params[:id])
-      raise ServiceError.new(:Forbidden) unless war_request.can_be_updated_by(@current_user)
-      raise ServiceError.new(:BadRequest) unless war_request.status == "pending"
+      raise ServiceError.new(:Forbidden) unless war_request.can_be_updated_by?(@current_user)
+      p "Debug 1"
+      raise ServiceError.new(:BadRequest, "이미 거절하거나 수락한 요청입니다.") unless war_request.status == "pending"
+      p "Debug 2"
 
       ActiveRecord::Base.transaction do
         if params[:status] == "accepted"
+      p "Debug 3"
           war_request.enemy.accept_request!(war_request)
+      p "Debug 4"
         else
+      p "Debug 4"
           war_request.update!(status: params[:status])
+      p "Debug 5"
         end
       end
       head :no_content, status: 204
-    rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound => e
+      perror e
       render_error :NotFound
     rescue ActiveRecord::RecordInvalid => e
       key =  e.record.errors.attribute_names.first
       error_message = e.record.errors.messages[key].first
-      render_error(:BadRequest, error_message) 
+      perror(e, error_message)
+      render_error(:BadRequest, error_message)
     rescue ServiceError => e
+      p "-------------------------"
+      p e
+      p "-------------------------"
+      perror e
       render_error(e.type, e.message)
-    rescue
+    rescue => e
+      p "-------------------------"
+      p e
+      p "-------------------------"
+      perror e
       render_error :BadRequest
     end
   end

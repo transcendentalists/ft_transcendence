@@ -3,7 +3,7 @@ class Api::GuildMembershipsController < ApplicationController
 
   def index
     begin
-      guild = Guild.find(params[:guild_id])      
+      guild = Guild.find(params[:guild_id])
       if params[:for] == "member_list"
         guild_memberships = GuildMembership.for_members_ranking(params[:guild_id], params[:page])
       else
@@ -11,8 +11,10 @@ class Api::GuildMembershipsController < ApplicationController
       end
       render json: { guild_memberships: guild_memberships }
     rescue ServiceError => e
+      perror e
       render_error e.type
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -26,7 +28,8 @@ class Api::GuildMembershipsController < ApplicationController
       render json: { guild_membership: guild_membership.profile }
     rescue ServiceError => e
       render_error e.type
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -37,8 +40,10 @@ class Api::GuildMembershipsController < ApplicationController
       guild_membership.update_position!(params[:position], {by: @current_user})
       render json: { guild_membership: guild_membership.profile }
     rescue ServiceError => e
+      perror e
       render_error(e.type, e.message)
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -53,7 +58,8 @@ class Api::GuildMembershipsController < ApplicationController
       head :no_content, status: 204
     rescue ServiceError => e
       render_error e.type
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end

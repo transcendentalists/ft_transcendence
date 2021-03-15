@@ -12,9 +12,11 @@ class Api::WarsController < ApplicationController
         war_history_list = guild.wars.for_war_history!(params[:guild_id])
         render json: { wars: war_history_list }
       end
-    rescue ActiveRecord::RecordNotFound
+    rescue ActiveRecord::RecordNotFound => e
+      perror e
       render_error :NotFound
-    rescue
+    rescue => e
+      perror e
       render_error :BadRequest
     end
   end

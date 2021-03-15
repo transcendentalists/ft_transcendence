@@ -15,7 +15,8 @@ class Api::AdminController < ApplicationController
         guild_memberships: GuildMembership.left_outer_joins(:user).select(:id, :guild_id, "users.name"),
         guild_positions: ApplicationRecord.guild_positions
       }
-    rescue
+    rescue => e
+      perror e
       return render_error :Conflict
     end
 

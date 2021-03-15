@@ -9,7 +9,8 @@ class Api::TournamentsController < ApplicationController
       else
         render_error :BadRequest
       end
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -19,15 +20,19 @@ class Api::TournamentsController < ApplicationController
       raise ServiceError.new(:Forbidden) unless Tournament.can_be_created_by?(@current_user)
       tournament = Tournament.create_by!(create_params)
       render json: { tournament: tournament }
-    rescue Date::Error
+    rescue Date::Error => e
+      perror e
       render_error(:BadRequest, "유효하지 않은 날짜입니다.")
     rescue ActiveRecord::RecordInvalid => e
+      perror e
       key =  e.record.errors.attribute_names.first
       error_message = e.record.errors.messages[key].first
       render_error(:BadRequest, error_message)
     rescue ServiceError => e
+      perror e
       render_error(e.type)
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end

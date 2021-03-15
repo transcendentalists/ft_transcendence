@@ -4,8 +4,9 @@ class Api::FriendshipsController < ApplicationController
   def index
     begin
       friends_list = @current_user.friends_list(params)
-      render json: { friendships: friends_list }        
-    rescue
+      render json: { friendships: friends_list }
+    rescue => e
+      perror e
       render_error :NotFound
     end
   end
@@ -14,7 +15,8 @@ class Api::FriendshipsController < ApplicationController
     begin
       friendship = Friendship.find_or_create_by!(user_id: params[:user_id], friend_id: params[:friend_id])
       render json: { friendship: {id: friendship.id} }
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -24,7 +26,8 @@ class Api::FriendshipsController < ApplicationController
       friendship = Friendship.find_by_user_id_and_friend_id(params[:user_id], params[:id])
       friendship.destroy!
       head :no_content, status: 204
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end

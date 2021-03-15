@@ -7,8 +7,10 @@ class Api::GroupChatMembershipsController < ApplicationController
       membership.update_by_params!({by: @current_user, params: update_params})
       render json: { group_chat_membership: membership }
     rescue ServiceError => e
+      perror e
       render_error(e.type, e.message)
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -21,8 +23,10 @@ class Api::GroupChatMembershipsController < ApplicationController
       membership.let_out!({by: @current_user, min: params[:ban_time].to_i })
       head :no_content, status: 204
     rescue ServiceError => e
+      perror e
       render_error(e.type, e.message)
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -42,7 +46,7 @@ class Api::GroupChatMembershipsController < ApplicationController
     return if params[:ban_time] == ""
     ban_time = Integer(params[:ban_time])
     if ban_time < 0 || ban_time > 10000
-      raise ServiceError.new(:BadRequest, "밴 타임은 0과 1000 사이의 수여야 합니다.") 
+      raise ServiceError.new(:BadRequest, "밴 타임은 0과 1000 사이의 수여야 합니다.")
     end
   end
 

@@ -9,8 +9,10 @@ class Api::GuildsController < ApplicationController
         raise ServiceError.new :BadRequest
       end
     rescue ServiceError => e
+      perror e
       render_error e.type
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -25,8 +27,10 @@ class Api::GuildsController < ApplicationController
         render json: { guild_membership: guild_membership.profile }
       end
     rescue ServiceError => e
+      perror e
       render_error e.type
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end
@@ -41,8 +45,10 @@ class Api::GuildsController < ApplicationController
       end
       render json: { guild: guild_data }
     rescue ServiceError => e
+      perror e
       render_error e.type
-    rescue
+    rescue => e
+      perror e
       render_error :NotFound
     end
   end

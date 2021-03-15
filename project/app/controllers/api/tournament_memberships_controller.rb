@@ -9,10 +9,12 @@ class Api::TournamentMembershipsController < ApplicationController
         tournament_match: tournament.profile.merge({
           current_user_next_match: tournament_membership.next_match
         })
-      }      
+      }
     rescue ServiceError => e
+      perror e
       render_error(e.type, e.message)
-    rescue
+    rescue => e
+      perror e
       render_error :Conflict
     end
   end

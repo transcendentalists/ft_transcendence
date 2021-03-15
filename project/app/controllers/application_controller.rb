@@ -43,4 +43,15 @@ class ApplicationController < ActionController::Base
     admin_id = request.headers['HTTP_ADMIN']
     !admin_id.nil? && ["web_admin", "web_owner"].include?(User.find_by_id(admin_id)&.position)
   end
+
+  def perror(error, error_message = nil)
+    call = caller[0]
+    File.open("error.log", 'a+') do |file|
+      type = error.respond_to?(:type) ? error.type : ""
+      message = error.message || ""
+      message = error_message unless error_message.nil?
+      file.puts error
+      file.puts "[" + call + "] " + type.to_s + ": " + message.to_s
+    end
+  end
 end

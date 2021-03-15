@@ -49,12 +49,12 @@ export let UserMenuView = Backbone.View.extend({
   },
 
   createChatBan: function () {
-    this.chat_bans.createChatBan(this.model.get("id"));
+    this.chat_bans.createChatBan(this.model.id);
     this.close();
   },
 
   destroyChatBan: function () {
-    this.chat_bans.destroyChatBan(this.model.get("id"));
+    this.chat_bans.destroyChatBan(this.model.id);
     this.close();
   },
 

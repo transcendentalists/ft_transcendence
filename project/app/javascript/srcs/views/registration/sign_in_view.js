@@ -103,7 +103,7 @@ export let SignInView = Backbone.View.extend({
 
   authRequest: function (verification_code) {
     Helper.fetch(
-      "auth/mail/callback",
+      "two_factor",
       this.authParams(this.current_user_id, verification_code)
     );
   },

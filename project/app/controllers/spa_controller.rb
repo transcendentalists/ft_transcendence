@@ -5,11 +5,6 @@ class SpaController < ApplicationController
     redirect_to "https://api.intra.42.fr/oauth/authorize?client_id=#{ENV['FT_CLIENT_ID']}&redirect_uri=http%3A%2F%2F127.0.0.1%3A3000%2Fauth%2F42%2Fcallback&response_type=code"
   end
 
-  def ft_auth_callback
-    return redirect_to action: "ft_auth" if params.key?(:error)
-    redirect_to :controller => 'spa', :action => 'index'
-  end
-
   def mail_auth
     begin
       user = User.find(params[:user][:id])
@@ -26,6 +21,7 @@ class SpaController < ApplicationController
   end
 
   def index
+    return #Oauth 회피용
     return redirect_to action: "ft_auth" if params.key?(:error)
     uid = ENV['FT_CLIENT_ID']
     client_secret = ENV['FT_SECRET']

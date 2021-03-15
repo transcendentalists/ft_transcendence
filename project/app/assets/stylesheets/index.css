@@ -889,6 +889,10 @@ body {
   width: 7rem;
 }
 
+#guild-detail-view .profile-card .content .row.flex-container.baseline {
+  width: 27rem;
+}
+
 #guild-detail-view .war-history-view {
   align-items: stretch;
   height: 33px;
@@ -1183,7 +1187,6 @@ body {
 
 #sign-up-view {
   margin-top: 25vh;
-  margin-left: calc(50% - 150px);
   border: 1px solid rgba(34, 36, 38, 0.15);
   padding: 1.5rem;
   border-radius: 0.5rem;

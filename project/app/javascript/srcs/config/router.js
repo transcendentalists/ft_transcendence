@@ -87,7 +87,7 @@ export let Router = Backbone.Router.extend({
   },
 
   errorsController(error_code, type = "", msg = "") {
-    if (error_code === null) this.navigate("errors/" + 100);
+    if (error_code === null) this.navigate("#/errors/100");
     else {
       let error_hash = {
         error_code: error_code,

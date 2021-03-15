@@ -29,7 +29,7 @@ export let Helper = {
 
     const prefix = hash_args.hasOwnProperty("prefix")
       ? hash_args.prefix
-      : "api/";
+      : "/api/";
     let data = {};
     let success = false;
 

@@ -196,7 +196,7 @@ export let GameIndexView = Backbone.View.extend({
     this.$("#count-down-box").empty();
 
     let $box = this.$("#count-down-box");
-    $box.html(10);
+    $box.html(3);
     this.clear_id = setInterval(
       function () {
         $box.text(+$box.text() - 1);

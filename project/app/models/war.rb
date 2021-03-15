@@ -36,6 +36,7 @@ class War < ApplicationRecord
     wait_time = war_match&.status == "pending" ? (Time.zone.now - war_match.updated_at).to_i : nil
     loading_time = war_match&.start_time.nil? ? nil : (Time.zone.now - war_match.start_time).to_i
     {
+      war_status: self.status,
       current_hour: Time.zone.now.hour,
       match: war_match,
       war_time: self.request.war_time.hour,
@@ -144,7 +145,7 @@ class War < ApplicationRecord
   def set_schedule_at_no_reply_time(match)
     self.job_reservation(Time.zone.now + 5.minutes, { type: "match_no_reply", match: match })
   end
-  
+
   def job_reservation(until_time, options)
     return if until_time.past?
     WarJob.set(wait_until: until_time).perform_later(self, options)

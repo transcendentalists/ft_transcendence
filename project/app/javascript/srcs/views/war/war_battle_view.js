@@ -27,7 +27,9 @@ export let WarBattleView = Backbone.View.extend({
   },
 
   switchTemplate: function (battle) {
-    if (battle.war_time !== battle.current_hour)
+    if (battle.war_status != "progress")
+      return this.setTemplateData("not_war_date");
+    else if (battle.war_time !== battle.current_hour)
       return this.setTemplateData("not_war_time");
 
     const status = battle.match?.status;
@@ -74,6 +76,10 @@ export let WarBattleView = Backbone.View.extend({
         button_event: "approve-battle",
         count_down: true,
         button: true,
+      },
+      not_war_date: {
+        message: "전쟁이 시작되지 않았습니다.",
+        button: false,
       },
       not_war_time: {
         message: "지금은 전쟁 시간이<br>아닙니다.",

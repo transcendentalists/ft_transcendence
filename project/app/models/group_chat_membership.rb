@@ -4,7 +4,7 @@ class GroupChatMembership < ApplicationRecord
 
   def restore!
     room = GroupChatRoom.find(self.group_chat_room_id)
-    raise ServiceError(:ServiceUnavailable, "허용 가능 인원을 초과했습니다.") if room.full?
+    raise ServiceError.new(:ServiceUnavailable, "허용 가능 인원을 초과했습니다.") if room.full?
     self.update!(position: "member")
     self.broadcast :restore
     self
@@ -13,12 +13,12 @@ class GroupChatMembership < ApplicationRecord
   def update_by_params!(options = {by: self, params: {}})
     params = options[:params]
     if !params[:mute].nil? && self.can_be_muted_by?(options[:by])
-      self.update_mute!(params[:mute]) 
+      self.update_mute!(params[:mute])
     end
 
     position = params[:position]
     return if position.nil?
-    raise ServiceError.new(:Forbidden) unless self.can_be_position_changed_by?(options[:by]) 
+    raise ServiceError.new(:Forbidden) unless self.can_be_position_changed_by?(options[:by])
     raise ServiceError.new(:Forbidden, "챗룸에는 1명 이상의 owner가 필요합니다.") if self.room.only_one_member_exist?
 
     if position == "owner"
@@ -28,7 +28,7 @@ class GroupChatMembership < ApplicationRecord
     elsif self.position == "owner"
       self.room.make_another_member_owner!
     end
-    self.update_position!(position) 
+    self.update_position!(position)
   end
 
   def can_be_muted_by?(user)
@@ -56,18 +56,18 @@ class GroupChatMembership < ApplicationRecord
   end
 
   def update_position!(position)
-    raise ServiceError.new("이미 해당 유저의 포지션은 #{position}입니다.", 400) if self.position == position
+    raise ServiceError.new(:BadRequest, "이미 해당 유저의 포지션은 #{position}입니다.") if self.position == position
 
     self.update!(position: position)
-    self.boradcst :position
+    self.broadcast :position
     self
   end
-      
+
   def broadcast(type)
     channel = "group_chat_channel_#{self.group_chat_room_id.to_s}"
     message = { type: type.to_s, user_id: self.user_id }
     message[type] = self[type] if self.has_attribute?(type)
-  
+
     ActionCable.server.broadcast(channel, message)
   end
 
@@ -113,7 +113,7 @@ class GroupChatMembership < ApplicationRecord
     ban_time = time[:hour].hours + time[:min].minutes + time[:sec].seconds
     self.update(ban_ends_at: Time.zone.now + ban_time)
   end
-  
+
   def requested_by_myself?(user)
     self.user_id == user.id
   end

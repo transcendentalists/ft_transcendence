@@ -11,7 +11,7 @@ class GroupChatRoom < ApplicationRecord
   validates :room_type, inclusion: { in: ["public", "private"] }
 
   scope :list_associated_with_user, -> (user) do
-    user.in_group_chat_rooms.includes(:owner).map { |chat_room| 
+    user.in_group_chat_rooms.includes(:owner).map { |chat_room|
       {
         id: chat_room.id,
         title: chat_room.title,
@@ -51,7 +51,7 @@ class GroupChatRoom < ApplicationRecord
       }
     })
   }
-  
+
   def for_admin_format
     {
       id: self.id,
@@ -67,7 +67,7 @@ class GroupChatRoom < ApplicationRecord
   end
 
   def for_chat_room_format
-    hash_key_format = [ :id, :room_type, :title, :max_member_count, 
+    hash_key_format = [ :id, :room_type, :title, :max_member_count,
                           :current_member_count, :channel_code ]
     self.slice(*hash_key_format)
   end
@@ -95,16 +95,16 @@ class GroupChatRoom < ApplicationRecord
   def enter!(user)
     membership = self.memberships.find_by_user_id(user.id)
     if membership.nil?
-      group_chat_room.join!(@current_user)
+      self.join!(user)
     elsif membership.ghost?
       raise ServiceError.new(:Forbidden, "아직 입장이 불가합니다.") if membership.banned?
       membership.restore!
-    end  
+    end
   end
 
   def join!(user, position = "member")
-    raise ServiceError(:BadRequest) if user.nil?
-    raise ServiceError(:ServiceUnavailable, "허용 가능 인원을 초과했습니다.") if self.full?
+    raise ServiceError.new(:BadRequest) if user.nil?
+    raise ServiceError.new(:ServiceUnavailable, "허용 가능 인원을 초과했습니다.") if self.full?
     membership = GroupChatMembership.create!(user_id: user.id, group_chat_room_id: self.id, position: position)
     ActionCable.server.broadcast(
       "group_chat_channel_#{self.id.to_s}",
@@ -129,7 +129,7 @@ class GroupChatRoom < ApplicationRecord
     if params[:password].blank?
       self.password = nil
     else
-      self.password = BCrypt::Password::create(params[:password]) 
+      self.password = BCrypt::Password::create(params[:password])
     end
     save!
   end
@@ -194,5 +194,5 @@ class GroupChatRoom < ApplicationRecord
 
   def full?
     self.active_member_count == self.max_member_count
-  end 
+  end
 end

@@ -7,7 +7,7 @@ class Guild < ApplicationRecord
   has_many :users, through: :memberships, source: :user
   has_many :invitations, class_name: 'GuildInvitation'
   has_one_attached :image
-  
+
   validates :name, uniqueness: { message: "길드 이름은 중복될 수 없습니다." },
   length: { in: 1..10, message: "길드 이름은 최대 10자까지 가능합니다." },
   format: { with: /\A[A-Za-z0-9]+\z/, message: "길드 이름에 특수문자가 포함될 수 없습니다." }
@@ -16,7 +16,7 @@ class Guild < ApplicationRecord
   uniqueness: { message: "길드 아나그램은 중복될 수 없습니다." },
   format: { with: /\A@[A-Za-z0-9]+\z/, message: "아나그램에 특수문자가 포함될 수 없습니다." }
   validate :check_anagram
-  
+
   scope :for_guild_index, -> (page) { order(point: :desc).page(page).map.with_index { |guild, index| guild.profile(index, page) } }
 
   def check_anagram
@@ -87,7 +87,7 @@ class Guild < ApplicationRecord
 
   def profile(index = nil, page = nil)
     self.to_simple.merge({
-      num_of_number: self.memberships.count,
+      num_of_member: self.memberships.count,
       rank: self.rank(index, page),
       owner: self.owner.name
     })

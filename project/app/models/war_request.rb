@@ -10,7 +10,7 @@ class WarRequest < ApplicationRecord
   validates :bet_point, inclusion: { in: (100..1000).step(50), message: "배팅 포인트를 잘못 입력하셨습니다."}
   validates_with WarRequestCreateValidator, field: [ :start_date, :end_date, :war_time ], on: :create
   validates_with WarRequestUpdateValidator, field: [ :start_date, :end_date, :war_time ], on: :update
-  
+
   scope :for_guild_index, -> (guild_id) do
     WarRequest.joins(:war_statuses).where(war_statuses: {guild_id: guild_id, position: "enemy"}, status: "pending")
     .order(start_date: :asc)
@@ -49,9 +49,9 @@ class WarRequest < ApplicationRecord
     ])
   end
 
-  def can_be_updated_by(user)
+  def can_be_updated_by?(user)
     return false if user.in_guild.nil? || user.guild_membership.position == "member"
-    return user.in_guild.id == self.enemy.guild.id
+    return user.in_guild.id == self.enemy.id
   end
 
   def enemy

@@ -18,11 +18,11 @@ class User < ApplicationRecord
   has_many :tournament_memberships
   has_many :tournaments, through: :tournament_memberships
   has_one_attached :avatar
-  
+
   validates :name, uniqueness: true, length: {minimum: 1}
   validates :email, uniqueness: true, length: {minimum: 1}
 
-  scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }  
+  scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
 
   def self.onlineUsersWithoutFriends(params)
     users = where_by_query(params)
@@ -46,6 +46,10 @@ class User < ApplicationRecord
     stat.merge!(self.game_stat)
     stat[:achievement] = self.achievement
     stat[:guild] = self.in_guild&.to_simple
+    return stat if stat[:guild].nil?
+    stat[:guild][:membership_id] = self.guild_membership.id
+    stat[:guild][:position] = self.guild_membership.position
+    stat[:guild][:in_war] = self.in_guild.in_war?
     stat
   end
 

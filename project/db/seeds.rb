@@ -350,8 +350,8 @@ GuildMembership.create([
   {user_id: 7, guild_id: 7, position: "master"},
   {user_id: 8, guild_id: 8, position: "master"},
   {user_id: 9, guild_id: 9, position: "master"},
-  {user_id: 10, guild_id: 1, position: "officer"},
-  {user_id: 11, guild_id: 1, position: "officer"},
+  {user_id: 10, guild_id: 10, position: "master"},
+  {user_id: 11, guild_id: 11, position: "master"},
 
   # test1 길드원 test1 ~ test5
   {user_id: 12, guild_id: 12, position: "master"},
@@ -420,13 +420,28 @@ Tournament.create([
   {rule_id: 3, title: "미접속토너먼트", status: "progress", start_date: Time.zone.tomorrow.midnight, tournament_time: Time.zone.now.change({hour:17})},
 ])
 
+Tournament.new(rule_id: 3, title: "지금당장시작해", start_date: Time.zone.now + 15.seconds, tournament_time: Time.zone.now + 3.minutes).save(validate: false)
+
 TournamentMembership.create([
-  {user_id: 1, tournament_id: 1, status: "progress"},
-  {user_id: 4, tournament_id: 1, status: "progress"},
-  {user_id: 2, tournament_id: 2, status: "progress"},
-  {user_id: 5, tournament_id: 2, status: "progress"},
-  {user_id: 3, tournament_id: 3, status: "progress"},
-  {user_id: 6, tournament_id: 3, status: "progress"},
+  {user_id: 11, tournament_id: 1, status: "progress"},
+  {user_id: 14, tournament_id: 1, status: "progress"},
+  {user_id: 12, tournament_id: 2, status: "progress"},
+  {user_id: 15, tournament_id: 2, status: "progress"},
+  {user_id: 13, tournament_id: 3, status: "progress"},
+  {user_id: 16, tournament_id: 3, status: "progress"},
+  {user_id: 17, tournament_id: 3, status: "progress"},
+  {user_id: 18, tournament_id: 3, status: "progress"},
+  {user_id: 19, tournament_id: 3, status: "progress"},
+  {user_id: 10, tournament_id: 3, status: "progress"},
+  {user_id: 13, tournament_id: 3, status: "progress"},
+  {user_id: 1, tournament_id: 4},
+  {user_id: 2, tournament_id: 4},
+  {user_id: 3, tournament_id: 4},
+  {user_id: 4, tournament_id: 4},
+  {user_id: 5, tournament_id: 4},
+  {user_id: 6, tournament_id: 4},
+  {user_id: 7, tournament_id: 4},
+  {user_id: 8, tournament_id: 4},
 ])
 
 WarStatus.create([

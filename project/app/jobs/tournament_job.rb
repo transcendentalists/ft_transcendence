@@ -1,24 +1,33 @@
 class TournamentJob < ApplicationJob
   queue_as :default
-  after_perform { |job| job.arguments.first.set_next_schedule }
+  # after_perform { |job| job.arguments.first.set_next_schedule }
 
   def perform(tournament, options = { now: Time.zone.now })
     begin
       @tournament = tournament
       @today_round = tournament.today_round
       @now = options[:now]
-  
-      # 자정이면, 경기 결산 및 신규 경기 생성 등 토너먼트 운영 
+      # tournament test용
+      # 자정에 토너먼트가 시작된는게 아니라 15초뒤 토너먼트 시작하고 3분뒤 매치가 시작한다. 5분뒤 다음 매치 일정을 잡는다.
+      if tournament.title == "지금당장시작해" && tournament.status == "pending"
+        self.operate_tournament!
+        tournament.job_reservation(Time.zone.now.change({hour: tournament.tournament_time.hour, min: tournament.tournament_time.min}))
+        TournamentJob.set(wait_until: Time.zone.now + 5.minutes).perform_later(tournament, { now: Time.zone.tomorrow.midnight })
+        return
+      end
+      # 자정이면, 경기 결산 및 신규 경기 생성 등 토너먼트 운영
       # 자정이 아니라면, 경기 운영(경기 시작/취소)
-      ActiveRedord::Base.transaction do
+      ActiveRecord::Base.transaction do
         if @now.hour == 0
           self.operate_tournament!
         else
           self.operate_match!
         end
       end
+
+      self.arguments.first.set_next_schedule
     rescue => e
-      put "[ERROR][TournamentJob_#{@tournament.id}] #{e.message}"
+      puts "[ERROR][TournamentJob_#{@tournament.id}] #{e.message}"
     end
   end
 
@@ -61,7 +70,7 @@ class TournamentJob < ApplicationJob
 
   def update_membership_result!
     if @today_round == 4
-      @tournament.update_progress_memberships!(result: "bronze")
+      @tournament.update_progress_memberships(result: "bronze")
     else
       # 결승전
       match = @tournament.last_match
@@ -69,14 +78,14 @@ class TournamentJob < ApplicationJob
         @tournament.memberships.find_by_user_id(match.winner.id).update!(result: "gold")
         @tournament.memberships.find_by_user_id(match.loser.id).update!(result: "silver")
       else
-        @tournament.update_progress_memberships!(result: "silver")
+        @tournament.update_progress_memberships(result: "silver")
       end
     end
   end
 
   def update_membership_status!
     if @today_round == 2
-      @tournament.update_progress_memberships!(status: "completed")
+      @tournament.update_progress_memberships(status: "completed")
     else
       user_ids = self.this_round_scorecards.where.not(result: "win").pluck("user_id")
       @tournament.memberships.where(user_id: user_ids).update_all(status: "completed")

@@ -152,9 +152,9 @@ export let GamePlayView = Backbone.View.extend({
   checkKey(e) {
     e = e || window.event;
     if (e.keyCode == 38) {
-      this.current_paddle.moveUp(this);
+      this.current_paddle?.moveUp(this);
     } else if (e.keyCode == 40) {
-      this.current_paddle.moveDown(this);
+      this.current_paddle?.moveDown(this);
     }
   },
 

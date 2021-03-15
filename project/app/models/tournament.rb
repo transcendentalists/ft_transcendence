@@ -39,7 +39,7 @@ class Tournament < ApplicationRecord
       title: params[:title],
       rule_id: params[:rule_id],
       max_user_count: params[:max_user_count],
-      start_date: DateTime.strptime(params[:start_date], "%Y-%m-%d"),
+      start_date: Time.zone.strptime(params[:start_date], "%Y-%m-%d").midnight,
       tournament_time: Time.zone.now.change({ hour: params[:tournament_time] }),
       incentive_gift: params[:incentive_gift],
       target_match_score: params[:target_match_score]

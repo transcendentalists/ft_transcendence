@@ -23,6 +23,7 @@ export let GuildIndexView = Backbone.View.extend({
     this.current_user_guild_profile_url = `guilds/${this.current_user_guild?.id}?for=profile`;
     this.war_requests_url = `guilds/${this.current_user_guild?.id}/war_requests?for=guild_index`;
     this.guild_ranking_url = `guilds?for=guild_index&page=${this.page}`;
+    App.current_user.fetch({ data: { for: "profile" } });
   },
 
   render: function () {

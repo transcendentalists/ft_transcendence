@@ -94,7 +94,7 @@ export let SignInView = Backbone.View.extend({
     this.message_field.append(
       this.warning_message_template({
         type: "로그인 실패",
-        msg: message_hash[data.error.code] || "잠시 후 다시 시도해주세요.",
+        msg: message_hash[data.error?.code] || "잠시 후 다시 시도해주세요.",
       })
     );
     this.message_field.show();

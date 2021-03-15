@@ -124,6 +124,10 @@ class War < ApplicationRecord
     end
   end
 
+  def set_schedule_at_no_reply_time(match)
+    self.job_reservation(Time.zone.now + 5.minutes, { type: "match_no_reply", match: match })
+  end
+
   private
 
   def set_schedule_at_start_date
@@ -140,10 +144,6 @@ class War < ApplicationRecord
 
   def set_schedule_at_war_time_end(war_time)
     self.job_reservation(war_time + 1.hour, { type: "war_time_end" })
-  end
-
-  def set_schedule_at_no_reply_time(match)
-    self.job_reservation(Time.zone.now + 5.minutes, { type: "match_no_reply", match: match })
   end
 
   def job_reservation(until_time, options)

@@ -1,5 +1,6 @@
 class ServiceError < StandardError
-  attr_accessor :type, :msg
+  attr_reader :type, :message
+
   def initialize(type = :BadRequest, msg = nil)
     @type = type
     @message = nil

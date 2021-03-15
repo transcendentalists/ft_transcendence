@@ -12,7 +12,6 @@ export let UserMenuView = Backbone.View.extend({
     "click [data-event-name=create-friend]": "createFriend",
     "click [data-event-name=destroy-friend]": "destroyFriend",
     "click [data-event-name=battle]": "battle",
-    "click [data-event-name=user-ban]": "userBan",
   },
 
   initialize: function (options) {
@@ -72,10 +71,6 @@ export let UserMenuView = Backbone.View.extend({
 
   battle: function () {
     App.current_user.dualRequestTo(this.model);
-    this.close();
-  },
-
-  userBan: function () {
     this.close();
   },
 

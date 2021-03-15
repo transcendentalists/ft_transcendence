@@ -19,8 +19,8 @@ class User < ApplicationRecord
   has_many :tournaments, through: :tournament_memberships
   has_one_attached :avatar
 
-  validates :name, uniqueness: true, length: {minimum: 1}
-  validates :email, uniqueness: true, length: {minimum: 1}
+  validates :name, uniqueness: true, length: { in: 1..12 }
+  validates :email, uniqueness: true, length: { minimum: 1 }
 
   scope :for_ladder_index, -> (page) { order(point: :desc).page(page.to_i).map { |user| user.profile } }
 

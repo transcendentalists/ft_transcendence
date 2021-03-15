@@ -23,6 +23,7 @@ class Api::GuildsController < ApplicationController
       ActiveRecord::Base.transaction do
         guild = Guild.create!(create_params)
         guild_membership = guild.memberships.create!({ user_id: @current_user.id, guild_id: guild.id, position: "master" })
+        @current_user.guild_invitations.destroy_all
         image_attach!(guild)
         render json: { guild_membership: guild_membership.profile }
       end

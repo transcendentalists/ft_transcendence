@@ -124,7 +124,7 @@ war_request_list = [
   {rule_id: 3, bet_point: 100, start_date: Time.zone.now.change({ year: 2021, month: 2, day: 4 }).midnight, end_date: Time.zone.now.change({ year: 2021, month: 2, day: 9 }).midnight, war_time: Time.zone.now.change({ hour: 12 }), max_no_reply_count: 10, include_ladder: true, include_tournament: false, target_match_score: 3, status: "accepted"},
   {rule_id: 4, bet_point: 100, start_date: Time.zone.tomorrow.midnight, end_date: Time.zone.tomorrow.midnight + 3.days, war_time: Time.zone.now.change({ hour: 11 }), max_no_reply_count: 10, include_ladder: false, include_tournament: true, target_match_score: 5, status: "accepted"},
   # 테스트용
-  {rule_id: 1, bet_point: 100, start_date: Time.zone.yesterday.midnight, end_date: Time.zone.yesterday.midnight.change({ year: 2021, month: 3, day: 13 }) + 3.days, war_time: Time.zone.now, max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
+  {rule_id: 6, bet_point: 100, start_date: Time.zone.yesterday.midnight, end_date: Time.zone.yesterday.midnight.change({ year: 2021, month: 3, day: 13 }) + 3.days, war_time: Time.zone.now, max_no_reply_count: 3, include_ladder: true, include_tournament: true, target_match_score: 3, status: "accepted"},
 ]
 
 war_request_list.each do |war_request|
@@ -420,8 +420,6 @@ Tournament.create([
   {rule_id: 3, title: "미접속토너먼트", status: "progress", start_date: Time.zone.tomorrow.midnight, tournament_time: Time.zone.now.change({hour:17})},
 ])
 
-Tournament.new(rule_id: 3, title: "지금당장시작해", start_date: Time.zone.now + 15.seconds, tournament_time: Time.zone.now + 3.minutes).save(validate: false)
-
 TournamentMembership.create([
   {user_id: 11, tournament_id: 1, status: "progress"},
   {user_id: 14, tournament_id: 1, status: "progress"},
@@ -434,14 +432,6 @@ TournamentMembership.create([
   {user_id: 19, tournament_id: 3, status: "progress"},
   {user_id: 10, tournament_id: 3, status: "progress"},
   {user_id: 13, tournament_id: 3, status: "progress"},
-  {user_id: 1, tournament_id: 4},
-  {user_id: 2, tournament_id: 4},
-  {user_id: 3, tournament_id: 4},
-  {user_id: 4, tournament_id: 4},
-  {user_id: 5, tournament_id: 4},
-  {user_id: 6, tournament_id: 4},
-  {user_id: 7, tournament_id: 4},
-  {user_id: 8, tournament_id: 4},
 ])
 
 WarStatus.create([

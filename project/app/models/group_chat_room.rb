@@ -42,9 +42,9 @@ class GroupChatRoom < ApplicationRecord
       }
     }
   }
-  scope :matching_channel_code, -> (channel_code, user) {
+  scope :matching_channel_code!, -> (channel_code, user) {
     chat_room = self.find_by_channel_code(channel_code)
-    return nil if chat_room.nil?
+    raise ServiceError(:BadRequest) if chat_room.nil?
     chat_room.for_chat_room_format.merge({
       current_user: {
         position: chat_room.memberships.find_by_id(user.id)&.position

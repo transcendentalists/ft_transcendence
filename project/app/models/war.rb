@@ -10,24 +10,15 @@ class War < ApplicationRecord
       war_statuses = war.war_statuses
       current_guild_war_status = war_statuses.find_by_guild_id!(guild_id)
       enemy_guild_war_status = current_guild_war_status.enemy_status
+      war_result = war.loser_status.guild.id == guild_id ? "패" : "승"
       {
         point_of_current_guild: current_guild_war_status.point,
         point_of_enemy_guild: enemy_guild_war_status.point,
         enemy_guild_profile: enemy_guild_war_status.guild.profile,
-        war_result: war_result(current_guild_war_status, enemy_guild_war_status),
+        war_result: war_result,
         bet_point: war.request.bet_point
       }
     }
-  end
-
-  def self.war_result(current_guild_war_status, enemy_guild_war_status)
-    if current_guild_war_status.point > enemy_guild_war_status.point
-      "승"
-    elsif current_guild_war_status.point == enemy_guild_war_status.point
-      current_guild_war_status.enemy? ? "승" : "패"
-    else
-      "패"
-    end
   end
 
   def battle_data(guild_id)

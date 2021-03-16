@@ -9,7 +9,7 @@ class Api::WarsController < ApplicationController
         index_data = war.index_data!(params[:guild_id].to_i)
         render json: index_data
       else
-        war_history_list = guild.wars.for_war_history!(params[:guild_id])
+        war_history_list = guild.wars.for_war_history!(params[:guild_id].to_i)
         render json: { wars: war_history_list }
       end
     rescue ActiveRecord::RecordNotFound => e

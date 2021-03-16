@@ -102,7 +102,7 @@ export let ChatRoomView = Backbone.View.extend({
    */
   enterFailCallback: function (data) {
     if (data.error == undefined || data.error.code == undefined)
-      return App.router.navigate("#/errors/500");
+      return App.router.navigate("#/errors/400");
 
     const code = data.error.code;
     const type = data.error.type;
@@ -115,7 +115,7 @@ export let ChatRoomView = Backbone.View.extend({
       case 404:
         return App.router.navigate(`#/errors/${code}/${type}/${msg}`);
       default:
-        return App.router.navigate("#/errors/500");
+        return App.router.navigate("#/errors/400");
     }
   },
 

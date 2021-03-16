@@ -55,6 +55,7 @@ export let ChatIndexView = Backbone.View.extend({
       success_callback: function (data) {
         App.router.navigate("#/chatrooms/" + data.group_chat_rooms.id);
       }.bind(this),
+      fail_callback: Helper.defaultErrorHandler,
     });
   },
 

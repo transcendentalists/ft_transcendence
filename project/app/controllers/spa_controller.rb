@@ -21,7 +21,6 @@ class SpaController < ApplicationController
   end
 
   def index
-    return #Oauth 회피용
     return redirect_to action: "ft_auth" if params.key?(:error)
     uid = ENV['FT_CLIENT_ID']
     client_secret = ENV['FT_SECRET']
@@ -36,7 +35,7 @@ class SpaController < ApplicationController
         redirect_uri: "http://127.0.0.1:3000/auth/42/callback"
       }})
     rescue
-      return redirect_to action: "ft_auth"
+      redirect_to action: "ft_auth"
     end
   end
 

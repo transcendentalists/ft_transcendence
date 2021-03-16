@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
-  root 'spa#index'
-  # root 'spa#ft_auth'
+  root 'spa#ft_auth'
   delete 'api/session', to: 'spa#destroy'
   get 'auth/42/callback', to: 'spa#index'
   post 'auth/42/two_factor', to: 'spa#mail_auth'

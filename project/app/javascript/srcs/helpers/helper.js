@@ -187,9 +187,11 @@ export let Helper = {
       dwindle: "스몰볼",
     };
 
-    if (!rule.name) return rule_name[rule];
+    if (!rule.name) {
+      return rule_name[rule] || rule;
+    }
 
-    rule.name = rule_name[rule.name];
+    rule.name = rule_name[rule.name] || rule.name;
     return rule;
   },
 };

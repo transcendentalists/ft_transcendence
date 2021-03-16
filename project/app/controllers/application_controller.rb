@@ -50,6 +50,7 @@ class ApplicationController < ActionController::Base
       type = error.respond_to?(:type) ? error.type : ""
       message = error.message || ""
       message = error_message unless error_message.nil?
+      file.puts Time.zone.now
       file.puts error
       file.puts "[" + call + "] " + type.to_s + ": " + message.to_s
     end

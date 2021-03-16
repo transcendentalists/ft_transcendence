@@ -7,12 +7,12 @@ class Api::GroupChatRoomsController < ApplicationController
         group_chat_rooms = GroupChatRoom.list_associated_with_user(@current_user)
       elsif params[:channel_code]
         group_chat_rooms = GroupChatRoom.matching_channel_code(params[:channel_code], @current_user)
-        raise ServiceError.new if group_chat_rooms.nil?
       elsif params[:room_type]
         group_chat_rooms = GroupChatRoom.list_filtered_by_type(params[:room_type], @current_user)
       else
         group_chat_rooms = GroupChatRoom.list_all(@current_user)
       end
+      raise ServiceError.new if group_chat_rooms.nil?
       render json: { group_chat_rooms: group_chat_rooms }
     rescue => e
       perror e

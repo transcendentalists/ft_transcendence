@@ -74,7 +74,7 @@ export let WarBattleView = Backbone.View.extend({
       enemy_guild_request: {
         message: "상대 길드에서 전투를<br>요청하고 있습니다.",
         button_event: "approve-battle",
-        count_down: true,
+        countdown: true,
         button: true,
       },
       not_war_date: {

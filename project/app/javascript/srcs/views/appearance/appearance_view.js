@@ -4,15 +4,12 @@ export let AppearanceView = Backbone.View.extend({
   el: "#appearance-view",
   template: _.template($("#appearance-view-template").html()),
 
-  initialize: function () {
+  render: function () {
     this.chat_bans = App.resources.chat_bans;
     this.friends = new App.Collection.Friends();
     this.online_users = new App.Collection.Users();
     App.resources.friends = this.friends;
     App.resources.online_users = this.online_users;
-  },
-
-  render: function () {
     this.chat_bans.fetch();
     this.appearance_channel = App.Channel.ConnectAppearanceChannel();
     this.$el.html(this.template());

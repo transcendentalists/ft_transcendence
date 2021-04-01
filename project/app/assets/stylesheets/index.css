@@ -1,0 +1,1599 @@
+/* ==========================================================================
+   GLOBAL AREA
+   ========================================================================== */
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: grayscale;
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+#root {
+  height: 100%;
+  overflow-x: scroll !important;
+}
+
+#root .ui.mini.pointing.vertical.menu {
+  text-align: center;
+}
+
+#root-grid {
+  height: 100%;
+}
+
+#main-view-container {
+  margin-left: 0;
+  display: flex !important;
+}
+
+#main-view-container .ui.dividing.header {
+  width: 100%;
+}
+
+.ui.centered.small.circular.image {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.ui.borderless.menu {
+  box-shadow: none;
+  flex-wrap: wrap;
+  border: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.ui.mobile.only.grid .ui.menu .ui.vertical.menu {
+  display: none;
+}
+
+.ui.selection.list .list > .item,
+.ui.selection.list > .item {
+  padding: 0.5em 5em;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-container.column-direction {
+  flex-direction: column;
+}
+
+.flex-container.space-between {
+  justify-content: space-between;
+}
+
+.flex-container.center-aligned {
+  align-items: center;
+}
+
+.flex-container.center {
+  justify-content: center;
+}
+
+.flex-container.baseline {
+  align-items: baseline;
+}
+
+.top-margin {
+  margin-top: 8rem;
+}
+
+.create-view {
+  width: 400px;
+  margin-top: 12rem;
+  margin-bottom: 12rem;
+  border: 1px solid grey;
+  padding: 4rem;
+  border-radius: 2%;
+  box-shadow: 5px 10px 15px -8px #777;
+}
+
+.create-view .ui.header {
+  margin-bottom: 3rem;
+}
+
+.crate-view .field {
+  margin-bottom: 1rem;
+}
+
+.create-view .buttons {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.close.icon {
+  cursor: pointer;
+}
+
+/* ==========================================================================
+     SEMANTIC RANGE
+     ========================================================================== */
+
+.ui.range {
+  width: 100%;
+  height: 20px;
+}
+
+.ui.range .inner {
+  margin: 0 10px 0 10px;
+  height: 20px;
+  position: relative;
+}
+
+.ui.range .inner:hover {
+  cursor: pointer;
+}
+
+.ui.range .inner .track {
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  top: 9px;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ui.inverted.range .inner .track {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.ui.range .inner .track-fill {
+  position: absolute;
+  width: 0;
+  height: 4px;
+  border-radius: 4px;
+  top: 9px;
+  left: 0;
+  background-color: #1b1c1d;
+}
+
+.ui.inverted.range .inner .track-fill {
+  background-color: #545454;
+}
+
+.ui.range .inner .thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background: #fff linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -webkit-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -o-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  background: #fff -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  border-radius: 100%;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15),
+    0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+}
+
+.ui.range.disabled {
+  opacity: 0.5;
+}
+
+.ui.range.disabled .inner:hover {
+  cursor: auto;
+}
+
+.ui.range.disabled .inner .track-fill {
+  background: #ccc;
+}
+
+/* ==========================================================================
+                                    PERSIST VIEW
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .hide-tablet {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   ADMIN INDEX VIEW
+   ========================================================================== */
+
+#admin-index-view {
+  min-width: 450px;
+  max-width: 450px;
+}
+
+#admin-index-view .menu {
+  width: 100%;
+}
+
+#admin-index-view .actions {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+#admin-index-view label {
+  font-size: 1.2rem;
+}
+
+#admin-index-view .admin-action {
+  margin-top: 4rem;
+  width: 100%;
+}
+
+/* ==========================================================================
+   APPEARANCE VIEW
+   ========================================================================== */
+
+#appearance-view {
+  position: fixed;
+  height: 100vh;
+  /* background-color: #ffffff; */
+  background-color: #ffffff;
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border-left: solid;
+  border-width: thin;
+  right: 0px;
+  z-index: 102;
+  width: 220px !important;
+}
+
+#appearance-view .ui.menu > a.item {
+  padding: 10px 20px;
+  line-height: 20px;
+  color: #337ab7;
+  border-radius: 0 !important;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#appearance-view .ui.menu > a.item.active {
+  background-color: #337ab7;
+  color: white;
+  border: none !important;
+}
+
+#appearance-view .ui.menu > a.item:hover {
+  background-color: #eee;
+  color: #23527c;
+}
+
+#appearance-view .item .circular[data-status="playing"] {
+  background-color: orange;
+}
+
+#appearance-view .item .circular[data-status="online"] {
+  background-color: green;
+}
+
+#appearance-view .item .circular[data-status="offline"] {
+  background-color: grey;
+}
+
+#appearance-friends-list .item {
+  padding-left: 4rem;
+}
+
+#appearance-online-user-list .item {
+  padding-left: 4rem;
+}
+
+#appearance-view #user-list-area {
+  height: calc(100vh - 12rem);
+  overflow-y: auto;
+  border-bottom: solid;
+  border-bottom-color: gray;
+  border-bottom-width: thin;
+  margin-top: 15%;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+#appearance-view #main-buttons-view {
+  margin-top: 0;
+  position: fixed;
+  bottom: 0;
+  height: 10rem;
+  width: 220px;
+  background-color: rgb(224, 225, 226);
+  justify-content: space-around;
+}
+
+/* ==========================================================================
+   CHAT INDEX VIEW
+   ========================================================================== */
+
+#chat-index-view {
+  min-width: 740px;
+  max-width: 1024px;
+  margin-bottom: 8rem;
+}
+
+#chat-index-view #chat-index-header-view {
+  width: 100%;
+  margin-bottom: 3rem;
+  align-items: baseline;
+  padding-left: 10rem;
+}
+
+#chat-index-view #chat-index-header-view .create-room-button-container {
+  align-items: flex-start;
+}
+
+#chat-index-view #chat-index-header-view .button {
+  margin-left: 1.5rem;
+}
+
+#chat-index-view .ui.labeled.input {
+  color: grey;
+  font-weight: 200;
+  padding-top: 1rem;
+  position: relative;
+  bottom: 0.3rem;
+}
+
+#chat-index-view .chat-room-list {
+  flex-wrap: wrap;
+  width: 100%;
+  padding-left: 10rem;
+}
+
+#chat-index-view .room-card {
+  max-width: 20rem;
+  min-width: 20rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  border: 1.5px solid #dad8d8;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 7px 5px -6px #777;
+  height: fit-content;
+}
+
+#chat-index-view .room-card .subject {
+  margin: 1.5rem 0;
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+}
+
+#chat-index-view .room-card .position {
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+#chat-index-view .room-card .name {
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+}
+
+#chat-index-view .room-card .join.button {
+  margin-top: 1rem;
+}
+
+#chat-index-view .room-card .disable.button {
+  margin-top: 1rem;
+  background-color: #adadad;
+}
+
+#chat-index-view .public-chat-room-list-header {
+  margin: 4rem 0;
+  width: 100%;
+  padding-left: 10rem;
+}
+
+#chat-index-view .search.label {
+  cursor: pointer;
+}
+
+/* ==========================================================================
+     CHAT ROOM VIEW
+   ========================================================================== */
+
+#chat-room-view {
+  position: absolute;
+  left: 220px;
+  width: calc(100% - 220px);
+  min-width: 740px;
+  height: 100%;
+}
+
+#chat-room-left-area {
+  position: fixed;
+  height: 100vh;
+  width: 220px;
+  padding: 2rem 0 0 0;
+  z-index: 100;
+  left: 0;
+}
+
+#chat-room-right-area {
+  padding-top: 3rem;
+  padding-left: 2rem;
+  width: calc(100vw - 440px);
+  min-width: 740px;
+}
+
+#chat-room-member-list-view {
+  overflow-y: auto;
+  background-color: #f5f5f5;
+  height: calc(100vh - 17rem);
+  padding: 2rem 0 2.5rem 1.5rem;
+  width: 100%;
+}
+
+#chat-room-member-list-view .label {
+  margin-bottom: 0.5rem;
+}
+
+#chat-room-member-list-view .ui.label:first-child {
+  margin-left: 0.14285714em;
+}
+
+#chat-room-menu-view {
+  position: fixed;
+  bottom: 0;
+  width: 220px;
+  height: 14rem;
+  z-index: 10;
+  background-color: #f5f5f5;
+  padding: 1rem;
+}
+
+#chat-room-menu-view .disabled.button {
+  color: black;
+}
+
+.user-unit .mute.icon {
+  margin-right: 0 !important;
+  margin-left: 0.5rem !important;
+  padding-left: 0.5rem;
+  border-left: 2px solid white;
+}
+
+#chat-room-view .user-input-field {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 240px;
+  width: calc(100vw - 480px);
+  z-index: 3;
+  min-width: 420px;
+  border-top: 2px solid #ececec;
+  padding-top: 1.5rem;
+  background-color: white;
+}
+
+#chat-room-view .ui.comments:first-child {
+  margin-bottom: 0;
+  max-width: 100% !important;
+}
+
+#chat-room-view #chat-room-message-list-view {
+  overflow-y: scroll;
+  max-height: calc(100vh - 250px);
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  padding-right: 2rem;
+}
+
+#chat-room-view .current-user .author {
+  color: teal;
+}
+
+#chat-room-view .current-user .author {
+  color: teal;
+}
+
+#chat-room-view .current-user .metadata {
+  color: teal;
+  font-weight: 700;
+}
+
+#chat-room-view textarea {
+  max-height: 112px;
+}
+
+#chat-room-view .chat-member-unit {
+  display: block;
+}
+
+/* ==========================================================================
+   DIRECT CHAT VIEW
+   ========================================================================== */
+
+@media (max-width: 740px) {
+  #direct-chat-view {
+    display: none;
+  }
+}
+
+#direct-chat-view {
+  z-index: 5;
+  position: fixed;
+  bottom: 0;
+  right: 230px;
+  width: 350px;
+  height: 600px;
+}
+
+#direct-chat-view > .ui.segment {
+  height: 600px;
+}
+
+#direct-chat-view .direct-chat-member {
+  display: flex;
+  padding-bottom: 0px;
+}
+
+#direct-chat-view .name {
+  margin-left: 1rem;
+  font-weight: 700;
+}
+
+#direct-chat-view .guild-name {
+  margin-left: 1rem;
+}
+
+#direct-chat-view .dual-join.button {
+  margin-left: auto;
+  margin-right: 1rem;
+}
+
+#direct-chat-view .ui.minimal.comments {
+  height: 370px;
+  overflow-y: auto;
+}
+
+#direct-chat-view .comment {
+  padding-right: 0.5rem;
+}
+
+#direct-chat-view .comment .content-header {
+  align-items: baseline;
+}
+
+#direct-chat-view .comment .metadata {
+  margin-right: 0.75em;
+}
+
+#direct-chat-view .ui.reply.form {
+  margin: 0 1rem 1rem 1rem;
+}
+
+#direct-chat-view .reply-field {
+  min-height: 4em;
+  height: 4em;
+}
+
+#direct-chat-view .current-user .avatar {
+  float: right;
+}
+
+#direct-chat-view .close.icon {
+  cursor: pointer;
+}
+
+#direct-chat-view .ui.comments .current-user.comment > .avatar ~ .content {
+  margin-left: 0;
+  width: 257px;
+}
+
+#direct-chat-view .ui.comments .current-user.comment .text {
+  width: 257px;
+  text-align: right;
+}
+
+#direct-chat-view .ui.comments .current-user.comment .content-header {
+  justify-content: flex-end;
+}
+
+/* ==========================================================================
+   ERROR VIEW
+   ========================================================================== */
+
+#error-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#error-view .box {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  padding-top: 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+#error-view .circle {
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background-color: #f0f4fd;
+}
+
+#error-view .code {
+  font-size: 4rem;
+  display: contents;
+  font-weight: 900;
+  color: #4c4949;
+}
+
+#error-view .title {
+  font-size: 1.5rem;
+  margin-top: 1.2rem;
+  font-weight: 900;
+}
+
+#error-view .description {
+  margin-top: 2rem;
+  width: 80%;
+  font-size: 1rem;
+  text-align: center;
+}
+
+#error-view .button {
+  margin-top: 1.5rem;
+  width: 50%;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   GAME INDEX VIEW
+   ========================================================================== */
+
+#game-index-view {
+  background-image: url("/assets/game_index.jpg");
+  min-width: 1024px;
+  width: 100%;
+  height: 100%;
+  padding-top: 4rem;
+}
+
+#game-index-view #game-player-list {
+  margin: 3rem 0;
+  width: 900px;
+}
+
+#game-index-view .profile-card {
+  width: 420px;
+  height: 150px;
+}
+
+#game-index-view .vs-icon {
+  color: white;
+}
+
+#game-index-view #count-down-box {
+  text-align: center;
+  font-size: 3rem;
+  margin-top: 20%;
+}
+
+#game-index-view #game-player-list #left-game-player-view {
+  border-left: 5px solid #db2828;
+  border-radius: 5px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+#game-index-view #game-player-list #right-game-player-view {
+  border-right: 5px solid #2185d0;
+  border-radius: 5px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+#game-index-view #ladder-game-section {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: saturate(180%) blur(10px);
+  width: 900px;
+  height: 400px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+/* ==========================================================================
+   GUILD INDEX VIEW
+   ========================================================================== */
+
+.guild-profile-card .content {
+  margin-left: 2rem;
+  margin-top: -1rem;
+}
+
+.guild-profile-card .name {
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.guild-profile-card .content-header {
+  width: 24rem; /* 길드이름 10자 + Anagram 5자 + 3자리수랭크 + 포지션(member 등) */
+}
+
+.guild-profile-card .stat {
+  margin-left: 1rem;
+}
+
+#guild-index-view .small.image {
+  margin-bottom: 0;
+  width: 150px !important;
+  height: 150px !important;
+  min-width: 150px;
+  min-height: 150px;
+}
+
+#guild-index-view {
+  margin-top: 8rem;
+}
+
+#guild-index-view #guild-create-button {
+  margin-left: auto;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-index-view .my-guild-header {
+  margin-bottom: 1.5rem;
+}
+
+#guild-index-view .guild-profile-view {
+  margin-bottom: 4rem;
+}
+
+#guild-index-view .guild-profile-view .stat {
+  margin-right: 1rem;
+}
+
+#guild-index-view .guild-ranking-list .stat {
+  margin-right: 1rem;
+}
+
+#guild-index-view .guild-profile.buttons {
+  margin-left: auto;
+}
+
+#guild-index-view .guild-profile .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-index-view .war-request-header {
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+#guild-index-view .war-request-card-list {
+  margin-bottom: 4rem;
+}
+
+#guild-index-view .war-request-card .stat {
+  margin-left: 1rem;
+}
+
+#guild-index-view .war-request-card .content {
+  margin-left: 2rem;
+  margin-top: -1rem;
+}
+
+#guild-index-view .war-request-detail-button {
+  margin-left: auto;
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-index-view .guild-ranking-header {
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+#guild-index-view .guild-ranking-list {
+  margin-bottom: 4rem;
+}
+
+#guild-index-view .guild-rank-page-buttons {
+  margin-bottom: 1rem;
+}
+
+#war-request-detail-modal-view > div.header > i {
+  cursor: pointer;
+}
+
+/* ==========================================================================
+     GUILD DETAIL VIEW
+   ========================================================================== */
+
+#guild-detail-view .small.image {
+  margin-bottom: 0;
+  width: 150px !important;
+  height: 150px !important;
+  min-width: 150px;
+  min-height: 150px;
+}
+
+#guild-detail-view .my-guild-header {
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .guild-profile-view {
+  margin-bottom: 4rem;
+}
+
+#guild-detail-view .member-list-header {
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .member-list {
+  margin-bottom: 4rem;
+}
+
+#guild-detail-view .war-history-header {
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .war-history-list {
+  margin-bottom: 4rem;
+}
+
+#guild-detail-view .guild-profile-view .stat {
+  margin-right: 1rem;
+}
+
+#guild-detail-view .member-list .row.flex-container.baseline {
+  width: 19rem;
+}
+
+#guild-detail-view .member-list .stat {
+  margin-right: 1rem;
+}
+
+#guild-detail-view .member-list-page-buttons {
+  margin-bottom: 1rem;
+}
+
+#guild-detail-view #guild-profile-card-buttons-view {
+  margin-left: auto;
+}
+
+#guild-detail-view .guild-member-card-buttons-view {
+  margin-left: auto;
+}
+
+#guild-detail-view .guild-profile-card .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-detail-view .profile-card .ui.button {
+  margin-top: 1rem;
+  height: 2.5rem;
+  width: 7rem;
+}
+
+#guild-detail-view .profile-card .content .row.flex-container.baseline {
+  width: 27rem;
+}
+
+#guild-detail-view .war-history-view {
+  align-items: stretch;
+  height: 33px;
+  margin-bottom: 1.5rem;
+}
+
+#guild-detail-view .war-history-view .bet-point {
+  width: 7rem;
+  text-align: center;
+  font-size: 1rem;
+  margin-right: 1rem;
+}
+
+#guild-detail-view .war-history-view .icon {
+  margin: 0em 0.2em 0em 0em;
+}
+
+#guild-detail-view .war-history-list .ui.fluid.buttons {
+  width: 34rem;
+}
+
+#guild-detail-view .war-history-view .enemy {
+  width: 7rem;
+  margin-left: 1rem;
+}
+
+#guild-detail-view .war-history-view .ui.fluid.buttons .ui.button {
+  width: 8rem;
+}
+
+#guild-detail-view .war-history-view .enemy > img {
+  width: 25px !important;
+  height: 25px !important;
+  min-width: 25px;
+  margin-right: 0.3rem;
+}
+
+/* ==========================================================================
+   GUILD CREATE VIEW
+   ========================================================================== */
+
+#guild-create-view .anagram-input-header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0;
+}
+
+#guild-create-view .anagram-input-header > label {
+  display: block;
+  margin: 0em 0em 0.28571429rem 0em;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.92857143em;
+  font-weight: bold;
+  text-transform: none;
+}
+
+#guild-create-view .anagram-input-header > i {
+  margin-left: 0.3rem;
+}
+
+/* ==========================================================================
+   WAR REQUEST CREATE VIEW
+   ========================================================================== */
+
+#war-request-create-view {
+  width: 550px;
+}
+
+#war-request-create-view .ui.large.label {
+  margin-bottom: 1rem;
+}
+
+#war-request-create-view .ui.segment.flex-container {
+  margin-top: 0;
+}
+
+#war-request-create-view .inline.fields {
+  align-items: baseline;
+}
+
+#war-request-create-view .inline.fields > label {
+  margin-top: 1rem;
+  margin-right: 2rem;
+}
+
+#war-request-create-view .minimum-value {
+  width: 6rem;
+}
+
+#war-request-create-view .maximum-value {
+  width: 6rem;
+  text-align: end;
+}
+
+#war-request-create-view .display-value {
+  text-align: center;
+}
+
+#war-request-create-view .max-no-reply-header {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0;
+}
+
+#war-request-create-view .max-no-reply-header > label {
+  display: block;
+  margin: 0em 0em 0.28571429rem 0em;
+  color: rgba(0, 0, 0, 0.87);
+  font-size: 0.92857143em;
+  font-weight: bold;
+  text-transform: none;
+}
+
+#war-request-create-view .max-no-reply-header > i {
+  margin-left: 0.3rem;
+}
+
+/* ==========================================================================
+   LADDER INDEX VIEW
+   ========================================================================== */
+
+#ladder-index-view {
+  margin-top: 8rem;
+}
+
+#ladder-index-view .join-buttons {
+  margin-left: 1rem;
+}
+
+#ladder-index-view .join-buttons .button {
+  margin-left: 0.5rem;
+}
+
+#ladder-index-view .user-ranking.ui.container {
+  margin: 5% 0;
+}
+
+#ladder-index-view .ladder-index-header .buttons {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   IMAGE UPLOAD MODAL VIEW
+   ========================================================================== */
+
+#image-upload-modal-view .grid.container {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+#image-upload-modal-view .image-name.flex-container {
+  justify-content: center;
+}
+
+/* ==========================================================================
+   LIVE INDEX VIEW
+   ========================================================================== */
+
+#live-index-view {
+  min-width: 740px;
+  max-width: 1024px;
+  margin-bottom: 8rem;
+}
+
+#live-index-view .menu {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+#live-card-list-view {
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+#live-index-view .live-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 23rem;
+  min-width: 23rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  border: 1.5px solid #dad8d8;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 7px 5px -6px #777;
+  height: fit-content;
+  align-items: center;
+  height: 15rem;
+  justify-content: space-between;
+}
+
+#live-index-view .live-card .title {
+  line-height: 1.8;
+  font-weight: 700;
+  text-align: center;
+}
+
+#live-index-view .live-card .vs-icon {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+#live-index-view .live-card .name {
+  margin-left: 0.5rem;
+}
+
+#live-index-view .live-card .match-start-time {
+  font-size: 0.9rem;
+}
+
+#live-index-view .live-card .score {
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding-bottom: 0.5rem;
+}
+
+#live-index-view .live-card .score span {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   INVITE VIEW
+   ========================================================================== */
+
+@media (max-width: 885px) {
+  #invite-view {
+    display: none;
+  }
+}
+
+#invite-view {
+  position: fixed;
+  bottom: 0;
+  right: 585px;
+  z-index: 103;
+}
+
+/* ==========================================================================
+   REQUEST VIEW
+   ========================================================================== */
+
+@media (max-width: 885px) {
+  #request-view {
+    display: none;
+  }
+}
+
+#request-view {
+  position: fixed;
+  bottom: 0;
+  right: 585px;
+  z-index: 103;
+}
+
+/* ==========================================================================
+   SIGN IN VIEW
+   ========================================================================== */
+
+#sign-in-view {
+  width: 300px;
+  margin-top: calc(50vh - 200px);
+}
+
+#sign-in-view .ui.stacked.segment {
+  width: 300px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#sign-in-view .field {
+  width: 270px;
+}
+
+#sign-in-view .submit.button {
+  margin-top: 0.5rem;
+}
+
+#sign-in-view .sign-up.message {
+  text-align: center;
+}
+
+/* ==========================================================================
+   SIGN UP VIEW
+   ========================================================================== */
+
+#sign-up-view {
+  margin-top: 25vh;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  width: 300px;
+}
+
+#sign-up-view button {
+  margin-top: 1.8rem;
+}
+
+/* ==========================================================================
+   TOURNAMENT INDEX VIEW
+   ========================================================================== */
+
+#tournament-index-view {
+  max-width: 1024px;
+  min-width: 740px;
+  margin-bottom: 8rem;
+  padding-left: 10rem;
+}
+
+#tournament-index-view .header {
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+#tournament-index-view .header.open-tournaments {
+  margin-top: 3rem;
+}
+
+#tournament-index-view #my-tournaments-view {
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+#tournament-index-view #open-tournaments-view {
+  width: 100%;
+}
+
+#tournament-index-view .tournament-match-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 20rem;
+  min-width: 20rem;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  border: 1.5px solid #dad8d8;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 7px 5px -6px #777;
+  height: fit-content;
+  align-items: center;
+  height: 13rem;
+  justify-content: space-between;
+}
+
+#tournament-index-view .tournament-match-card .title {
+  line-height: 1.8;
+  font-weight: 700;
+  text-align: center;
+}
+
+#tournament-index-view .tournament-match-card .vs-icon {
+  padding-right: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+#tournament-index-view .tournament-match-card .name {
+  margin-left: 0.5rem;
+}
+
+#tournament-index-view .tournament-match-card .match-start-time {
+  font-size: 0.9rem;
+}
+
+#tournament-index-view .tournament-card {
+  width: 62rem;
+  border: 1.5px solid #dad8d8;
+  border-radius: 10px;
+  padding: 1rem;
+  height: 11rem;
+  justify-content: space-between;
+  box-shadow: 0 7px 5px -6px #777;
+  margin-bottom: 2rem;
+}
+
+#tournament-index-view .tournament-card .information-container {
+  align-self: flex-start;
+}
+
+#tournament-index-view .tournament-card .information-element {
+  margin-right: 0.5rem;
+}
+
+#tournament-index-view .tournament-card .content {
+  justify-content: space-between;
+  width: 100%;
+  align-items: baseline;
+}
+
+#tournament-index-view .tournament-card .title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+#tournament-index-view .tournament-card .start-time {
+  padding-right: 1rem;
+}
+
+/* ==========================================================================
+   USER INDEX VIEW
+   ========================================================================== */
+
+#user-index-view {
+  max-width: 740px;
+  min-width: 480px;
+  margin-bottom: 4rem;
+}
+
+#user-index-view #user-index-buttons-view {
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+#user-index-view #user-index-buttons-view .right-buttons {
+  margin-left: auto;
+}
+
+#user-index-view h1 {
+  margin-bottom: 0;
+}
+
+#user-index-view .user-profile-view {
+  margin-bottom: 4rem;
+}
+
+#user-index-view #two-factor-toggle {
+  padding-top: 0.3rem;
+  margin-left: 1rem;
+}
+
+#user-index-view .ui.card {
+  min-width: 355px;
+}
+
+#user-index-view .ui.card:nth-child(odd) {
+  margin: 1.5rem 1rem 0 0;
+}
+
+#user-index-view .ui.card:nth-child(even) {
+  margin: 1.5rem 0 0 1rem;
+}
+
+#user-index-view #guild-invitation-list-view {
+  flex-wrap: wrap;
+  padding-top: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+#user-index-view #guild-invitation-list-view .ui.card .meta {
+  margin-top: 0.5rem;
+}
+
+#user-index-view #guild-invitation-list-view .ui.card .description {
+  margin-top: 1rem;
+}
+
+#user-index-view .match-history-list-view {
+  padding-top: 1.5rem;
+}
+
+#user-index-view .match-history-view {
+  justify-content: space-between;
+  align-items: stretch;
+  height: 33px;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  #user-index-view #guild-invitation-list-view {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #user-index-view .ui.card.mobile-only {
+    margin: 1.5rem 0 0 0;
+  }
+}
+
+#user-index-view .match-history-view .label {
+  width: 15vw;
+  min-width: 100px;
+  font-size: 1rem;
+  text-align: center;
+  margin-right: 2rem;
+}
+
+#user-index-view .ui.fluid.buttons {
+  width: 40vw;
+}
+
+#user-index-view .match-history-view .button {
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#user-index-view .match-history-view .right.button {
+  margin-right: 1.5rem;
+}
+
+#user-index-view .match-history-view .enemy {
+  width: 20vw;
+}
+
+#user-index-view .match-history-view .enemy div:nth-child(2) {
+  margin-left: 1rem;
+}
+
+#user-index-view .match-history-view div[data-text] {
+  font-size: 1.2rem;
+  margin-top: -0.4rem;
+}
+
+/* ==========================================================================
+   USER PROFILE VIEW
+   ========================================================================== */
+
+.profile-trophy > i {
+  margin-left: 0.5rem !important;
+}
+
+.profile-card .small.image {
+  margin-bottom: 0;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+.profile-card .content {
+  margin-left: 2rem;
+}
+
+.profile-card .row.flex-container.baseline {
+  width: 24rem;
+}
+
+.profile-card .row:not(:first-child) {
+  margin-top: 0.2rem;
+}
+
+.profile-card .name {
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.profile-card .rank {
+  margin-left: 1rem;
+}
+
+/* ==========================================================================
+     WAR INDEX VIEW
+     ========================================================================== */
+
+#war-index-view .ui.header {
+  margin-bottom: 1rem;
+}
+
+#war-index-view .enemy-guild {
+  width: 32rem;
+}
+
+#war-index-view .enemy-guild-profile-view {
+  margin-bottom: 4rem;
+  height: 13rem;
+}
+
+#war-index-view .small.image {
+  margin-bottom: 0;
+  width: 150px !important;
+  height: 150px !important;
+  min-width: 150px;
+  min-height: 150px;
+}
+
+#war-index-view .war-battle {
+  width: 16rem;
+  margin-left: auto;
+}
+
+#war-index-view .war-battle-view {
+  margin-bottom: 4rem;
+}
+
+#war-index-view .war-battle-view .ui.card {
+  width: 24rem;
+  height: 13rem;
+  margin-right: 1rem;
+}
+
+#war-index-view .war-battle-view .ui.card .content .description {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+#war-index-view .war-status {
+  margin-left: auto;
+}
+
+#war-index-view .war-status-view {
+  margin-bottom: 4rem;
+  width: 100%;
+}
+
+#war-index-view .war-status-view .ui.card {
+  width: 336px;
+  height: 200px;
+}
+
+#war-index-view .war-status-view .content {
+  margin-top: 0.8rem;
+}
+
+#war-index-view .war-status-view .ui.circular.label {
+  place-self: flex-end;
+}
+
+#war-index-view .war-status-view .war-point.row {
+  margin-bottom: 1rem;
+}
+
+#war-index-view .war-status-view .sub.header {
+  margin-bottom: 0.5rem;
+}
+
+#war-index-view .war-status-view .no-reply-count {
+  margin-top: 2.5rem;
+}
+
+#war-index-view .war-rule-view {
+  margin-bottom: 4rem;
+  width: 100%;
+  margin-right: 1rem;
+}
+
+#war-index-view .war-rule-view .ui.card {
+  width: 336px;
+  height: 200px;
+}
+
+#war-index-view #my-guild-point {
+  width: 50%;
+  margin-bottom: 0;
+}
+
+#war-index-view #enemy-guild-point {
+  width: 50%;
+  transform: scaleX(-1);
+  margin-bottom: 0;
+}
+
+#war-index-view #enemy-guild-point .label {
+  transform: scaleX(-1);
+}
+
+#war-index-view .war-match-history-list-view {
+  margin-bottom: 4rem;
+  padding-top: 1.5rem;
+}
+
+#war-index-view .war-match-history-view {
+  justify-content: space-between;
+  align-items: stretch;
+  height: 33px;
+  margin-bottom: 1.5rem;
+}
+
+#war-index-view .war-match-history-view .label {
+  width: 15vw;
+  min-width: 100px;
+  font-size: 1rem;
+  text-align: center;
+  margin-right: 2rem;
+}
+
+#war-index-view .war-match-history-view .button {
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 16.5rem;
+}
+
+#war-index-view .war-match-history-view .right.button {
+  margin-right: 1.5rem;
+}
+
+#war-index-view .war-match-history-view .enemy {
+  width: 20vw;
+}
+
+#war-index-view .war-match-history-view .enemy div:nth-child(2) {
+  margin-left: 1rem;
+}
+
+#war-index-view .war-match-history-view div[data-text] {
+  font-size: 1.2rem;
+  margin-top: -0.4rem;
+}

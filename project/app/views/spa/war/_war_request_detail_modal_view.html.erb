@@ -1,0 +1,67 @@
+<script type="text/template" id="war-request-detail-modal-view-template">
+  <div class="header">
+    War Request Detail
+    <i class="war-request-close-button right floated close grey icon"></i>
+  </div>
+  <div class="content">
+
+  <table class="ui definition table">
+    <thead>
+      <tr><th></th>
+      <th>정보</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>룰</td>
+        <td><%%= rule_name %></td>
+      </tr>
+      <tr>
+        <td>배팅 포인트</td>
+        <td><%%= bet_point %></td>
+      </tr>
+      <tr>
+        <td>래더 포함여부</td>
+        <td>
+          <%%= include_ladder ? 'Yes' : 'No' %>
+        </td>
+      </tr>
+      <tr>
+        <td>토너먼트 포함여부</td>
+        <td>
+          <%%= include_tournament ? 'Yes' : 'No' %>
+        </td>
+      </tr>
+      <tr>
+        <td>타겟 매치 스코어</td>
+        <td><%%= target_match_score %>점</td>
+      </tr>
+      <tr>
+        <td>최대 미응답 수</td>
+        <td><%%= max_no_reply_count %>회</td>
+      </tr>
+      <tr>
+        <td>워 타임</td>
+        <td><%%= war_time %>:00 ~ <%%= (+war_time < 9 ? '0' : '') + (+war_time + 1) %>:00</td>
+      </tr>
+      <tr>
+        <td>시작일</td>
+        <td><%%= start_date %></td>
+      </tr>
+      <tr>
+        <td>종료일</td>
+        <td><%%= end_date %></td>
+      </tr>
+  </tbody></table>
+
+  </div>
+  <div class="actions">
+  <%% if (current_user_position != "member") { %>
+    <div class="war-request-accept-button ui positive right button">
+      수락하기
+    </div>
+    <div class="war-request-decline-button ui negative button">
+      거절하기
+    </div>
+  <%% } %>
+  </div>
+</script>

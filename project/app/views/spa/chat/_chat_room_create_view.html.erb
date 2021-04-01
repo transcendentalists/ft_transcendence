@@ -1,0 +1,39 @@
+<script type="text/template" id="chat-room-create-view-template">
+  <h1 class="ui header">채팅 룸 생성하기</h1>
+  <form class="ui form">
+    <div class="field">
+      <label>채팅 룸 제목(16자 이내)</label>
+      <input type="text" placeholder="채팅 룸의 제목을 입력해주세요." name="title">
+    </div>
+    <div class="field">
+      <label>비밀번호</label>
+      <input type="password" name="password" placeholder="미입력시 누구나 들어올 수 있습니다.">
+    </div>
+    <div class="field">
+      <div class="ui toggle checkbox">
+        <input type="checkbox" name="room_type">
+        <label>채팅 룸 리스트 비공개여부</label>
+      </div>
+    </div>
+    <div class="field">
+      <label>입장인원 제한</label>
+      <select class="max-member-count">
+        <option value="2">2명</option>
+        <option value="3">3명</option>
+        <option value="4">4명</option>
+        <option value="5">5명</option>
+        <option value="6">6명</option>
+        <option value="7">7명</option>
+        <option value="8">8명</option>
+        <option value="9">9명</option>
+        <option value="10">10명</option>
+      </select>
+    </div>
+    <div class="flex-cotnainer buttons">
+    <div>
+      <div class="ui teal create button">개설하기</div>
+      <div Class="ui red cancel button">취소하기</div>
+    </div>
+  </form>
+
+</script>

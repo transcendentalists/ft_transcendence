@@ -1,0 +1,39 @@
+<div id="root">
+
+  <!-- nav_bar 렌더링 -->
+  <%= render partial: 'spa/persist/nav_bar' %>
+
+  <div id="root-grid" class="ui padded grid">
+    <!-- main_view container 영역 -->
+    <div id="main-view-container" class="sixteen wide mobile thirteen wide tablet thirteen wide computer column flex-container column-direction center-aligned">
+    </div>
+
+    <!-- apperancne_view 렌더링 -->
+    <div id="appearance-view" class="three wide tablet only three wide computer only column">
+    </div>
+  </div>
+
+  <!-- views 렌더링 -->
+  <%= render partial: 'templates/admin' %>
+  <%= render partial: 'templates/appearance' %>
+  <%= render partial: 'templates/chat' %>
+  <%= render partial: 'templates/error' %>
+  <%= render partial: 'templates/game' %>
+  <%= render partial: 'templates/guild' %>
+  <%= render partial: 'templates/ladder' %>
+  <%= render partial: 'templates/live' %>
+  <%= render partial: 'templates/persist' %>
+  <%= render partial: 'templates/registration' %>
+  <%= render partial: 'templates/share' %>
+  <%= render partial: 'templates/tournament' %>
+  <%= render partial: 'templates/user' %>
+  <%= render partial: 'templates/war' %>
+
+  <%= javascript_pack_tag 'app' %>
+</div>
+
+<!-- footer element container 영역 -->
+<%= render partial: 'layouts/footer' %>
+
+<!-- modal view container 영역 -->
+<%= render partial: 'layouts/modal' %>

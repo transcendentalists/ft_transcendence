@@ -1,0 +1,39 @@
+<script type="text/template" id="sign-in-view-template">
+<div id="sign-in-form">
+    <h2 class="ui center aligned teal header">
+      <div class="content">
+        트렌센던스로 로그인하세요.
+      </div>
+    </h2>
+    <form class="ui large form">
+      <div class="ui stacked segment">
+        <div class="login field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="name" placeholder="Name">
+          </div>
+        </div>
+        <div class="login field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Password">
+          </div>
+        </div>
+        <div class="auth field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="text" name="auth" placeholder="인증 비밀번호">
+          </div>
+        </div>
+        <div class="ui fluid large teal submit button">submit</div>
+      </div>
+
+      <div class="ui negative message"></div>
+
+    </form>
+
+    <div class="ui message sign-up">
+      처음이세요? <a href="#/users/new">Sign Up</a>
+    </div>
+  </div>
+</script>

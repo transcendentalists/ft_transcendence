@@ -9,45 +9,55 @@ export let ChatRoomCreateView = Backbone.View.extend({
     "click .cancel.button": "cancel",
   },
 
-  redirectChatRoomCallback: function (data) {
-    App.router.navigate(`#/chatrooms/${data.group_chat_room.id}`);
+  render: function () {
+    this.$el.empty();
+    this.$el.html(this.template());
+    return this;
+  },
+
+  submit: function () {
+    let input_data = {};
+    input_data.title = this.getInput("title");
+    input_data.owner_id = App.current_user.id;
+    input_data.password = this.getInput("password");
+    input_data.room_type = this.getInput("room_type", { type: "check" });
+    input_data.max_member_count = this.getInput("max-member-count", {
+      type: "option",
+    });
+
+    Helper.fetch("group_chat_rooms", this.createRoomParams(input_data));
+  },
+
+  getInput: function (input_name, { type = "input" } = {}) {
+    switch (type) {
+      case "input":
+        return document.forms[0][input_name].value;
+      case "check":
+        return this.$(`input[name=${input_name}]`).is(":checked")
+          ? "private"
+          : "public";
+      case "option":
+        return this.$(`.${input_name} option:selected`).val();
+    }
   },
 
   createRoomParams: function (input_data) {
     return {
       method: "POST",
       success_callback: this.redirectChatRoomCallback.bind(this),
-      fail_callback: (data) => App.router.navigate("#/errors/105"),
+      fail_callback: () => App.router.navigate("#/errors/105"),
       body: {
         group_chat_room: input_data,
       },
     };
   },
 
-  submit: function () {
-    let input_data = {};
-    input_data["title"] = $("input[name=title]").val();
-    input_data["owner_id"] = App.current_user.id;
-    input_data["password"] = $("input[name=password]").val();
-    input_data["room_type"] = $("input[name=room_type]").is(":checked")
-      ? "private"
-      : "public";
-    input_data["max_member_count"] = +$(
-      ".max-member-count option:selected"
-    ).val();
-
-    Helper.fetch("group_chat_rooms", this.createRoomParams(input_data));
-  },
-
   cancel: function () {
     App.router.navigate("#/chatrooms");
   },
 
-  render: function () {
-    this.$el.empty();
-    this.$el.html(this.template());
-    this.$(".ui.negative.message").hide();
-    return this;
+  redirectChatRoomCallback: function (data) {
+    App.router.navigate(`#/chatrooms/${data.group_chat_room.id}`);
   },
 
   close: function () {

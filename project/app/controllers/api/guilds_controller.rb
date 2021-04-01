@@ -1,53 +1,70 @@
 class Api::GuildsController < ApplicationController
-  before_action :check_headers_and_find_current_user, only: [ :create ]
+  before_action :check_headers_and_find_current_user, only: [ :index, :create, :show ]
 
   def index
-    if params[:for] == "guild_index"
-      render json: { guilds: Guild.for_guild_index(params[:page].to_i) }
+    begin
+      if params[:for] == "guild_index"
+        render json: { guilds: Guild.for_guild_index(params[:page].to_i) }
+      else
+        raise ServiceError.new :BadRequest
+      end
+    rescue ServiceError => e
+      perror e
+      render_error e.type
+    rescue => e
+      perror e
+      render_error :Conflict
     end
   end
 
   def create
-    ActiveRecord::Base.transaction do
-      return render_error("길드 생성 실패", "이미 소속된 길드가 있습니다.", 400) if @current_user.in_guild
-      begin
-        guild = Guild.new(
-          name: params[:name],
-          anagram: '@' + params[:anagram],
-          owner_id: @current_user.id,
-        )
-        if guild.invalid?
-          error_attribute_name = guild.errors.attribute_names.first
-          raise ArgumentError.new guild.errors[error_attribute_name].first
-        end
-        guild.save!
+    begin
+      raise ServiceError.new :BadRequest if @current_user.in_guild
+      ActiveRecord::Base.transaction do
+        guild = Guild.create!(create_params)
         guild_membership = guild.memberships.create!({ user_id: @current_user.id, guild_id: guild.id, position: "master" })
-        image_attach(guild)
+        @current_user.guild_invitations.destroy_all
+        image_attach!(guild)
         render json: { guild_membership: guild_membership.profile }
-      rescue => e
-        render_error("길드 생성 실패", e.class == ArgumentError ? e.message : "잘못된 요청입니다.", 400)
-        raise ActiveRecord::Rollback
       end
+    rescue ServiceError => e
+      perror e
+      render_error e.type
+    rescue => e
+      perror e
+      render_error :Conflict
     end
   end
 
   def show
-    guild = Guild.find_by_id(params[:id])
-    return render_error("길드 검색 에러", "요청하신 길드의 정보가 없습니다.", 404) if guild.nil?
-    if params[:for] == "profile"
-      guild_data = guild.profile
-    else
-      return render_error("올바르지 않은 요청", "요청하신 정보가 없습니다.", 400)
+    begin
+      guild = Guild.find(params[:id])
+      if params[:for] == "profile"
+        guild_data = guild.profile
+      else
+        raise ServiceError.new :BadRequest
+      end
+      render json: { guild: guild_data }
+    rescue ServiceError => e
+      perror e
+      render_error e.type
+    rescue => e
+      perror e
+      render_error :NotFound
     end
-    render json: { guild: guild_data }
-  end
-
-  def update
-    render plain: "You just updated " + params[:id] + " guild"
   end
 
   private
-  def image_attach(guild)
+
+  def create_params
+    {
+      name: params[:name],
+      anagram: '@' + params[:anagram],
+      owner_id: @current_user.id,
+    }
+  end
+
+  def image_attach!(guild)
     if params.has_key?(:file)
       guild.image.purge if guild.image.attached?
       guild.image.attach(params[:file])
@@ -55,5 +72,4 @@ class Api::GuildsController < ApplicationController
       guild.save!
     end
   end
-
 end

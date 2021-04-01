@@ -1,95 +1,39 @@
 <div id="root">
-  <!-- 내비게이션 -->
 
+  <!-- nav_bar 렌더링 -->
   <%= render partial: 'spa/persist/nav_bar' %>
 
   <div id="root-grid" class="ui padded grid">
-
-    <div id="appearance-view" class="three wide tablet only three wide computer only column">
-    </div>
+    <!-- main_view container 영역 -->
     <div id="main-view-container" class="sixteen wide mobile thirteen wide tablet thirteen wide computer column flex-container column-direction center-aligned">
+    </div>
 
+    <!-- apperancne_view 렌더링 -->
+    <div id="appearance-view" class="three wide tablet only three wide computer only column">
     </div>
   </div>
 
-  <%= render partial: 'spa/registration/sign_in_view' %>
-  <%= render partial: 'spa/registration/sign_up_view' %>
-
-  <%= render partial: 'spa/persist/direct_chat_view' %>
-  <%= render partial: 'spa/persist/appearance/appearance_view' %>
-  <%= render partial: 'spa/persist/appearance/friends_list' %>
-  <%= render partial: 'spa/persist/appearance/online_user_list' %>
-  <%= render partial: 'spa/persist/appearance/user_list_unit' %>
-  <%= render partial: 'spa/persist/appearance/user_menu' %>
-  <%= render partial: 'spa/persist/main_buttons_view' %>
-  <%= render partial: 'spa/persist/invite_view' %>
-  <%= render partial: 'spa/persist/request_view' %>
-  <%= render partial: 'spa/persist/input_modal_view' %>
-  <%= render partial: 'spa/persist/rule_modal_view' %>
-  <%= render partial: 'spa/persist/info_modal_view' %>
-  <%= render partial: 'spa/persist/alert_modal_view' %>
-  <%= render partial: 'spa/persist/table_modal_view' %>
-
-  <%= render partial: 'spa/admin/admin_index_view' %>
-  <%= render partial: 'spa/admin/admin_select_view' %>
-
-  <%= render partial: 'spa/share/warning_message' %>
-  <%= render partial: "spa/share/user_profile_card_view" %>
-  <%= render partial: 'spa/share/chat_message_view' %>
-  <%= render partial: 'spa/share/current_user_chat_message_view' %>
-
-  <%= render partial: 'spa/error/error_view' %>
-
-  <%= render partial: "spa/game/game_index_view" %>
-  
-  <%= render partial: "spa/live/live_index_view" %>
-  <%= render partial: "spa/live/live_card_view" %>
-
-  <%= render partial: 'spa/persist/image_upload_modal_view' %>
-  <%= render partial: 'spa/user/user_index_view' %>
-  <%= render partial: 'spa/user/user_index_buttons_view' %>
-  <%= render partial: 'spa/game/match_history_view' %>
-  <%= render partial: 'spa/guild/guild_invitation_view' %>
-  <%= render partial: 'spa/guild/guild_index_view' %>
-  <%= render partial: 'spa/guild/guild_detail_view' %>
-  <%= render partial: 'spa/guild/guild_ranking_view' %>
-  <%= render partial: 'spa/guild/guild_create_view' %>
-  <%= render partial: "spa/guild/guild_profile_card_view" %>
-  <%= render partial: "spa/guild/guild_profile_card_buttons_view" %>
-  <%= render partial: "spa/guild/guild_member_card_buttons_view" %>
-  <%= render partial: "spa/guild/guild_member_profile_card_view" %>
-
-  <%= render partial: "spa/guild/guild_member_list_view" %>
-
-  <%= render partial: 'spa/war/war_request_card_view' %>
-  <%= render partial: 'spa/war/war_history_view' %>
-  <%= render partial: 'spa/war/war_request_detail_modal_view' %>
-  <%= render partial: "spa/ladder/ladder_index_view" %>
-  <%= render partial: "spa/ladder/my_rating_view" %>
-  <%= render partial: "spa/ladder/user_ranking_view" %>
-
-  <%= render partial: "spa/chat/chat_index_view" %>
-  <%= render partial: "spa/chat/chat_room_card_view" %>
-  <%= render partial: "spa/chat/chat_room_view" %>
-  <%= render partial: "spa/chat/chat_room_menu_view" %>
-  <%= render partial: "spa/chat/chat_room_member_unit_view" %>
-  <%= render partial: "spa/chat/chat_room_member_menu_view" %>
-  <%= render partial: "spa/chat/chat_room_create_view" %>
-  
-  <%= render partial: "spa/tournament/tournament_index_view" %>
-  <%= render partial: "spa/tournament/tournament_card_view" %>
-  <%= render partial: "spa/tournament/tournament_match_card_view" %>
-  <%= render partial: "spa/tournament/tournament_create_view" %>
+  <!-- views 렌더링 -->
+  <%= render partial: 'templates/admin' %>
+  <%= render partial: 'templates/appearance' %>
+  <%= render partial: 'templates/chat' %>
+  <%= render partial: 'templates/error' %>
+  <%= render partial: 'templates/game' %>
+  <%= render partial: 'templates/guild' %>
+  <%= render partial: 'templates/ladder' %>
+  <%= render partial: 'templates/live' %>
+  <%= render partial: 'templates/persist' %>
+  <%= render partial: 'templates/registration' %>
+  <%= render partial: 'templates/share' %>
+  <%= render partial: 'templates/tournament' %>
+  <%= render partial: 'templates/user' %>
+  <%= render partial: 'templates/war' %>
 
   <%= javascript_pack_tag 'app' %>
 </div>
 
-<div id="invite-view" class="ui raised card hide-tablet"></div>
-<div id="request-view" class="ui raised card hide-tablet"></div>
-<div id="direct-chat-view" class="ui raised card hide-tablet"></div>
-<div id="input-modal-view" class="ui tiny modal transition"></div>
-<div id="rule-modal-view" class="ui tiny modal transition"></div>
-<div id="alert-modal-view" class="ui tiny modal transition"></div>
-<div id="info-modal-view" class="ui tiny modal transition"></div>
-<div id="image-upload-modal-view" class="ui tiny modal transition"></div>
-<div id="table-modal-view" class="ui tiny modal transition"></div>
+<!-- footer element container 영역 -->
+<%= render partial: 'layouts/footer' %>
+
+<!-- modal view container 영역 -->
+<%= render partial: 'layouts/modal' %>

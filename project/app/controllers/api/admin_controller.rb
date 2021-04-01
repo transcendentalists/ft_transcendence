@@ -2,7 +2,7 @@ class Api::AdminController < ApplicationController
   before_action :check_headers_and_find_current_user, only: [ :index ]
 
   def index
-    return render_error("UNAUTHORIZATION", "권한이 없습니다.", 403) unless current_user_is_admin_or_owner?
+    return render_error :Forbidden unless current_user_is_admin_or_owner?
     user_id = @current_user.id
     begin
       resources = {
@@ -15,8 +15,9 @@ class Api::AdminController < ApplicationController
         guild_memberships: GuildMembership.left_outer_joins(:user).select(:id, :guild_id, "users.name"),
         guild_positions: ApplicationRecord.guild_positions
       }
-    rescue
-      return render_error("FAILED TO LOAD RESOURCES", "관리할 데이터를 불러오는데 실패했습니다.", 500)
+    rescue => e
+      perror e
+      return render_error :Conflict
     end
 
     render json: { db: resources }

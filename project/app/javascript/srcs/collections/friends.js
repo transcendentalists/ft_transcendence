@@ -1,5 +1,5 @@
-import { App, Helper } from "../internal";
-import { User } from "../models/user";
+import { App, Helper } from "srcs/internal";
+import { User } from "srcs/models/user";
 
 export let Friends = Backbone.Collection.extend({
   model: User,
@@ -52,7 +52,7 @@ export let Friends = Backbone.Collection.extend({
   removeFriendAndAddToOnlineUsers: function () {
     this.remove(this.user_model);
     if (this.user_model.get("status") != "offline") {
-      App.appView.appearance_view.online_users.add(this.user_model);
+      App.app_view.appearance_view.online_users.add(this.user_model);
     }
   },
 });

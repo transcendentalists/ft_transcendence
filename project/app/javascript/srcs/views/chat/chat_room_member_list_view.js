@@ -18,6 +18,31 @@ export let ChatRoomMemberListView = Backbone.View.extend({
     this.listenTo(this.chat_room_members, "restore", this.addOne);
   },
 
+  addOne: function (member) {
+    if (member.get("position") == "ghost") return;
+    let member_unit_view = new App.View.ChatRoomMemberUnitView({
+      model: member,
+      parent: this,
+    });
+    this.child_views.push(member_unit_view);
+    this.$el.append(member_unit_view.render().$el);
+  },
+
+  addAll: function () {
+    this.child_views.forEach((child_view) => child_view.close());
+    this.chat_room_members.forEach(function (member) {
+      if (member.position != "ghost") this.addOne(member);
+    }, this);
+  },
+
+  render: function () {
+    this.addAll();
+    this.listenTo(this.chat_room_members, "add", this.addOne);
+
+    this.chat_member_menu_view = new App.View.ChatRoomMemberMenuView(this);
+    this.chat_member_menu_view.setElement($("#chat-room-member-menu-view"));
+  },
+
   openMemberMenu: function (event) {
     const client_x = event.clientX;
     const client_y = event.clientY;
@@ -36,31 +61,6 @@ export let ChatRoomMemberListView = Backbone.View.extend({
     )
       return;
     if (this.chat_member_menu_view) this.chat_member_menu_view.hide();
-  },
-
-  render: function () {
-    this.addAll();
-    this.listenTo(this.chat_room_members, "add", this.addOne);
-
-    this.chat_member_menu_view = new App.View.ChatRoomMemberMenuView(this);
-    this.chat_member_menu_view.setElement($("#chat-room-member-menu-view"));
-  },
-
-  addOne: function (member) {
-    if (member.get("position") == "ghost") return;
-    let member_unit_view = new App.View.ChatRoomMemberUnitView({
-      model: member,
-      parent: this,
-    });
-    this.child_views.push(member_unit_view);
-    this.$el.append(member_unit_view.render().$el);
-  },
-
-  addAll: function () {
-    this.child_views.forEach((child_view) => child_view.close());
-    this.chat_room_members.forEach(function (member) {
-      if (member.position != "ghost") this.addOne(member);
-    }, this);
   },
 
   close: function () {

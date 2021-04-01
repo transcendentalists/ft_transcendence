@@ -9,10 +9,15 @@ export let GuildMemberProfileCardView = Backbone.View.extend({
     this.guild_member_profile_card_buttons_view = null;
   },
 
-  refresh: function (guild) {
-    this.member.guild = guild;
-    this.guild_member_profile_card_buttons_view.close();
-    this.render(this.member);
+  render: function (member) {
+    this.member = member;
+    this.$el.html(this.template(this.member));
+    if (
+      App.current_user.get("guild")?.id == this.member.guild.id &&
+      !Helper.isCurrentUser(this.member.id)
+    )
+      this.renderGuildMemberButtons();
+    return this;
   },
 
   renderGuildMemberButtons: function () {
@@ -24,15 +29,10 @@ export let GuildMemberProfileCardView = Backbone.View.extend({
       .render(this.member);
   },
 
-  render: function (member) {
-    this.member = member;
-    this.$el.html(this.template(this.member));
-    if (
-      App.current_user.get("guild")?.id == this.member.guild.id &&
-      !Helper.isCurrentUser(this.member.id)
-    )
-      this.renderGuildMemberButtons();
-    return this;
+  refresh: function (guild) {
+    this.member.guild = guild;
+    this.guild_member_profile_card_buttons_view.close();
+    this.render(this.member);
   },
 
   close: function () {

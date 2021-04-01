@@ -1,4 +1,4 @@
-import { Helper } from "srcs/helper";
+import { Helper } from "srcs/internal";
 
 export let ChatMessageView = Backbone.View.extend({
   tagName: "div",

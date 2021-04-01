@@ -1,34 +1,110 @@
 class Api::WarRequestsController < ApplicationController
-  before_action :check_headers_and_find_current_user, only: [ :update ]
+  before_action :check_headers_and_find_current_user
 
   def index
-    if params[:for] == "guild_index"
-      render json: { war_requests: WarRequest.for_guild_index(params[:guild_id]) }
-    else
-      render plain: params[:guild_id] + " guild's war requests index"
+    begin
+      if params[:for] == "guild_index"
+        render json: { war_requests: WarRequest.for_guild_index(params[:guild_id]) }
+      else
+        render_error :BadRequest
+      end
+    rescue ActiveRecord::RecordNotFound =>e
+      perror e
+      render_error :NotFound
+    rescue => e
+      perror e
+      render_error :Conflict
     end
   end
 
-  # TODO: 만약 현재 전쟁 진행중이면 전쟁제안은 하지 못한다.
   def create
-    render plain: params[:guild_id] + " guild's war requests created"
+    begin
+      guild = Guild.find(params[:guild_id])
+      unless WarRequest.can_be_created_by?({ current_user: @current_user, guild: guild })
+        raise ServiceError.new(:Forbidden)
+      end
+      raise ServiceError.new if guild.already_request_to?(params[:enemy_guild_id])
+      war_request = nil
+      ActiveRecord::Base.transaction do
+        war_request = WarRequest.create_by!(create_params)
+      end
+      render json: { war_request_id: war_request.id }
+    rescue ActiveRecord::RecordNotFound => e
+      perror e
+      render_error :NotFound
+    rescue ActiveRecord::RecordInvalid => e
+      key =  e.record.errors.attribute_names.first
+      error_message = e.record.errors.messages[key].first
+      render_error(:BadRequest, error_message)
+      perror e
+    rescue ServiceError => e
+      render_error(e.type, e.message)
+      perror e
+    rescue => e
+      perror e
+      render_error :Conflict
+    end
   end
 
   def update
-    war_request = WarRequest.find_by_id(params[:id])
-    return render_error("전쟁 제안 검색 에러", "요청하신 전쟁 제안이 존재하지 않습니다.", 404) if war_request.nil?
-    return render_error("권한 에러", "접근 권한이 없습니다.", 401) unless war_request.can_be_updated_by(@current_user)
-    if params[:status] == "accepted"
-      return render_error("전쟁 수락 에러", "이미 수락되었거나 취소된 전쟁입니다.", 404) if war_request.status != "pending"
-      if war_request.enemy.in_war?
-        return render_error("전쟁 수락 에러", "이미 진행중인 전쟁이 있습니다.", 404)
-      elsif war_request.challenger.in_war?
-        return render_error("전쟁 수락 에러", "상대 길드가 전쟁을 진행 중입니다.", 404)
+    begin
+      war_request = WarRequest.find(params[:id])
+      raise ServiceError.new(:Forbidden) unless war_request.can_be_updated_by?(@current_user)
+      p "Debug 1"
+      raise ServiceError.new(:BadRequest, "이미 거절하거나 수락한 요청입니다.") unless war_request.status == "pending"
+      p "Debug 2"
+
+      ActiveRecord::Base.transaction do
+        if params[:status] == "accepted"
+      p "Debug 3"
+          war_request.enemy.accept_request!(war_request)
+      p "Debug 4"
+        else
+      p "Debug 4"
+          war_request.update!(status: params[:status])
+      p "Debug 5"
+        end
       end
-      war_request.enemy.accept(war_request)
-    else
-      war_request.update(status: params[:status]) if params[:status]
+      head :no_content, status: 204
+    rescue ActiveRecord::RecordNotFound => e
+      perror e
+      render_error :NotFound
+    rescue ActiveRecord::RecordInvalid => e
+      key =  e.record.errors.attribute_names.first
+      error_message = e.record.errors.messages[key].first
+      perror(e, error_message)
+      render_error(:BadRequest, error_message)
+    rescue ServiceError => e
+      p "-------------------------"
+      p e
+      p "-------------------------"
+      perror e
+      render_error(e.type, e.message)
+    rescue => e
+      p "-------------------------"
+      p e
+      p "-------------------------"
+      perror e
+      render_error :BadRequest
     end
-    head :no_content, status: 204
+  end
+
+  private
+
+  def create_params
+    start_date = Time.zone.strptime(params[:start_date], "%Y-%m-%d")
+    {
+      rule_id: params[:rule_id],
+      bet_point: params[:bet_point],
+      start_date: start_date,
+      end_date: start_date + params[:war_duration].days,
+      war_time: Time.zone.now.change({ hour: params[:war_time] }),
+      max_no_reply_count: params[:max_no_reply_count],
+      include_ladder: params[:include_ladder],
+      include_tournament: params[:include_tournament],
+      target_match_score: params[:target_match_score],
+      guild_id: params[:guild_id],
+      enemy_guild_id: params[:enemy_guild_id],
+    }
   end
 end

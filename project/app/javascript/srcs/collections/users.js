@@ -1,4 +1,4 @@
-import { User } from "../models/user";
+import { User } from "srcs/models/user";
 
 export let Users = Backbone.Collection.extend({
   url: "/api/users/",

@@ -2,16 +2,77 @@ class GroupChatMembership < ApplicationRecord
   belongs_to :user
   belongs_to :room, class_name: "GroupChatRoom", foreign_key: "group_chat_room_id"
 
-  def current_user?(user)
-    self.user_id == user.id
+  def restore!
+    room = GroupChatRoom.find(self.group_chat_room_id)
+    raise ServiceError.new(:ServiceUnavailable, "허용 가능 인원을 초과했습니다.") if room.full?
+    self.update!(position: "member")
+    self.broadcast :restore
+    self
   end
 
-  def requested_by_myself?(user)
-    self.user_id == user.id
+  def update_by_params!(options = {by: self, params: {}})
+    params = options[:params]
+    if !params[:mute].nil? && self.can_be_muted_by?(options[:by])
+      self.update_mute!(params[:mute])
+    end
+
+    position = params[:position]
+    return if position.nil?
+    raise ServiceError.new(:Forbidden) unless self.can_be_position_changed_by?(options[:by])
+    raise ServiceError.new(:Forbidden, "챗룸에는 owner가 필요합니다.") if self.room.only_one_member_exist?
+
+    if position == "owner"
+      owner_membership = self.room.memberships.find_by_user_id(self.room.owner.id)
+      owner_membership.update_position!("member")
+      self.room.update!(owner_id: self.user_id)
+    elsif self.position == "owner"
+      self.room.make_another_member_owner!
+    end
+    self.update_position!(position)
+  end
+
+  def can_be_muted_by?(user)
+    membership = self.room.memberships.find_by_user_id(user.id)
+    return false if membership.nil?
+    return false if position_grade[self.position] > position_grade["admin"]
+
+    position_grade[membership.position] >= position_grade["admin"]
+  end
+
+  def update_mute!(mute)
+    self.update!(mute: mute)
+    self.broadcast :mute
+    self
+  end
+
+  def can_be_position_changed_by?(user)
+    return true if user.can_service_manage?
+
+    membership = self.room.memberships.find_by_user_id(user.id)
+    return false if membership.nil?
+    return false if position_grade[self.position] > position_grade["admin"]
+
+    position_grade[membership.position] >= position_grade["owner"]
+  end
+
+  def update_position!(position)
+    raise ServiceError.new(:BadRequest, "이미 해당 유저의 포지션은 #{position}입니다.") if self.position == position
+
+    self.update!(position: position)
+    self.broadcast :position
+    self
+  end
+
+  def broadcast(type)
+    channel = "group_chat_channel_#{self.group_chat_room_id.to_s}"
+    message = { type: type.to_s, user_id: self.user_id }
+    message[type] = self[type] if self.has_attribute?(type)
+
+    ActionCable.server.broadcast(channel, message)
   end
 
   def can_be_destroyed_by?(user)
-    requested_by_myself?(user) || can_be_kicked_by?(user)
+    self.requested_by_myself?(user) || self.can_be_kicked_by?(user)
   end
 
   def can_be_kicked_by?(user)
@@ -24,100 +85,36 @@ class GroupChatMembership < ApplicationRecord
     position_grade[user_position] >= position_grade["admin"]
   end
 
-  def can_be_muted_by?(user)
-    membership = self.room.memberships.find_by_user_id(user.id)
-    return false if membership.nil?
-    return false if position_grade[self.position] > position_grade["admin"]
-
-    position_grade[membership.position] >= position_grade["admin"]
+  def let_out!(options = {by: self.user, min: 0})
+    self.room.with_lock do
+      if self.room.active_member_count == 1
+        self.room.destroy!
+      else
+        self.room.make_another_member_owner! if self.position == "owner"
+        self.set_ban_time_from_now({min: options[:min]}) unless self.requested_by_myself?(options[:by])
+        self.update_position!("ghost")
+      end
+    end
   end
 
-  def can_be_position_changed_by?(user)
-    return true if user.can_service_manage?
-
-    membership = self.room.memberships.find_by_user_id(user.id)
-    return false if membership.nil?
-    return false if position_grade[self.position] > position_grade["admin"]
-
-    position_grade[membership.position] >= position_grade["owner"]
-  end
-      
   def ghost?
     self.position == "ghost"
   end
 
   def banned?
-    !self.ban_ends_at.nil? && self.ban_ends_at > Time.now
+    !self.ban_ends_at.nil? && self.ban_ends_at > Time.zone.now
   end
 
-  def restore
-    room = GroupChatRoom.find_by_id(self.group_chat_room_id)
-    return nil if room.active_member_count == room.max_member_count
-    self.update!(position: "member")
-    ActionCable.server.broadcast(
-      "group_chat_channel_#{self.group_chat_room_id.to_s}",
-      {
-        type: "restore",
-        user_id: self.user_id,
-      }
-    )
-    self
-  end
-
-  def update_by_params!(options = {by: self, params: {}})
-    params = options[:params]
-    unless params[:mute].nil?
-      self.update_mute!(params[:mute]) if self.can_be_muted_by?(options[:by])
-    end
-
-    position = params[:position]
-    return if position.nil?
-    raise GroupChatMembershipError.new("포지션 변경 권한이 없습니다.", 403) unless self.can_be_position_changed_by?(options[:by]) 
-    raise GroupChatMembershipError.new("챗룸에는 1명 이상의 owner가 필요합니다.", 403) if self.room.only_one_member_exist?
-
-    if position == "owner"
-      owner_membership = self.room.memberships.find_by_user_id(self.room.owner.id)
-      owner_membership.update_position!("member")
-      self.room.update!(owner_id: self.user_id)
-    elsif self.position == "owner"
-      self.room.make_another_member_owner!
-    end
-    self.update_position!(position) 
-  end
-
-  def update_mute!(mute)
-    self.update!(mute: mute)
-    ActionCable.server.broadcast(
-      "group_chat_channel_#{self.group_chat_room_id.to_s}",
-      {
-        type: "mute",
-        user_id: self.user_id,
-        mute: self.reload.mute
-      }
-    )
-    self
-  end
-
-  def update_position!(position)
-    raise GroupChatMembershipError.new("이미 해당 유저의 포지션은 #{position}입니다.", 400) if self.position == position
-
-    self.update!(position: position)
-    ActionCable.server.broadcast(
-      "group_chat_channel_#{self.group_chat_room_id.to_s}",
-      {
-        type: "position",
-        user_id: self.user_id,
-        position: self.position
-      }
-    )
-    self
-  end
+  private
 
   def set_ban_time_from_now(args)
     defaults = { hour: 0, min: 0, sec: 0 }
-
     time = defaults.merge(args)
     ban_time = time[:hour].hours + time[:min].minutes + time[:sec].seconds
-    self.update(ban_ends_at: Time.now + ban_time)
+    self.update(ban_ends_at: Time.zone.now + ban_time)
+  end
+
+  def requested_by_myself?(user)
+    self.user_id == user.id
   end
 end

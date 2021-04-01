@@ -1,5 +1,5 @@
-import { App, Helper } from "srcs/internal";
-import * as Draw from "srcs/draw";
+import { App } from "srcs/internal";
+import * as Draw from "srcs/lib/draw";
 
 export let GamePlayView = Backbone.View.extend({
   el: "ladder-game-section",
@@ -40,6 +40,20 @@ export let GamePlayView = Backbone.View.extend({
   },
 
   /**
+   ** @framePerSecond: 초당 통신 횟수
+   ** 플레이어일 경우 keydown 이벤트 on(패들 이동 목적),
+   ** 초당 통신횟수만큼 renderRoutine을 실행
+   */
+  render: function () {
+    const framePerSecond = 50;
+    if (this.is_player) document.onkeydown = this.checkKey.bind(this);
+    this.clear_key = setInterval(
+      this.renderRoutine.bind(this),
+      1000 / framePerSecond
+    );
+  },
+
+  /**
    ** @p paddle
    ** @b ball
    ** 공이 패들에 부딪혔는지 확인, 벽은 충돌 대상으로 보지 않음
@@ -69,24 +83,32 @@ export let GamePlayView = Backbone.View.extend({
    ** 2) score: 플레이어 실점시 서버에 실점 사실을 보고
    */
   operateEngine() {
-    if (this.collision(this.current_paddle, this.ball)) {
-      this.current_paddle.hit(this.ball);
-      return this.sendObjectSpec(this.ball.to_simple());
-    }
+    this.operateCollision();
     if (this.current_paddle.losePoint(this.ball)) {
-      this.sendObjectSpec(this.score.to_next());
-      this.channel.losePoint(
-        App.current_user.id,
-        this.current_paddle.side.toLowerCase()
-      );
-      this.ball.reset();
-      this.sendObjectSpec(this.ball.to_simple());
+      this.operateScore();
     } else if (this.enemy_paddle.near(this.ball)) {
       this.ball.delay_time = 5;
     } else if (this.ball.missPosition()) {
       this.ball.reset();
       this.sendObjectSpec(this.ball.to_simple());
     }
+  },
+
+  operateCollision: function () {
+    if (this.collision(this.current_paddle, this.ball)) {
+      this.current_paddle.hit(this.ball);
+      return this.sendObjectSpec(this.ball.to_simple());
+    }
+  },
+
+  operateScore: function () {
+    this.sendObjectSpec(this.score.to_next());
+    this.channel.losePoint(
+      App.current_user.id,
+      this.current_paddle.side.toLowerCase()
+    );
+    this.ball.reset();
+    this.sendObjectSpec(this.ball.to_simple());
   },
 
   /**
@@ -130,9 +152,9 @@ export let GamePlayView = Backbone.View.extend({
   checkKey(e) {
     e = e || window.event;
     if (e.keyCode == 38) {
-      this.current_paddle.moveUp(this);
+      this.current_paddle?.moveUp(this);
     } else if (e.keyCode == 40) {
-      this.current_paddle.moveDown(this);
+      this.current_paddle?.moveDown(this);
     }
   },
 
@@ -143,23 +165,28 @@ export let GamePlayView = Backbone.View.extend({
    ** 4) 전달받은 객체의 타입이 '공'인 경우 공의 위치나 속도 등을 업데이트
    */
   update: function (data) {
-    if (!data.hasOwnProperty("object")) return;
-
-    if (data.object.type == "SCORE") {
-      this.score.update(data.object);
+    if (!data) return;
+    if (data.object.type !== "SCORE" && data.send_id == App.current_user.id)
       return;
-    }
 
-    if (this.is_player && data.send_id == App.current_user.id) return;
-
-    if (data.object.type == "PADDLE") {
-      if (this.is_player) this.enemy_paddle.update(data.object);
-      else if (data.object.side == "LEFT") this.left_paddle.update(data.object);
-      else this.right_paddle.update(data.object);
-    } else if (data.object.type == "BALL") {
-      this.ball.delay_time = 0;
-      this.ball.update(data.object);
+    const object = data.object;
+    switch (object.type) {
+      case "SCORE":
+        this.score.update(object);
+        break;
+      case "PADDLE":
+        this.updatePaddle(object);
+        break;
+      case "BALL":
+        this.ball.update(object);
+        break;
     }
+  },
+
+  updatePaddle: function (object) {
+    if (this.is_player) this.enemy_paddle.update(object);
+    else if (object.side == "LEFT") this.left_paddle.update(object);
+    else this.right_paddle.update(object);
   },
 
   /**
@@ -173,20 +200,6 @@ export let GamePlayView = Backbone.View.extend({
     if (this.is_player) this.operateEngine();
 
     this.drawCanvas();
-  },
-
-  /**
-   ** @framePerSecond: 초당 통신 횟수
-   ** 플레이어일 경우 keydown 이벤트 on(패들 이동 목적),
-   ** 초당 통신횟수만큼 renderRoutine을 실행
-   */
-  render: function () {
-    const framePerSecond = 50;
-    if (this.is_player) document.onkeydown = this.checkKey.bind(this);
-    this.clear_key = setInterval(
-      this.renderRoutine.bind(this),
-      1000 / framePerSecond
-    );
   },
 
   /**

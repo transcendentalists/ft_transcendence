@@ -1,0 +1,150 @@
+<script type="text/template" id="war-request-create-view-template">
+  <h1 class="ui header">Rules of War</h1>
+  <form class="ui form">
+    <div class="field">
+      <label>상대 길드</label>
+      <div class="ui large label">
+        <%%= enemy_guild_name %>
+      </div>
+    </div>
+    <div class="field">
+      <label>배팅 포인트 (현재 길드 포인트: <%%= guild_point %>)</label>
+      <div class="ui segment flex-container">
+        <span class="minimum-value">100점</span>
+        <div class="ui range bet-point"></div>
+        <span class="maximum-value">1000점</span>
+      </div>
+      <div class="display-value">
+        배팅 포인트: <span class="bet-point-input"></span>점
+      </div>
+    </div>
+    <div class="field">
+      <label>전쟁 시작일</label>
+      <input class='war-start-date' type='date' value=<%%= min_date %> min=<%%= min_date %> max=<%%= max_date %> >
+    </div>
+    <div class="field">
+      <label>전쟁 기간</label>
+      <div class="ui segment flex-container">
+        <span class="minimum-value">1일</span>
+        <div class="ui range war-duration"></div>
+        <span class="maximum-value">7일</span>
+      </div>
+      <div class="display-value">
+        전쟁 기간: <span class="war-duration-input"></span>일
+      </div>
+    </div>
+    <div class="field">
+      <label>워타임(1 hour)</label>
+      <select class="war-time">
+        <option value="09">09:00 ~ 10:00</option>
+        <option value="10">10:00 ~ 11:00</option>
+        <option value="11">11:00 ~ 12:00</option>
+        <option value="12">12:00 ~ 13:00</option>
+        <option value="13">13:00 ~ 14:00</option>
+        <option value="14">14:00 ~ 15:00</option>
+        <option value="15">15:00 ~ 16:00</option>
+        <option value="16">16:00 ~ 17:00</option>
+        <option value="17">17:00 ~ 18:00</option>
+        <option value="18">18:00 ~ 19:00</option>
+        <option value="19">19:00 ~ 20:00</option>
+        <option value="20">20:00 ~ 21:00</option>
+        <option value="21">21:00 ~ 22:00</option>
+        <option value="22">22:00 ~ 23:00</option>
+      </select>
+    </div>
+    <div class="field">
+      <div class="max-no-reply-header">
+        <label>최대 미응답수</label>
+        <i class="max-no-reply-definition-icon question circle outline icon link"></i>
+      </div>
+      <div class="ui segment flex-container">
+        <span class="minimum-value">3회</span>
+        <div class="ui range max-no-reply-count"></div>
+        <span class="maximum-value">10회</span>
+      </div>
+      <div class="display-value">
+        최대 미응답수: <span class="max-no-reply-count-input"></span>회
+      </div>
+    </div>
+    <div class="field">
+      <div class="ui form flex-container column-direction">
+        <div class="inline fields">
+          <label>포함 범위</label>
+          <div class="field">
+            <div class="ui disabled checkbox">
+              <input type="radio" checked="checked">
+              <label>듀얼</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui disabled checkbox">
+              <input type="radio" checked="checked">
+              <label>워배틀</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" name="include-ladder">
+              <label>래더</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="checkbox" name="include-tournament">
+              <label>토너먼트</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label>경기 규칙</label>
+      <select class="rule">
+        <option value="1">기본 규칙</option>
+        <option value="2">투명화</option>
+        <option value="3">스몰볼</option>
+        <option value="4">초스피드A</option>
+        <option value="5">초스피드B</option>
+        <option value="6">불규칙 바운드A</option>
+        <option value="7">불규칙 바운드B</option>
+      </select>
+    </div>
+    <div class="field">
+      <div class="ui form flex-container column-direction">
+        <div class="inline fields">
+          <label>워배틀 승리 점수</label>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" name="target-match-score" value="3" checked="checked">
+              <label>3점</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" name="target-match-score" value="5">
+              <label>5점</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" name="target-match-score" value="7">
+              <label>7점</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui checkbox">
+              <input type="radio" name="target-match-score" value="10">
+              <label>10점</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex-cotnainer buttons">
+    <div>
+      <div class="war-request-create-button ui teal create button">전쟁제안</div>
+      <div class="war-request-create-cancel-button ui red cancel button">취소하기</div>
+    </div>
+  </form>
+
+</script>

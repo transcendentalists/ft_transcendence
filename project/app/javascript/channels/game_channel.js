@@ -1,4 +1,4 @@
-import consumer from "./consumer";
+import consumer from "channels/consumer";
 
 export function ConnectGameChannel(recv_callback, self, match_id) {
   return consumer.subscriptions.create(
@@ -21,7 +21,7 @@ export function ConnectGameChannel(recv_callback, self, match_id) {
       },
 
       speak(msg) {
-        msg["match_id"] = match_id;
+        msg.match_id = match_id;
         this.perform("speak", msg);
       },
 

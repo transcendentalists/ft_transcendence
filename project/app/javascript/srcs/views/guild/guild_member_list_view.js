@@ -8,16 +8,16 @@ export let GuildMemberListView = Backbone.View.extend({
     this.guild_id = options.guild_id;
   },
 
-  addOne: function (member) {
-    let guild_member_profile_card_view = new App.View.GuildMemberProfileCardView();
-    this.child_views.push(guild_member_profile_card_view);
-    this.$el.append(guild_member_profile_card_view.render(member).$el);
-  },
-
   render: function (members) {
     this.$el.html(this.template());
     members.forEach(this.addOne, this);
     return this;
+  },
+
+  addOne: function (member) {
+    let guild_member_profile_card_view = new App.View.GuildMemberProfileCardView();
+    this.child_views.push(guild_member_profile_card_view);
+    this.$el.append(guild_member_profile_card_view.render(member).$el);
   },
 
   close: function () {
